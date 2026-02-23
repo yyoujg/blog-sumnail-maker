@@ -1,5 +1,11 @@
 @import "tailwindcss";
 
+@layer base {
+  img {
+    display: inline-block;
+  }
+}
+
 :root {
   font-synthesis: none;
   text-rendering: optimizeLegibility;

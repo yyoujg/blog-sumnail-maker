@@ -54,18 +54,28 @@ export default function App() {
 
     setIsDownloading(true);
     try {
+      await document.fonts.ready;
+      const w = element.offsetWidth;
+      const h = element.offsetHeight;
+      element.style.setProperty('width', `${w}px`);
+      element.style.setProperty('height', `${h}px`);
       const canvas = await window.html2canvas(element, {
         scale: 2,
         useCORS: true,
-        backgroundColor: null,
+        backgroundColor: bgType === 'color' ? bgColor : '#ffffff',
       });
+      element.style.removeProperty('width');
+      element.style.removeProperty('height');
+      const dataUrl = canvas.toDataURL('image/png');
       const link = document.createElement('a');
       link.download = 'blog_thumbnail.png';
-      link.href = canvas.toDataURL('image/png');
+      link.href = dataUrl;
       link.click();
     } catch (error) {
       console.error('다운로드 중 오류 발생:', error);
-      alert('이미지 다운로드에 실패했습니다.');
+      const message =
+        error instanceof Error ? error.message : '알 수 없는 오류';
+      alert(`이미지 다운로드에 실패했습니다. (${message})`);
     } finally {
       setIsDownloading(false);
     }
@@ -82,10 +92,6 @@ export default function App() {
           1:1 비율의 깔끔한 썸네일을 1분 만에 완성해보세요.
         </p>
       </header>
-
-      <div className="max-w-6xl mx-auto w-full">
-        <AdBanner position="상단" />
-      </div>
 
       <main className="max-w-6xl mx-auto w-full flex flex-col lg:flex-row gap-8 flex-1">
         <ControlPanel

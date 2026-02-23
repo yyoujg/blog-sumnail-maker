@@ -43,15 +43,19 @@ export default function ThumbnailPreview({
         </h3>
 
         <div
-          className="w-full max-w-[500px] aspect-square relative shadow-inner overflow-hidden flex items-center justify-center transition-all duration-300 p-8 sm:p-12"
+          className="w-full max-w-[500px] aspect-square relative overflow-hidden p-8 sm:p-12"
           ref={previewRef}
           style={{
-            backgroundColor: bgType === 'color' ? bgColor : '#fff',
+            backgroundColor: bgType === 'color' ? bgColor : '#ffffff',
             backgroundImage:
               bgType === 'image' && bgImage ? `url(${bgImage})` : 'none',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             fontFamily: fontFamily,
+            boxShadow: 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.05)',
+            color: textColor,
+            borderColor: 'transparent',
+            outline: 'none',
           }}
         >
           <div
@@ -95,8 +99,16 @@ export default function ThumbnailPreview({
           )}
 
           <div
-            className="relative z-20 w-full flex flex-col gap-3 sm:gap-5"
+            className="flex flex-col gap-3 sm:gap-5"
             style={{
+              position: 'absolute',
+              left: '50%',
+              top: '54%',
+              transform: 'translate(-50%, -50%)',
+              zIndex: 20,
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '0.75rem',
               color: textColor,
               textAlign: textAlign,
               alignItems:
@@ -105,14 +117,37 @@ export default function ThumbnailPreview({
                   : textAlign === 'right'
                     ? 'flex-end'
                     : 'flex-start',
+              maxWidth: 'calc(100% - 4rem)',
+              width: 'max-content',
             }}
           >
             {category && (
               <span
-                className="text-xs sm:text-sm md:text-base font-bold tracking-widest uppercase opacity-90 inline-flex items-center justify-center px-4 py-1.5 border rounded-full leading-none"
-                style={{ borderColor: textColor }}
+                className="text-xs sm:text-sm md:text-base font-bold tracking-widest uppercase opacity-90 border rounded-full"
+                style={{
+                  borderColor: textColor,
+                  display: 'inline-block',
+                  textAlign: 'center',
+                  height: '2rem',
+                  boxSizing: 'border-box',
+                  paddingLeft: '1rem',
+                  paddingRight: '1rem',
+                  overflow: 'hidden',
+                  whiteSpace: 'nowrap',
+                  textOverflow: 'ellipsis',
+                  marginTop: '-1rem',
+                }}
               >
-                {category}
+                <span
+                  style={{
+                    display: 'block',
+                    paddingTop: '0.5rem',
+                    paddingBottom: '0.5rem',
+                    lineHeight: 1,
+                  }}
+                >
+                  {category}
+                </span>
               </span>
             )}
             {title && (
@@ -129,7 +164,7 @@ export default function ThumbnailPreview({
               </h1>
             )}
             {subtitle && (
-              <p className="text-sm sm:text-base md:text-xl opacity-90 mt-2 break-keep font-medium">
+              <p className="text-sm sm:text-base md:text-xl opacity-90 -mt-0.5 break-keep font-medium">
                 {subtitle}
               </p>
             )}
