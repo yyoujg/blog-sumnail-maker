@@ -93,10 +93,6 @@ export default function App() {
         </p>
       </header>
 
-      <div className="max-w-6xl mx-auto w-full">
-        <AdBanner position="상단" />
-      </div>
-
       <main className="max-w-6xl mx-auto w-full flex flex-col lg:flex-row gap-8 flex-1">
         <ControlPanel
           title={title}
@@ -143,7 +139,7 @@ export default function App() {
       </main>
 
       <div className="max-w-6xl mx-auto w-full mt-8">
-        <AdBanner position="하단" />
+        <AdBanner position="하단" type="coupang" />
         <footer className="text-center text-gray-500 text-sm py-6 border-t border-gray-200 mt-4">
           <p>
             © {new Date().getFullYear()} 네이버 블로그 썸네일 메이커. All rights
