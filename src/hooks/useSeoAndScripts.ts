@@ -4,7 +4,6 @@ import {
   META_TAGS,
   FONT_LINK_HREF,
   HTML2CANVAS_SCRIPT_SRC,
-  ADSENSE_SCRIPT_SRC,
 } from '../constants.ts';
 
 export function useSeoAndScripts() {
@@ -22,14 +21,6 @@ export function useSeoAndScripts() {
     fontLink.href = FONT_LINK_HREF;
     fontLink.rel = 'stylesheet';
     document.head.appendChild(fontLink);
-
-    if (!document.querySelector(`script[src*="adsbygoogle"]`)) {
-      const adScript = document.createElement('script');
-      adScript.src = ADSENSE_SCRIPT_SRC;
-      adScript.async = true;
-      adScript.crossOrigin = 'anonymous';
-      document.head.appendChild(adScript);
-    }
 
     if (!window.html2canvas) {
       const script = document.createElement('script');
