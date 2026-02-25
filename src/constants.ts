@@ -18,6 +18,10 @@ export const META_TAGS = [
       '프로그램 설치 없이 웹에서 바로 만드는 깔끔한 블로그 썸네일 이미지',
   },
   { property: 'og:type', content: 'website' },
+  {
+    name: 'google-adsense-account',
+    content: 'ca-pub-3008434788043586',
+  },
 ] as const;
 
 export const ADSENSE_CLIENT = 'ca-pub-3008434788043586';
