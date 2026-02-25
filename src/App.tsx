@@ -93,6 +93,10 @@ export default function App() {
         </p>
       </header>
 
+      <div className="max-w-6xl mx-auto w-full">
+        <AdBanner position="상단" />
+      </div>
+
       <main className="max-w-6xl mx-auto w-full flex flex-col lg:flex-row gap-8 flex-1">
         <ControlPanel
           title={title}

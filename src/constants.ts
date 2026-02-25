@@ -18,7 +18,14 @@ export const META_TAGS = [
       '프로그램 설치 없이 웹에서 바로 만드는 깔끔한 블로그 썸네일 이미지',
   },
   { property: 'og:type', content: 'website' },
+  {
+    name: 'google-adsense-account',
+    content: 'ca-pub-3008434788043586',
+  },
 ] as const;
+
+export const ADSENSE_SCRIPT_SRC =
+  'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-3008434788043586';
 
 export const FONT_LINK_HREF =
   'https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Gothic:wght@400;700&family=Nanum+Myeongjo:wght@400;700&family=Noto+Sans+KR:wght@400;700;900&display=swap';
