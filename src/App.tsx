@@ -14,7 +14,6 @@ import {
 } from 'lucide-react';
 import type { TextAlign, FrameType, BgType } from './types.ts';
 import { useSeoAndScripts } from './hooks/useSeoAndScripts.ts';
-import AdBanner from './components/AdBanner.tsx';
 import ControlPanel from './components/ControlPanel.tsx';
 import ThumbnailPreview from './components/ThumbnailPreview.tsx';
 import CoupangRecommendations from './components/CoupangRecommendations.tsx';

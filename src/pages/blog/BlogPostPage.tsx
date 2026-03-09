@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 import { useParams, Link, Navigate } from 'react-router-dom';
 import { blogPosts } from '../../data/blogPosts';
 import { ArrowLeft, ArrowRight, BookOpen } from 'lucide-react';
-import AdBanner from '../../components/AdBanner';
 import CoupangRecommendations from '../../components/CoupangRecommendations';
 
 function formatDate(dateStr: string) {
@@ -41,7 +40,6 @@ export default function BlogPostPage() {
   const prevPost = postIndex > 0 ? blogPosts[postIndex - 1] : null;
   const nextPost = postIndex < blogPosts.length - 1 ? blogPosts[postIndex + 1] : null;
 
-  const midIndex = Math.floor(post.sections.length / 2);
 
   return (
     <div className="min-h-screen bg-gray-50 text-gray-800 font-sans p-4 md:p-8">
