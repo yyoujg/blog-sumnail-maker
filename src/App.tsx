@@ -17,6 +17,7 @@ import { useSeoAndScripts } from './hooks/useSeoAndScripts.ts';
 import ControlPanel from './components/ControlPanel.tsx';
 import ThumbnailPreview from './components/ThumbnailPreview.tsx';
 import CoupangCard from './components/CoupangCard.tsx';
+import KakaoAdBanner from './components/KakaoAdBanner.tsx';
 import { blogPosts } from './data/blogPosts.ts';
 
 const FAQ_ITEMS = [
@@ -392,6 +393,13 @@ export default function App() {
           </div>
         </div>
       </section>
+
+      {/* ── 페이지 최하단 카카오 광고 ── */}
+      <div className="w-full bg-white border-t border-gray-100 py-4">
+        <div className="max-w-6xl mx-auto px-4">
+          <KakaoAdBanner />
+        </div>
+      </div>
 
       {/* ── 푸터 ── */}
       <footer className="bg-gray-800 text-gray-400 text-sm py-10 px-4 md:px-8 mt-auto">
