@@ -4,7 +4,7 @@ export default function TermsPage() {
   return (
     <div className="min-h-screen bg-gray-50 text-gray-800 font-sans p-4 md:p-8">
       <div className="max-w-3xl mx-auto">
-        <Link to="/" className="text-indigo-600 hover:underline text-sm mb-6 inline-block">
+        <Link to="/" className="text-gray-900 hover:underline text-sm mb-6 inline-block">
           ← 홈으로 돌아가기
         </Link>
         <h1 className="text-3xl font-bold text-gray-900 mb-6">이용약관</h1>
@@ -41,7 +41,7 @@ export default function TermsPage() {
             <h2 className="text-lg font-semibold text-gray-900 mb-2">제5조 (문의)</h2>
             <p>
               이용약관과 관련된 문의는{' '}
-              <a href="mailto:andn1026@gmail.com" className="text-indigo-600 hover:underline">
+              <a href="mailto:andn1026@gmail.com" className="text-gray-900 hover:underline">
                 andn1026@gmail.com
               </a>
               으로 연락해 주세요.

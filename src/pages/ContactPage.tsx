@@ -5,12 +5,12 @@ export default function ContactPage() {
   return (
     <div className="min-h-screen bg-gray-50 text-gray-800 font-sans p-4 md:p-8">
       <div className="max-w-3xl mx-auto">
-        <Link to="/" className="text-indigo-600 hover:underline text-sm mb-6 inline-block">
+        <Link to="/" className="text-gray-900 hover:underline text-sm mb-6 inline-block">
           ← 홈으로 돌아가기
         </Link>
 
         <div className="flex items-center gap-3 mb-2">
-          <MessageSquare className="w-7 h-7 text-indigo-600" />
+          <MessageSquare className="w-7 h-7 text-gray-900" />
           <h1 className="text-3xl font-bold text-gray-900">문의</h1>
         </div>
         <p className="text-gray-500 mb-8">
@@ -21,7 +21,7 @@ export default function ContactPage() {
           {/* 이메일 문의 */}
           <div className="bg-white rounded-xl shadow-sm p-6 md:p-8">
             <div className="flex items-center gap-2 mb-4">
-              <Mail className="w-5 h-5 text-indigo-600" />
+              <Mail className="w-5 h-5 text-gray-900" />
               <h2 className="text-lg font-bold text-gray-900">이메일 문의</h2>
             </div>
             <p className="text-sm text-gray-600 leading-relaxed mb-4">
@@ -29,7 +29,7 @@ export default function ContactPage() {
             </p>
             <a
               href="mailto:andn1026@gmail.com"
-              className="inline-flex items-center gap-2 bg-indigo-600 text-white text-sm font-semibold px-5 py-2.5 rounded-lg hover:bg-indigo-700 transition-colors"
+              className="inline-flex items-center gap-2 bg-gray-900 text-white text-sm font-semibold px-5 py-2.5 rounded-lg hover:bg-gray-800 transition-colors"
             >
               <Mail className="w-4 h-4" />
               andn1026@gmail.com
@@ -106,7 +106,7 @@ export default function ContactPage() {
             <p className="font-medium text-gray-800 mb-1">제휴 및 기타 문의</p>
             <p>
               광고 제휴, 콘텐츠 협업 등 기타 문의도{' '}
-              <a href="mailto:andn1026@gmail.com" className="text-indigo-600 hover:underline">
+              <a href="mailto:andn1026@gmail.com" className="text-gray-900 hover:underline">
                 andn1026@gmail.com
               </a>
               으로 연락해 주세요.

@@ -83,7 +83,7 @@ export default function App() {
   const [category, setCategory] = useState('카테고리');
 
   const [bgType, setBgType] = useState<BgType>('color');
-  const [bgColor, setBgColor] = useState('#4F46E5');
+  const [bgColor, setBgColor] = useState('#111827');
   const [bgImage, setBgImage] = useState<string | null>(null);
 
   const [textColor, setTextColor] = useState('#FFFFFF');
@@ -153,7 +153,7 @@ export default function App() {
     <div className="min-h-screen bg-gray-50 text-gray-800 font-sans flex flex-col">
 
       {/* ── 히어로 섹션 ── */}
-      <section className="bg-gradient-to-br from-indigo-600 to-indigo-800 text-white py-14 px-4 md:px-8">
+      <section className="bg-gradient-to-br from-gray-900 to-gray-800 text-white py-14 px-4 md:px-8">
         <div className="max-w-6xl mx-auto text-center">
           <div className="inline-flex items-center gap-2 bg-white/10 text-white/90 text-xs font-medium px-3 py-1 rounded-full mb-5">
             <ImageIcon className="w-3.5 h-3.5" />
@@ -162,7 +162,7 @@ export default function App() {
           <h1 className="text-3xl md:text-5xl font-bold leading-tight mb-4">
             네이버 블로그 썸네일을<br className="hidden md:block" /> 빠르게 만드는 무료 생성기
           </h1>
-          <p className="text-indigo-100 text-base md:text-lg max-w-2xl mx-auto leading-relaxed mb-6">
+          <p className="text-gray-300 text-base md:text-lg max-w-2xl mx-auto leading-relaxed mb-6">
             포토샵 없이 1분 안에 완성. 카테고리·제목·배경색만 입력하면 1:1 고해상도 PNG를 바로
             다운로드할 수 있습니다. 네이버 블로그 포스팅마다 썸네일 때문에 시간을 낭비하지 마세요.
           </p>
@@ -247,23 +247,23 @@ export default function App() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {[
               {
-                icon: <Palette className="w-6 h-6 text-indigo-600" />,
+                icon: <Palette className="w-6 h-6 text-gray-900" />,
                 title: '디자인 도구가 낯선 초보 블로거',
                 desc: '포토샵·캔바 없이도 전문적인 느낌의 썸네일을 만들 수 있습니다. 클릭 몇 번으로 완성됩니다.',
               },
               {
-                icon: <Type className="w-6 h-6 text-indigo-600" />,
+                icon: <Type className="w-6 h-6 text-gray-900" />,
                 title: '매일 포스팅하는 파워블로거',
                 desc: '포스팅마다 썸네일 만드는 시간이 아깝다면? 1분 만에 일관된 스타일로 빠르게 제작하세요.',
               },
               {
-                icon: <Layers className="w-6 h-6 text-indigo-600" />,
+                icon: <Layers className="w-6 h-6 text-gray-900" />,
                 title: '브랜드 이미지를 통일하고 싶은 블로거',
                 desc: '동일한 색상·폰트·레이아웃으로 썸네일을 만들면 블로그가 브랜드처럼 보입니다.',
               },
             ].map((card, i) => (
               <div key={i} className="bg-gray-50 rounded-xl p-6">
-                <div className="w-11 h-11 bg-indigo-100 rounded-xl flex items-center justify-center mb-4">
+                <div className="w-11 h-11 bg-gray-200 rounded-xl flex items-center justify-center mb-4">
                   {card.icon}
                 </div>
                 <h3 className="text-base font-semibold text-gray-900 mb-2">{card.title}</h3>
@@ -284,28 +284,28 @@ export default function App() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
             {[
               {
-                icon: <Download className="w-5 h-5 text-indigo-600" />,
+                icon: <Download className="w-5 h-5 text-gray-900" />,
                 title: '추천 사이즈: 600×600px 이상',
                 desc: '네이버 블로그 대표 이미지는 1:1 비율(600×600px 이상)이 가장 안정적입니다. 본 메이커는 2배 해상도로 저장하므로 모바일에서도 선명합니다.',
               },
               {
-                icon: <Type className="w-5 h-5 text-indigo-600" />,
+                icon: <Type className="w-5 h-5 text-gray-900" />,
                 title: '텍스트는 15자 이내',
                 desc: '목록에서 썸네일은 작게 보입니다. 긴 문장은 읽히지 않으니 핵심 키워드 위주로 짧고 굵게 입력하세요.',
               },
               {
-                icon: <Palette className="w-5 h-5 text-indigo-600" />,
+                icon: <Palette className="w-5 h-5 text-gray-900" />,
                 title: '배경과 텍스트 대비를 높여라',
                 desc: '어두운 배경에는 흰색 텍스트, 밝은 배경에는 검정 텍스트. 배경 이미지 위에는 오버레이를 20~50% 적용하면 가독성이 확보됩니다.',
               },
               {
-                icon: <Layers className="w-5 h-5 text-indigo-600" />,
+                icon: <Layers className="w-5 h-5 text-gray-900" />,
                 title: '카테고리 레이블을 활용하세요',
                 desc: '"요리", "여행", "리뷰" 같은 카테고리를 썸네일에 넣으면 방문자가 글의 주제를 즉시 파악합니다. 서브타이틀 영역을 활용해보세요.',
               },
             ].map((tip, i) => (
               <div key={i} className="flex gap-4 bg-white rounded-xl p-5 shadow-sm">
-                <div className="w-10 h-10 bg-indigo-50 rounded-lg flex items-center justify-center flex-shrink-0">
+                <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0">
                   {tip.icon}
                 </div>
                 <div>
@@ -332,7 +332,7 @@ export default function App() {
           </div>
           <p className="text-center text-xs text-gray-400 mt-6">
             더 궁금한 점은{' '}
-            <Link to="/contact" className="text-indigo-600 hover:underline">
+            <Link to="/contact" className="text-gray-900 hover:underline">
               문의 페이지
             </Link>
             에서 이메일로 보내주세요.
@@ -350,7 +350,7 @@ export default function App() {
             </div>
             <Link
               to="/blog"
-              className="flex items-center gap-1 text-sm text-indigo-600 hover:underline font-medium"
+              className="flex items-center gap-1 text-sm text-gray-900 hover:underline font-medium"
             >
               전체 보기 <ArrowRight className="w-4 h-4" />
             </Link>
@@ -363,10 +363,10 @@ export default function App() {
                 className="block bg-white rounded-xl shadow-sm p-5 hover:shadow-md transition-shadow group"
               >
                 <div className="flex items-center gap-2 mb-3">
-                  <BookOpen className="w-4 h-4 text-indigo-400" />
+                  <BookOpen className="w-4 h-4 text-gray-500" />
                   <span className="text-xs text-gray-400">{formatDate(post.date)}</span>
                 </div>
-                <h3 className="text-sm font-semibold text-gray-900 group-hover:text-indigo-600 transition-colors mb-2 leading-snug">
+                <h3 className="text-sm font-semibold text-gray-900 group-hover:text-gray-900 transition-colors mb-2 leading-snug">
                   {post.title}
                 </h3>
                 <p className="text-xs text-gray-500 leading-relaxed line-clamp-2">{post.summary}</p>
@@ -382,7 +382,7 @@ export default function App() {
           <div className="flex flex-col md:flex-row items-center md:items-start justify-between gap-6">
             <div>
               <div className="flex items-center gap-2 text-white font-semibold mb-2">
-                <ImageIcon className="w-5 h-5 text-indigo-400" />
+                <ImageIcon className="w-5 h-5 text-gray-500" />
                 네이버 블로그 썸네일 메이커
               </div>
               <p className="text-xs text-gray-500 max-w-xs leading-relaxed">

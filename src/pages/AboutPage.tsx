@@ -5,12 +5,12 @@ export default function AboutPage() {
   return (
     <div className="min-h-screen bg-gray-50 text-gray-800 font-sans p-4 md:p-8">
       <div className="max-w-3xl mx-auto">
-        <Link to="/" className="text-indigo-600 hover:underline text-sm mb-6 inline-block">
+        <Link to="/" className="text-gray-900 hover:underline text-sm mb-6 inline-block">
           ← 홈으로 돌아가기
         </Link>
 
         <div className="flex items-center gap-3 mb-2">
-          <ImageIcon className="w-8 h-8 text-indigo-600" />
+          <ImageIcon className="w-8 h-8 text-gray-900" />
           <h1 className="text-3xl font-bold text-gray-900">About</h1>
         </div>
         <p className="text-gray-500 mb-8">네이버 블로그 썸네일 메이커 소개</p>
@@ -19,7 +19,7 @@ export default function AboutPage() {
           {/* 서비스 소개 */}
           <div className="bg-white rounded-xl shadow-sm p-6 md:p-8">
             <div className="flex items-center gap-2 mb-4">
-              <ImageIcon className="w-5 h-5 text-indigo-600" />
+              <ImageIcon className="w-5 h-5 text-gray-900" />
               <h2 className="text-xl font-bold text-gray-900">서비스 소개</h2>
             </div>
             <p className="text-sm text-gray-700 leading-relaxed mb-3">
@@ -36,7 +36,7 @@ export default function AboutPage() {
           {/* 제작 배경 */}
           <div className="bg-white rounded-xl shadow-sm p-6 md:p-8">
             <div className="flex items-center gap-2 mb-4">
-              <Lightbulb className="w-5 h-5 text-indigo-600" />
+              <Lightbulb className="w-5 h-5 text-gray-900" />
               <h2 className="text-xl font-bold text-gray-900">만들게 된 이유</h2>
             </div>
             <p className="text-sm text-gray-700 leading-relaxed mb-3">
@@ -54,7 +54,7 @@ export default function AboutPage() {
           {/* 어떤 블로거를 위한 툴인지 */}
           <div className="bg-white rounded-xl shadow-sm p-6 md:p-8">
             <div className="flex items-center gap-2 mb-4">
-              <Users className="w-5 h-5 text-indigo-600" />
+              <Users className="w-5 h-5 text-gray-900" />
               <h2 className="text-xl font-bold text-gray-900">이런 분께 추천해요</h2>
             </div>
             <ul className="space-y-3">
@@ -66,7 +66,7 @@ export default function AboutPage() {
                 '일관된 브랜드 이미지를 유지하고 싶은 블로거',
               ].map((item, i) => (
                 <li key={i} className="flex items-start gap-3 text-sm text-gray-700">
-                  <CheckCircle className="w-4 h-4 text-indigo-500 flex-shrink-0 mt-0.5" />
+                  <CheckCircle className="w-4 h-4 text-blue-500 flex-shrink-0 mt-0.5" />
                   {item}
                 </li>
               ))}
@@ -96,7 +96,7 @@ export default function AboutPage() {
           {/* 업데이트 계획 */}
           <div className="bg-white rounded-xl shadow-sm p-6 md:p-8">
             <div className="flex items-center gap-2 mb-4">
-              <Rocket className="w-5 h-5 text-indigo-600" />
+              <Rocket className="w-5 h-5 text-gray-900" />
               <h2 className="text-xl font-bold text-gray-900">업데이트 계획</h2>
             </div>
             <ul className="space-y-3">
@@ -107,7 +107,7 @@ export default function AboutPage() {
                 { label: '예정', text: '저장된 설정 불러오기 기능' },
               ].map((item, i) => (
                 <li key={i} className="flex items-start gap-3 text-sm text-gray-700">
-                  <span className="text-xs bg-indigo-100 text-indigo-700 font-semibold px-2 py-0.5 rounded flex-shrink-0 mt-0.5">
+                  <span className="text-xs bg-gray-200 text-gray-800 font-semibold px-2 py-0.5 rounded flex-shrink-0 mt-0.5">
                     {item.label}
                   </span>
                   {item.text}
@@ -116,7 +116,7 @@ export default function AboutPage() {
             </ul>
             <p className="text-xs text-gray-400 mt-4">
               기능 제안은{' '}
-              <Link to="/contact" className="text-indigo-600 hover:underline">
+              <Link to="/contact" className="text-gray-900 hover:underline">
                 문의 페이지
               </Link>
               를 통해 보내주시면 적극 검토합니다.

@@ -1,2 +1,4 @@
 User-agent: *
 Allow: /
+
+Sitemap: https://blog-sumnail-maker.vercel.app/sitemap.xml

@@ -78,7 +78,7 @@ export default function ControlPanel({
               type="text"
               value={category}
               onChange={(e) => setCategory(e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
+              className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-blue-500 outline-none transition"
               placeholder="예: 맛집 탐방, IT 리뷰"
             />
           </div>
@@ -90,7 +90,7 @@ export default function ControlPanel({
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               rows={2}
-              className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition resize-none"
+              className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-blue-500 outline-none transition resize-none"
               placeholder="포스팅 제목을 입력하세요"
             />
           </div>
@@ -102,7 +102,7 @@ export default function ControlPanel({
               type="text"
               value={subtitle}
               onChange={(e) => setSubtitle(e.target.value)}
-              className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition"
+              className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-gray-500 focus:border-blue-500 outline-none transition"
               placeholder="보충 설명을 입력하세요"
             />
           </div>
@@ -163,7 +163,7 @@ export default function ControlPanel({
               <button
                 key={align.value}
                 onClick={() => setTextAlign(align.value)}
-                className={`flex-1 flex justify-center p-2 rounded border ${textAlign === align.value ? 'bg-indigo-50 border-indigo-500 text-indigo-700' : 'border-gray-300 text-gray-600 hover:bg-gray-50'}`}
+                className={`flex-1 flex justify-center p-2 rounded border ${textAlign === align.value ? 'bg-gray-100 border-blue-500 text-gray-800' : 'border-gray-300 text-gray-600 hover:bg-gray-50'}`}
               >
                 {align.icon}
               </button>

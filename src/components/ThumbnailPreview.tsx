@@ -177,8 +177,8 @@ export default function ThumbnailPreview({
         disabled={isDownloading}
         className={`w-full max-w-[500px] flex items-center justify-center gap-2 py-4 px-6 rounded-xl font-bold text-lg text-white shadow-lg transition-all ${
           isDownloading
-            ? 'bg-indigo-400 cursor-not-allowed'
-            : 'bg-indigo-600 hover:bg-indigo-700 hover:shadow-xl hover:-translate-y-1'
+            ? 'bg-blue-400 cursor-not-allowed'
+            : 'bg-gray-900 hover:bg-gray-800 hover:shadow-xl hover:-translate-y-1'
         }`}
       >
         {isDownloading ? (
