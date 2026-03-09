@@ -46,19 +46,21 @@ export default function CoupangRecommendations() {
     <div className="w-full my-8">
       <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1">블로거 추천 장비</p>
       <h2 className="text-base font-bold text-gray-800 mb-4">블로그 운영할 때 이런 장비 많이 씁니다</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {PRODUCTS.map((p) => (
-          <div key={p.src} className="flex flex-col items-center gap-2 bg-white rounded-xl border border-gray-200 p-3 hover:shadow-sm transition-shadow">
+          <div key={p.src} className="flex flex-col items-center gap-2 bg-white rounded-xl border border-gray-200 p-3 hover:shadow-sm transition-shadow overflow-hidden">
             <p className="w-full text-xs font-semibold text-gray-800 leading-snug">{p.name}</p>
-            <iframe
-              src={p.src}
-              width="300"
-              height="250"
-              frameBorder="0"
-              scrolling="no"
-              referrerPolicy="unsafe-url"
-              title={p.name}
-            />
+            <div className="w-full overflow-x-auto flex justify-center">
+              <iframe
+                src={p.src}
+                width="300"
+                height="250"
+                frameBorder="0"
+                scrolling="no"
+                referrerPolicy="unsafe-url"
+                title={p.name}
+              />
+            </div>
             <p className="w-full text-xs text-gray-500 leading-relaxed">{p.desc}</p>
           </div>
         ))}
