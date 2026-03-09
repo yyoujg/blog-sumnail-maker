@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom';
 import { blogPosts } from '../../data/blogPosts';
 import { BookOpen, ArrowRight } from 'lucide-react';
+import CoupangCard from '../../components/CoupangCard';
 
 function formatDate(dateStr: string) {
   const d = new Date(dateStr);
@@ -24,7 +25,7 @@ export default function BlogListPage() {
         </p>
 
         <div className="space-y-4">
-          {blogPosts.map((post) => (
+          {blogPosts.flatMap((post, i) => [
             <Link
               key={post.slug}
               to={`/blog/${post.slug}`}
@@ -42,8 +43,16 @@ export default function BlogListPage() {
                 </div>
                 <ArrowRight className="w-5 h-5 text-gray-300 group-hover:text-blue-500 flex-shrink-0 mt-1 transition-colors" />
               </div>
-            </Link>
-          ))}
+            </Link>,
+            i === 2 ? (
+              <CoupangCard
+                key="coupang-mid"
+                src="https://coupa.ng/clQwQw"
+                name="주닉스 ZNS-S16 LED 링 라이트"
+                desc="얼굴이나 제품을 균일하게 비춰줘서 그림자 없이 깔끔한 사진을 찍을 수 있어요. 뷰티·요리·제품 리뷰 블로거분들께 특히 추천합니다."
+              />
+            ) : null,
+          ])}
         </div>
 
         <div className="mt-10 text-center">

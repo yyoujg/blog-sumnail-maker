@@ -1,6 +1,7 @@
 import React, { type RefObject } from 'react';
 import { Download } from 'lucide-react';
 import type { TextAlign, FrameType, BgType } from '../types.ts';
+import CoupangCard from './CoupangCard.tsx';
 
 interface ThumbnailPreviewProps {
   previewRef: RefObject<HTMLDivElement | null>;
@@ -196,6 +197,12 @@ export default function ThumbnailPreview({
         <br />
         (PC와 모바일에서 모두 잘림 없이 보입니다)
       </p>
+
+      <CoupangCard
+        src="https://coupa.ng/clQwOg"
+        name="KL-149B 미니 LED 촬영 조명"
+        desc="배경 이미지 찍을 때 조명 하나 있으면 사진 퀄리티가 확 달라져요. 작고 가벼워서 책상 위에 두고 쓰기 딱 좋습니다."
+      />
 
     </div>
   );

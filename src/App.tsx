@@ -16,7 +16,7 @@ import type { TextAlign, FrameType, BgType } from './types.ts';
 import { useSeoAndScripts } from './hooks/useSeoAndScripts.ts';
 import ControlPanel from './components/ControlPanel.tsx';
 import ThumbnailPreview from './components/ThumbnailPreview.tsx';
-import CoupangRecommendations from './components/CoupangRecommendations.tsx';
+import CoupangCard from './components/CoupangCard.tsx';
 import { blogPosts } from './data/blogPosts.ts';
 
 const FAQ_ITEMS = [
@@ -317,6 +317,15 @@ export default function App() {
         </div>
       </section>
 
+      {/* ── 썸네일 팁 하단 상품 ── */}
+      <div className="px-4 md:px-8 max-w-6xl mx-auto -mt-4">
+        <CoupangCard
+          src="https://coupa.ng/clQwSN"
+          name="셀루미 초경량 스마트폰 삼각대"
+          desc="배경 사진 직접 찍어 쓰는 분들께 추천해요. 손떨림 없이 고정된 앵글로 찍으면 썸네일 소스 퀄리티가 확 달라집니다."
+        />
+      </div>
+
       {/* ── FAQ ── */}
       <section className="py-12 px-4 md:px-8 bg-white">
         <div className="max-w-3xl mx-auto">
@@ -339,12 +348,14 @@ export default function App() {
         </div>
       </section>
 
-      {/* ── 블로거 추천 장비 ── */}
-      <section className="py-12 px-4 md:px-8 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <CoupangRecommendations />
-        </div>
-      </section>
+      {/* ── FAQ 하단 상품 ── */}
+      <div className="px-4 md:px-8 max-w-3xl mx-auto -mt-4">
+        <CoupangCard
+          src="https://coupa.ng/clQwZb"
+          name="라이프썸 미니 블루투스 키보드"
+          desc="태블릿으로 블로그 포스팅하는 분들께 딱 맞아요. 3대 멀티 페어링에 C타입 충전까지 되어서 하나 사두면 오래 씁니다."
+        />
+      </div>
 
       {/* ── 블로그 최신 글 ── */}
       <section className="py-12 px-4 md:px-8">
