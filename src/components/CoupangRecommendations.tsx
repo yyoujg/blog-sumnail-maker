@@ -48,7 +48,8 @@ export default function CoupangRecommendations() {
       <h2 className="text-base font-bold text-gray-800 mb-4">블로그 운영할 때 이런 장비 많이 씁니다</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
         {PRODUCTS.map((p) => (
-          <div key={p.src} className="flex flex-col items-center bg-white rounded-xl border border-gray-200 p-3 hover:shadow-sm transition-shadow">
+          <div key={p.src} className="flex flex-col items-center gap-2 bg-white rounded-xl border border-gray-200 p-3 hover:shadow-sm transition-shadow">
+            <p className="w-full text-xs font-semibold text-gray-800 leading-snug">{p.name}</p>
             <iframe
               src={p.src}
               width="300"
@@ -58,7 +59,7 @@ export default function CoupangRecommendations() {
               referrerPolicy="unsafe-url"
               title={p.name}
             />
-            <p className="text-xs text-gray-500 text-center mt-2 leading-relaxed">{p.desc}</p>
+            <p className="w-full text-xs text-gray-500 leading-relaxed">{p.desc}</p>
           </div>
         ))}
       </div>
