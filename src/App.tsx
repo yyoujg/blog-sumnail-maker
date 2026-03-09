@@ -17,6 +17,7 @@ import { useSeoAndScripts } from './hooks/useSeoAndScripts.ts';
 import AdBanner from './components/AdBanner.tsx';
 import ControlPanel from './components/ControlPanel.tsx';
 import ThumbnailPreview from './components/ThumbnailPreview.tsx';
+import CoupangRecommendations from './components/CoupangRecommendations.tsx';
 import { blogPosts } from './data/blogPosts.ts';
 
 const FAQ_ITEMS = [
@@ -336,6 +337,13 @@ export default function App() {
             </Link>
             에서 이메일로 보내주세요.
           </p>
+        </div>
+      </section>
+
+      {/* ── 블로거 추천 장비 ── */}
+      <section className="py-12 px-4 md:px-8 bg-white">
+        <div className="max-w-6xl mx-auto">
+          <CoupangRecommendations />
         </div>
       </section>
 
