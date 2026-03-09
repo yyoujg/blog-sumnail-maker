@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://blog-sumnail-maker.vercel.app/sitemap.xml
+Sitemap: https://blogsumnail.com/sitemap.xml
