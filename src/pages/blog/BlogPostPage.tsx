@@ -76,15 +76,10 @@ export default function BlogPostPage() {
                   </h2>
                   <p className="text-sm text-gray-700 leading-relaxed">{section.content}</p>
                 </section>
-                {i === midIndex && (
-                  <AdBanner key={`ad-mid-${i}`} position="블로그 본문 중간" type="coupang" />
-                )}
               </>
             ))}
           </div>
         </article>
-
-        <AdBanner position="블로그 포스트 하단" type="coupang" />
 
         {/* 네이티브 상품 추천 카드 */}
         <div className="mt-6 bg-white rounded-xl border border-gray-200 p-5">

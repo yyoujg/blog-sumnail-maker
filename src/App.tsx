@@ -233,7 +233,6 @@ export default function App() {
         </div>
       </section>
 
-      <AdBanner position="툴 하단" type="coupang" />
 
       {/* ── 이런 분께 유용해요 ── */}
       <section className="py-12 px-4 md:px-8 bg-white">
