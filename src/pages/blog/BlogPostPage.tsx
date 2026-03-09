@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 import { useParams, Link, Navigate } from 'react-router-dom';
 import { blogPosts } from '../../data/blogPosts';
 import { ArrowLeft, ArrowRight, BookOpen } from 'lucide-react';
-import CoupangCard from '../../components/CoupangCard';
 import CoupangRecommendations from '../../components/CoupangRecommendations';
 
 function formatDate(dateStr: string) {
@@ -74,20 +73,6 @@ export default function BlogPostPage() {
                   {section.heading}
                 </h2>
                 <p className="text-sm text-gray-700 leading-relaxed">{section.content}</p>
-                {i === 1 && (
-                  <CoupangCard
-                    src="https://coupa.ng/clQwSN"
-                    name="셀루미 초경량 스마트폰 삼각대"
-                    desc="직접 사진 찍어서 썸네일 배경으로 쓰는 분들께 추천해요. 손떨림 없이 찍으면 사진 퀄리티가 확 달라집니다."
-                  />
-                )}
-                {i === 3 && (
-                  <CoupangCard
-                    src="https://coupa.ng/clQwWz"
-                    name="스위스윙거 폴딩 휴대폰 거치대"
-                    desc="블로그 작성할 때 레퍼런스 보면서 쓰기 편하고, 촬영할 때도 각도 잡기 좋아요. 접이식이라 보관도 간편합니다."
-                  />
-                )}
               </section>
             ))}
           </div>
