@@ -1,8 +1,11 @@
 import { useEffect, useRef } from 'react';
 import { ADSENSE_CLIENT, ADSENSE_AD_SLOT } from '../constants.ts';
 
-const COUPANG_IFRAME_SRC =
-  'https://ads-partners.coupang.com/widgets.html?id=967371&template=carousel&trackingCode=AF2506117&subId=&width=680&height=140&tsource=';
+const TRACKING_CODE = 'AF2506117';
+
+function coupangUrl(subId: string, width: number, height: number) {
+  return `https://ads-partners.coupang.com/widgets.html?id=967371&template=carousel&trackingCode=${TRACKING_CODE}&subId=${subId}&width=${width}&height=${height}&tsource=`;
+}
 
 type BannerType = 'adsense' | 'coupang';
 
@@ -30,20 +33,33 @@ export default function AdBanner({ position, type }: AdBannerProps) {
   }, [type]);
 
   const wrapperClass =
-    'w-full flex flex-col items-center justify-center py-6 my-4 min-h-[140px] bg-gray-50 rounded-xl border border-gray-200';
+    'w-full flex flex-col items-center justify-center py-4 my-4 bg-gray-50 rounded-xl border border-gray-200 overflow-hidden';
 
   if (type === 'coupang') {
+    // subId: 위치 식별용 (쿠팡 파트너스 리포트에서 위치별 성과 확인 가능)
+    const subId = encodeURIComponent(position);
     return (
       <div className={wrapperClass} data-ad-position={position}>
+        {/* 모바일: 320×100, PC: 680×140 */}
         <iframe
-          src={COUPANG_IFRAME_SRC}
+          src={coupangUrl(subId, 680, 140)}
           width="680"
           height="140"
           frameBorder="0"
           scrolling="no"
           referrerPolicy="unsafe-url"
           title="쿠팡 파트너스 배너"
-          className="max-w-full"
+          className="hidden md:block max-w-full"
+        />
+        <iframe
+          src={coupangUrl(subId + '_m', 320, 100)}
+          width="320"
+          height="100"
+          frameBorder="0"
+          scrolling="no"
+          referrerPolicy="unsafe-url"
+          title="쿠팡 파트너스 배너"
+          className="block md:hidden max-w-full"
         />
       </div>
     );
@@ -52,7 +68,7 @@ export default function AdBanner({ position, type }: AdBannerProps) {
   if (!ADSENSE_AD_SLOT) {
     return (
       <div className={wrapperClass} data-ad-position={position}>
-        <div className="flex items-center justify-center h-[140px] text-gray-400 text-sm">
+        <div className="flex items-center justify-center h-[100px] text-gray-400 text-sm">
           애드센스 광고 영역 (constants.ts에 ADSENSE_AD_SLOT을 입력하세요)
         </div>
       </div>
