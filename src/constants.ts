@@ -26,7 +26,7 @@ export const META_TAGS = [
 
 export const ADSENSE_CLIENT = 'ca-pub-3008434788043586';
 export const ADSENSE_SCRIPT_SRC = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT}`;
-export const ADSENSE_AD_SLOT = '';
+export const ADSENSE_AD_SLOT = '9150939859';
 
 export const FONT_LINK_HREF =
   'https://fonts.googleapis.com/css2?family=Jua&family=Nanum+Gothic:wght@400;700&family=Nanum+Myeongjo:wght@400;700&family=Noto+Sans+KR:wght@400;700;900&display=swap';

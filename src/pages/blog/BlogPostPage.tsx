@@ -3,6 +3,7 @@ import { useParams, Link, Navigate } from 'react-router-dom';
 import { blogPosts } from '../../data/blogPosts';
 import { ArrowLeft, ArrowRight, BookOpen } from 'lucide-react';
 import CoupangRecommendations from '../../components/CoupangRecommendations';
+import AdBanner from '../../components/AdBanner';
 
 function formatDate(dateStr: string) {
   const d = new Date(dateStr);
@@ -77,6 +78,8 @@ export default function BlogPostPage() {
             ))}
           </div>
         </article>
+
+        <AdBanner type="adsense" position="blog-post-bottom" />
 
         <CoupangRecommendations />
 

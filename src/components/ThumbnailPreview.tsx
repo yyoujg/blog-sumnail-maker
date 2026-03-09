@@ -2,7 +2,7 @@ import React, { type RefObject } from 'react';
 import { Download } from 'lucide-react';
 import type { TextAlign, FrameType, BgType } from '../types.ts';
 import CoupangCard from './CoupangCard.tsx';
-import KakaoAdBanner from './KakaoAdBanner.tsx';
+import AdBanner from './AdBanner.tsx';
 
 interface ThumbnailPreviewProps {
   previewRef: RefObject<HTMLDivElement | null>;
@@ -192,7 +192,7 @@ export default function ThumbnailPreview({
           </>
         )}
       </button>
-      <KakaoAdBanner />
+      <AdBanner type="adsense" position="main-download-below" />
       <p className="text-sm text-gray-500 mt-4 text-center">
         * 생성된 이미지는 1:1 정방형 사이즈로 네이버 블로그에 최적화되어
         있습니다.
