@@ -196,6 +196,31 @@ export default function ThumbnailPreview({
         <br />
         (PC와 모바일에서 모두 잘림 없이 보입니다)
       </p>
+
+      <div className="w-full max-w-[500px] mt-6 bg-white rounded-xl border border-gray-200 p-4">
+        <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-3">블로거 추천 상품</p>
+        <div className="flex items-center gap-4">
+          <iframe
+            src="https://coupa.ng/clQv2U"
+            width="120"
+            height="240"
+            frameBorder="0"
+            scrolling="no"
+            referrerPolicy="unsafe-url"
+            title="쿠팡 추천 상품"
+            className="flex-shrink-0"
+          />
+          <div>
+            <p className="text-sm font-semibold text-gray-800 mb-1">블로그 운영 추천 도구</p>
+            <p className="text-xs text-gray-500 leading-relaxed">
+              썸네일 제작 후 블로그 운영에<br />도움이 되는 상품을 확인해보세요.
+            </p>
+            <p className="text-xs text-gray-300 mt-3 leading-relaxed">
+              이 포스팅은 쿠팡 파트너스 활동의<br />일환으로 수수료를 받을 수 있습니다.
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
