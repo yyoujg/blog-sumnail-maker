@@ -86,6 +86,33 @@ export default function BlogPostPage() {
 
         <AdBanner position="블로그 포스트 하단" type="coupang" />
 
+        {/* 네이티브 상품 추천 카드 */}
+        <div className="mt-6 bg-white rounded-xl border border-gray-200 p-5">
+          <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-4">블로거 추천 상품</p>
+          <div className="flex items-center gap-5">
+            <iframe
+              src="https://coupa.ng/clQv2U"
+              width="120"
+              height="240"
+              frameBorder="0"
+              scrolling="no"
+              referrerPolicy="unsafe-url"
+              title="쿠팡 추천 상품"
+              className="flex-shrink-0"
+            />
+            <div className="flex flex-col gap-1">
+              <p className="text-sm font-semibold text-gray-800">블로그 운영에 도움이 되는 상품</p>
+              <p className="text-xs text-gray-500 leading-relaxed">
+                블로거라면 꼭 한 번쯤 확인해보세요.<br />
+                쿠팡에서 다양한 블로그 관련 도구를 찾아볼 수 있습니다.
+              </p>
+              <p className="text-xs text-gray-300 mt-2">
+                이 포스팅은 쿠팡 파트너스 활동의 일환으로, 이에 따른 일정액의 수수료를 제공받습니다.
+              </p>
+            </div>
+          </div>
+        </div>
+
         <div className="mt-8 p-5 bg-gray-100 rounded-xl border border-gray-200 text-center">
           <p className="text-sm text-gray-700 mb-3">
             바로 썸네일을 만들어보고 싶으신가요?
