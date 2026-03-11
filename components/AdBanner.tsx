@@ -1,5 +1,7 @@
+'use client';
+
 import { useEffect, useRef } from 'react';
-import { ADSENSE_CLIENT, ADSENSE_AD_SLOT } from '../constants.ts';
+import { ADSENSE_CLIENT, ADSENSE_AD_SLOT } from '@/lib/constants';
 
 const TRACKING_CODE = 'AF2506117';
 
@@ -36,11 +38,9 @@ export default function AdBanner({ position, type }: AdBannerProps) {
     'w-full flex flex-col items-center justify-center py-4 my-4 bg-gray-50 rounded-xl border border-gray-200 overflow-hidden';
 
   if (type === 'coupang') {
-    // subId: 위치 식별용 (쿠팡 파트너스 리포트에서 위치별 성과 확인 가능)
     const subId = encodeURIComponent(position);
     return (
       <div className={wrapperClass} data-ad-position={position}>
-        {/* 모바일: 320×100, PC: 680×140 */}
         <iframe
           src={coupangUrl(subId, 680, 140)}
           width="680"
@@ -69,7 +69,7 @@ export default function AdBanner({ position, type }: AdBannerProps) {
     return (
       <div className={wrapperClass} data-ad-position={position}>
         <div className="flex items-center justify-center h-[100px] text-gray-400 text-sm">
-          애드센스 광고 영역 (constants.ts에 ADSENSE_AD_SLOT을 입력하세요)
+          애드센스 광고 영역
         </div>
       </div>
     );

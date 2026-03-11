@@ -1,7 +1,13 @@
-import { Link } from 'react-router-dom';
-import { blogPosts } from '../../data/blogPosts';
+import type { Metadata } from 'next';
+import Link from 'next/link';
+import { blogPosts } from '@/data/blogPosts';
 import { BookOpen, ArrowRight } from 'lucide-react';
-import CoupangCard from '../../components/CoupangCard';
+import CoupangCard from '@/components/CoupangCard';
+
+export const metadata: Metadata = {
+  title: '블로그 & 가이드',
+  description: '네이버 블로그 썸네일 제작에 도움이 되는 팁과 가이드 모음.',
+};
 
 function formatDate(dateStr: string) {
   const d = new Date(dateStr);
@@ -12,7 +18,7 @@ export default function BlogListPage() {
   return (
     <div className="min-h-screen bg-gray-50 text-gray-800 font-sans p-4 md:p-8">
       <div className="max-w-3xl mx-auto">
-        <Link to="/" className="text-gray-900 hover:underline text-sm mb-6 inline-block">
+        <Link href="/" className="text-gray-900 hover:underline text-sm mb-6 inline-block">
           ← 홈으로 돌아가기
         </Link>
 
@@ -28,7 +34,7 @@ export default function BlogListPage() {
           {blogPosts.flatMap((post, i) => [
             <Link
               key={post.slug}
-              to={`/blog/${post.slug}`}
+              href={`/blog/${post.slug}`}
               className="block bg-white rounded-xl shadow-sm p-6 hover:shadow-md transition-shadow group"
             >
               <div className="flex items-start justify-between gap-4">
@@ -37,9 +43,7 @@ export default function BlogListPage() {
                   <h2 className="text-lg font-semibold text-gray-900 group-hover:text-gray-900 transition-colors mb-2">
                     {post.title}
                   </h2>
-                  <p className="text-sm text-gray-600 leading-relaxed line-clamp-2">
-                    {post.summary}
-                  </p>
+                  <p className="text-sm text-gray-600 leading-relaxed line-clamp-2">{post.summary}</p>
                 </div>
                 <ArrowRight className="w-5 h-5 text-gray-300 group-hover:text-blue-500 flex-shrink-0 mt-1 transition-colors" />
               </div>
@@ -56,7 +60,7 @@ export default function BlogListPage() {
         </div>
 
         <div className="mt-10 text-center">
-          <Link to="/" className="text-gray-900 hover:underline text-sm">
+          <Link href="/" className="text-gray-900 hover:underline text-sm">
             ← 썸네일 메이커로 돌아가기
           </Link>
         </div>

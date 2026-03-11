@@ -1,11 +1,5 @@
 @import "tailwindcss";
 
-@layer base {
-  img {
-    display: inline-block;
-  }
-}
-
 :root {
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -19,6 +13,8 @@ body {
   min-height: 100vh;
 }
 
-#root {
-  min-height: 100vh;
+@layer base {
+  img {
+    display: inline-block;
+  }
 }

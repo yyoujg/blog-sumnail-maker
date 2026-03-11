@@ -1,11 +1,17 @@
-import { Link } from 'react-router-dom';
+import type { Metadata } from 'next';
+import Link from 'next/link';
 import { Image as ImageIcon, Lightbulb, Users, Rocket, CheckCircle } from 'lucide-react';
+
+export const metadata: Metadata = {
+  title: 'About',
+  description: '네이버 블로그 썸네일 메이커 서비스 소개. 만들게 된 이유, 주요 기능, 업데이트 계획을 안내합니다.',
+};
 
 export default function AboutPage() {
   return (
     <div className="min-h-screen bg-gray-50 text-gray-800 font-sans p-4 md:p-8">
       <div className="max-w-3xl mx-auto">
-        <Link to="/" className="text-gray-900 hover:underline text-sm mb-6 inline-block">
+        <Link href="/" className="text-gray-900 hover:underline text-sm mb-6 inline-block">
           ← 홈으로 돌아가기
         </Link>
 
@@ -16,7 +22,6 @@ export default function AboutPage() {
         <p className="text-gray-500 mb-8">네이버 블로그 썸네일 메이커 소개</p>
 
         <div className="space-y-6">
-          {/* 서비스 소개 */}
           <div className="bg-white rounded-xl shadow-sm p-6 md:p-8">
             <div className="flex items-center gap-2 mb-4">
               <ImageIcon className="w-5 h-5 text-gray-900" />
@@ -33,7 +38,6 @@ export default function AboutPage() {
             </p>
           </div>
 
-          {/* 제작 배경 */}
           <div className="bg-white rounded-xl shadow-sm p-6 md:p-8">
             <div className="flex items-center gap-2 mb-4">
               <Lightbulb className="w-5 h-5 text-gray-900" />
@@ -51,7 +55,6 @@ export default function AboutPage() {
             </p>
           </div>
 
-          {/* 어떤 블로거를 위한 툴인지 */}
           <div className="bg-white rounded-xl shadow-sm p-6 md:p-8">
             <div className="flex items-center gap-2 mb-4">
               <Users className="w-5 h-5 text-gray-900" />
@@ -73,7 +76,6 @@ export default function AboutPage() {
             </ul>
           </div>
 
-          {/* 주요 기능 */}
           <div className="bg-white rounded-xl shadow-sm p-6 md:p-8">
             <h2 className="text-xl font-bold text-gray-900 mb-4">주요 기능</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -93,7 +95,6 @@ export default function AboutPage() {
             </div>
           </div>
 
-          {/* 업데이트 계획 */}
           <div className="bg-white rounded-xl shadow-sm p-6 md:p-8">
             <div className="flex items-center gap-2 mb-4">
               <Rocket className="w-5 h-5 text-gray-900" />
@@ -116,9 +117,7 @@ export default function AboutPage() {
             </ul>
             <p className="text-xs text-gray-400 mt-4">
               기능 제안은{' '}
-              <Link to="/contact" className="text-gray-900 hover:underline">
-                문의 페이지
-              </Link>
+              <Link href="/contact" className="text-gray-900 hover:underline">문의 페이지</Link>
               를 통해 보내주시면 적극 검토합니다.
             </p>
           </div>

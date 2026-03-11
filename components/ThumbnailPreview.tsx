@@ -1,8 +1,10 @@
+'use client';
+
 import React, { type RefObject } from 'react';
 import { Download } from 'lucide-react';
-import type { TextAlign, FrameType, BgType } from '../types.ts';
-import CoupangCard from './CoupangCard.tsx';
-import AdBanner from './AdBanner.tsx';
+import type { TextAlign, FrameType, BgType } from '@/lib/types';
+import CoupangCard from './CoupangCard';
+import AdBanner from './AdBanner';
 
 interface ThumbnailPreviewProps {
   previewRef: RefObject<HTMLDivElement | null>;
@@ -49,8 +51,7 @@ export default function ThumbnailPreview({
           ref={previewRef}
           style={{
             backgroundColor: bgType === 'color' ? bgColor : '#ffffff',
-            backgroundImage:
-              bgType === 'image' && bgImage ? `url(${bgImage})` : 'none',
+            backgroundImage: bgType === 'image' && bgImage ? `url(${bgImage})` : 'none',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             fontFamily: fontFamily,
@@ -62,9 +63,7 @@ export default function ThumbnailPreview({
         >
           <div
             className="absolute inset-0 z-0 pointer-events-none"
-            style={{
-              backgroundColor: `rgba(0, 0, 0, ${overlayOpacity / 100})`,
-            }}
+            style={{ backgroundColor: `rgba(0, 0, 0, ${overlayOpacity / 100})` }}
           />
 
           {frameType === 'solid' && (
@@ -81,27 +80,14 @@ export default function ThumbnailPreview({
           )}
           {frameType === 'corners' && (
             <div className="absolute inset-6 z-10 pointer-events-none">
-              <div
-                className="absolute top-0 left-0 w-8 h-8 border-t-4 border-l-4"
-                style={{ borderColor: textColor }}
-              />
-              <div
-                className="absolute top-0 right-0 w-8 h-8 border-t-4 border-r-4"
-                style={{ borderColor: textColor }}
-              />
-              <div
-                className="absolute bottom-0 left-0 w-8 h-8 border-b-4 border-l-4"
-                style={{ borderColor: textColor }}
-              />
-              <div
-                className="absolute bottom-0 right-0 w-8 h-8 border-b-4 border-r-4"
-                style={{ borderColor: textColor }}
-              />
+              <div className="absolute top-0 left-0 w-8 h-8 border-t-4 border-l-4" style={{ borderColor: textColor }} />
+              <div className="absolute top-0 right-0 w-8 h-8 border-t-4 border-r-4" style={{ borderColor: textColor }} />
+              <div className="absolute bottom-0 left-0 w-8 h-8 border-b-4 border-l-4" style={{ borderColor: textColor }} />
+              <div className="absolute bottom-0 right-0 w-8 h-8 border-b-4 border-r-4" style={{ borderColor: textColor }} />
             </div>
           )}
 
           <div
-            className="flex flex-col gap-3 sm:gap-5"
             style={{
               position: 'absolute',
               left: '50%',
@@ -140,14 +126,7 @@ export default function ThumbnailPreview({
                   marginTop: '-1rem',
                 }}
               >
-                <span
-                  style={{
-                    display: 'block',
-                    paddingTop: '0.5rem',
-                    paddingBottom: '0.5rem',
-                    lineHeight: 1,
-                  }}
-                >
+                <span style={{ display: 'block', paddingTop: '0.5rem', paddingBottom: '0.5rem', lineHeight: 1 }}>
                   {category}
                 </span>
               </span>
@@ -194,8 +173,7 @@ export default function ThumbnailPreview({
       </button>
       <AdBanner type="adsense" position="main-download-below" />
       <p className="text-sm text-gray-500 mt-4 text-center">
-        * 생성된 이미지는 1:1 정방형 사이즈로 네이버 블로그에 최적화되어
-        있습니다.
+        * 생성된 이미지는 1:1 정방형 사이즈로 네이버 블로그에 최적화되어 있습니다.
         <br />
         (PC와 모바일에서 모두 잘림 없이 보입니다)
       </p>
@@ -205,7 +183,6 @@ export default function ThumbnailPreview({
         name="KL-149B 미니 LED 촬영 조명"
         desc="배경 이미지 찍을 때 조명 하나 있으면 사진 퀄리티가 확 달라져요. 작고 가벼워서 책상 위에 두고 쓰기 딱 좋습니다."
       />
-
     </div>
   );
 }

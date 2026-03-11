@@ -1,3 +1,5 @@
+'use client';
+
 import {
   Type,
   Palette,
@@ -9,8 +11,8 @@ import {
   AlignCenter,
   AlignRight,
 } from 'lucide-react';
-import type { TextAlign, FrameType, BgType } from '../types.ts';
-import { FONTS } from '../constants.ts';
+import type { TextAlign, FrameType, BgType } from '@/lib/types';
+import { FONTS } from '@/lib/constants';
 
 interface ControlPanelProps {
   title: string;
@@ -153,10 +155,7 @@ export default function ControlPanel({
             {(
               [
                 { value: 'left' as const, icon: <AlignLeft className="w-4 h-4" /> },
-                {
-                  value: 'center' as const,
-                  icon: <AlignCenter className="w-4 h-4" />,
-                },
+                { value: 'center' as const, icon: <AlignCenter className="w-4 h-4" /> },
                 { value: 'right' as const, icon: <AlignRight className="w-4 h-4" /> },
               ] as const
             ).map((align) => (
@@ -194,9 +193,7 @@ export default function ControlPanel({
 
           {bgType === 'color' ? (
             <div>
-              <label className="block text-sm text-gray-600 mb-1">
-                배경 색상
-              </label>
+              <label className="block text-sm text-gray-600 mb-1">배경 색상</label>
               <input
                 type="color"
                 value={bgColor}
@@ -206,9 +203,7 @@ export default function ControlPanel({
             </div>
           ) : (
             <div className="space-y-2">
-              <label className="block text-sm text-gray-600">
-                배경 이미지 업로드
-              </label>
+              <label className="block text-sm text-gray-600">배경 이미지 업로드</label>
               <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 transition relative overflow-hidden">
                 {bgImage ? (
                   <>
@@ -219,25 +214,16 @@ export default function ControlPanel({
                     />
                     <div className="relative z-10 flex flex-col items-center bg-white/80 p-2 rounded">
                       <ImageIcon className="w-6 h-6 text-gray-500 mb-1" />
-                      <span className="text-sm font-medium text-gray-700">
-                        이미지 변경
-                      </span>
+                      <span className="text-sm font-medium text-gray-700">이미지 변경</span>
                     </div>
                   </>
                 ) : (
                   <div className="flex flex-col items-center justify-center pt-5 pb-6">
                     <Upload className="w-8 h-8 text-gray-400 mb-2" />
-                    <p className="text-sm text-gray-500">
-                      클릭하여 이미지 업로드
-                    </p>
+                    <p className="text-sm text-gray-500">클릭하여 이미지 업로드</p>
                   </div>
                 )}
-                <input
-                  type="file"
-                  className="hidden"
-                  accept="image/*"
-                  onChange={onImageUpload}
-                />
+                <input type="file" className="hidden" accept="image/*" onChange={onImageUpload} />
               </label>
               {bgImage && (
                 <button
@@ -266,9 +252,7 @@ export default function ControlPanel({
           </div>
 
           <div className="pt-2">
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              테두리 프레임
-            </label>
+            <label className="block text-sm font-medium text-gray-700 mb-1">테두리 프레임</label>
             <select
               value={frameType}
               onChange={(e) => setFrameType(e.target.value as FrameType)}

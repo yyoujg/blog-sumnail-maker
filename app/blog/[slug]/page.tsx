@@ -1,52 +1,54 @@
-import { useEffect } from 'react';
-import { useParams, Link, Navigate } from 'react-router-dom';
-import { blogPosts } from '../../data/blogPosts';
+import type { Metadata } from 'next';
+import { notFound } from 'next/navigation';
+import Link from 'next/link';
+import { blogPosts } from '@/data/blogPosts';
 import { ArrowLeft, ArrowRight, BookOpen } from 'lucide-react';
-import CoupangRecommendations from '../../components/CoupangRecommendations';
-import AdBanner from '../../components/AdBanner';
+import CoupangRecommendations from '@/components/CoupangRecommendations';
+import AdBanner from '@/components/AdBanner';
+
+interface PageProps {
+  params: Promise<{ slug: string }>;
+}
+
+export async function generateStaticParams() {
+  return blogPosts.map((post) => ({ slug: post.slug }));
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const post = blogPosts.find((p) => p.slug === slug);
+  if (!post) return {};
+  return {
+    title: post.title,
+    description: post.summary,
+    openGraph: {
+      title: `${post.title} — 네이버 블로그 썸네일 메이커`,
+      description: post.summary,
+      type: 'article',
+    },
+  };
+}
 
 function formatDate(dateStr: string) {
   const d = new Date(dateStr);
   return `${d.getFullYear()}년 ${d.getMonth() + 1}월 ${d.getDate()}일`;
 }
 
-export default function BlogPostPage() {
-  const { slug } = useParams<{ slug: string }>();
+export default async function BlogPostPage({ params }: PageProps) {
+  const { slug } = await params;
   const postIndex = blogPosts.findIndex((p) => p.slug === slug);
   const post = blogPosts[postIndex];
 
-  useEffect(() => {
-    if (!post) return;
-    document.title = `${post.title} — 네이버 블로그 썸네일 메이커`;
-
-    const prev = document.querySelector('meta[name="description"][data-blog]');
-    if (prev) prev.remove();
-    const meta = document.createElement('meta');
-    meta.setAttribute('name', 'description');
-    meta.setAttribute('content', post.summary);
-    meta.setAttribute('data-blog', 'true');
-    document.head.appendChild(meta);
-
-    return () => {
-      document.title = '네이버 블로그 썸네일 메이커 - 무료 1분 완성';
-      const m = document.querySelector('meta[name="description"][data-blog]');
-      if (m) m.remove();
-    };
-  }, [post]);
-
-  if (!post) {
-    return <Navigate to="/blog" replace />;
-  }
+  if (!post) notFound();
 
   const prevPost = postIndex > 0 ? blogPosts[postIndex - 1] : null;
   const nextPost = postIndex < blogPosts.length - 1 ? blogPosts[postIndex + 1] : null;
-
 
   return (
     <div className="min-h-screen bg-gray-50 text-gray-800 font-sans p-4 md:p-8">
       <div className="max-w-3xl mx-auto">
         <Link
-          to="/blog"
+          href="/blog"
           className="text-gray-900 hover:underline text-sm mb-6 inline-flex items-center gap-1"
         >
           <ArrowLeft className="w-3 h-3" />
@@ -84,11 +86,9 @@ export default function BlogPostPage() {
         <CoupangRecommendations />
 
         <div className="mt-8 p-5 bg-gray-100 rounded-xl border border-gray-200 text-center">
-          <p className="text-sm text-gray-700 mb-3">
-            바로 썸네일을 만들어보고 싶으신가요?
-          </p>
+          <p className="text-sm text-gray-700 mb-3">바로 썸네일을 만들어보고 싶으신가요?</p>
           <Link
-            to="/"
+            href="/"
             className="inline-flex items-center gap-2 bg-gray-900 text-white text-sm font-semibold px-5 py-2.5 rounded-lg hover:bg-gray-800 transition-colors"
           >
             <BookOpen className="w-4 h-4" />
@@ -99,7 +99,7 @@ export default function BlogPostPage() {
         <nav className="mt-8 grid grid-cols-2 gap-4">
           {prevPost ? (
             <Link
-              to={`/blog/${prevPost.slug}`}
+              href={`/blog/${prevPost.slug}`}
               className="flex flex-col p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow group"
             >
               <span className="text-xs text-gray-400 mb-1 flex items-center gap-1">
@@ -114,7 +114,7 @@ export default function BlogPostPage() {
           )}
           {nextPost ? (
             <Link
-              to={`/blog/${nextPost.slug}`}
+              href={`/blog/${nextPost.slug}`}
               className="flex flex-col p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow group text-right"
             >
               <span className="text-xs text-gray-400 mb-1 flex items-center gap-1 justify-end">

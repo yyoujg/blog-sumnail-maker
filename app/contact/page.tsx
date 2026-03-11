@@ -1,11 +1,17 @@
-import { Link } from 'react-router-dom';
+import type { Metadata } from 'next';
+import Link from 'next/link';
 import { Mail, Bug, Lightbulb, MessageSquare } from 'lucide-react';
+
+export const metadata: Metadata = {
+  title: '문의',
+  description: '버그 제보, 기능 제안, 제휴 문의는 이메일로 보내주세요.',
+};
 
 export default function ContactPage() {
   return (
     <div className="min-h-screen bg-gray-50 text-gray-800 font-sans p-4 md:p-8">
       <div className="max-w-3xl mx-auto">
-        <Link to="/" className="text-gray-900 hover:underline text-sm mb-6 inline-block">
+        <Link href="/" className="text-gray-900 hover:underline text-sm mb-6 inline-block">
           ← 홈으로 돌아가기
         </Link>
 
@@ -13,12 +19,9 @@ export default function ContactPage() {
           <MessageSquare className="w-7 h-7 text-gray-900" />
           <h1 className="text-3xl font-bold text-gray-900">문의</h1>
         </div>
-        <p className="text-gray-500 mb-8">
-          서비스 이용 중 불편한 점이나 건의사항을 편하게 보내주세요.
-        </p>
+        <p className="text-gray-500 mb-8">서비스 이용 중 불편한 점이나 건의사항을 편하게 보내주세요.</p>
 
         <div className="space-y-5">
-          {/* 이메일 문의 */}
           <div className="bg-white rounded-xl shadow-sm p-6 md:p-8">
             <div className="flex items-center gap-2 mb-4">
               <Mail className="w-5 h-5 text-gray-900" />
@@ -36,7 +39,6 @@ export default function ContactPage() {
             </a>
           </div>
 
-          {/* 버그 제보 */}
           <div className="bg-white rounded-xl shadow-sm p-6 md:p-8">
             <div className="flex items-center gap-2 mb-4">
               <Bug className="w-5 h-5 text-red-500" />
@@ -68,15 +70,13 @@ export default function ContactPage() {
             </a>
           </div>
 
-          {/* 기능 제안 */}
           <div className="bg-white rounded-xl shadow-sm p-6 md:p-8">
             <div className="flex items-center gap-2 mb-4">
               <Lightbulb className="w-5 h-5 text-yellow-500" />
               <h2 className="text-lg font-bold text-gray-900">기능 제안</h2>
             </div>
             <p className="text-sm text-gray-600 leading-relaxed mb-3">
-              "이런 기능이 있으면 좋겠다"는 아이디어를 적극 반영하고 있습니다. 어떤 아이디어든
-              환영합니다.
+              "이런 기능이 있으면 좋겠다"는 아이디어를 적극 반영하고 있습니다. 어떤 아이디어든 환영합니다.
             </p>
             <ul className="space-y-2 mb-4">
               {[
@@ -101,7 +101,6 @@ export default function ContactPage() {
             </a>
           </div>
 
-          {/* 제휴/기타 */}
           <div className="bg-gray-100 rounded-xl p-5 text-sm text-gray-600">
             <p className="font-medium text-gray-800 mb-1">제휴 및 기타 문의</p>
             <p>

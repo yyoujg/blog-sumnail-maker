@@ -1,10 +1,16 @@
-import { Link } from 'react-router-dom';
+import type { Metadata } from 'next';
+import Link from 'next/link';
+
+export const metadata: Metadata = {
+  title: '이용약관',
+  description: '네이버 블로그 썸네일 메이커 이용약관입니다.',
+};
 
 export default function TermsPage() {
   return (
     <div className="min-h-screen bg-gray-50 text-gray-800 font-sans p-4 md:p-8">
       <div className="max-w-3xl mx-auto">
-        <Link to="/" className="text-gray-900 hover:underline text-sm mb-6 inline-block">
+        <Link href="/" className="text-gray-900 hover:underline text-sm mb-6 inline-block">
           ← 홈으로 돌아가기
         </Link>
         <h1 className="text-3xl font-bold text-gray-900 mb-6">이용약관</h1>

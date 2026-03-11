@@ -1,10 +1,16 @@
-import { Link } from 'react-router-dom';
+import type { Metadata } from 'next';
+import Link from 'next/link';
+
+export const metadata: Metadata = {
+  title: '개인정보 처리방침',
+  description: '네이버 블로그 썸네일 메이커의 개인정보 처리방침입니다.',
+};
 
 export default function PrivacyPage() {
   return (
     <div className="min-h-screen bg-gray-50 text-gray-800 font-sans p-4 md:p-8">
       <div className="max-w-3xl mx-auto">
-        <Link to="/" className="text-gray-900 hover:underline text-sm mb-6 inline-block">
+        <Link href="/" className="text-gray-900 hover:underline text-sm mb-6 inline-block">
           ← 홈으로 돌아가기
         </Link>
         <h1 className="text-3xl font-bold text-gray-900 mb-6">개인정보 처리방침</h1>
@@ -22,18 +28,13 @@ export default function PrivacyPage() {
 
           <section>
             <h2 className="text-lg font-semibold text-gray-900 mb-2">2. 쿠키(Cookie) 사용</h2>
-            <p className="mb-2">
-              본 서비스는 다음의 목적으로 쿠키를 사용할 수 있습니다.
-            </p>
+            <p className="mb-2">본 서비스는 다음의 목적으로 쿠키를 사용할 수 있습니다.</p>
             <ul className="list-disc list-inside space-y-1 text-gray-600 mb-2">
               <li><strong>필수 쿠키</strong>: 서비스의 기본 기능을 제공하기 위해 필요한 쿠키</li>
               <li><strong>분석 쿠키</strong>: 방문자 통계 수집을 위한 Google Analytics 쿠키</li>
               <li><strong>광고 쿠키</strong>: 맞춤형 광고 제공을 위한 Google AdSense 쿠키</li>
             </ul>
-            <p>
-              브라우저 설정에서 쿠키를 차단하거나 삭제할 수 있습니다. 단, 쿠키를 차단하면 일부
-              기능이 제한될 수 있습니다.
-            </p>
+            <p>브라우저 설정에서 쿠키를 차단하거나 삭제할 수 있습니다. 단, 쿠키를 차단하면 일부 기능이 제한될 수 있습니다.</p>
           </section>
 
           <section>
@@ -44,33 +45,18 @@ export default function PrivacyPage() {
             </p>
             <p className="mb-2">
               Google의 광고 쿠키 사용 방식에 대한 자세한 내용은{' '}
-              <a
-                href="https://policies.google.com/technologies/ads"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-900 hover:underline"
-              >
+              <a href="https://policies.google.com/technologies/ads" target="_blank" rel="noopener noreferrer" className="text-gray-900 hover:underline">
                 Google 광고 정책
               </a>
               에서 확인하실 수 있습니다.
             </p>
             <p>
               맞춤형 광고를 원하지 않으시는 경우{' '}
-              <a
-                href="https://www.google.com/settings/ads"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-900 hover:underline"
-              >
+              <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener noreferrer" className="text-gray-900 hover:underline">
                 Google 광고 설정
               </a>
               에서 개인화 광고를 비활성화하거나,{' '}
-              <a
-                href="https://optout.networkadvertising.org/"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-900 hover:underline"
-              >
+              <a href="https://optout.networkadvertising.org/" target="_blank" rel="noopener noreferrer" className="text-gray-900 hover:underline">
                 NAI 옵트아웃 페이지
               </a>
               를 통해 관심 기반 광고 수신을 거부할 수 있습니다.
@@ -83,12 +69,7 @@ export default function PrivacyPage() {
               본 서비스는 방문자 통계 분석을 위해 Google Analytics를 사용할 수 있습니다.
               Google Analytics는 익명화된 방문 데이터(페이지 조회수, 체류 시간, 유입 경로 등)를
               수집합니다. 수집된 데이터는 개인을 식별하는 데 사용되지 않으며, Google의{' '}
-              <a
-                href="https://policies.google.com/privacy"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-900 hover:underline"
-              >
+              <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="text-gray-900 hover:underline">
                 개인정보 처리방침
               </a>
               에 따라 처리됩니다.
@@ -99,22 +80,10 @@ export default function PrivacyPage() {
             <h2 className="text-lg font-semibold text-gray-900 mb-2">5. 제3자 서비스</h2>
             <p className="mb-2">본 서비스는 다음의 제3자 서비스를 사용합니다.</p>
             <ul className="list-disc list-inside space-y-1 text-gray-600">
-              <li>
-                <strong>Google AdSense</strong> — 광고 게재 (
-                <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="text-gray-900 hover:underline">
-                  Google 개인정보처리방침
-                </a>
-                )
-              </li>
-              <li>
-                <strong>쿠팡 파트너스</strong> — 제휴 마케팅 광고 게재
-              </li>
-              <li>
-                <strong>Google Fonts</strong> — 웹 폰트 로딩
-              </li>
-              <li>
-                <strong>Vercel</strong> — 웹사이트 호스팅
-              </li>
+              <li><strong>Google AdSense</strong> — 광고 게재 (<a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="text-gray-900 hover:underline">Google 개인정보처리방침</a>)</li>
+              <li><strong>쿠팡 파트너스</strong> — 제휴 마케팅 광고 게재</li>
+              <li><strong>Google Fonts</strong> — 웹 폰트 로딩</li>
+              <li><strong>Vercel</strong> — 웹사이트 호스팅</li>
             </ul>
           </section>
 

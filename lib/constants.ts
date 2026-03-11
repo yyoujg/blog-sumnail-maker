@@ -1,28 +1,6 @@
 export const PAGE_TITLE = '네이버 블로그 썸네일 메이커 - 무료 1분 완성';
-
-export const META_TAGS = [
-  {
-    name: 'description',
-    content:
-      '네이버 블로그 포스팅에 최적화된 1:1 비율 썸네일을 무료로 쉽고 빠르게 만들어보세요. 가독성 높은 텍스트, 배경 이미지, 다양한 폰트 지원.',
-  },
-  {
-    name: 'keywords',
-    content:
-      '블로그 썸네일, 네이버 블로그, 썸네일 만들기, 썸네일 메이커, 무료 썸네일, 블로그 꾸미기',
-  },
-  { property: 'og:title', content: '네이버 블로그 썸네일 메이커 - 무료 1분 완성' },
-  {
-    property: 'og:description',
-    content:
-      '프로그램 설치 없이 웹에서 바로 만드는 깔끔한 블로그 썸네일 이미지',
-  },
-  { property: 'og:type', content: 'website' },
-  {
-    name: 'google-adsense-account',
-    content: 'ca-pub-3008434788043586',
-  },
-] as const;
+export const PAGE_DESCRIPTION =
+  '네이버 블로그 포스팅에 최적화된 1:1 비율 썸네일을 무료로 쉽고 빠르게 만들어보세요. 가독성 높은 텍스트, 배경 이미지, 다양한 폰트 지원.';
 
 export const ADSENSE_CLIENT = 'ca-pub-3008434788043586';
 export const ADSENSE_SCRIPT_SRC = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT}`;
@@ -40,3 +18,6 @@ export const FONTS = [
   { name: '나눔 명조', value: `'Nanum Myeongjo', serif` },
   { name: '배달의민족 주아', value: `'Jua', sans-serif` },
 ] as const;
+
+export const SITE_URL = 'https://blogsumnail.com';
+export const GTAG_ID = 'G-XFEZWR8108';
