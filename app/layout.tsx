@@ -25,6 +25,9 @@ export const metadata: Metadata = {
     type: 'website',
     url: SITE_URL,
   },
+  alternates: {
+    canonical: SITE_URL,
+  },
   other: {
     'google-adsense-account': ADSENSE_CLIENT,
   },

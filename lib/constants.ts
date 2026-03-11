@@ -19,5 +19,5 @@ export const FONTS = [
   { name: '배달의민족 주아', value: `'Jua', sans-serif` },
 ] as const;
 
-export const SITE_URL = 'https://blogsumnail.com';
+export const SITE_URL = 'https://www.blogsumnail.com';
 export const GTAG_ID = 'G-XFEZWR8108';
