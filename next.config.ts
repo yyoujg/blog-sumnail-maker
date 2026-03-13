@@ -9,6 +9,11 @@ const nextConfig: NextConfig = {
         destination: 'https://www.blogsumnail.com/:path*',
         permanent: true,
       },
+      {
+        source: '/cmd_sco',
+        destination: '/',
+        permanent: false,
+      },
     ];
   },
 };
