@@ -87,13 +87,13 @@ export default async function BlogPostPage({ params }: PageProps) {
 
         <div className="mt-8 p-5 bg-gray-100 rounded-xl border border-gray-200 text-center">
           <p className="text-sm text-gray-700 mb-3">바로 썸네일을 만들어보고 싶으신가요?</p>
-          <Link
-            href="/"
+          <a
+            href="https://www.blogsumnail.com"
             className="inline-flex items-center gap-2 bg-gray-900 text-white text-sm font-semibold px-5 py-2.5 rounded-lg hover:bg-gray-800 transition-colors"
           >
             <BookOpen className="w-4 h-4" />
             썸네일 메이커 사용하기
-          </Link>
+          </a>
         </div>
 
         <nav className="mt-8 grid grid-cols-2 gap-4">
