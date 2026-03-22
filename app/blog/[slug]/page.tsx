@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { blogPosts } from '@/data/blogPosts';
-import { ArrowLeft, ArrowRight, BookOpen } from 'lucide-react';
+import { ArrowLeft, ArrowRight, BookOpen, BookMarked } from 'lucide-react';
 import CoupangRecommendations from '@/components/CoupangRecommendations';
 import AdBanner from '@/components/AdBanner';
 
@@ -44,6 +44,16 @@ export default async function BlogPostPage({ params }: PageProps) {
   const prevPost = postIndex > 0 ? blogPosts[postIndex - 1] : null;
   const nextPost = postIndex < blogPosts.length - 1 ? blogPosts[postIndex + 1] : null;
 
+  // 관련 글: 핵심 포스트 우선, 부족하면 인접 포스트로 채움
+  const CORE_RELATED = ['naver-blog-thumbnail-size', 'thumbnail-failure-cases', 'thumbnail-text-tips'];
+  const coreRelated = blogPosts.filter(
+    (p) => p.slug !== slug && CORE_RELATED.includes(p.slug)
+  );
+  const extraRelated = blogPosts.filter(
+    (p) => p.slug !== slug && !CORE_RELATED.includes(p.slug)
+  );
+  const relatedPosts = [...coreRelated, ...extraRelated].slice(0, 3);
+
   return (
     <div className="min-h-screen bg-gray-50 text-gray-800 font-sans p-4 md:p-8">
       <div className="max-w-3xl mx-auto">
@@ -65,6 +75,8 @@ export default async function BlogPostPage({ params }: PageProps) {
               {post.summary}
             </p>
           </header>
+
+          <AdBanner type="adsense" position="blog-post-top" />
 
           <div className="bg-white rounded-xl shadow-sm p-6 md:p-8 space-y-8">
             {post.sections.map((section, i) => (
@@ -94,6 +106,30 @@ export default async function BlogPostPage({ params }: PageProps) {
             <BookOpen className="w-4 h-4" />
             썸네일 메이커 사용하기
           </a>
+        </div>
+
+        <div className="mt-8">
+          <h2 className="flex items-center gap-2 text-base font-semibold text-gray-900 mb-4">
+            <BookMarked className="w-4 h-4" />
+            관련 글 보기
+          </h2>
+          <div className="grid gap-3">
+            {relatedPosts.map((related) => (
+              <Link
+                key={related.slug}
+                href={`/blog/${related.slug}`}
+                className="flex items-center justify-between gap-3 p-4 bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow group"
+              >
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-gray-800 group-hover:text-gray-900 transition-colors line-clamp-1">
+                    {related.title}
+                  </p>
+                  <p className="text-xs text-gray-500 mt-0.5 line-clamp-1">{related.summary}</p>
+                </div>
+                <ArrowRight className="w-4 h-4 text-gray-300 group-hover:text-gray-700 flex-shrink-0 transition-colors" />
+              </Link>
+            ))}
+          </div>
         </div>
 
         <nav className="mt-8 grid grid-cols-2 gap-4">
