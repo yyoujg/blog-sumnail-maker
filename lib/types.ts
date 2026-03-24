@@ -1,4 +1,5 @@
 export type TextAlign = 'left' | 'center' | 'right';
+export type TextVAlign = 'top' | 'middle' | 'bottom';
 export type FrameType = 'none' | 'solid' | 'double' | 'corners';
 export type BgType = 'color' | 'image';
 

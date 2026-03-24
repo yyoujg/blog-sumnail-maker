@@ -1,8 +1,9 @@
 'use client';
 
 import React, { type RefObject } from 'react';
-import { Download } from 'lucide-react';
-import type { TextAlign, FrameType, BgType } from '@/lib/types';
+import Link from 'next/link';
+import { Download, ArrowRight } from 'lucide-react';
+import type { TextAlign, TextVAlign, FrameType, BgType } from '@/lib/types';
 import CoupangCard from './CoupangCard';
 import AdBanner from './AdBanner';
 
@@ -14,6 +15,9 @@ interface ThumbnailPreviewProps {
   textColor: string;
   fontFamily: string;
   textAlign: TextAlign;
+  textVAlign: TextVAlign;
+  textOffsetX: number;
+  textOffsetY: number;
   bgType: BgType;
   bgColor: string;
   bgImage: string | null;
@@ -21,6 +25,11 @@ interface ThumbnailPreviewProps {
   frameType: FrameType;
   onDownload: () => void;
   isDownloading: boolean;
+  isDownloadDone: boolean;
+  downloadFormat: 'png' | 'jpg';
+  onFormatChange: (f: 'png' | 'jpg') => void;
+  downloadScale: 1 | 2;
+  onScaleChange: (s: 1 | 2) => void;
 }
 
 export default function ThumbnailPreview({
@@ -31,6 +40,9 @@ export default function ThumbnailPreview({
   textColor,
   fontFamily,
   textAlign,
+  textVAlign,
+  textOffsetX,
+  textOffsetY,
   bgType,
   bgColor,
   bgImage,
@@ -38,10 +50,15 @@ export default function ThumbnailPreview({
   frameType,
   onDownload,
   isDownloading,
+  isDownloadDone,
+  downloadFormat,
+  onFormatChange,
+  downloadScale,
+  onScaleChange,
 }: ThumbnailPreviewProps) {
   return (
     <div className="flex-1 flex flex-col items-center lg:sticky lg:top-8 h-fit">
-      <div className="w-full bg-white p-4 rounded-2xl shadow-sm border border-gray-200 mb-6 flex flex-col items-center">
+      <div className="w-full bg-white p-4 rounded-2xl shadow-sm border border-gray-200 mb-4 flex flex-col items-center">
         <h3 className="w-full text-left font-semibold text-gray-800 mb-4 px-2">
           미리보기 (1:1 비율)
         </h3>
@@ -90,67 +107,112 @@ export default function ThumbnailPreview({
           <div
             style={{
               position: 'absolute',
-              left: '50%',
-              top: '54%',
-              transform: 'translate(-50%, -50%)',
+              inset: 0,
               zIndex: 20,
               display: 'flex',
               flexDirection: 'column',
-              gap: '0.75rem',
-              color: textColor,
-              textAlign: textAlign,
+              justifyContent:
+                textVAlign === 'top' ? 'flex-start' :
+                textVAlign === 'bottom' ? 'flex-end' : 'center',
               alignItems:
-                textAlign === 'center'
-                  ? 'center'
-                  : textAlign === 'right'
-                    ? 'flex-end'
-                    : 'flex-start',
-              maxWidth: 'calc(100% - 4rem)',
-              width: 'max-content',
+                textAlign === 'center' ? 'center' :
+                textAlign === 'right' ? 'flex-end' : 'flex-start',
+              padding: frameType === 'none' ? '1.75rem' : '2.5rem',
             }}
           >
-            {category && (
-              <span
-                className="text-xs sm:text-sm md:text-base font-bold tracking-widest uppercase opacity-90 border rounded-full"
-                style={{
-                  borderColor: textColor,
-                  display: 'inline-block',
-                  textAlign: 'center',
-                  height: '2rem',
-                  boxSizing: 'border-box',
-                  paddingLeft: '1rem',
-                  paddingRight: '1rem',
-                  overflow: 'hidden',
-                  whiteSpace: 'nowrap',
-                  textOverflow: 'ellipsis',
-                  marginTop: '-1rem',
-                }}
-              >
-                <span style={{ display: 'block', paddingTop: '0.5rem', paddingBottom: '0.5rem', lineHeight: 1 }}>
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '0.5rem',
+                color: textColor,
+                textAlign: textAlign,
+                alignItems:
+                  textAlign === 'center' ? 'center' :
+                  textAlign === 'right' ? 'flex-end' : 'flex-start',
+                maxWidth: '100%',
+                transform: `translate(${textOffsetX}%, ${textOffsetY}%)`,
+              }}
+            >
+              {category && (
+                <span
+                  className="text-xs font-bold tracking-wider uppercase border rounded-full px-3 py-1 w-fit"
+                  style={{ borderColor: textColor, opacity: 0.9 }}
+                >
                   {category}
                 </span>
-              </span>
-            )}
-            {title && (
-              <h1
-                className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight break-keep"
-                style={{ wordBreak: 'keep-all' }}
-              >
-                {title.split('\n').map((line, i) => (
-                  <React.Fragment key={i}>
-                    {line}
-                    <br />
-                  </React.Fragment>
-                ))}
-              </h1>
-            )}
-            {subtitle && (
-              <p className="text-sm sm:text-base md:text-xl opacity-90 -mt-0.5 break-keep font-medium">
-                {subtitle}
-              </p>
-            )}
+              )}
+              {title && (
+                <h1
+                  className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight break-keep"
+                  style={{ wordBreak: 'keep-all' }}
+                >
+                  {title.split('\n').map((line, i) => (
+                    <React.Fragment key={i}>
+                      {line}
+                      <br />
+                    </React.Fragment>
+                  ))}
+                </h1>
+              )}
+              {subtitle && (
+                <p className="text-sm sm:text-base md:text-xl opacity-80 break-keep font-medium">
+                  {subtitle}
+                </p>
+              )}
+            </div>
           </div>
         </div>
+      </div>
+
+      {/* Download options */}
+      <div className="w-full max-w-[500px] bg-white rounded-2xl border border-gray-200 p-4 mb-4 space-y-3">
+        <div className="flex items-center justify-between gap-4">
+          <div>
+            <p className="text-xs font-semibold text-gray-500 mb-1.5">파일 형식</p>
+            <div className="flex gap-2">
+              {(['png', 'jpg'] as const).map((f) => (
+                <button
+                  key={f}
+                  onClick={() => onFormatChange(f)}
+                  className={`px-3 py-1.5 text-xs font-bold rounded-lg border transition ${
+                    downloadFormat === f
+                      ? 'bg-gray-900 text-white border-gray-900'
+                      : 'bg-white text-gray-600 border-gray-300 hover:border-gray-400'
+                  }`}
+                >
+                  {f.toUpperCase()}
+                </button>
+              ))}
+            </div>
+          </div>
+          <div>
+            <p className="text-xs font-semibold text-gray-500 mb-1.5">해상도</p>
+            <div className="flex gap-2">
+              {([
+                { value: 1 as const, label: '1× 표준' },
+                { value: 2 as const, label: '2× 고화질' },
+              ]).map((s) => (
+                <button
+                  key={s.value}
+                  onClick={() => onScaleChange(s.value)}
+                  className={`px-3 py-1.5 text-xs font-bold rounded-lg border transition ${
+                    downloadScale === s.value
+                      ? 'bg-gray-900 text-white border-gray-900'
+                      : 'bg-white text-gray-600 border-gray-300 hover:border-gray-400'
+                  }`}
+                >
+                  {s.label}
+                </button>
+              ))}
+            </div>
+          </div>
+        </div>
+        {downloadFormat === 'jpg' && (
+          <p className="text-xs text-amber-600 bg-amber-50 rounded-lg px-3 py-2">
+            JPG는 투명 배경을 지원하지 않습니다. 배경이 있는 썸네일에 사용하세요.
+          </p>
+        )}
       </div>
 
       <button
@@ -167,10 +229,33 @@ export default function ThumbnailPreview({
         ) : (
           <>
             <Download className="w-6 h-6" />
-            썸네일 다운로드 (PNG)
+            {downloadFormat.toUpperCase()} 다운로드 {downloadScale === 2 ? '(고화질)' : ''}
           </>
         )}
       </button>
+      {isDownloadDone && (
+        <div className="w-full max-w-[500px] mt-4 bg-gray-900 rounded-2xl p-5 text-white">
+          <p className="font-bold text-base mb-0.5">썸네일 완성! 🎉</p>
+          <p className="text-xs text-gray-400 mb-4">이제 블로그로 수익을 내보세요.</p>
+          <div className="flex flex-col gap-2">
+            {[
+              { label: '블로그 수익화 시작하기', href: '/blog/blog-monetization-guide', emoji: '💰' },
+              { label: '체험단 사이트 추천', href: '/blog/review-blog-tips', emoji: '🎁' },
+              { label: '애드센스 승인 방법', href: '/blog/adsense-guide', emoji: '📊' },
+            ].map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="flex items-center gap-2.5 bg-white/10 hover:bg-white/20 rounded-xl px-4 py-3 text-sm font-semibold transition"
+              >
+                <span>{item.emoji}</span>
+                <span>{item.label}</span>
+                <ArrowRight className="w-3.5 h-3.5 ml-auto flex-shrink-0" />
+              </Link>
+            ))}
+          </div>
+        </div>
+      )}
       <AdBanner type="adsense" position="main-download-below" />
       <p className="text-sm text-gray-500 mt-4 text-center">
         * 생성된 이미지는 1:1 정방형 사이즈로 네이버 블로그에 최적화되어 있습니다.

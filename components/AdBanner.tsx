@@ -27,6 +27,7 @@ export default function AdBanner({ position, type }: AdBannerProps) {
 
   useEffect(() => {
     if (type !== 'adsense' || !ADSENSE_AD_SLOT || !adsenseRef.current) return;
+    if (adsenseRef.current.offsetWidth === 0) return;
     try {
       (window.adsbygoogle = window.adsbygoogle || []).push({});
     } catch (e) {

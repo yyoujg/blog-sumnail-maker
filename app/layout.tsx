@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     template: `%s — 네이버 블로그 썸네일 메이커`,
   },
   description: PAGE_DESCRIPTION,
-  keywords: '블로그 썸네일, 네이버 블로그, 썸네일 만들기, 썸네일 메이커, 무료 썸네일, 블로그 꾸미기',
+  keywords: '블로그 썸네일 만들기, 네이버 블로그 썸네일, 썸네일 메이커, 무료 썸네일, 블로그 배너 만들기, 체험단 블로그 꾸미기, 블로그 수익화, 네이버 썸네일 사이즈, 블로그 스킨 만들기',
   openGraph: {
     title: PAGE_TITLE,
     description: '프로그램 설치 없이 웹에서 바로 만드는 깔끔한 블로그 썸네일 이미지',
