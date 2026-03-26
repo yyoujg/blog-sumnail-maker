@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import Link from 'next/link';
+import Script from 'next/script';
 import {
   Image as ImageIcon,
   ChevronDown,
@@ -26,6 +27,7 @@ import SkinMakerTool from '@/components/SkinMakerTool';
 import CoupangCard from '@/components/CoupangCard';
 import KakaoAdBanner from '@/components/KakaoAdBanner';
 import { blogPosts } from '@/data/blogPosts';
+import { HTML2CANVAS_SCRIPT_SRC } from '@/lib/constants';
 
 declare global {
   interface Window {
@@ -789,6 +791,9 @@ export default function HomePage() {
           <KakaoAdBanner />
         </div>
       </div>
+
+      {/* html2canvas: 썸네일 다운로드 기능이 있는 이 페이지에서만 로드 */}
+      <Script src={HTML2CANVAS_SCRIPT_SRC} strategy="afterInteractive" />
 
       {/* 푸터 */}
       <footer className="bg-gray-800 text-gray-400 text-sm py-10 px-4 md:px-8 mt-auto">

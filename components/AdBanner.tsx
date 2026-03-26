@@ -1,7 +1,8 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { ADSENSE_CLIENT, ADSENSE_AD_SLOT } from '@/lib/constants';
+import Script from 'next/script';
+import { ADSENSE_CLIENT, ADSENSE_AD_SLOT, ADSENSE_SCRIPT_SRC } from '@/lib/constants';
 
 const TRACKING_CODE = 'AF2506117';
 
@@ -78,6 +79,7 @@ export default function AdBanner({ position, type }: AdBannerProps) {
 
   return (
     <div className={wrapperClass} data-ad-position={position}>
+      <Script src={ADSENSE_SCRIPT_SRC} strategy="afterInteractive" crossOrigin="anonymous" />
       <ins
         ref={adsenseRef}
         className="adsbygoogle"

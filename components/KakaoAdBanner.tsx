@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import Script from 'next/script';
 
 export default function KakaoAdBanner() {
   const ref = useRef<HTMLDivElement>(null);
@@ -16,5 +17,10 @@ export default function KakaoAdBanner() {
     ref.current.appendChild(ins);
   }, []);
 
-  return <div ref={ref} className="w-full flex justify-center my-4" />;
+  return (
+    <>
+      <Script src="//t1.daumcdn.net/kas/static/ba.min.js" strategy="afterInteractive" />
+      <div ref={ref} className="w-full flex justify-center my-4" />
+    </>
+  );
 }

@@ -5,9 +5,7 @@ import {
   PAGE_TITLE,
   PAGE_DESCRIPTION,
   ADSENSE_CLIENT,
-  ADSENSE_SCRIPT_SRC,
   FONT_LINK_HREF,
-  HTML2CANVAS_SCRIPT_SRC,
   GTAG_ID,
   SITE_URL,
 } from '@/lib/constants';
@@ -24,6 +22,14 @@ export const metadata: Metadata = {
     description: '프로그램 설치 없이 웹에서 바로 만드는 깔끔한 블로그 썸네일 이미지',
     type: 'website',
     url: SITE_URL,
+    images: [
+      {
+        url: `${SITE_URL}/og-image.png`,
+        width: 1200,
+        height: 630,
+        alt: PAGE_TITLE,
+      },
+    ],
   },
   alternates: {
     canonical: SITE_URL,
@@ -46,22 +52,6 @@ export default function RootLayout({
       <body>
         {children}
 
-        {/* html2canvas */}
-        <Script src={HTML2CANVAS_SCRIPT_SRC} strategy="afterInteractive" />
-
-        {/* Google AdSense */}
-        <Script
-          src={ADSENSE_SCRIPT_SRC}
-          strategy="afterInteractive"
-          crossOrigin="anonymous"
-        />
-
-        {/* Kakao AdFit */}
-        <Script
-          src="//t1.daumcdn.net/kas/static/ba.min.js"
-          strategy="afterInteractive"
-        />
-
         {/* Google Tag */}
         <Script
           src={`https://www.googletagmanager.com/gtag/js?id=${GTAG_ID}`}
@@ -73,7 +63,6 @@ export default function RootLayout({
             function gtag(){dataLayer.push(arguments);}
             gtag('js', new Date());
             gtag('config', '${GTAG_ID}');
-            gtag('config', 'GT-P842BZSS');
           `}
         </Script>
       </body>
