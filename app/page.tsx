@@ -55,7 +55,7 @@ const STYLE_PRESETS = [
     frameType: 'none' as FrameType,
     overlayOpacity: 50,
     textAlign: 'center' as TextAlign,
-    textVAlign: 'bottom' as TextVAlign,
+    textVAlign: 'middle' as TextVAlign,
     title: '체험단 솔직 후기',
     subtitle: '직접 써보고 솔직하게 적었어요',
     category: '체험단',
@@ -72,7 +72,7 @@ const STYLE_PRESETS = [
     fontFamily: `'Noto Sans KR', sans-serif`,
     frameType: 'solid' as FrameType,
     overlayOpacity: 40,
-    textAlign: 'left' as TextAlign,
+    textAlign: 'center' as TextAlign,
     textVAlign: 'middle' as TextVAlign,
     title: '월 50만원 절약하는 법',
     subtitle: '직장인 재테크 실전 가이드',
@@ -91,7 +91,7 @@ const STYLE_PRESETS = [
     frameType: 'none' as FrameType,
     overlayOpacity: 40,
     textAlign: 'center' as TextAlign,
-    textVAlign: 'bottom' as TextVAlign,
+    textVAlign: 'middle' as TextVAlign,
     title: '오늘의 일상 기록',
     subtitle: '소소하지만 특별한 하루',
     category: '일상',
@@ -145,8 +145,8 @@ export default function HomePage() {
     setFontFamily(preset.fontFamily);
     setFrameType(preset.frameType);
     setOverlayOpacity(preset.overlayOpacity);
-    setTextAlign(preset.textAlign);
-    setTextVAlign(preset.textVAlign);
+    setTextAlign('center');
+    setTextVAlign('middle');
     setTextOffsetX(0);
     setTextOffsetY(0);
     setActivePresetId(preset.id);
