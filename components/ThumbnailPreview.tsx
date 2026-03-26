@@ -240,23 +240,25 @@ export default function ThumbnailPreview({
       {/* ── CTA 영역 ── */}
       <div className="w-full max-w-[500px] mt-12">
         <hr className="border-gray-100 mb-12" />
-        <div className="bg-white border border-gray-200 rounded-2xl p-5">
+        <div className="bg-white border border-gray-200 rounded-2xl p-4">
           <p className="font-semibold text-sm text-gray-800 mb-1">썸네일만으로는 부족합니다</p>
-          <p className="text-xs text-gray-500 mb-3">조회수는 이것으로 결정됩니다</p>
-          <ul className="flex flex-col gap-1.5 mb-4">
-            {['제목', '키워드', '글 구조'].map((item) => (
-              <li key={item} className="flex items-center gap-2 text-sm text-gray-700">
-                <span className="w-1.5 h-1.5 rounded-full bg-gray-400 flex-shrink-0" />
-                {item}
-              </li>
-            ))}
-          </ul>
-          <Link
-            href="/blog/high-ctr-thumbnail"
-            className="inline-flex items-center gap-1 text-sm text-gray-600 hover:text-gray-900 underline underline-offset-2 transition"
-          >
-            조회수 올리는 방법 보기 <ArrowRight className="w-3.5 h-3.5" />
-          </Link>
+          <p className="text-xs text-gray-500 mb-3">조회수는 제목, 키워드, 글 구조에서 결정됩니다</p>
+          <div className="flex flex-col gap-1.5">
+            <Link
+              href="/blog/high-ctr-thumbnail"
+              className="inline-flex items-center gap-1 text-sm text-gray-600 hover:text-gray-900 underline underline-offset-2 transition"
+            >
+              조회수 올리는 방법 보기 <ArrowRight className="w-3.5 h-3.5" />
+            </Link>
+            <a
+              href="https://blackkiwi.net"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1 text-sm text-blue-600 hover:text-blue-800 underline underline-offset-2 transition"
+            >
+              키워드 찾는 방법 (무료 툴) <ArrowRight className="w-3.5 h-3.5" />
+            </a>
+          </div>
         </div>
       </div>
 
