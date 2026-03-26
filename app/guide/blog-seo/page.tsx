@@ -56,12 +56,12 @@ export default function BlogSeoGuidePage() {
         </section>
 
         {/* CTA 1 - 툴 유도 (본문 초반) */}
-        <div className="mt-8 py-4 border-t border-b border-gray-200">
-          <p className="text-sm text-gray-600 mb-2">
+        <div className="mt-8 mb-10 bg-white rounded-xl border border-[#e5e7eb] p-5">
+          <p className="text-sm text-gray-600 mb-1">
             이 글에서 설명하는 썸네일은 아래에서 바로 만들 수 있습니다
           </p>
           <Link href="/" className="text-sm font-semibold text-gray-900 underline underline-offset-2">
-            썸네일 메이커 사용하기 →
+            조회수 잘 나오는 썸네일 만들기 →
           </Link>
         </div>
 
@@ -126,20 +126,20 @@ export default function BlogSeoGuidePage() {
         </section>
 
         {/* CTA 2 - 행동 유도 (쿠팡/체험단 설명 이후) */}
-        <div className="mt-8 py-4 border-t border-b border-gray-200">
+        <div className="mt-8 mb-10 bg-white rounded-xl border border-[#e5e7eb] p-5">
           <p className="text-sm text-gray-700 font-medium mb-1">
             결국 중요한 건 &ldquo;클릭되는 썸네일&rdquo;입니다
           </p>
           <p className="text-sm text-gray-500 mb-2">
-            조회수는 썸네일에서 시작됩니다
+            조회수는 여기서 시작됩니다
           </p>
           <Link href="/" className="text-sm font-semibold text-gray-900 underline underline-offset-2">
-            조회수 잘 나오는 썸네일 만들기 →
+            클릭되는 썸네일 직접 만들어보기 →
           </Link>
         </div>
 
         {/* 쿠팡 상품 */}
-        <div className="mt-8">
+        <div className="mt-10">
           <p className="text-sm text-gray-600 mb-1">블로그 운영할 때 이런 장비 많이 씁니다</p>
           <p className="text-xs text-gray-400 mb-3">초반에는 가성비 위주로 시작해도 충분합니다</p>
           <CoupangCard
@@ -150,13 +150,13 @@ export default function BlogSeoGuidePage() {
         </div>
 
         {/* CTA 3 - 재전환 (상품 아래) */}
-        <div className="mt-6 py-4 border-t border-b border-gray-200">
+        <div className="mt-8 mb-10 bg-white rounded-xl border border-[#e5e7eb] p-5">
           <p className="text-sm text-gray-700 font-medium mb-1">
             장비보다 중요한 건 썸네일입니다
           </p>
-          <p className="text-sm text-gray-500 mb-2">지금 바로 만들어보세요</p>
+          <p className="text-sm text-gray-500 mb-2">지금 바로 적용해보세요</p>
           <Link href="/" className="text-sm font-semibold text-gray-900 underline underline-offset-2">
-            썸네일 메이커 사용하기 →
+            1분 만에 썸네일 완성하기 →
           </Link>
         </div>
 
