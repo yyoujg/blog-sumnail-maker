@@ -5,28 +5,16 @@ import Link from 'next/link';
 import Script from 'next/script';
 import {
   Image as ImageIcon,
-  ChevronDown,
-  ChevronUp,
-  ArrowRight,
-  Palette,
-  Download,
-  Type,
-  Layers,
   Layout,
   Sparkles,
   Zap,
-  TrendingUp,
   ChevronLeft,
   ChevronRight,
-  BookOpen,
 } from 'lucide-react';
 import type { TextAlign, TextVAlign, FrameType, BgType } from '@/lib/types';
 import ControlPanel from '@/components/ControlPanel';
 import ThumbnailPreview from '@/components/ThumbnailPreview';
 import SkinMakerTool from '@/components/SkinMakerTool';
-import CoupangCard from '@/components/CoupangCard';
-import KakaoAdBanner from '@/components/KakaoAdBanner';
-import { blogPosts } from '@/data/blogPosts';
 import { HTML2CANVAS_SCRIPT_SRC } from '@/lib/constants';
 
 declare global {
@@ -111,69 +99,6 @@ const STYLE_PRESETS = [
   },
 ] as const;
 
-const FAQ_ITEMS = [
-  {
-    q: '이 서비스는 무료인가요?',
-    a: '완전 무료입니다. 회원가입, 로그인, 결제가 전혀 필요 없습니다. 지금 바로 사용하세요.',
-  },
-  {
-    q: '썸네일 메이커와 스킨 메이커의 차이는 무엇인가요?',
-    a: '썸네일 메이커는 블로그 포스팅 대표 이미지(1:1 비율)를 만드는 도구입니다. 스킨 메이커는 블로그 상단에 표시되는 홈페이지형 배너 스킨과 클릭 가능한 위젯 코드를 만드는 도구입니다.',
-  },
-  {
-    q: '생성한 이미지는 어디에 저장되나요?',
-    a: '이미지는 서버에 저장되지 않습니다. 다운로드 버튼을 누르면 내 기기에 바로 저장됩니다. 업로드한 배경 이미지도 브라우저 안에서만 처리됩니다.',
-  },
-  {
-    q: '모바일에서도 사용할 수 있나요?',
-    a: '네, PC와 모바일 모두 지원합니다. 다만 스킨 메이커처럼 세밀한 설정이 필요한 도구는 PC 환경에서 더 편리합니다.',
-  },
-  {
-    q: '상업적으로 사용해도 되나요?',
-    a: '생성한 이미지는 자유롭게 사용하실 수 있습니다. 단, 배경으로 업로드한 이미지의 저작권은 원저작자에게 있으니 저작권법을 준수해 주세요.',
-  },
-  {
-    q: '추천 썸네일 크기는 어떻게 되나요?',
-    a: '네이버 블로그 포스팅 대표 이미지는 1:1 비율(600×600px 이상)을 권장합니다. 본 메이커는 2배 해상도(약 720×720px)로 PNG를 생성하므로 모바일에서도 선명하게 보입니다.',
-  },
-  {
-    q: 'PNG와 JPG 중 어떤 형식을 선택해야 하나요?',
-    a: 'PNG는 투명 배경과 선명한 텍스트를 지원하며 블로그 썸네일에 권장합니다. JPG는 파일 크기가 작아 배경 이미지가 있는 경우 유용합니다.',
-  },
-  {
-    q: '스킨 메이커로 만든 코드는 어떻게 적용하나요?',
-    a: '스킨 저장 버튼으로 배경 이미지를 내려받고, 투명 위젯을 블로그 비공개 글로 업로드한 뒤 이미지 주소를 복사해 코드 생성 탭에 붙여넣으세요. 생성된 HTML 코드를 네이버 블로그 위젯에 등록하면 완성됩니다.',
-  },
-];
-
-function FaqItem({ q, a }: { q: string; a: string }) {
-  const [open, setOpen] = useState(false);
-  return (
-    <div className="border border-gray-200 rounded-xl overflow-hidden">
-      <button
-        className="w-full flex items-center justify-between gap-4 px-5 py-4 text-left bg-white hover:bg-gray-50 transition-colors"
-        onClick={() => setOpen((v) => !v)}
-      >
-        <span className="text-sm font-semibold text-gray-800">{q}</span>
-        {open ? (
-          <ChevronUp className="w-4 h-4 text-gray-400 flex-shrink-0" />
-        ) : (
-          <ChevronDown className="w-4 h-4 text-gray-400 flex-shrink-0" />
-        )}
-      </button>
-      {open && (
-        <div className="px-5 py-4 bg-gray-50 border-t border-gray-100">
-          <p className="text-sm text-gray-600 leading-relaxed">{a}</p>
-        </div>
-      )}
-    </div>
-  );
-}
-
-function formatDate(dateStr: string) {
-  const d = new Date(dateStr);
-  return `${d.getFullYear()}년 ${d.getMonth() + 1}월 ${d.getDate()}일`;
-}
 
 export default function HomePage() {
   const [title, setTitle] = useState('성수동 감성 카페 추천');
@@ -286,7 +211,6 @@ export default function HomePage() {
     }
   };
 
-  const recentPosts = blogPosts.slice(0, 3);
   const activePreset = STYLE_PRESETS.find(p => p.id === activePresetId) ?? null;
 
   return (
@@ -617,180 +541,6 @@ export default function HomePage() {
 
         </div>
       </section>
-
-      {/* ── 블로그 수익화 섹션 ── */}
-      <section className="py-12 px-4 md:px-8 bg-gray-900 text-white">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
-            {/* 체크리스트 */}
-            <div>
-              <div className="inline-flex items-center gap-2 bg-white/10 text-white/80 text-xs font-semibold px-3 py-1 rounded-full mb-5">
-                <TrendingUp className="w-3.5 h-3.5" /> 블로그 성장 도구 플랫폼
-              </div>
-              <h2 className="text-2xl font-bold text-white mb-6">블로그로 돈 벌고 싶다면</h2>
-              <div className="flex flex-col gap-3 mb-6">
-                {[
-                  { label: '썸네일', note: '(지금 사용중)', active: true, href: '#tool' },
-                  { label: '키워드 분석', note: '', active: false, href: '/blog/naver-blog-seo-guide' },
-                  { label: '글쓰기 구조', note: '', active: false, href: '/blog/blog-writing-tips' },
-                ].map((item) => (
-                  <Link
-                    key={item.label}
-                    href={item.href}
-                    className={`flex items-center gap-3 px-4 py-3 rounded-xl border transition ${
-                      item.active
-                        ? 'bg-white text-gray-900 border-white'
-                        : 'bg-white/5 border-white/20 text-white hover:bg-white/10'
-                    }`}
-                  >
-                    <span className="text-lg">{item.active ? '✅' : '✔'}</span>
-                    <span className="font-semibold text-sm">{item.label}</span>
-                    {item.note && <span className="text-xs text-gray-500">{item.note}</span>}
-                    <ArrowRight className="w-3.5 h-3.5 ml-auto flex-shrink-0 opacity-50" />
-                  </Link>
-                ))}
-              </div>
-              <p className="text-gray-400 text-sm mb-5">→ 이 3개만 있으면 됩니다</p>
-              <Link
-                href="/blog/blog-monetization-guide"
-                className="inline-flex items-center gap-2 bg-white text-gray-900 font-bold text-sm px-6 py-3 rounded-xl hover:bg-gray-100 transition shadow-lg"
-              >
-                추천 도구 보기 <ArrowRight className="w-4 h-4" />
-              </Link>
-            </div>
-
-            {/* 수익 연결 플로우 */}
-            <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
-              <p className="text-xs font-semibold text-gray-400 mb-5 uppercase tracking-wider">수익 연결 구조</p>
-              <div className="flex flex-col gap-3">
-                {[
-                  { step: '01', label: '썸네일', desc: '클릭률 높이기', emoji: '🖼️' },
-                  { step: '02', label: '블로그 글', desc: '방문자 유입', emoji: '✏️' },
-                  { step: '03', label: '키워드', desc: '검색 노출 늘리기', emoji: '🔍' },
-                  { step: '04', label: '수익', desc: '애드센스·쿠팡·체험단', emoji: '💰' },
-                ].map((item, i, arr) => (
-                  <div key={item.step} className="flex items-start gap-4">
-                    <div className="flex flex-col items-center">
-                      <div className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center text-lg flex-shrink-0">
-                        {item.emoji}
-                      </div>
-                      {i < arr.length - 1 && <div className="w-0.5 h-4 bg-white/20 mt-1" />}
-                    </div>
-                    <div className="pt-1.5">
-                      <p className="text-xs text-gray-500 font-mono">{item.step}</p>
-                      <p className="font-bold text-white text-sm leading-tight">{item.label}</p>
-                      <p className="text-xs text-gray-400">{item.desc}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* 이런 분께 유용해요 */}
-      <section className="py-12 px-4 md:px-8 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-2xl font-bold text-gray-900 text-center mb-2">이런 분께 특히 유용해요</h2>
-          <p className="text-gray-500 text-center text-sm mb-10">썸네일과 스킨 하나로 블로그 완성도가 달라집니다.</p>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[
-              { icon: <Palette className="w-6 h-6 text-gray-900" />, title: '디자인 도구가 낯선 초보 블로거', desc: '포토샵·캔바 없이도 전문적인 느낌의 썸네일과 스킨을 만들 수 있습니다. 클릭 몇 번으로 완성됩니다.' },
-              { icon: <Type className="w-6 h-6 text-gray-900" />, title: '매일 포스팅하는 파워블로거', desc: '포스팅마다 썸네일 만드는 시간이 아깝다면? 스타일 프리셋으로 1분 만에 일관된 스타일을 유지하세요.' },
-              { icon: <Layout className="w-6 h-6 text-gray-900" />, title: '홈페이지형 블로그를 원하는 블로거', desc: '스킨 메이커로 상단 배너를 꾸미고 카테고리 링크를 설정하면 블로그가 홈페이지처럼 바뀝니다.' },
-            ].map((card, i) => (
-              <div key={i} className="bg-gray-50 rounded-xl p-6">
-                <div className="w-11 h-11 bg-gray-200 rounded-xl flex items-center justify-center mb-4">{card.icon}</div>
-                <h3 className="text-base font-semibold text-gray-900 mb-2">{card.title}</h3>
-                <p className="text-sm text-gray-600 leading-relaxed">{card.desc}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 썸네일 제작 팁 */}
-      <section className="py-12 px-4 md:px-8">
-        <div className="max-w-6xl mx-auto">
-          <h2 className="text-2xl font-bold text-gray-900 text-center mb-2">썸네일 제작 팁</h2>
-          <p className="text-gray-500 text-center text-sm mb-10">이것만 지켜도 클릭률이 달라집니다.</p>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            {[
-              { icon: <Download className="w-5 h-5 text-gray-900" />, title: '추천 사이즈: 600×600px 이상', desc: '네이버 블로그 대표 이미지는 1:1 비율(600×600px 이상)이 가장 안정적입니다. 본 메이커의 2× 고화질 모드로 저장하면 모바일에서도 선명합니다.' },
-              { icon: <Type className="w-5 h-5 text-gray-900" />, title: '텍스트는 15자 이내', desc: '목록에서 썸네일은 작게 보입니다. 긴 문장은 읽히지 않으니 핵심 키워드 위주로 짧고 굵게 입력하세요.' },
-              { icon: <Palette className="w-5 h-5 text-gray-900" />, title: '배경과 텍스트 대비를 높여라', desc: '어두운 배경에는 흰색 텍스트, 밝은 배경에는 검정 텍스트. 배경 이미지 위에는 오버레이를 20~50% 적용하면 가독성이 확보됩니다.' },
-              { icon: <Layers className="w-5 h-5 text-gray-900" />, title: '카테고리 레이블을 활용하세요', desc: '"요리", "여행", "리뷰" 같은 카테고리를 썸네일에 넣으면 방문자가 글의 주제를 즉시 파악합니다. 서브타이틀 영역을 활용해보세요.' },
-            ].map((tip, i) => (
-              <div key={i} className="flex gap-4 bg-white rounded-xl p-5 shadow-sm">
-                <div className="w-10 h-10 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0">{tip.icon}</div>
-                <div>
-                  <h3 className="text-sm font-semibold text-gray-900 mb-1">{tip.title}</h3>
-                  <p className="text-xs text-gray-600 leading-relaxed">{tip.desc}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <div className="px-4 md:px-8 max-w-6xl mx-auto -mt-4">
-        <CoupangCard src="https://coupa.ng/clQwSN" name="셀루미 초경량 스마트폰 삼각대" desc="배경 사진 직접 찍어 쓰는 분들께 추천해요. 손떨림 없이 고정된 앵글로 찍으면 썸네일 소스 퀄리티가 확 달라집니다." />
-      </div>
-
-      {/* FAQ */}
-      <section className="py-12 px-4 md:px-8 bg-white">
-        <div className="max-w-3xl mx-auto">
-          <h2 className="text-2xl font-bold text-gray-900 text-center mb-2">자주 묻는 질문</h2>
-          <p className="text-gray-500 text-center text-sm mb-8">궁금한 점이 있으시면 아래를 확인해 주세요.</p>
-          <div className="space-y-3">
-            {FAQ_ITEMS.map((item, i) => <FaqItem key={i} q={item.q} a={item.a} />)}
-          </div>
-          <p className="text-center text-xs text-gray-400 mt-6">
-            더 궁금한 점은{' '}
-            <Link href="/contact" className="text-gray-900 hover:underline">문의 페이지</Link>
-            에서 이메일로 보내주세요.
-          </p>
-        </div>
-      </section>
-
-      <div className="px-4 md:px-8 max-w-3xl mx-auto -mt-4">
-        <CoupangCard src="https://coupa.ng/clQwZb" name="라이프썸 미니 블루투스 키보드" desc="태블릿으로 블로그 포스팅하는 분들께 딱 맞아요. 3대 멀티 페어링에 C타입 충전까지 되어서 하나 사두면 오래 씁니다." />
-      </div>
-
-      {/* 블로그 최신 글 */}
-      <section className="py-12 px-4 md:px-8">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex items-center justify-between mb-8">
-            <div>
-              <h2 className="text-2xl font-bold text-gray-900">썸네일 제작 가이드</h2>
-              <p className="text-gray-500 text-sm mt-1">더 잘 만들기 위한 팁을 읽어보세요.</p>
-            </div>
-            <Link href="/blog" className="flex items-center gap-1 text-sm text-gray-900 hover:underline font-medium">
-              전체 보기 <ArrowRight className="w-4 h-4" />
-            </Link>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-            {recentPosts.map((post) => (
-              <Link key={post.slug} href={`/blog/${post.slug}`} className="block bg-white rounded-xl shadow-sm p-5 hover:shadow-md transition-shadow group">
-                <div className="flex items-center gap-2 mb-3">
-                  <BookOpen className="w-4 h-4 text-gray-500" />
-                  <span className="text-xs text-gray-400">{formatDate(post.date)}</span>
-                </div>
-                <h3 className="text-sm font-semibold text-gray-900 group-hover:text-gray-900 transition-colors mb-2 leading-snug">{post.title}</h3>
-                <p className="text-xs text-gray-500 leading-relaxed line-clamp-2">{post.summary}</p>
-              </Link>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 페이지 최하단 카카오 광고 */}
-      <div className="w-full bg-white border-t border-gray-100 py-4">
-        <div className="max-w-6xl mx-auto px-4">
-          <KakaoAdBanner />
-        </div>
-      </div>
 
       {/* html2canvas: 썸네일 다운로드 기능이 있는 이 페이지에서만 로드 */}
       <Script src={HTML2CANVAS_SCRIPT_SRC} strategy="afterInteractive" />
