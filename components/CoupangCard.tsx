@@ -6,7 +6,7 @@ interface CoupangCardProps {
 
 export default function CoupangCard({ src, name, desc }: CoupangCardProps) {
   return (
-    <div className="bg-white rounded-xl border border-gray-200 p-4 my-6 flex flex-col items-center gap-3 overflow-hidden">
+    <div className="bg-white rounded-xl border border-gray-100 p-3 my-0 flex flex-col items-center gap-2 overflow-hidden">
       <p className="w-full text-sm font-semibold text-gray-800">{name}</p>
       <div className="w-full overflow-x-auto flex justify-center">
         <iframe

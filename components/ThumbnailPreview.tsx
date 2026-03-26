@@ -237,9 +237,9 @@ export default function ThumbnailPreview({
           </>
         )}
       </button>
-      {/* ── CTA 영역 (흰 배경 + 얇은 border) ── */}
-      <div className="w-full max-w-[500px] mt-8">
-        <hr className="border-gray-200 mb-8" />
+      {/* ── CTA 영역 ── */}
+      <div className="w-full max-w-[500px] mt-12">
+        <hr className="border-gray-100 mb-12" />
         <div className="bg-white border border-gray-200 rounded-2xl p-5">
           <p className="font-semibold text-sm text-gray-800 mb-1">썸네일만으로는 부족합니다</p>
           <p className="text-xs text-gray-500 mb-3">조회수는 이것으로 결정됩니다</p>
@@ -253,21 +253,23 @@ export default function ThumbnailPreview({
           </ul>
           <Link
             href="/blog/high-ctr-thumbnail"
-            className="flex items-center justify-center gap-2 w-full bg-gray-900 text-white font-bold text-sm px-4 py-2.5 rounded-xl hover:bg-gray-800 transition"
+            className="inline-flex items-center gap-1 text-sm text-gray-600 hover:text-gray-900 underline underline-offset-2 transition"
           >
-            조회수 올리는 방법 보기 <ArrowRight className="w-4 h-4" />
+            조회수 올리는 방법 보기 <ArrowRight className="w-3.5 h-3.5" />
           </Link>
         </div>
       </div>
 
       {/* ── 광고 1개 ── */}
-      <div className="w-full max-w-[500px] mt-8">
-        <hr className="border-gray-200 mb-8" />
-        <CoupangCard
-          src="https://coupa.ng/clQwSN"
-          name="셀루미 초경량 스마트폰 삼각대"
-          desc="배경 사진 직접 찍어 쓰는 분들께 추천해요. 손떨림 없이 고정된 앵글로 찍으면 썸네일 소스 퀄리티가 확 달라집니다."
-        />
+      <div className="w-full max-w-[500px] mt-12">
+        <hr className="border-gray-100 mb-12" />
+        <div className="max-w-[340px] mx-auto">
+          <CoupangCard
+            src="https://coupa.ng/clQwSN"
+            name="셀루미 초경량 스마트폰 삼각대"
+            desc="배경 사진 직접 찍어 쓰는 분들께 추천해요. 손떨림 없이 고정된 앵글로 찍으면 썸네일 소스 퀄리티가 확 달라집니다."
+          />
+        </div>
       </div>
 
       {isDownloadDone && (
