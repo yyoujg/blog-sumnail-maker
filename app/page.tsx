@@ -392,7 +392,7 @@ export default function HomePage() {
                   className="flex items-center gap-2 bg-white text-gray-900 font-bold text-sm px-6 py-3 rounded-xl hover:bg-gray-100 transition shadow-lg"
                 >
                   <Zap className="w-4 h-4" />
-                  썸네일 만들기
+                  썸네일 만들기 (추천)
                 </button>
               </div>
               <div className="hidden lg:grid grid-cols-2 gap-3">
@@ -549,7 +549,7 @@ export default function HomePage() {
             <>
               {/* 스타일 프리셋 선택 */}
               <div className="flex flex-wrap items-center justify-center gap-2 mb-8">
-                <span className="text-xs font-semibold text-gray-400 mr-1">스타일 선택:</span>
+                <span className="text-xs font-semibold text-gray-400 mr-1">조회수 잘 나오는 템플릿:</span>
                 {STYLE_PRESETS.map((preset) => (
                   <button
                     key={preset.id}
@@ -619,50 +619,70 @@ export default function HomePage() {
       {/* ── 블로그 수익화 섹션 ── */}
       <section className="py-12 px-4 md:px-8 bg-gray-900 text-white">
         <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center gap-2 bg-white/10 text-white/80 text-xs font-semibold px-3 py-1 rounded-full mb-4">
-              <TrendingUp className="w-3.5 h-3.5" /> 블로그 수익화 가이드
-            </div>
-            <h2 className="text-2xl font-bold text-white mb-2">썸네일 완성! 이제 블로그로 수익을 내보세요</h2>
-            <p className="text-gray-400 text-sm">방문자가 늘었다면 수익화는 생각보다 간단합니다.</p>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-8">
-            {[
-              {
-                emoji: '🎁',
-                title: '체험단으로 용돈 벌기',
-                desc: '네이버·리뷰플레이스·강남언니 등 체험단 플랫폼에 신청해 제품을 무료로 받고 후기를 작성하면 됩니다.',
-                link: '/blog/review-blog-tips',
-                linkLabel: '체험단 가이드 읽기',
-              },
-              {
-                emoji: '💰',
-                title: '애드센스로 광고 수익',
-                desc: '하루 방문자 100명 이상이면 애드센스 신청이 가능합니다. 승인 요건과 빠른 승인 팁을 정리했습니다.',
-                link: '/blog/adsense-guide',
-                linkLabel: '애드센스 승인 가이드',
-              },
-              {
-                emoji: '🛒',
-                title: '쿠팡 파트너스 추천 수익',
-                desc: '글에 쿠팡 링크를 넣는 것만으로 수익이 발생합니다. 리뷰 글에 자연스럽게 연결하는 것이 포인트입니다.',
-                link: '/blog/blog-monetization-guide',
-                linkLabel: '수익화 시작하기',
-              },
-            ].map((item) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center">
+            {/* 체크리스트 */}
+            <div>
+              <div className="inline-flex items-center gap-2 bg-white/10 text-white/80 text-xs font-semibold px-3 py-1 rounded-full mb-5">
+                <TrendingUp className="w-3.5 h-3.5" /> 블로그 성장 도구 플랫폼
+              </div>
+              <h2 className="text-2xl font-bold text-white mb-6">블로그로 돈 벌고 싶다면</h2>
+              <div className="flex flex-col gap-3 mb-6">
+                {[
+                  { label: '썸네일', note: '(지금 사용중)', active: true, href: '#tool' },
+                  { label: '키워드 분석', note: '', active: false, href: '/blog/naver-blog-seo-guide' },
+                  { label: '글쓰기 구조', note: '', active: false, href: '/blog/blog-writing-tips' },
+                ].map((item) => (
+                  <Link
+                    key={item.label}
+                    href={item.href}
+                    className={`flex items-center gap-3 px-4 py-3 rounded-xl border transition ${
+                      item.active
+                        ? 'bg-white text-gray-900 border-white'
+                        : 'bg-white/5 border-white/20 text-white hover:bg-white/10'
+                    }`}
+                  >
+                    <span className="text-lg">{item.active ? '✅' : '✔'}</span>
+                    <span className="font-semibold text-sm">{item.label}</span>
+                    {item.note && <span className="text-xs text-gray-500">{item.note}</span>}
+                    <ArrowRight className="w-3.5 h-3.5 ml-auto flex-shrink-0 opacity-50" />
+                  </Link>
+                ))}
+              </div>
+              <p className="text-gray-400 text-sm mb-5">→ 이 3개만 있으면 됩니다</p>
               <Link
-                key={item.title}
-                href={item.link}
-                className="block bg-white/5 border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition group"
+                href="/blog/blog-monetization-guide"
+                className="inline-flex items-center gap-2 bg-white text-gray-900 font-bold text-sm px-6 py-3 rounded-xl hover:bg-gray-100 transition shadow-lg"
               >
-                <div className="text-3xl mb-3">{item.emoji}</div>
-                <h3 className="font-bold text-white text-base mb-2">{item.title}</h3>
-                <p className="text-sm text-gray-400 leading-relaxed mb-4">{item.desc}</p>
-                <span className="text-xs font-bold text-gray-300 group-hover:text-white transition flex items-center gap-1">
-                  {item.linkLabel} <ArrowRight className="w-3 h-3" />
-                </span>
+                추천 도구 보기 <ArrowRight className="w-4 h-4" />
               </Link>
-            ))}
+            </div>
+
+            {/* 수익 연결 플로우 */}
+            <div className="bg-white/5 border border-white/10 rounded-2xl p-6">
+              <p className="text-xs font-semibold text-gray-400 mb-5 uppercase tracking-wider">수익 연결 구조</p>
+              <div className="flex flex-col gap-3">
+                {[
+                  { step: '01', label: '썸네일', desc: '클릭률 높이기', emoji: '🖼️' },
+                  { step: '02', label: '블로그 글', desc: '방문자 유입', emoji: '✏️' },
+                  { step: '03', label: '키워드', desc: '검색 노출 늘리기', emoji: '🔍' },
+                  { step: '04', label: '수익', desc: '애드센스·쿠팡·체험단', emoji: '💰' },
+                ].map((item, i, arr) => (
+                  <div key={item.step} className="flex items-start gap-4">
+                    <div className="flex flex-col items-center">
+                      <div className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center text-lg flex-shrink-0">
+                        {item.emoji}
+                      </div>
+                      {i < arr.length - 1 && <div className="w-0.5 h-4 bg-white/20 mt-1" />}
+                    </div>
+                    <div className="pt-1.5">
+                      <p className="text-xs text-gray-500 font-mono">{item.step}</p>
+                      <p className="font-bold text-white text-sm leading-tight">{item.label}</p>
+                      <p className="text-xs text-gray-400">{item.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </section>

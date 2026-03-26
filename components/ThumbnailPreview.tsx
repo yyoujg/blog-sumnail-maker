@@ -235,13 +235,13 @@ export default function ThumbnailPreview({
       </button>
       {isDownloadDone && (
         <div className="w-full max-w-[500px] mt-4 bg-gray-900 rounded-2xl p-5 text-white">
-          <p className="font-bold text-base mb-0.5">썸네일 완성! 🎉</p>
-          <p className="text-xs text-gray-400 mb-4">이제 블로그로 수익을 내보세요.</p>
+          <p className="font-bold text-base mb-0.5">썸네일 완성!</p>
+          <p className="text-sm text-gray-300 font-semibold mb-4">👇 이 썸네일로 블로그 글 써보세요</p>
           <div className="flex flex-col gap-2">
             {[
-              { label: '블로그 수익화 시작하기', href: '/blog/blog-monetization-guide', emoji: '💰' },
-              { label: '체험단 사이트 추천', href: '/blog/review-blog-tips', emoji: '🎁' },
-              { label: '애드센스 승인 방법', href: '/blog/adsense-guide', emoji: '📊' },
+              { label: '클릭 잘되는 제목 만드는 법', href: '/blog/high-ctr-thumbnail', emoji: '✏️' },
+              { label: '키워드 찾는 방법', href: '/blog/naver-blog-seo-guide', emoji: '🔍' },
+              { label: '블로그 수익화 방법', href: '/blog/blog-monetization-guide', emoji: '💰' },
             ].map((item) => (
               <Link
                 key={item.href}
@@ -256,18 +256,19 @@ export default function ThumbnailPreview({
           </div>
         </div>
       )}
-      <AdBanner type="adsense" position="main-download-below" />
-      <p className="text-sm text-gray-500 mt-4 text-center">
-        * 생성된 이미지는 1:1 정방형 사이즈로 네이버 블로그에 최적화되어 있습니다.
-        <br />
-        (PC와 모바일에서 모두 잘림 없이 보입니다)
-      </p>
 
       <CoupangCard
         src="https://coupa.ng/clQwOg"
         name="KL-149B 미니 LED 촬영 조명"
         desc="배경 이미지 찍을 때 조명 하나 있으면 사진 퀄리티가 확 달라져요. 작고 가벼워서 책상 위에 두고 쓰기 딱 좋습니다."
       />
+
+      <AdBanner type="adsense" position="main-download-below" />
+      <p className="text-sm text-gray-500 mt-4 text-center">
+        * 생성된 이미지는 1:1 정방형 사이즈로 네이버 블로그에 최적화되어 있습니다.
+        <br />
+        (PC와 모바일에서 모두 잘림 없이 보입니다)
+      </p>
     </div>
   );
 }
