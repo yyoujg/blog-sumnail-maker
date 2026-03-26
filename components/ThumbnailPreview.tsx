@@ -238,83 +238,53 @@ export default function ThumbnailPreview({
           </>
         )}
       </button>
-      {/* 쿠팡: 다운로드 버튼 바로 아래 */}
-      <CoupangCard
-        src="https://coupa.ng/clQwOg"
-        name="KL-149B 미니 LED 촬영 조명"
-        desc="배경 이미지 찍을 때 조명 하나 있으면 사진 퀄리티가 확 달라져요. 작고 가벼워서 책상 위에 두고 쓰기 딱 좋습니다."
-      />
+      {/* 다운로드 버튼 바로 아래: 항상 보이는 CTA (문제 자극 → 해결 제안 → 링크) */}
+      <div className="w-full max-w-[500px] mt-3 bg-gray-900 rounded-2xl p-5 text-white">
+        <p className="text-xs font-bold text-red-400 mb-1">⚠ 썸네일만으로는 조회수 안 올라갑니다</p>
+        <div className="flex gap-4 my-3">
+          <span className="text-sm text-gray-300"><span className="text-green-400 font-bold">✔</span> 제목</span>
+          <span className="text-sm text-gray-300"><span className="text-green-400 font-bold">✔</span> 키워드</span>
+          <span className="text-sm text-gray-300"><span className="text-green-400 font-bold">✔</span> 글 구조</span>
+        </div>
+        <p className="text-xs text-gray-400 mb-4">이 3가지가 함께 있어야 조회수가 올라갑니다.</p>
+        <div className="flex flex-col gap-2">
+          <Link
+            href="/blog/naver-blog-seo-guide"
+            className="flex items-center gap-2 bg-white text-gray-900 font-bold text-sm px-4 py-2.5 rounded-xl hover:bg-gray-100 transition"
+          >
+            <ArrowRight className="w-4 h-4" />
+            키워드 찾는 방법 보기
+          </Link>
+          <Link
+            href="/blog/blog-monetization-guide"
+            className="flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white font-semibold text-sm px-4 py-2.5 rounded-xl transition"
+          >
+            <ArrowRight className="w-4 h-4" />
+            블로그 수익 구조 보기
+          </Link>
+        </div>
+      </div>
+
+      {/* 쿠팡: 블로그 툴 추천 문구 포함 */}
+      <div className="w-full max-w-[500px] mt-3">
+        <p className="text-xs font-semibold text-gray-500 mb-2 px-1">블로그 하시는 분들은 이거 같이 씁니다</p>
+        <CoupangCard
+          src="https://coupa.ng/clQwOg"
+          name="KL-149B 미니 LED 촬영 조명"
+          desc="배경 이미지 찍을 때 조명 하나 있으면 사진 퀄리티가 확 달라져요. 작고 가벼워서 책상 위에 두고 쓰기 딱 좋습니다."
+        />
+        <p className="text-xs text-gray-400 mt-2 px-1">※ 조회수 올리려면 필수입니다</p>
+      </div>
 
       {isDownloadDone && (
-        <div className="w-full max-w-[500px] mt-2 flex flex-col gap-3">
-
-          {/* ① 블로그 글 쓰기 유도 */}
-          <div className="bg-gray-900 rounded-2xl p-5 text-white">
-            <p className="font-bold text-base mb-0.5">✔ 썸네일 완성되었습니다</p>
-            <p className="text-sm text-gray-300 font-semibold mb-4">👇 이제 이걸로 블로그 글 써보세요</p>
-            <div className="flex flex-col gap-2 mb-4">
-              {[
-                { label: '조회수 잘 나오는 제목 만들기', href: '/blog/high-ctr-thumbnail', emoji: '✏️' },
-                { label: '키워드 찾는 방법', href: '/blog/naver-blog-seo-guide', emoji: '🔍' },
-                { label: '블로그 수익 구조', href: '/blog/blog-monetization-guide', emoji: '💰' },
-              ].map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className="flex items-center gap-2.5 bg-white/10 hover:bg-white/20 rounded-xl px-4 py-3 text-sm font-semibold transition"
-                >
-                  <span>{item.emoji}</span>
-                  <span>{item.label}</span>
-                  <ArrowRight className="w-3.5 h-3.5 ml-auto flex-shrink-0" />
-                </Link>
-              ))}
-            </div>
-            <Link
-              href="/blog"
-              className="flex items-center justify-center gap-2 bg-white text-gray-900 font-bold text-sm px-4 py-2.5 rounded-xl hover:bg-gray-100 transition"
-            >
-              추천 글 보기 <ArrowRight className="w-4 h-4" />
-            </Link>
-          </div>
-
-          {/* ② 진짜 돈 구간 */}
-          <div className="bg-gray-50 border border-gray-200 rounded-2xl p-5">
-            <p className="font-bold text-sm text-gray-800 mb-3">블로그 하시는 분들은 이거 같이 씁니다</p>
-            <div className="flex flex-col gap-2 mb-4">
-              {[
-                { label: '키워드 분석 툴', href: '/blog/naver-blog-seo-guide' },
-                { label: '글쓰기 강의', href: '/blog/blog-writing-tips' },
-                { label: '수익화 방법', href: '/blog/blog-monetization-guide' },
-              ].map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className="flex items-center gap-2 text-sm text-gray-700 hover:text-gray-900 transition"
-                >
-                  <span className="text-green-500 font-bold">✔</span>
-                  <span>{item.label}</span>
-                  <ArrowRight className="w-3 h-3 ml-auto text-gray-400" />
-                </Link>
-              ))}
-            </div>
-            <Link
-              href="/blog/blog-monetization-guide"
-              className="flex items-center justify-center gap-2 bg-gray-900 text-white font-bold text-sm px-4 py-2.5 rounded-xl hover:bg-gray-800 transition"
-            >
-              추천 도구 보기 <ArrowRight className="w-4 h-4" />
-            </Link>
-          </div>
-
-          {/* 재사용 유도 */}
-          <p className="text-center text-xs text-gray-500 py-1">
-            다른 썸네일도 만들어보세요 →{' '}
-            <button
-              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              className="text-gray-800 font-semibold underline underline-offset-2 hover:text-gray-900"
-            >
-              스타일 바꾸기
-            </button>
-          </p>
+        <div className="w-full max-w-[500px] mt-3 bg-green-50 border border-green-200 rounded-2xl p-4 flex items-center justify-between gap-4">
+          <p className="text-sm font-bold text-green-800">✔ 썸네일 완성되었습니다</p>
+          <button
+            onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+            className="text-xs text-green-700 font-semibold underline underline-offset-2 hover:text-green-900 flex-shrink-0"
+          >
+            다른 썸네일 만들기
+          </button>
         </div>
       )}
 
