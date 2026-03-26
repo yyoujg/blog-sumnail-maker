@@ -10,13 +10,14 @@ import {
   SITE_URL,
 } from '@/lib/constants';
 
+
 export const metadata: Metadata = {
   title: {
     default: PAGE_TITLE,
     template: `%s — 네이버 블로그 썸네일 메이커`,
   },
   description: PAGE_DESCRIPTION,
-  keywords: '블로그 썸네일 만들기, 네이버 블로그 썸네일, 썸네일 메이커, 무료 썸네일, 블로그 배너 만들기, 체험단 블로그 꾸미기, 블로그 수익화, 네이버 썸네일 사이즈, 블로그 스킨 만들기',
+  keywords: '네이버 블로그 썸네일 만들기, 블로그 썸네일 무료, 썸네일 자동 생성, 블로그 조회수 올리는 썸네일, 체험단 썸네일, 네이버 썸네일 사이즈 1:1, 블로그 대표 이미지 만들기, 썸네일 메이커, 블로그 스킨 만들기',
   openGraph: {
     title: PAGE_TITLE,
     description: '프로그램 설치 없이 웹에서 바로 만드는 깔끔한 블로그 썸네일 이미지',
@@ -33,6 +34,9 @@ export const metadata: Metadata = {
   },
   alternates: {
     canonical: SITE_URL,
+  },
+  icons: {
+    icon: '/favicon.svg',
   },
   other: {
     'google-adsense-account': ADSENSE_CLIENT,
@@ -51,6 +55,13 @@ export default function RootLayout({
       </head>
       <body>
         {children}
+
+        {/* 구조화 데이터 (SoftwareApplication) */}
+        <Script
+          id="ld-json"
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: `{"@context":"https://schema.org","@type":"SoftwareApplication","name":"네이버 블로그 썸네일 메이커","operatingSystem":"Web","applicationCategory":"DesignApplication","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"${SITE_URL}","description":"${PAGE_DESCRIPTION}"}` }}
+        />
 
         {/* Google Tag */}
         <Script
