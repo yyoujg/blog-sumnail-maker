@@ -631,6 +631,14 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
             </button>
           </div>
 
+          {/* 썸네일 메이커 연결 CTA */}
+          <div className="bg-white rounded-xl border border-[#e5e7eb] p-4 mb-4">
+            <p className="text-sm text-gray-600 mb-1">이 디자인 그대로 썸네일도 만들 수 있습니다</p>
+            <Link href="/" className="text-sm font-semibold text-gray-900 underline underline-offset-2">
+              썸네일 메이커 사용하기 →
+            </Link>
+          </div>
+
           {/* 블로그 성장 팁 */}
           <div className="rounded-2xl border border-gray-200 overflow-hidden">
             <button onClick={() => setShowGrowthTips(v => !v)}

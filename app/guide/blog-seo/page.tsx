@@ -140,6 +140,7 @@ export default function BlogSeoGuidePage() {
 
         {/* 쿠팡 상품 */}
         <div className="mt-10">
+          <p className="text-sm text-gray-600 mb-1">썸네일 퀄리티가 올라가면 조회수도 같이 올라갑니다</p>
           <p className="text-sm text-gray-600 mb-1">블로그 운영할 때 이런 장비 많이 씁니다</p>
           <p className="text-xs text-gray-400 mb-3">초반에는 가성비 위주로 시작해도 충분합니다</p>
           <CoupangCard

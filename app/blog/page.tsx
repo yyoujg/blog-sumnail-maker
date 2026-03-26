@@ -26,9 +26,18 @@ export default function BlogListPage() {
           <BookOpen className="w-7 h-7 text-gray-900" />
           <h1 className="text-3xl font-bold text-gray-900">블로그 & 가이드</h1>
         </div>
-        <p className="text-gray-500 mb-8">
+        <p className="text-gray-500 mb-6">
           네이버 블로그 썸네일 제작에 도움이 되는 팁과 가이드를 모았습니다.
         </p>
+
+        <div className="bg-white rounded-xl border border-[#e5e7eb] p-5 mb-8">
+          <p className="text-sm text-gray-700 font-medium mb-1">
+            블로그 조회수 올리는 방법, 썸네일부터 시작하세요
+          </p>
+          <Link href="/" className="text-sm font-semibold text-gray-900 underline underline-offset-2">
+            썸네일 만들기 →
+          </Link>
+        </div>
 
         <div className="space-y-4">
           {blogPosts.flatMap((post, i) => [
