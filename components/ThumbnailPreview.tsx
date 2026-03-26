@@ -170,6 +170,15 @@ export default function ThumbnailPreview({
         </p>
       </div>
 
+      {/* 쿠팡: 결과 이미지 바로 아래 = 시선 1번 위치 */}
+      <div className="w-full max-w-[500px] mb-1">
+        <CoupangCard
+          src="https://coupa.ng/clQwOg"
+          name="KL-149B 미니 LED 촬영 조명"
+          desc="배경 이미지 찍을 때 조명 하나 있으면 사진 퀄리티가 확 달라져요. 작고 가벼워서 책상 위에 두고 쓰기 딱 좋습니다."
+        />
+      </div>
+
       {/* Download options */}
       <div className="w-full max-w-[500px] bg-white rounded-2xl border border-gray-200 p-4 mb-4 space-y-3">
         <div className="flex items-center justify-between gap-4">
@@ -238,40 +247,42 @@ export default function ThumbnailPreview({
           </>
         )}
       </button>
-      {/* 다운로드 버튼 바로 아래: 항상 보이는 CTA (문제 자극 → 해결 제안 → 링크) */}
+      {/* 다운로드 버튼 바로 아래: 항상 보이는 CTA */}
       <div className="w-full max-w-[500px] mt-3 bg-gray-900 rounded-2xl p-5 text-white">
-        <p className="text-xs font-bold text-red-400 mb-1">⚠ 썸네일만으로는 조회수 안 올라갑니다</p>
-        <div className="flex gap-4 my-3">
+        <p className="font-bold text-sm text-white mb-1">✔ 썸네일 완성되었습니다</p>
+        <p className="text-xs font-bold text-red-400 mb-3">❗ 근데 썸네일만으로는 조회수 안 올라갑니다</p>
+        <p className="text-xs text-gray-400 mb-2">조회수는 이것 3개로 결정됩니다</p>
+        <div className="flex gap-4 mb-4">
           <span className="text-sm text-gray-300"><span className="text-green-400 font-bold">✔</span> 제목</span>
           <span className="text-sm text-gray-300"><span className="text-green-400 font-bold">✔</span> 키워드</span>
           <span className="text-sm text-gray-300"><span className="text-green-400 font-bold">✔</span> 글 구조</span>
         </div>
-        <p className="text-xs text-gray-400 mb-4">이 3가지가 함께 있어야 조회수가 올라갑니다.</p>
+        <p className="text-xs text-gray-300 font-semibold mb-3">👇 지금 바로 확인하세요</p>
         <div className="flex flex-col gap-2">
           <Link
-            href="/blog/naver-blog-seo-guide"
+            href="/blog/high-ctr-thumbnail"
             className="flex items-center gap-2 bg-white text-gray-900 font-bold text-sm px-4 py-2.5 rounded-xl hover:bg-gray-100 transition"
           >
             <ArrowRight className="w-4 h-4" />
-            키워드 찾는 방법 보기
+            조회수 2배 만드는 제목 보는법
           </Link>
           <Link
             href="/blog/blog-monetization-guide"
             className="flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white font-semibold text-sm px-4 py-2.5 rounded-xl transition"
           >
             <ArrowRight className="w-4 h-4" />
-            블로그 수익 구조 보기
+            블로그로 월 100 만드는 구조
           </Link>
         </div>
       </div>
 
-      {/* 쿠팡: 블로그 툴 추천 문구 포함 */}
+      {/* 쿠팡: 다운로드 아래 */}
       <div className="w-full max-w-[500px] mt-3">
         <p className="text-xs font-semibold text-gray-500 mb-2 px-1">블로그 하시는 분들은 이거 같이 씁니다</p>
         <CoupangCard
-          src="https://coupa.ng/clQwOg"
-          name="KL-149B 미니 LED 촬영 조명"
-          desc="배경 이미지 찍을 때 조명 하나 있으면 사진 퀄리티가 확 달라져요. 작고 가벼워서 책상 위에 두고 쓰기 딱 좋습니다."
+          src="https://coupa.ng/clQwSN"
+          name="셀루미 초경량 스마트폰 삼각대"
+          desc="배경 사진 직접 찍어 쓰는 분들께 추천해요. 손떨림 없이 고정된 앵글로 찍으면 썸네일 소스 퀄리티가 확 달라집니다."
         />
         <p className="text-xs text-gray-400 mt-2 px-1">※ 조회수 올리려면 필수입니다</p>
       </div>
