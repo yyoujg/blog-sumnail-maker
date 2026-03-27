@@ -34,12 +34,28 @@ function formatDate(dateStr: string) {
   return `${d.getFullYear()}년 ${d.getMonth() + 1}월 ${d.getDate()}일`;
 }
 
-// ①②③ 또는 STEP1, 1. 형태의 항목을 분리해 리스트로 렌더링
+function linkify(text: string): React.ReactNode[] {
+  const urlPattern = /(\bhttps?:\/\/[^\s)]+|\b[\w-]+\.[a-z]{2,}(?:\/[^\s)]*)?)/g;
+  const parts = text.split(urlPattern);
+  urlPattern.lastIndex = 0;
+  return parts.map((part, i) => {
+    if (urlPattern.test(part)) {
+      urlPattern.lastIndex = 0;
+      const href = part.startsWith('http') ? part : `https://${part}`;
+      return (
+        <a key={i} href={href} target="_blank" rel="noopener noreferrer"
+          className="text-blue-600 underline underline-offset-2 hover:text-blue-800 break-all">
+          {part}
+        </a>
+      );
+    }
+    return part;
+  });
+}
+
 function renderContent(content: string) {
-  // 원형 숫자 ①~⑩ 또는 STEP N 앞에서 분리
   const circledNums = /(?=①|②|③|④|⑤|⑥|⑦|⑧|⑨|⑩)/g;
   const stepPattern = /(?=STEP\s*\d)/g;
-
   const hasCircled = /①|②|③|④|⑤|⑥|⑦|⑧|⑨|⑩/.test(content);
   const hasStep = /STEP\s*\d/.test(content);
 
@@ -49,30 +65,37 @@ function renderContent(content: string) {
       .map((s) => s.trim())
       .filter(Boolean);
 
-    // 첫 조각이 번호로 시작하지 않으면 리드 문장으로 처리
     const leadPattern = /^(①|②|③|④|⑤|⑥|⑦|⑧|⑨|⑩|STEP)/;
     const lead = !leadPattern.test(parts[0]) ? parts[0] : null;
     const items = lead ? parts.slice(1) : parts;
 
     return (
-      <div className="space-y-3">
-        {lead && <p className="text-base text-gray-700 leading-relaxed">{lead}</p>}
-        <ul className="space-y-2.5">
-          {items.map((item, idx) => (
-            <li key={idx} className="flex gap-3 text-base text-gray-700 leading-relaxed">
-              <span className="mt-0.5 flex-shrink-0 w-5 h-5 rounded-full bg-gray-100 text-gray-500 text-xs flex items-center justify-center font-semibold">
-                {idx + 1}
-              </span>
-              <span>{item.replace(/^[①②③④⑤⑥⑦⑧⑨⑩]\s*/, '').replace(/^STEP\s*\d+\s*/i, '')}</span>
-            </li>
-          ))}
+      <div className="space-y-4">
+        {lead && (
+          <p className="text-[15px] text-gray-700 leading-[1.85]">{linkify(lead)}</p>
+        )}
+        <ul className="space-y-3">
+          {items.map((item, idx) => {
+            const clean = item
+              .replace(/^[①②③④⑤⑥⑦⑧⑨⑩]\s*/, '')
+              .replace(/^STEP\s*\d+\s*/i, '');
+            return (
+              <li key={idx} className="flex gap-3.5 text-[15px] text-gray-700 leading-[1.85]">
+                <span className="mt-[3px] flex-shrink-0 w-6 h-6 rounded-full bg-gray-100 text-gray-500 text-xs flex items-center justify-center font-bold">
+                  {idx + 1}
+                </span>
+                <span className="flex-1">{linkify(clean)}</span>
+              </li>
+            );
+          })}
         </ul>
       </div>
     );
   }
 
-  // 일반 문단: 마침표+공백 뒤 문장이 길면 줄 단위로 분리
-  return <p className="text-base text-gray-700 leading-relaxed">{content}</p>;
+  return (
+    <p className="text-[15px] text-gray-700 leading-[1.85]">{linkify(content)}</p>
+  );
 }
 
 export default async function BlogPostPage({ params }: PageProps) {
@@ -86,20 +109,17 @@ export default async function BlogPostPage({ params }: PageProps) {
   const nextPost = postIndex < blogPosts.length - 1 ? blogPosts[postIndex + 1] : null;
 
   const CORE_RELATED = ['naver-blog-thumbnail-size', 'thumbnail-failure-cases', 'thumbnail-text-tips'];
-  const coreRelated = blogPosts.filter(
-    (p) => p.slug !== slug && CORE_RELATED.includes(p.slug)
-  );
-  const extraRelated = blogPosts.filter(
-    (p) => p.slug !== slug && !CORE_RELATED.includes(p.slug)
-  );
+  const coreRelated = blogPosts.filter((p) => p.slug !== slug && CORE_RELATED.includes(p.slug));
+  const extraRelated = blogPosts.filter((p) => p.slug !== slug && !CORE_RELATED.includes(p.slug));
   const relatedPosts = [...coreRelated, ...extraRelated].slice(0, 3);
 
   return (
-    <div className="min-h-screen bg-gray-50 text-gray-800 font-sans">
+    <div className="min-h-screen bg-gray-50 font-sans">
       <div className="max-w-2xl mx-auto px-4 py-8 md:py-12">
+
         <Link
           href="/blog"
-          className="text-gray-500 hover:text-gray-900 text-sm mb-8 inline-flex items-center gap-1.5 transition-colors"
+          className="text-gray-400 hover:text-gray-800 text-sm mb-10 inline-flex items-center gap-1.5 transition-colors"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
           블로그 목록으로
@@ -107,13 +127,13 @@ export default async function BlogPostPage({ params }: PageProps) {
 
         <article>
           {/* 헤더 */}
-          <header className="mb-8">
+          <header className="mb-10">
             <p className="text-xs text-gray-400 mb-3 tracking-wide">{formatDate(post.date)}</p>
-            <h1 className="text-2xl md:text-3xl font-bold text-gray-900 leading-tight mb-5">
+            <h1 className="text-2xl md:text-[1.75rem] font-bold text-gray-900 leading-snug mb-6">
               {post.title}
             </h1>
-            <div className="border-l-4 border-gray-800 pl-4 py-1">
-              <p className="text-base text-gray-600 leading-relaxed">{post.summary}</p>
+            <div className="bg-gray-100 rounded-xl px-5 py-4 border-l-4 border-gray-400">
+              <p className="text-[15px] text-gray-600 leading-[1.85]">{post.summary}</p>
             </div>
           </header>
 
@@ -121,12 +141,14 @@ export default async function BlogPostPage({ params }: PageProps) {
 
           {/* 목차 */}
           {post.sections.length > 2 && (
-            <nav className="mb-8 bg-white rounded-xl border border-gray-200 p-5">
-              <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-3">목차</p>
-              <ol className="space-y-1.5">
+            <nav className="mb-10 bg-white rounded-2xl border border-gray-200 overflow-hidden">
+              <div className="px-5 py-3 bg-gray-50 border-b border-gray-100">
+                <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">목차</p>
+              </div>
+              <ol className="p-5 space-y-2">
                 {post.sections.map((section, i) => (
-                  <li key={i} className="flex gap-2 text-sm text-gray-600">
-                    <span className="text-gray-400 flex-shrink-0 w-4">{i + 1}.</span>
+                  <li key={i} className="flex gap-3 text-sm text-gray-600 hover:text-gray-900 transition-colors">
+                    <span className="text-gray-300 font-mono flex-shrink-0">{String(i + 1).padStart(2, '0')}</span>
                     <span>{section.heading}</span>
                   </li>
                 ))}
@@ -135,19 +157,23 @@ export default async function BlogPostPage({ params }: PageProps) {
           )}
 
           {/* 본문 섹션 */}
-          <div className="space-y-6">
+          <div className="space-y-5">
             {post.sections.map((section, i) => (
               <section
                 key={i}
-                className="bg-white rounded-xl border border-gray-100 p-6 md:p-7"
+                className="bg-white rounded-2xl border border-gray-100 overflow-hidden"
               >
-                <h2 className="text-base md:text-lg font-bold text-gray-900 mb-4 flex items-start gap-2.5">
-                  <span className="mt-0.5 flex-shrink-0 w-6 h-6 bg-gray-900 text-white rounded-md flex items-center justify-center text-xs font-bold">
+                {/* 섹션 헤더 */}
+                <div className="flex items-center gap-3 px-6 py-4 border-b border-gray-100 bg-gray-50">
+                  <span className="flex-shrink-0 w-6 h-6 bg-gray-800 text-white rounded-md flex items-center justify-center text-xs font-bold">
                     {i + 1}
                   </span>
-                  {section.heading}
-                </h2>
-                <div className="pl-8">
+                  <h2 className="text-[15px] md:text-base font-bold text-gray-900 leading-snug">
+                    {section.heading}
+                  </h2>
+                </div>
+                {/* 섹션 본문 */}
+                <div className="px-6 py-5">
                   {renderContent(section.content)}
                 </div>
               </section>
@@ -160,11 +186,11 @@ export default async function BlogPostPage({ params }: PageProps) {
         <CoupangRecommendations />
 
         {/* CTA */}
-        <div className="mt-8 p-6 bg-gray-900 rounded-xl text-center">
+        <div className="mt-10 p-6 bg-gray-900 rounded-2xl text-center">
           <p className="text-sm text-gray-400 mb-3">블로그 썸네일, 직접 만들어보세요</p>
           <a
             href="https://www.blogsumnail.com"
-            className="inline-flex items-center gap-2 bg-white text-gray-900 text-sm font-semibold px-5 py-2.5 rounded-lg hover:bg-gray-100 transition-colors"
+            className="inline-flex items-center gap-2 bg-white text-gray-900 text-sm font-bold px-6 py-3 rounded-xl hover:bg-gray-100 transition-colors"
           >
             <BookOpen className="w-4 h-4" />
             썸네일 메이커 사용하기
@@ -173,19 +199,19 @@ export default async function BlogPostPage({ params }: PageProps) {
 
         {/* 관련 글 */}
         <div className="mt-10">
-          <h2 className="flex items-center gap-2 text-sm font-semibold text-gray-500 uppercase tracking-widest mb-4">
-            <BookMarked className="w-4 h-4" />
+          <h2 className="flex items-center gap-2 text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">
+            <BookMarked className="w-3.5 h-3.5" />
             관련 글
           </h2>
-          <div className="grid gap-3">
+          <div className="grid gap-2.5">
             {relatedPosts.map((related) => (
               <Link
                 key={related.slug}
                 href={`/blog/${related.slug}`}
-                className="flex items-center justify-between gap-3 p-4 bg-white rounded-xl border border-gray-100 hover:border-gray-300 transition-colors group"
+                className="flex items-center justify-between gap-3 p-4 bg-white rounded-xl border border-gray-100 hover:border-gray-300 hover:shadow-sm transition-all group"
               >
                 <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-gray-800 group-hover:text-gray-900 transition-colors line-clamp-1">
+                  <p className="text-sm font-semibold text-gray-800 group-hover:text-gray-900 line-clamp-1">
                     {related.title}
                   </p>
                   <p className="text-xs text-gray-400 mt-0.5 line-clamp-1">{related.summary}</p>
@@ -197,7 +223,7 @@ export default async function BlogPostPage({ params }: PageProps) {
         </div>
 
         {/* 이전/다음 글 */}
-        <nav className="mt-8 grid grid-cols-2 gap-4">
+        <nav className="mt-6 grid grid-cols-2 gap-3">
           {prevPost ? (
             <Link
               href={`/blog/${prevPost.slug}`}
@@ -210,9 +236,7 @@ export default async function BlogPostPage({ params }: PageProps) {
                 {prevPost.title}
               </span>
             </Link>
-          ) : (
-            <div />
-          )}
+          ) : <div />}
           {nextPost ? (
             <Link
               href={`/blog/${nextPost.slug}`}
@@ -225,10 +249,9 @@ export default async function BlogPostPage({ params }: PageProps) {
                 {nextPost.title}
               </span>
             </Link>
-          ) : (
-            <div />
-          )}
+          ) : <div />}
         </nav>
+
       </div>
     </div>
   );
