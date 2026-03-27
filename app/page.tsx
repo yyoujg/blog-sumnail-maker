@@ -323,18 +323,13 @@ export default function HomePage() {
               </div>
               <div className="hidden lg:grid grid-cols-2 gap-3">
                 {[
-                  { bgImage: '/images/cafe.jpg', category: '맛집', title: '성수동 감성 카페', overlay: 0.45 },
-                  { bgImage: '/images/jungyeon-food-1390412.jpg', category: '체험단', title: '솔직 체험단 후기', overlay: 0.5 },
-                  { bgImage: '/images/muqadastalib-moneybag-8727680_1920.jpg', category: '재테크', title: '월 50만원 절약', overlay: 0.4 },
-                  { bgImage: '/images/rottonara-backpack-4339090_1920.jpg', category: '일상', title: '오늘의 라이프로그', overlay: 0.4 },
-                ].map((s, i) => (
-                  <div key={i} className="aspect-square rounded-2xl overflow-hidden relative flex flex-col items-center justify-center p-5 text-center"
-                    style={{ backgroundImage: `url(${s.bgImage})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
-                    <div className="absolute inset-0" style={{ background: `rgba(0,0,0,${s.overlay})` }} />
-                    <div className="relative z-10 flex flex-col items-center gap-2">
-                      <span className="text-xs font-bold px-2.5 py-0.5 rounded-full border border-white/80 text-white/90">{s.category}</span>
-                      <p className="font-bold text-sm leading-snug text-white">{s.title}</p>
-                    </div>
+                  '/images/blog_thumbnail.png',
+                  '/images/blog_thumbnail_2.png',
+                  '/images/blog_thumbnail_3.png',
+                  '/images/blog_thumbnail_4.png',
+                ].map((src, i) => (
+                  <div key={i} className="aspect-square rounded-2xl overflow-hidden shadow-lg">
+                    <img src={src} alt={`썸네일 예시 ${i + 1}`} className="w-full h-full object-cover" />
                   </div>
                 ))}
               </div>
