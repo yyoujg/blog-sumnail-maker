@@ -63,7 +63,7 @@ function renderContent(content: string) {
               <span className="mt-0.5 flex-shrink-0 w-5 h-5 rounded-full bg-gray-100 text-gray-500 text-xs flex items-center justify-center font-semibold">
                 {idx + 1}
               </span>
-              <span>{item}</span>
+              <span>{item.replace(/^[①②③④⑤⑥⑦⑧⑨⑩]\s*/, '').replace(/^STEP\s*\d+\s*/i, '')}</span>
             </li>
           ))}
         </ul>
