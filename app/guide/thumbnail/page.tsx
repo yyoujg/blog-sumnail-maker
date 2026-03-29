@@ -87,7 +87,7 @@ export default function ThumbnailGuidePage() {
               <div
                 key={i}
                 className="aspect-square rounded-xl overflow-hidden relative flex flex-col items-center justify-center p-4 text-center"
-                style={{ backgroundImage: `url(${s.bg})`, backgroundSize: 'cover', backgroundPosition: 'center' }}
+                style={{ backgroundImage: `url('${s.bg}')`, backgroundSize: 'cover', backgroundPosition: 'center' }}
               >
                 <div className="absolute inset-0" style={{ background: `rgba(0,0,0,${s.overlay})` }} />
                 <div className="relative z-10 flex flex-col items-center gap-1.5">

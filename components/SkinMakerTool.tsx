@@ -655,7 +655,7 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
             <div ref={scrollRef} className="overflow-x-auto overflow-y-hidden rounded-xl border border-gray-100">
               <div
                 ref={canvasRef}
-                style={{ position: 'relative', width: cw, height: ch, backgroundColor: bg, backgroundImage: bgImage ? `url(${bgImage})` : 'none', backgroundSize: 'cover', backgroundPosition: bgPosition, flexShrink: 0, cursor: sidebarTab === 'link' ? 'crosshair' : 'default' }}
+                style={{ position: 'relative', width: cw, height: ch, backgroundColor: bg, backgroundImage: bgImage ? `url('${bgImage}')` : 'none', backgroundSize: 'cover', backgroundPosition: bgPosition, flexShrink: 0, cursor: sidebarTab === 'link' ? 'crosshair' : 'default' }}
                 onMouseDown={onCanvasDown}
                 onMouseMove={onCanvasMove}
                 onMouseUp={onCanvasUp}

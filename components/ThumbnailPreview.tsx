@@ -67,7 +67,7 @@ export default function ThumbnailPreview({
           ref={previewRef}
           style={{
             backgroundColor: bgType === 'color' ? bgColor : '#ffffff',
-            backgroundImage: bgType === 'image' && bgImage ? `url(${bgImage})` : 'none',
+            backgroundImage: bgType === 'image' && bgImage ? `url('${bgImage}')` : 'none',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
             fontFamily: fontFamily,

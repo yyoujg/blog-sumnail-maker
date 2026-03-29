@@ -444,7 +444,7 @@ export default function HomePage() {
                   },
                 ].map((skin, i) => (
                   <div key={i} className="rounded-xl overflow-hidden shadow-md flex-shrink-0 relative"
-                    style={{ backgroundImage: `url(${skin.img})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
+                    style={{ backgroundImage: `url('${skin.img}')`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
                     <div className="absolute inset-0" style={{ background: `rgba(0,0,0,${skin.overlay})` }} />
                     <div className="relative z-10 px-4 py-5 flex items-center justify-between">
                       <div>
