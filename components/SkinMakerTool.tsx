@@ -213,7 +213,8 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
   const [previewRect, setPreviewRect] = useState<{ x: number; y: number; w: number; h: number } | null>(null);
 
   const canvasRef = useRef<HTMLDivElement>(null);
-  const scrollRef = useRef<HTMLDivElement>(null);
+  const previewWrapperRef = useRef<HTMLDivElement>(null);
+  const [previewScale, setPreviewScale] = useState(1);
   const selectedEl = elements.find(e => e.id === selectedId) || null;
 
   // ── element helpers ──
@@ -256,10 +257,15 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
   };
 
   useEffect(() => {
-    if (!scrollRef.current) return;
-    const el = scrollRef.current;
-    el.scrollLeft = (el.scrollWidth - el.clientWidth) / 2;
-  }, [activeTemplateId, cw]);
+    const wrapper = previewWrapperRef.current;
+    if (!wrapper) return;
+    const observer = new ResizeObserver(entries => {
+      const w = entries[0].contentRect.width;
+      setPreviewScale(Math.min(1, w / cw));
+    });
+    observer.observe(wrapper);
+    return () => observer.disconnect();
+  }, [cw]);
 
   // ── drag to move element ──
   const startDrag = (e: React.MouseEvent, id: number) => {
@@ -267,7 +273,7 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
     e.stopPropagation();
     setSelectedId(id);
     let px = e.clientX, py = e.clientY;
-    const onMove = (me: MouseEvent) => { moveEl(id, me.clientX - px, me.clientY - py); px = me.clientX; py = me.clientY; };
+    const onMove = (me: MouseEvent) => { moveEl(id, (me.clientX - px) / previewScale, (me.clientY - py) / previewScale); px = me.clientX; py = me.clientY; };
     const onUp = () => { window.removeEventListener('mousemove', onMove); window.removeEventListener('mouseup', onUp); };
     window.addEventListener('mousemove', onMove);
     window.addEventListener('mouseup', onUp);
@@ -276,7 +282,7 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
   // ── canvas mouse ──
   const canvasPos = (e: React.MouseEvent) => {
     const r = canvasRef.current!.getBoundingClientRect();
-    return { x: e.clientX - r.left, y: e.clientY - r.top };
+    return { x: (e.clientX - r.left) / previewScale, y: (e.clientY - r.top) / previewScale };
   };
   const onCanvasDown = (e: React.MouseEvent) => {
     if (sidebarTab === 'link') {
@@ -652,10 +658,10 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
                 <span className="ml-2 text-xs font-normal text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full">드래그로 링크 영역 그리기</span>
               )}
             </h3>
-            <div ref={scrollRef} className="overflow-x-auto overflow-y-hidden rounded-xl border border-gray-100">
+            <div ref={previewWrapperRef} style={{ width: '100%', height: ch * previewScale, overflow: 'hidden', borderRadius: 12, border: '1px solid #f1f5f9' }}>
               <div
                 ref={canvasRef}
-                style={{ position: 'relative', width: cw, height: ch, backgroundColor: bg, backgroundImage: bgImage ? `url('${bgImage}')` : 'none', backgroundSize: 'cover', backgroundPosition: bgPosition, flexShrink: 0, cursor: sidebarTab === 'link' ? 'crosshair' : 'default' }}
+                style={{ position: 'relative', width: cw, height: ch, backgroundColor: bg, backgroundImage: bgImage ? `url('${bgImage}')` : 'none', backgroundSize: 'cover', backgroundPosition: bgPosition, flexShrink: 0, cursor: sidebarTab === 'link' ? 'crosshair' : 'default', transform: `scale(${previewScale})`, transformOrigin: 'top left' }}
                 onMouseDown={onCanvasDown}
                 onMouseMove={onCanvasMove}
                 onMouseUp={onCanvasUp}
