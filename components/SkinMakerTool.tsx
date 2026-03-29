@@ -45,6 +45,8 @@ interface LinkRect {
   url: string;
   label?: string;
   labelColor?: string;
+  bgColor?: string;      // undefined = 투명
+  borderColor?: string;  // undefined = 기본 (#52525b), '' = 테두리 없음
 }
 
 interface BlogTemplate {
@@ -297,10 +299,19 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
         ctx.fillText(el.text, el.x + 8, el.y);
       }
     }
-    // Draw rect labels centered
+    // Draw rect background, border, label
     ctx.textBaseline = 'middle';
     ctx.textAlign = 'center';
     for (const r of rects) {
+      if (r.bgColor) {
+        ctx.fillStyle = r.bgColor;
+        ctx.fillRect(r.x, r.y, r.w, r.h);
+      }
+      if (r.borderColor !== '') {
+        ctx.strokeStyle = r.borderColor || '#52525b';
+        ctx.lineWidth = 2;
+        ctx.strokeRect(r.x + 1, r.y + 1, r.w - 2, r.h - 2);
+      }
       if (r.label) {
         ctx.font = `bold 20px -apple-system, sans-serif`;
         ctx.fillStyle = r.labelColor || '#333333';
@@ -522,12 +533,55 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
                               <Trash2 size={13} />
                             </button>
                           </div>
-                          <input value={r.label ?? ''} onChange={e => setRects(prev => prev.map(x => x.id === r.id ? { ...x, label: e.target.value } : x))}
+                              <input value={r.label ?? ''} onChange={e => setRects(prev => prev.map(x => x.id === r.id ? { ...x, label: e.target.value } : x))}
                             className="w-full p-2 border border-gray-300 rounded-lg text-xs outline-none focus:ring-2 focus:ring-gray-500 mb-1.5"
                             placeholder="버튼 텍스트 (예: 맛집 탐방)" />
                           <input value={r.url} onChange={e => setRects(prev => prev.map(x => x.id === r.id ? { ...x, url: e.target.value } : x))}
-                            className="w-full p-2 border border-gray-300 rounded-lg text-xs outline-none focus:ring-2 focus:ring-gray-500"
+                            className="w-full p-2 border border-gray-300 rounded-lg text-xs outline-none focus:ring-2 focus:ring-gray-500 mb-2"
                             placeholder="이동할 URL 입력" />
+                          {/* 색상 */}
+                          <div className="grid grid-cols-3 gap-1.5">
+                            <div>
+                              <p className="text-[10px] text-gray-400 font-semibold mb-1">글자색</p>
+                              <input type="color"
+                                value={r.labelColor || '#333333'}
+                                onChange={e => setRects(prev => prev.map(x => x.id === r.id ? { ...x, labelColor: e.target.value } : x))}
+                                className="w-full h-7 rounded border border-gray-200 cursor-pointer p-0.5"
+                              />
+                            </div>
+                            <div>
+                              <label className="flex items-center gap-1 text-[10px] text-gray-400 font-semibold mb-1 cursor-pointer">
+                                <input type="checkbox"
+                                  checked={!!r.bgColor}
+                                  onChange={e => setRects(prev => prev.map(x => x.id === r.id ? { ...x, bgColor: e.target.checked ? '#ffffff' : undefined } : x))}
+                                  className="w-2.5 h-2.5"
+                                />
+                                배경색
+                              </label>
+                              <input type="color"
+                                value={r.bgColor || '#ffffff'}
+                                onChange={e => setRects(prev => prev.map(x => x.id === r.id ? { ...x, bgColor: e.target.value } : x))}
+                                disabled={!r.bgColor}
+                                className="w-full h-7 rounded border border-gray-200 cursor-pointer p-0.5 disabled:opacity-30"
+                              />
+                            </div>
+                            <div>
+                              <label className="flex items-center gap-1 text-[10px] text-gray-400 font-semibold mb-1 cursor-pointer">
+                                <input type="checkbox"
+                                  checked={r.borderColor !== ''}
+                                  onChange={e => setRects(prev => prev.map(x => x.id === r.id ? { ...x, borderColor: e.target.checked ? (x.borderColor || '#52525b') : '' } : x))}
+                                  className="w-2.5 h-2.5"
+                                />
+                                테두리
+                              </label>
+                              <input type="color"
+                                value={r.borderColor || '#52525b'}
+                                onChange={e => setRects(prev => prev.map(x => x.id === r.id ? { ...x, borderColor: e.target.value } : x))}
+                                disabled={r.borderColor === ''}
+                                className="w-full h-7 rounded border border-gray-200 cursor-pointer p-0.5 disabled:opacity-30"
+                              />
+                            </div>
+                          </div>
                         </div>
                       ))}
                     </div>
@@ -604,7 +658,12 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
 
                 {/* Link rects */}
                 {rects.map(r => (
-                  <div key={r.id} style={{ position: 'absolute', left: r.x, top: r.y, width: r.w, height: r.h, border: '2px solid #52525b', background: 'rgba(0,0,0,0.04)', zIndex: 40, overflow: 'hidden' }}>
+                  <div key={r.id} style={{
+                    position: 'absolute', left: r.x, top: r.y, width: r.w, height: r.h,
+                    border: r.borderColor === '' ? 'none' : `2px solid ${r.borderColor ?? '#52525b'}`,
+                    background: r.bgColor ?? 'rgba(0,0,0,0.04)',
+                    zIndex: 40, overflow: 'hidden',
+                  }}>
                     <span style={{ position: 'absolute', top: 0, left: 0, background: '#52525b', color: '#fff', fontSize: 8, padding: '1px 4px', fontWeight: 700, zIndex: 1 }}>LINK</span>
                     {r.label && (
                       <span style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, fontWeight: 'bold', color: r.labelColor || '#333333', pointerEvents: 'none', userSelect: 'none' }}>{r.label}</span>
