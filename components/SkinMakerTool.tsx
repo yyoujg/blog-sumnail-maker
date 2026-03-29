@@ -113,6 +113,8 @@ const BLOG_TEMPLATES: BlogTemplate[] = [
     emoji: '📈',
     desc: '주식·부동산·절약',
     bg: '#0a2540',
+    bgImage: '/images/251231지관서가/안동북카페-지관서가-1층내부-서가창가뷰.JPG',
+    bgOverlay: 65,
     cw: 1920, ch: 450,
     elements: [
       { id: 1, type: 'text', text: '재테크 실전 기록', x: 700, y: 135, fontSize: 52, color: '#ffffff', fontWeight: 'bold' },
