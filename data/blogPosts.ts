@@ -1084,7 +1084,7 @@ export const blogPosts: BlogPost[] = [
       {
         heading: '기타 자주 언급되는 사이트',
         content:
-          '더 많은 선택지를 원한다면 아래 사이트도 확인해보세요. 슈퍼멤버스 / 클라우드리뷰 / 티블(tble.kr, 블로그 분석 서비스도 겸함) / 링블(ringble.co.kr, 포인트 적립) / 포포몬(popomon.com, 무료 협찬 매칭) / 파블로 체험단(pavlovu.com, 빠른 선정) / 스토리앤미디어(storyn.kr) / 모두의체험단(modan.kr, 소상공인 중심) / 모두모여체험단 / 리얼리뷰(real-review.kr) / 스타일씨(stylec.co.kr, 당첨 쉬운 편) / 블로그랩(bloglab.kr) / 파인앳플(fineadple.com) / 어썸링크 / 여기앤다있어. 사이트 정책과 운영 상태는 수시로 바뀔 수 있으니 직접 방문해서 확인하세요.',
+          '더 많은 선택지를 원한다면 아래 사이트도 확인해보세요. 정책·운영 상태는 수시로 바뀔 수 있으니 직접 방문해서 확인하세요. ① 슈퍼멤버스 ② 클라우드리뷰 ③ 티블(tble.kr) — 블로그 분석 서비스도 겸함 ④ 링블(ringble.co.kr) — 포인트 적립 ⑤ 포포몬(popomon.com) — 무료 협찬 매칭 ⑥ 파블로 체험단(pavlovu.com) — 빠른 선정 ⑦ 스토리앤미디어(storyn.kr) ⑧ 모두의체험단(modan.kr) — 소상공인 중심 ⑨ 모두모여체험단 ⑩ 리얼리뷰(real-review.kr) ⑪ 스타일씨(stylec.co.kr) — 당첨 쉬운 편 ⑫ 블로그랩(bloglab.kr) ⑬ 파인앳플(fineadple.com) ⑭ 어썸링크 ⑮ 여기앤다있어',
       },
       {
         heading: '선정률 높이는 꿀팁',

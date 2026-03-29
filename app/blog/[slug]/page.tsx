@@ -35,7 +35,7 @@ function formatDate(dateStr: string) {
 }
 
 function linkify(text: string): React.ReactNode[] {
-  const urlPattern = /(\bhttps?:\/\/[^\s)]+|\b[\w-]+\.[a-z]{2,}(?:\/[^\s)]*)?)/g;
+  const urlPattern = /(\bhttps?:\/\/[^\s)]+|\b[\w-]+(?:\.[a-z]{2,})+(?:\/[^\s)]*)?)/g;
   const parts = text.split(urlPattern);
   urlPattern.lastIndex = 0;
   return parts.map((part, i) => {
@@ -54,9 +54,9 @@ function linkify(text: string): React.ReactNode[] {
 }
 
 function renderContent(content: string) {
-  const circledNums = /(?=①|②|③|④|⑤|⑥|⑦|⑧|⑨|⑩)/g;
+  const circledNums = /(?=①|②|③|④|⑤|⑥|⑦|⑧|⑨|⑩|⑪|⑫|⑬|⑭|⑮)/g;
   const stepPattern = /(?=STEP\s*\d)/g;
-  const hasCircled = /①|②|③|④|⑤|⑥|⑦|⑧|⑨|⑩/.test(content);
+  const hasCircled = /①|②|③|④|⑤|⑥|⑦|⑧|⑨|⑩|⑪|⑫|⑬|⑭|⑮/.test(content);
   const hasStep = /STEP\s*\d/.test(content);
 
   if (hasCircled || hasStep) {
@@ -65,7 +65,7 @@ function renderContent(content: string) {
       .map((s) => s.trim())
       .filter(Boolean);
 
-    const leadPattern = /^(①|②|③|④|⑤|⑥|⑦|⑧|⑨|⑩|STEP)/;
+    const leadPattern = /^(①|②|③|④|⑤|⑥|⑦|⑧|⑨|⑩|⑪|⑫|⑬|⑭|⑮|STEP)/;
     const lead = !leadPattern.test(parts[0]) ? parts[0] : null;
     const items = lead ? parts.slice(1) : parts;
 
@@ -77,7 +77,7 @@ function renderContent(content: string) {
         <ul className="space-y-3">
           {items.map((item, idx) => {
             const clean = item
-              .replace(/^[①②③④⑤⑥⑦⑧⑨⑩]\s*/, '')
+              .replace(/^[①②③④⑤⑥⑦⑧⑨⑩⑪⑫⑬⑭⑮]\s*/, '')
               .replace(/^STEP\s*\d+\s*/i, '');
             return (
               <li key={idx} className="flex gap-3.5 text-[15px] text-gray-700 leading-[1.85]">
