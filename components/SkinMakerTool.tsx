@@ -55,6 +55,8 @@ interface BlogTemplate {
   emoji: string;
   desc: string;
   bg: string;
+  bgImage?: string;
+  bgOverlay?: number;
   cw: number;
   ch: number;
   elements: CanvasElement[];
@@ -68,18 +70,20 @@ const BLOG_TEMPLATES: BlogTemplate[] = [
     label: '맛집 리뷰',
     emoji: '🍜',
     desc: '맛집·카페·레시피',
-    bg: '#fff8f0',
+    bg: '#1a1a1a',
+    bgImage: '/images/260320일상엔베이커리/일상엔-수원역카페-소나무조명.JPG',
+    bgOverlay: 45,
     cw: 1920, ch: 450,
     elements: [
-      { id: 1, type: 'text', text: '오늘의 맛집 기록', x: 680, y: 135, fontSize: 52, color: '#2d1b00', fontWeight: 'bold' },
-      { id: 2, type: 'text', text: '솔직한 후기 & 먹방 기록 🍽️', x: 800, y: 210, fontSize: 18, color: '#7c5429', fontWeight: 'normal' },
+      { id: 1, type: 'text', text: '오늘의 맛집 기록', x: 680, y: 135, fontSize: 52, color: '#ffffff', fontWeight: 'bold' },
+      { id: 2, type: 'text', text: '솔직한 후기 & 먹방 기록 🍽️', x: 800, y: 210, fontSize: 18, color: 'rgba(255,255,255,0.75)', fontWeight: 'normal' },
     ],
     rects: [
-      { id: 101, x: 525, y: 360, w: 170, h: 60, url: 'https://', label: '맛집 탐방', labelColor: '#2d1b00' },
-      { id: 102, x: 700, y: 360, w: 170, h: 60, url: 'https://', label: '카페 기록', labelColor: '#2d1b00' },
-      { id: 103, x: 875, y: 360, w: 170, h: 60, url: 'https://', label: '레시피', labelColor: '#2d1b00' },
-      { id: 104, x: 1050, y: 360, w: 170, h: 60, url: 'https://', label: '배달 후기', labelColor: '#2d1b00' },
-      { id: 105, x: 1225, y: 360, w: 170, h: 60, url: 'https://', label: '카페 투어', labelColor: '#2d1b00' },
+      { id: 101, x: 525, y: 360, w: 170, h: 60, url: 'https://', label: '맛집 탐방', labelColor: '#ffffff' },
+      { id: 102, x: 700, y: 360, w: 170, h: 60, url: 'https://', label: '카페 기록', labelColor: '#ffffff' },
+      { id: 103, x: 875, y: 360, w: 170, h: 60, url: 'https://', label: '레시피', labelColor: '#ffffff' },
+      { id: 104, x: 1050, y: 360, w: 170, h: 60, url: 'https://', label: '배달 후기', labelColor: '#ffffff' },
+      { id: 105, x: 1225, y: 360, w: 170, h: 60, url: 'https://', label: '카페 투어', labelColor: '#ffffff' },
     ],
   },
   {
@@ -87,18 +91,20 @@ const BLOG_TEMPLATES: BlogTemplate[] = [
     label: '체험단',
     emoji: '🎁',
     desc: '제품 리뷰·체험단',
-    bg: '#f8f0ff',
+    bg: '#1a1a1a',
+    bgImage: '/images/260208에디션엠/에디션엠-감귤케이크-딸기음료-메인.JPG',
+    bgOverlay: 52,
     cw: 1920, ch: 450,
     elements: [
-      { id: 1, type: 'text', text: '체험단 솔직 후기 블로그', x: 650, y: 135, fontSize: 48, color: '#2d0a4e', fontWeight: 'bold' },
-      { id: 2, type: 'text', text: '직접 써보고 솔직하게 기록합니다 ✔️', x: 800, y: 210, fontSize: 18, color: '#6b21a8', fontWeight: 'normal' },
+      { id: 1, type: 'text', text: '체험단 솔직 후기 블로그', x: 650, y: 135, fontSize: 48, color: '#ffffff', fontWeight: 'bold' },
+      { id: 2, type: 'text', text: '직접 써보고 솔직하게 기록합니다 ✔️', x: 800, y: 210, fontSize: 18, color: 'rgba(255,255,255,0.75)', fontWeight: 'normal' },
     ],
     rects: [
-      { id: 101, x: 525, y: 360, w: 170, h: 60, url: 'https://', label: '체험단', labelColor: '#2d0a4e' },
-      { id: 102, x: 700, y: 360, w: 170, h: 60, url: 'https://', label: '뷰티·스킨', labelColor: '#2d0a4e' },
-      { id: 103, x: 875, y: 360, w: 170, h: 60, url: 'https://', label: '생활용품', labelColor: '#2d0a4e' },
-      { id: 104, x: 1050, y: 360, w: 170, h: 60, url: 'https://', label: '식품 리뷰', labelColor: '#2d0a4e' },
-      { id: 105, x: 1225, y: 360, w: 170, h: 60, url: 'https://', label: '서비스', labelColor: '#2d0a4e' },
+      { id: 101, x: 525, y: 360, w: 170, h: 60, url: 'https://', label: '체험단', labelColor: '#ffffff' },
+      { id: 102, x: 700, y: 360, w: 170, h: 60, url: 'https://', label: '뷰티·스킨', labelColor: '#ffffff' },
+      { id: 103, x: 875, y: 360, w: 170, h: 60, url: 'https://', label: '생활용품', labelColor: '#ffffff' },
+      { id: 104, x: 1050, y: 360, w: 170, h: 60, url: 'https://', label: '식품 리뷰', labelColor: '#ffffff' },
+      { id: 105, x: 1225, y: 360, w: 170, h: 60, url: 'https://', label: '서비스', labelColor: '#ffffff' },
     ],
   },
   {
@@ -125,18 +131,20 @@ const BLOG_TEMPLATES: BlogTemplate[] = [
     label: '라이프스타일',
     emoji: '🌿',
     desc: '일상·여행·취미',
-    bg: '#f5f1ee',
+    bg: '#1a1a1a',
+    bgImage: '/images/260317야옹이네고양이카페/IMG_8537.JPG',
+    bgOverlay: 42,
     cw: 1920, ch: 450,
     elements: [
-      { id: 1, type: 'text', text: '나의 일상 기록', x: 720, y: 135, fontSize: 52, color: '#333333', fontWeight: 'bold' },
-      { id: 2, type: 'text', text: '여행·운동·취미 모든 것을 기록합니다 ☀️', x: 780, y: 210, fontSize: 18, color: '#666666', fontWeight: 'normal' },
+      { id: 1, type: 'text', text: '나의 일상 기록', x: 720, y: 135, fontSize: 52, color: '#ffffff', fontWeight: 'bold' },
+      { id: 2, type: 'text', text: '여행·운동·취미 모든 것을 기록합니다 ☀️', x: 780, y: 210, fontSize: 18, color: 'rgba(255,255,255,0.75)', fontWeight: 'normal' },
     ],
     rects: [
-      { id: 101, x: 525, y: 360, w: 170, h: 60, url: 'https://', label: '일상 기록', labelColor: '#333333' },
-      { id: 102, x: 700, y: 360, w: 170, h: 60, url: 'https://', label: '여행', labelColor: '#333333' },
-      { id: 103, x: 875, y: 360, w: 170, h: 60, url: 'https://', label: '운동·체험', labelColor: '#333333' },
-      { id: 104, x: 1050, y: 360, w: 170, h: 60, url: 'https://', label: '취미', labelColor: '#333333' },
-      { id: 105, x: 1225, y: 360, w: 170, h: 60, url: 'https://', label: '맛집', labelColor: '#333333' },
+      { id: 101, x: 525, y: 360, w: 170, h: 60, url: 'https://', label: '일상 기록', labelColor: '#ffffff' },
+      { id: 102, x: 700, y: 360, w: 170, h: 60, url: 'https://', label: '여행', labelColor: '#ffffff' },
+      { id: 103, x: 875, y: 360, w: 170, h: 60, url: 'https://', label: '운동·체험', labelColor: '#ffffff' },
+      { id: 104, x: 1050, y: 360, w: 170, h: 60, url: 'https://', label: '취미', labelColor: '#ffffff' },
+      { id: 105, x: 1225, y: 360, w: 170, h: 60, url: 'https://', label: '맛집', labelColor: '#ffffff' },
     ],
   },
 ];
@@ -178,6 +186,8 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
   const [cw, setCw] = useState(1920);
   const [ch, setCh] = useState(450);
   const [bg, setBg] = useState('#f5f1ee');
+  const [bgImage, setBgImage] = useState<string | null>(null);
+  const [bgOverlay, setBgOverlay] = useState(0);
 
   const [sidebarTab, setSidebarTab] = useState<'template' | 'design' | 'link'>('template');
   const [showCode, setShowCode] = useState(false);
@@ -228,6 +238,8 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
 
   const loadTemplate = (tpl: BlogTemplate) => {
     setCw(tpl.cw); setCh(tpl.ch); setBg(tpl.bg);
+    setBgImage(tpl.bgImage ?? null);
+    setBgOverlay(tpl.bgOverlay ?? 0);
     setElements(tpl.elements);
     setRects(tpl.rects);
     setSelectedId(null);
@@ -285,6 +297,19 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
     const ctx = canvas.getContext('2d')!;
     ctx.fillStyle = bg;
     ctx.fillRect(0, 0, cw, ch);
+    if (bgImage) {
+      await new Promise<void>(res => {
+        const img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.onload = () => { ctx.drawImage(img, 0, 0, cw, ch); res(); };
+        img.onerror = () => res();
+        img.src = bgImage;
+      });
+      if (bgOverlay > 0) {
+        ctx.fillStyle = `rgba(0,0,0,${bgOverlay / 100})`;
+        ctx.fillRect(0, 0, cw, ch);
+      }
+    }
     for (const el of elements) {
       if (el.type === 'image') {
         await new Promise<void>(res => {
@@ -607,13 +632,17 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
             <div ref={scrollRef} className="overflow-x-auto overflow-y-hidden rounded-xl border border-gray-100">
               <div
                 ref={canvasRef}
-                style={{ position: 'relative', width: cw, height: ch, backgroundColor: bg, flexShrink: 0, cursor: sidebarTab === 'link' ? 'crosshair' : 'default' }}
+                style={{ position: 'relative', width: cw, height: ch, backgroundColor: bg, backgroundImage: bgImage ? `url(${bgImage})` : 'none', backgroundSize: 'cover', backgroundPosition: 'center', flexShrink: 0, cursor: sidebarTab === 'link' ? 'crosshair' : 'default' }}
                 onMouseDown={onCanvasDown}
                 onMouseMove={onCanvasMove}
                 onMouseUp={onCanvasUp}
               >
+                {/* BG overlay */}
+                {bgImage && bgOverlay > 0 && (
+                  <div style={{ position: 'absolute', inset: 0, backgroundColor: `rgba(0,0,0,${bgOverlay / 100})`, pointerEvents: 'none', zIndex: 1 }} />
+                )}
                 {/* Grid guide */}
-                <div style={{ position: 'absolute', inset: 0, display: 'flex', pointerEvents: 'none', opacity: 0.15 }}>
+                <div style={{ position: 'absolute', inset: 0, display: 'flex', pointerEvents: 'none', opacity: 0.15, zIndex: 2 }}>
                   {Array.from({ length: 11 }, (_, i) => (
                     <div key={i} style={{ width: WIDGET_W, marginRight: WIDGET_GAP, height: '100%', borderRight: '1px dashed #18181b', flexShrink: 0 }} />
                   ))}
