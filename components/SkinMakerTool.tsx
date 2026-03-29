@@ -57,6 +57,7 @@ interface BlogTemplate {
   bg: string;
   bgImage?: string;
   bgOverlay?: number;
+  bgPosition?: string;
   cw: number;
   ch: number;
   elements: CanvasElement[];
@@ -73,6 +74,7 @@ const BLOG_TEMPLATES: BlogTemplate[] = [
     bg: '#1a1a1a',
     bgImage: '/images/260320일상엔베이커리/일상엔-수원역카페-소나무조명.JPG',
     bgOverlay: 45,
+    bgPosition: 'center 40%',
     cw: 1920, ch: 450,
     elements: [
       { id: 1, type: 'text', text: '오늘의 맛집 기록', x: 680, y: 135, fontSize: 52, color: '#ffffff', fontWeight: 'bold' },
@@ -94,6 +96,7 @@ const BLOG_TEMPLATES: BlogTemplate[] = [
     bg: '#1a1a1a',
     bgImage: '/images/260208에디션엠/에디션엠-감귤케이크-딸기음료-메인.JPG',
     bgOverlay: 52,
+    bgPosition: 'center center',
     cw: 1920, ch: 450,
     elements: [
       { id: 1, type: 'text', text: '체험단 솔직 후기 블로그', x: 650, y: 135, fontSize: 48, color: '#ffffff', fontWeight: 'bold' },
@@ -115,6 +118,7 @@ const BLOG_TEMPLATES: BlogTemplate[] = [
     bg: '#0a2540',
     bgImage: '/images/251231지관서가/안동북카페-지관서가-1층내부-서가창가뷰.JPG',
     bgOverlay: 65,
+    bgPosition: 'center 30%',
     cw: 1920, ch: 450,
     elements: [
       { id: 1, type: 'text', text: '재테크 실전 기록', x: 700, y: 135, fontSize: 52, color: '#ffffff', fontWeight: 'bold' },
@@ -136,6 +140,7 @@ const BLOG_TEMPLATES: BlogTemplate[] = [
     bg: '#1a1a1a',
     bgImage: '/images/260317야옹이네고양이카페/IMG_8537.JPG',
     bgOverlay: 42,
+    bgPosition: 'center 35%',
     cw: 1920, ch: 450,
     elements: [
       { id: 1, type: 'text', text: '나의 일상 기록', x: 720, y: 135, fontSize: 52, color: '#ffffff', fontWeight: 'bold' },
@@ -190,6 +195,7 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
   const [bg, setBg] = useState('#f5f1ee');
   const [bgImage, setBgImage] = useState<string | null>(null);
   const [bgOverlay, setBgOverlay] = useState(0);
+  const [bgPosition, setBgPosition] = useState('center center');
 
   const [sidebarTab, setSidebarTab] = useState<'template' | 'design' | 'link'>('template');
   const [showCode, setShowCode] = useState(false);
@@ -242,6 +248,7 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
     setCw(tpl.cw); setCh(tpl.ch); setBg(tpl.bg);
     setBgImage(tpl.bgImage ?? null);
     setBgOverlay(tpl.bgOverlay ?? 0);
+    setBgPosition(tpl.bgPosition ?? 'center center');
     setElements(tpl.elements);
     setRects(tpl.rects);
     setSelectedId(null);
@@ -303,7 +310,21 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
       await new Promise<void>(res => {
         const img = new Image();
         img.crossOrigin = 'anonymous';
-        img.onload = () => { ctx.drawImage(img, 0, 0, cw, ch); res(); };
+        img.onload = () => {
+          // object-fit: cover + bgPosition
+          const scale = Math.max(cw / img.naturalWidth, ch / img.naturalHeight);
+          const dw = img.naturalWidth * scale;
+          const dh = img.naturalHeight * scale;
+          const parts = bgPosition.split(' ');
+          const hStr = parts[0] ?? 'center';
+          const vStr = parts[1] ?? 'center';
+          const hFrac = hStr === 'left' ? 0 : hStr === 'right' ? 1 : hStr.endsWith('%') ? parseFloat(hStr) / 100 : 0.5;
+          const vFrac = vStr === 'top' ? 0 : vStr === 'bottom' ? 1 : vStr.endsWith('%') ? parseFloat(vStr) / 100 : 0.5;
+          const dx = -(dw - cw) * hFrac;
+          const dy = -(dh - ch) * vFrac;
+          ctx.drawImage(img, dx, dy, dw, dh);
+          res();
+        };
         img.onerror = () => res();
         img.src = bgImage;
       });
@@ -634,7 +655,7 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
             <div ref={scrollRef} className="overflow-x-auto overflow-y-hidden rounded-xl border border-gray-100">
               <div
                 ref={canvasRef}
-                style={{ position: 'relative', width: cw, height: ch, backgroundColor: bg, backgroundImage: bgImage ? `url(${bgImage})` : 'none', backgroundSize: 'cover', backgroundPosition: 'center', flexShrink: 0, cursor: sidebarTab === 'link' ? 'crosshair' : 'default' }}
+                style={{ position: 'relative', width: cw, height: ch, backgroundColor: bg, backgroundImage: bgImage ? `url(${bgImage})` : 'none', backgroundSize: 'cover', backgroundPosition: bgPosition, flexShrink: 0, cursor: sidebarTab === 'link' ? 'crosshair' : 'default' }}
                 onMouseDown={onCanvasDown}
                 onMouseMove={onCanvasMove}
                 onMouseUp={onCanvasUp}
