@@ -26,102 +26,138 @@ declare global {
 
 const STYLE_PRESETS = [
   {
-    id: 'food',
-    label: '맛집 블로그',
+    id: 'cafe',
+    label: '카페·맛집',
     emoji: '🍽️',
     bgType: 'image' as BgType,
-    bgColor: '#2d3436',
+    bgColor: '#1a1a1a',
     bgImage: '/images/cafe.jpg',
     textColor: '#ffffff',
     fontFamily: `'Nanum Myeongjo', serif`,
-    frameType: 'corners' as FrameType,
-    overlayOpacity: 45,
-    textAlign: 'center' as TextAlign,
-    textVAlign: 'middle' as TextVAlign,
-    title: '성수동 감성 카페 추천',
-    subtitle: '재방문 100% 카페 후기',
+    frameType: 'band' as FrameType,
+    overlayOpacity: 18,
+    textAlign: 'left' as TextAlign,
+    textVAlign: 'bottom' as TextVAlign,
+    title: '성수동 분위기 카페 추천',
+    subtitle: '재방문 100% 카페 솔직 후기',
     category: '카페 기록',
-    categoryOptions: ['프롤로그', '맛집 방문', '카페 기록', '재방문 리스트'],
+    categoryOptions: ['카페 기록', '맛집 탐방', '방문 후기', '재방문 리스트'],
   },
   {
     id: 'review',
-    label: '체험단 블로그',
+    label: '체험단·리뷰',
     emoji: '🎁',
     bgType: 'image' as BgType,
     bgColor: '#1a1a1a',
     bgImage: '/images/jungyeon-food-1390412.jpg',
     textColor: '#ffffff',
     fontFamily: `'Noto Sans KR', sans-serif`,
-    frameType: 'none' as FrameType,
-    overlayOpacity: 50,
+    frameType: 'solid' as FrameType,
+    overlayOpacity: 58,
     textAlign: 'center' as TextAlign,
     textVAlign: 'middle' as TextVAlign,
     title: '체험단 솔직 후기',
-    subtitle: '직접 써보고 솔직하게 적었어요',
-    category: '체험단',
-    categoryOptions: ['제품 후기', '솔직 리뷰', '사용 전/후', '총평'],
+    subtitle: '직접 써봤습니다',
+    category: '제품 리뷰',
+    categoryOptions: ['제품 리뷰', '솔직 후기', '사용 전/후', '총평'],
   },
   {
     id: 'finance',
-    label: '재테크 블로그',
+    label: '재테크·부업',
     emoji: '📈',
     bgType: 'image' as BgType,
     bgColor: '#0a3d62',
     bgImage: '/images/muqadastalib-moneybag-8727680_1920.jpg',
-    textColor: '#ffffff',
+    textColor: '#fdcb6e',
     fontFamily: `'Noto Sans KR', sans-serif`,
-    frameType: 'solid' as FrameType,
-    overlayOpacity: 40,
-    textAlign: 'center' as TextAlign,
-    textVAlign: 'middle' as TextVAlign,
-    title: '월 50만원 절약하는 법',
-    subtitle: '직장인 재테크 실전 가이드',
+    frameType: 'corners' as FrameType,
+    overlayOpacity: 55,
+    textAlign: 'left' as TextAlign,
+    textVAlign: 'bottom' as TextVAlign,
+    title: '월급쟁이 재테크 실전기',
+    subtitle: '직장인도 할 수 있는 절약과 투자',
     category: '재테크',
-    categoryOptions: ['재테크 기초', '절약 팁', '투자 후기', '수익 인증'],
+    categoryOptions: ['재테크 기초', '절약 팁', '투자 후기', '부업 기록'],
   },
   {
-    id: 'daily',
-    label: '일상 블로그',
-    emoji: '✨',
+    id: 'travel',
+    label: '여행·일상',
+    emoji: '✈️',
     bgType: 'image' as BgType,
     bgColor: '#2d3436',
     bgImage: '/images/rottonara-backpack-4339090_1920.jpg',
     textColor: '#ffffff',
-    fontFamily: `'Noto Sans KR', sans-serif`,
+    fontFamily: `'Nanum Myeongjo', serif`,
+    frameType: 'double' as FrameType,
+    overlayOpacity: 38,
+    textAlign: 'right' as TextAlign,
+    textVAlign: 'top' as TextVAlign,
+    title: '일상 탈출 여행 기록',
+    subtitle: '떠나고 싶을 때 꺼내보는 여행 일지',
+    category: '여행 기록',
+    categoryOptions: ['여행 기록', '국내 여행', '해외 여행', '여행 준비'],
+  },
+  {
+    id: 'hobby',
+    label: '취미·장비',
+    emoji: '📷',
+    bgType: 'image' as BgType,
+    bgColor: '#2d3436',
+    bgImage: '/images/builtbymath-camera-1362419.jpg',
+    textColor: '#ffffff',
+    fontFamily: `'Jua', sans-serif`,
+    frameType: 'band' as FrameType,
+    overlayOpacity: 12,
+    textAlign: 'left' as TextAlign,
+    textVAlign: 'bottom' as TextVAlign,
+    title: '입문자를 위한 카메라 추천',
+    subtitle: '처음 사도 후회 없는 카메라 리스트',
+    category: '취미',
+    categoryOptions: ['취미', '카메라', '장비 리뷰', '입문 가이드'],
+  },
+  {
+    id: 'lifestyle',
+    label: '라이프스타일',
+    emoji: '🌿',
+    bgType: 'color' as BgType,
+    bgColor: '#1a1a2e',
+    bgImage: null,
+    textColor: '#55efc4',
+    fontFamily: `'Nanum Gothic', sans-serif`,
     frameType: 'none' as FrameType,
-    overlayOpacity: 40,
+    overlayOpacity: 0,
     textAlign: 'center' as TextAlign,
     textVAlign: 'middle' as TextVAlign,
-    title: '오늘의 일상 기록',
-    subtitle: '소소하지만 특별한 하루',
-    category: '일상',
-    categoryOptions: ['일상', '취미', '여행', '라이프로그'],
+    title: '하루 루틴 공개',
+    subtitle: '작은 변화로 달라진 일상',
+    category: '라이프',
+    categoryOptions: ['라이프', '루틴', '일상 기록', '자기계발'],
   },
 ] as const;
 
 
 export default function HomePage() {
-  const [title, setTitle] = useState('성수동 감성 카페 추천');
-  const [subtitle, setSubtitle] = useState('재방문 100% 카페 후기');
+  const [title, setTitle] = useState('성수동 분위기 카페 추천');
+  const [subtitle, setSubtitle] = useState('재방문 100% 카페 솔직 후기');
   const [category, setCategory] = useState('카페 기록');
 
   const [bgType, setBgType] = useState<BgType>('image');
-  const [bgColor, setBgColor] = useState('#2d3436');
+  const [bgColor, setBgColor] = useState('#1a1a1a');
   const [bgImage, setBgImage] = useState<string | null>('/images/cafe.jpg');
 
-  const [textColor, setTextColor] = useState('#f8f8f8');
+  const [textColor, setTextColor] = useState('#ffffff');
   const [fontFamily, setFontFamily] = useState(`'Nanum Myeongjo', serif`);
-  const [textAlign, setTextAlign] = useState<TextAlign>('center');
-  const [textVAlign, setTextVAlign] = useState<TextVAlign>('middle');
+  const [textAlign, setTextAlign] = useState<TextAlign>('left');
+  const [textVAlign, setTextVAlign] = useState<TextVAlign>('bottom');
   const [textOffsetX, setTextOffsetX] = useState(0);
   const [textOffsetY, setTextOffsetY] = useState(0);
 
-  const [overlayOpacity, setOverlayOpacity] = useState(45);
-  const [frameType, setFrameType] = useState<FrameType>('corners');
+  const [overlayOpacity, setOverlayOpacity] = useState(18);
+  const [frameType, setFrameType] = useState<FrameType>('band');
 
   const [downloadFormat, setDownloadFormat] = useState<'png' | 'jpg'>('png');
   const [downloadScale, setDownloadScale] = useState<1 | 2>(2);
-  const [activePresetId, setActivePresetId] = useState<string | null>('food');
+  const [activePresetId, setActivePresetId] = useState<string | null>('cafe');
   const [isDownloadDone, setIsDownloadDone] = useState(false);
   const [activeMainTab, setActiveMainTab] = useState<'thumbnail' | 'skin'>('thumbnail');
   const [heroSlide, setHeroSlide] = useState(0);
@@ -145,8 +181,8 @@ export default function HomePage() {
     setFontFamily(preset.fontFamily);
     setFrameType(preset.frameType);
     setOverlayOpacity(preset.overlayOpacity);
-    setTextAlign('center');
-    setTextVAlign('middle');
+    setTextAlign(preset.textAlign);
+    setTextVAlign(preset.textVAlign);
     setTextOffsetX(0);
     setTextOffsetY(0);
     setActivePresetId(preset.id);

@@ -102,6 +102,15 @@ export default function ThumbnailPreview({
               <div className="absolute bottom-0 right-0 w-8 h-8 border-b-4 border-r-4" style={{ borderColor: textColor }} />
             </div>
           )}
+          {frameType === 'band' && (
+            <div
+              className="absolute bottom-0 left-0 right-0 z-10 pointer-events-none"
+              style={{
+                height: '55%',
+                background: 'linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.55) 45%, rgba(0,0,0,0) 100%)',
+              }}
+            />
+          )}
 
           <div
             style={{
@@ -116,7 +125,7 @@ export default function ThumbnailPreview({
               alignItems:
                 textAlign === 'center' ? 'center' :
                 textAlign === 'right' ? 'flex-end' : 'flex-start',
-              padding: frameType === 'none' ? '1.75rem' : '2.5rem',
+              padding: (frameType === 'none' || frameType === 'band') ? '1.75rem' : '2.5rem',
             }}
           >
             <div

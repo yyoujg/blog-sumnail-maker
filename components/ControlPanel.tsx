@@ -380,6 +380,7 @@ export default function ControlPanel({
                 className="w-full p-2 border border-gray-300 rounded-lg outline-none"
               >
                 <option value="none">없음</option>
+                <option value="band">하단 밴드 (그라데이션)</option>
                 <option value="solid">실선 테두리</option>
                 <option value="double">이중선 테두리</option>
                 <option value="corners">모서리 포인트</option>
