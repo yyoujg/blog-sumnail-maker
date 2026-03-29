@@ -52,6 +52,8 @@ export default function RootLayout({
     <html lang="ko">
       <head>
         <link rel="stylesheet" href={FONT_LINK_HREF} />
+        <link rel="preload" as="image" href="/images/260320일상엔베이커리/일상엔-바닐라라떼-아메리카노-두바이초코몽블랑-메인.JPG" />
+        <link rel="preload" as="image" href="/images/260208에디션엠/에디션엠-혜화역카페-내부인테리어.JPG" />
       </head>
       <body>
         {children}
