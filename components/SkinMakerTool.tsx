@@ -73,7 +73,7 @@ const BLOG_TEMPLATES: BlogTemplate[] = [
     desc: '맛집·카페·레시피',
     bg: '#1a1a1a',
     bgImage: '/images/260320일상엔베이커리/일상엔-바닐라라떼-아메리카노-두바이초코몽블랑-메인.JPG',
-    bgOverlay: 40,
+    bgOverlay: 30,
     bgPosition: 'center center',
     cw: 1920, ch: 450,
     elements: [
@@ -95,7 +95,7 @@ const BLOG_TEMPLATES: BlogTemplate[] = [
     desc: '제품 리뷰·체험단',
     bg: '#1a1a1a',
     bgImage: '/images/260208에디션엠/에디션엠-혜화역카페-내부좌석공간.JPG',
-    bgOverlay: 48,
+    bgOverlay: 30,
     bgPosition: 'center 40%',
     cw: 1920, ch: 450,
     elements: [
@@ -117,7 +117,7 @@ const BLOG_TEMPLATES: BlogTemplate[] = [
     desc: '주식·부동산·절약',
     bg: '#0a2540',
     bgImage: '/images/251231지관서가/안동북카페-지관서가-커피케이크-메뉴.JPG',
-    bgOverlay: 62,
+    bgOverlay: 30,
     bgPosition: 'center 35%',
     cw: 1920, ch: 450,
     elements: [
@@ -139,7 +139,7 @@ const BLOG_TEMPLATES: BlogTemplate[] = [
     desc: '일상·여행·취미',
     bg: '#1a1a1a',
     bgImage: '/images/260317야옹이네고양이카페/IMG_8552.JPG',
-    bgOverlay: 40,
+    bgOverlay: 30,
     bgPosition: 'center 35%',
     cw: 1920, ch: 450,
     elements: [

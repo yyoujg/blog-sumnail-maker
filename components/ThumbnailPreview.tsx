@@ -164,7 +164,7 @@ export default function ThumbnailPreview({
                 </h1>
               )}
               {subtitle && (
-                <p className="text-sm sm:text-base md:text-xl opacity-80 break-keep font-medium">
+                <p className="text-sm sm:text-base md:text-xl opacity-80 break-keep font-medium" style={{ wordBreak: 'keep-all' }}>
                   {subtitle}
                 </p>
               )}
