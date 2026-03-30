@@ -7,8 +7,21 @@ export const metadata: Metadata = {
   title: '블로그 조회수 올리는법 - 네이버 블로그 SEO 완전 가이드',
   description:
     '네이버 블로그 조회수가 안 나오는 이유와 해결법. 제목, 키워드, 글 구조 3가지만 바꾸면 조회수가 달라집니다.',
+  keywords: '블로그 조회수 올리기, 네이버 블로그 SEO, 블로그 키워드, 네이버 검색 최적화, 블로그 글쓰기 팁, 블로그 제목 쓰는법',
   alternates: {
     canonical: 'https://www.blogsumnail.com/guide/blog-seo',
+  },
+  openGraph: {
+    title: '블로그 조회수 올리는법 - 네이버 블로그 SEO 완전 가이드',
+    description: '네이버 블로그 조회수가 안 나오는 이유와 해결법. 제목, 키워드, 글 구조 3가지만 바꾸면 조회수가 달라집니다.',
+    type: 'article',
+    url: 'https://www.blogsumnail.com/guide/blog-seo',
+    images: [{ url: 'https://www.blogsumnail.com/og-image.png', width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: '블로그 조회수 올리는법 - 네이버 블로그 SEO 완전 가이드',
+    description: '네이버 블로그 조회수가 안 나오는 이유와 해결법.',
   },
 };
 

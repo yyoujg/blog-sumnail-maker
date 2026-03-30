@@ -5,6 +5,22 @@ import { Image as ImageIcon, Lightbulb, Users, Rocket, CheckCircle, Layout } fro
 export const metadata: Metadata = {
   title: 'About',
   description: '네이버 블로그 썸네일 메이커 & 스킨 메이커 서비스 소개. 만들게 된 이유, 주요 기능, 업데이트 계획을 안내합니다.',
+  keywords: '블로그 썸네일 메이커 소개, 썸네일 무료 도구, 블로그 스킨 메이커, 네이버 블로그 도구',
+  alternates: {
+    canonical: 'https://www.blogsumnail.com/about',
+  },
+  openGraph: {
+    title: 'About — 네이버 블로그 썸네일 메이커',
+    description: '네이버 블로그 썸네일 메이커 & 스킨 메이커 서비스 소개.',
+    type: 'website',
+    url: 'https://www.blogsumnail.com/about',
+    images: [{ url: 'https://www.blogsumnail.com/og-image.png', width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'About — 네이버 블로그 썸네일 메이커',
+    description: '네이버 블로그 썸네일 메이커 & 스킨 메이커 서비스 소개.',
+  },
 };
 
 export default function AboutPage() {

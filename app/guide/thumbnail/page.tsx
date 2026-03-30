@@ -7,8 +7,21 @@ export const metadata: Metadata = {
   title: '블로그 썸네일 만들기 - 클릭률 올리는 썸네일 완전 가이드',
   description:
     '네이버 블로그 썸네일을 무료로 쉽게 만드는 방법. 조회수 잘 나오는 썸네일의 특징과 제작 팁을 알아보세요.',
+  keywords: '블로그 썸네일 만들기, 네이버 블로그 썸네일, 썸네일 무료 제작, 클릭률 올리는 썸네일, 블로그 대표이미지, 썸네일 사이즈',
   alternates: {
     canonical: 'https://www.blogsumnail.com/guide/thumbnail',
+  },
+  openGraph: {
+    title: '블로그 썸네일 만들기 - 클릭률 올리는 썸네일 완전 가이드',
+    description: '네이버 블로그 썸네일을 무료로 쉽게 만드는 방법. 조회수 잘 나오는 썸네일의 특징과 제작 팁을 알아보세요.',
+    type: 'article',
+    url: 'https://www.blogsumnail.com/guide/thumbnail',
+    images: [{ url: 'https://www.blogsumnail.com/og-image.png', width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: '블로그 썸네일 만들기 - 클릭률 올리는 썸네일 완전 가이드',
+    description: '네이버 블로그 썸네일을 무료로 쉽게 만드는 방법.',
   },
 };
 

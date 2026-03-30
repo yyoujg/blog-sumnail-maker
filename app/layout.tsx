@@ -38,6 +38,12 @@ export const metadata: Metadata = {
   icons: {
     icon: '/favicon.svg',
   },
+  twitter: {
+    card: 'summary_large_image',
+    title: PAGE_TITLE,
+    description: PAGE_DESCRIPTION,
+    images: [`${SITE_URL}/og-image.png`],
+  },
   other: {
     'google-adsense-account': ADSENSE_CLIENT,
   },

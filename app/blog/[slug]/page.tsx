@@ -21,10 +21,21 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title: post.title,
     description: post.summary,
+    alternates: {
+      canonical: `https://www.blogsumnail.com/blog/${post.slug}`,
+    },
     openGraph: {
       title: `${post.title} — 네이버 블로그 썸네일 메이커`,
       description: post.summary,
       type: 'article',
+      url: `https://www.blogsumnail.com/blog/${post.slug}`,
+      publishedTime: post.date,
+      images: [{ url: 'https://www.blogsumnail.com/og-image.png', width: 1200, height: 630 }],
+    },
+    twitter: {
+      card: 'summary_large_image' as const,
+      title: `${post.title} — 네이버 블로그 썸네일 메이커`,
+      description: post.summary,
     },
   };
 }

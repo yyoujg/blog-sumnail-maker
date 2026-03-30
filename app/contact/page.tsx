@@ -5,6 +5,22 @@ import { Mail, Bug, Lightbulb, MessageSquare } from 'lucide-react';
 export const metadata: Metadata = {
   title: '문의',
   description: '버그 제보, 기능 제안, 제휴 문의는 이메일로 보내주세요.',
+  keywords: '블로그 썸네일 메이커 문의, 버그 제보, 기능 제안, 제휴 문의',
+  alternates: {
+    canonical: 'https://www.blogsumnail.com/contact',
+  },
+  openGraph: {
+    title: '문의 — 네이버 블로그 썸네일 메이커',
+    description: '버그 제보, 기능 제안, 제휴 문의는 이메일로 보내주세요.',
+    type: 'website',
+    url: 'https://www.blogsumnail.com/contact',
+    images: [{ url: 'https://www.blogsumnail.com/og-image.png', width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: '문의 — 네이버 블로그 썸네일 메이커',
+    description: '버그 제보, 기능 제안, 제휴 문의는 이메일로 보내주세요.',
+  },
 };
 
 export default function ContactPage() {

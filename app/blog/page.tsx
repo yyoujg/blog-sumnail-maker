@@ -6,6 +6,22 @@ import { BookOpen, ArrowRight, Image, TrendingUp, Gift, Search, Smartphone, Arro
 export const metadata: Metadata = {
   title: '블로그 & 가이드',
   description: '네이버 블로그 운영에 도움이 되는 썸네일, 수익화, 체험단, SEO 가이드 모음.',
+  keywords: '네이버 블로그 가이드, 블로그 수익화, 블로그 체험단, 블로그 SEO, 블로그 조회수 올리기, 블로그 운영 팁',
+  alternates: {
+    canonical: 'https://www.blogsumnail.com/blog',
+  },
+  openGraph: {
+    title: '블로그 & 가이드 — 네이버 블로그 썸네일 메이커',
+    description: '네이버 블로그 운영에 도움이 되는 썸네일, 수익화, 체험단, SEO 가이드 모음.',
+    type: 'website',
+    url: 'https://www.blogsumnail.com/blog',
+    images: [{ url: 'https://www.blogsumnail.com/og-image.png', width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: '블로그 & 가이드 — 네이버 블로그 썸네일 메이커',
+    description: '네이버 블로그 운영에 도움이 되는 썸네일, 수익화, 체험단, SEO 가이드 모음.',
+  },
 };
 
 function formatDate(dateStr: string) {

@@ -13,6 +13,8 @@ export function GET() {
       changefreq: 'monthly',
       priority: '0.8',
     })),
+    { loc: `${SITE_URL}/guide/thumbnail`, lastmod: '2026-03-09', changefreq: 'monthly', priority: '0.7' },
+    { loc: `${SITE_URL}/guide/blog-seo`, lastmod: '2026-03-09', changefreq: 'monthly', priority: '0.7' },
     { loc: `${SITE_URL}/about`, lastmod: '2026-03-09', changefreq: 'monthly', priority: '0.6' },
     { loc: `${SITE_URL}/contact`, lastmod: '2026-03-09', changefreq: 'monthly', priority: '0.6' },
     { loc: `${SITE_URL}/privacy`, lastmod: '2026-03-09', changefreq: 'monthly', priority: '0.5' },
