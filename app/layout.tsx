@@ -58,6 +58,37 @@ export default function RootLayout({
       <body>
         {children}
 
+        {/* 카카오톡 오픈채팅 플로팅 버튼 */}
+        <a
+          href="https://open.kakao.com/o/sXbyh0ni"
+          target="_blank"
+          rel="noopener noreferrer"
+          title="오류/제안 카카오톡 오픈채팅"
+          style={{
+            position: 'fixed',
+            bottom: '24px',
+            right: '24px',
+            zIndex: 50,
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            gap: '4px',
+            backgroundColor: '#FEE500',
+            color: '#3C1E1E',
+            borderRadius: '50px',
+            padding: '10px 16px',
+            boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
+            textDecoration: 'none',
+            fontSize: '12px',
+            fontWeight: '600',
+            lineHeight: '1.2',
+            whiteSpace: 'nowrap',
+          }}
+        >
+          <span style={{ fontSize: '18px' }}>💬</span>
+          <span>오류·제안</span>
+        </a>
+
         {/* 구조화 데이터 (SoftwareApplication) */}
         <Script
           id="ld-json"
