@@ -31,7 +31,7 @@ const STYLE_PRESETS = [
     emoji: '🍽️',
     bgType: 'image' as BgType,
     bgColor: '#1a1a1a',
-    bgImage: '/images/260320일상엔베이커리/일상엔-바닐라라떼-아메리카노-두바이초코몽블랑-메인.JPG',
+    bgImage: '/images/260208에디션엠/에디션엠-감귤케이크-딸기음료-메인.JPG',
     textColor: '#ffffff',
     fontFamily: `'Nanum Myeongjo', serif`,
     frameType: 'band' as FrameType,
@@ -49,7 +49,7 @@ const STYLE_PRESETS = [
     emoji: '🎁',
     bgType: 'image' as BgType,
     bgColor: '#1a1a1a',
-    bgImage: '/images/260208에디션엠/에디션엠-베이커리쇼케이스-크루아상.JPG',
+    bgImage: '/images/250118코르크베이크바/IMG_7578.JPG',
     textColor: '#ffffff',
     fontFamily: `'Noto Sans KR', sans-serif`,
     frameType: 'solid' as FrameType,
@@ -67,7 +67,7 @@ const STYLE_PRESETS = [
     emoji: '📈',
     bgType: 'image' as BgType,
     bgColor: '#0a2540',
-    bgImage: '/images/251231지관서가/안동북카페-지관서가-커피케이크-메뉴.JPG',
+    bgImage: '/images/251231지관서가/안동북카페-지관서가-1층내부-서가창가뷰.JPG',
     textColor: '#fdcb6e',
     fontFamily: `'Noto Sans KR', sans-serif`,
     frameType: 'corners' as FrameType,
@@ -85,7 +85,7 @@ const STYLE_PRESETS = [
     emoji: '✈️',
     bgType: 'image' as BgType,
     bgColor: '#2d3436',
-    bgImage: '/images/251217포트웰브/포트웰브_크리스마스트리.JPG',
+    bgImage: '/images/251217포트웰브/포트웰브_바카운터프로젝터.JPG',
     textColor: '#ffffff',
     fontFamily: `'Nanum Myeongjo', serif`,
     frameType: 'double' as FrameType,
@@ -103,7 +103,7 @@ const STYLE_PRESETS = [
     emoji: '🎸',
     bgType: 'image' as BgType,
     bgColor: '#1a1a1a',
-    bgImage: '/images/260321시온뮤직 수원권선점/시온뮤직-드럼방전체-악보대TV.JPG',
+    bgImage: '/images/260321시온뮤직 수원권선점/시온뮤직-수원권선점-복도기타벽.JPG',
     textColor: '#ffffff',
     fontFamily: `'Jua', sans-serif`,
     frameType: 'band' as FrameType,
@@ -121,7 +121,7 @@ const STYLE_PRESETS = [
     emoji: '🌿',
     bgType: 'image' as BgType,
     bgColor: '#1a1a1a',
-    bgImage: '/images/260317야옹이네고양이카페/IMG_8591.JPG',
+    bgImage: '/images/260317야옹이네고양이카페/IMG_8552.JPG',
     textColor: '#ffffff',
     fontFamily: `'Nanum Gothic', sans-serif`,
     frameType: 'none' as FrameType,
@@ -143,7 +143,7 @@ export default function HomePage() {
 
   const [bgType, setBgType] = useState<BgType>('image');
   const [bgColor, setBgColor] = useState('#1a1a1a');
-  const [bgImage, setBgImage] = useState<string | null>('/images/260320일상엔베이커리/일상엔-바닐라라떼-아메리카노-두바이초코몽블랑-메인.JPG');
+  const [bgImage, setBgImage] = useState<string | null>('/images/260208에디션엠/에디션엠-감귤케이크-딸기음료-메인.JPG');
 
   const [textColor, setTextColor] = useState('#ffffff');
   const [fontFamily, setFontFamily] = useState(`'Nanum Myeongjo', serif`);
