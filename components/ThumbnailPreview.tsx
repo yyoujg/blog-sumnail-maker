@@ -190,7 +190,7 @@ export default function ThumbnailPreview({
                   onClick={() => onFormatChange(f)}
                   className={`px-3 py-1.5 text-xs font-bold rounded-lg border transition ${
                     downloadFormat === f
-                      ? 'bg-gray-900 text-white border-gray-900'
+                      ? 'bg-[#111111] text-white border-gray-900'
                       : 'bg-white text-gray-600 border-gray-300 hover:border-gray-400'
                   }`}
                 >
@@ -211,7 +211,7 @@ export default function ThumbnailPreview({
                   onClick={() => onScaleChange(s.value)}
                   className={`px-3 py-1.5 text-xs font-bold rounded-lg border transition ${
                     downloadScale === s.value
-                      ? 'bg-gray-900 text-white border-gray-900'
+                      ? 'bg-[#111111] text-white border-gray-900'
                       : 'bg-white text-gray-600 border-gray-300 hover:border-gray-400'
                   }`}
                 >
@@ -234,7 +234,7 @@ export default function ThumbnailPreview({
         className={`w-full max-w-[500px] flex items-center justify-center gap-2 py-4 px-6 rounded-xl font-bold text-lg text-white shadow-lg transition-all ${
           isDownloading
             ? 'bg-blue-400 cursor-not-allowed'
-            : 'bg-gray-900 hover:bg-gray-800 hover:shadow-xl hover:-translate-y-1'
+            : 'bg-[#111111] hover:bg-[#111111] hover:shadow-xl hover:-translate-y-1'
         }`}
       >
         {isDownloading ? (

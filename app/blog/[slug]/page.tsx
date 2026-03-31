@@ -124,7 +124,7 @@ export default async function BlogPostPage({ params }: PageProps) {
   const relatedPosts = [...coreRelated, ...extraRelated].slice(0, 3);
 
   return (
-    <div className="min-h-screen bg-gray-50 font-sans">
+    <div className="min-h-screen bg-[#f5f5f0] font-sans">
       <div className="max-w-2xl mx-auto px-4 py-8 md:py-12">
 
         <Link
@@ -142,7 +142,7 @@ export default async function BlogPostPage({ params }: PageProps) {
             <h1 className="text-2xl md:text-[1.75rem] font-bold text-gray-900 leading-snug mb-6">
               {post.title}
             </h1>
-            <div className="bg-gray-100 rounded-xl px-5 py-4 border-l-4 border-gray-400">
+            <div className="bg-gray-100 rounded-xl px-5 py-4 border-l-4 border-amber-500">
               <p className="text-[15px] text-gray-600 leading-[1.85]">{post.summary}</p>
             </div>
           </header>
@@ -152,7 +152,7 @@ export default async function BlogPostPage({ params }: PageProps) {
           {/* 목차 */}
           {post.sections.length > 2 && (
             <nav className="mb-10 bg-white rounded-2xl border border-gray-200 overflow-hidden">
-              <div className="px-5 py-3 bg-gray-50 border-b border-gray-100">
+              <div className="px-5 py-3 bg-[#f5f5f0] border-b border-gray-100">
                 <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">목차</p>
               </div>
               <ol className="p-5 space-y-2">
@@ -175,7 +175,7 @@ export default async function BlogPostPage({ params }: PageProps) {
               >
                 {/* 섹션 헤더 */}
                 <div className="flex items-center gap-3 px-6 py-4 border-b border-gray-100 bg-gray-50">
-                  <span className="flex-shrink-0 w-6 h-6 bg-gray-800 text-white rounded-md flex items-center justify-center text-xs font-bold">
+                  <span className="flex-shrink-0 w-6 h-6 bg-[#111111] text-white rounded-md flex items-center justify-center text-xs font-bold">
                     {i + 1}
                   </span>
                   <h2 className="text-[15px] md:text-base font-bold text-gray-900 leading-snug">
@@ -196,7 +196,7 @@ export default async function BlogPostPage({ params }: PageProps) {
         <CoupangRecommendations />
 
         {/* CTA */}
-        <div className="mt-10 p-6 bg-gray-900 rounded-2xl text-center">
+        <div className="mt-10 p-6 bg-[#111111] rounded-2xl text-center">
           <p className="text-sm text-gray-400 mb-3">블로그 썸네일, 직접 만들어보세요</p>
           <a
             href="https://www.blogsumnail.com"

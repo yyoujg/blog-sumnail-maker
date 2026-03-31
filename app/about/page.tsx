@@ -24,7 +24,7 @@ export const metadata: Metadata = {
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen bg-gray-50 text-gray-800 font-sans p-4 md:p-8">
+    <div className="min-h-screen bg-[#f5f5f0] text-gray-800 font-sans p-4 md:p-8">
       <div className="max-w-3xl mx-auto">
         <Link href="/" className="text-gray-900 hover:underline text-sm mb-6 inline-block">
           ← 홈으로 돌아가기
@@ -55,7 +55,7 @@ export default function AboutPage() {
           {/* 썸네일 메이커 */}
           <div className="bg-white rounded-xl shadow-sm p-6 md:p-8">
             <div className="flex items-center gap-2 mb-4">
-              <ImageIcon className="w-5 h-5 text-blue-600" />
+              <ImageIcon className="w-5 h-5 text-amber-600" />
               <h2 className="text-xl font-bold text-gray-900">썸네일 메이커</h2>
             </div>
             <p className="text-sm text-gray-700 leading-relaxed mb-4">
@@ -71,7 +71,7 @@ export default function AboutPage() {
                 { title: '프레임 스타일', desc: '실선·이중선·모서리 포인트 테두리 효과' },
                 { title: 'PNG / JPG 다운로드', desc: '1× 표준 또는 2× 고화질로 즉시 저장' },
               ].map((feat, i) => (
-                <div key={i} className="p-3 bg-gray-50 rounded-lg">
+                <div key={i} className="p-3 bg-[#f5f5f0] rounded-lg">
                   <p className="text-sm font-semibold text-gray-900">{feat.title}</p>
                   <p className="text-xs text-gray-500 mt-0.5">{feat.desc}</p>
                 </div>
@@ -82,7 +82,7 @@ export default function AboutPage() {
           {/* 스킨 메이커 */}
           <div className="bg-white rounded-xl shadow-sm p-6 md:p-8">
             <div className="flex items-center gap-2 mb-4">
-              <Layout className="w-5 h-5 text-purple-600" />
+              <Layout className="w-5 h-5 text-amber-600" />
               <h2 className="text-xl font-bold text-gray-900">스킨 메이커</h2>
             </div>
             <p className="text-sm text-gray-700 leading-relaxed mb-4">
@@ -98,7 +98,7 @@ export default function AboutPage() {
                 { title: '코드 자동 생성', desc: '붙여넣기 한 번으로 완성되는 HTML/CSS 코드' },
                 { title: '적용 가이드 제공', desc: '네이버 블로그 스킨 편집 단계별 안내' },
               ].map((feat, i) => (
-                <div key={i} className="p-3 bg-gray-50 rounded-lg">
+                <div key={i} className="p-3 bg-[#f5f5f0] rounded-lg">
                   <p className="text-sm font-semibold text-gray-900">{feat.title}</p>
                   <p className="text-xs text-gray-500 mt-0.5">{feat.desc}</p>
                 </div>
@@ -141,7 +141,7 @@ export default function AboutPage() {
                 '일관된 브랜드 이미지를 유지하고 싶은 블로거',
               ].map((item, i) => (
                 <li key={i} className="flex items-start gap-3 text-sm text-gray-700">
-                  <CheckCircle className="w-4 h-4 text-blue-500 flex-shrink-0 mt-0.5" />
+                  <CheckCircle className="w-4 h-4 text-amber-600 flex-shrink-0 mt-0.5" />
                   {item}
                 </li>
               ))}

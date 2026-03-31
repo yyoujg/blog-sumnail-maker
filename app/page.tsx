@@ -241,10 +241,10 @@ export default function HomePage() {
   const activePreset = STYLE_PRESETS.find(p => p.id === activePresetId) ?? null;
 
   return (
-    <div className="min-h-screen bg-gray-50 text-gray-800 font-sans flex flex-col">
+    <div className="min-h-screen bg-[#f5f5f0] text-gray-800 font-sans flex flex-col">
 
       {/* ── 헤더 / 네비게이션 ── */}
-      <header className="sticky top-0 z-50 bg-gray-900 border-b border-white/10 px-4 md:px-8">
+      <header className="sticky top-0 z-50 bg-[#111111] border-b border-white/10 px-4 md:px-8">
         <div className="max-w-6xl mx-auto flex items-center justify-between h-14">
           {/* 로고 */}
           <div className="flex items-center gap-2 text-white font-bold text-sm">
@@ -289,7 +289,7 @@ export default function HomePage() {
       </header>
 
       {/* ── 슬림 히어로 ── */}
-      <section className="bg-gradient-to-br from-gray-900 to-gray-800 text-white py-7 px-4 md:px-8">
+      <section className="bg-[#111111] text-white py-7 px-4 md:px-8">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row md:items-center md:justify-between gap-4">
           <div>
             <h1 className="text-2xl md:text-3xl font-bold leading-tight">
@@ -340,7 +340,7 @@ export default function HomePage() {
                     onClick={() => applyPreset(preset)}
                     className={`flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-sm font-semibold border transition ${
                       activePresetId === preset.id
-                        ? 'bg-gray-900 text-white border-gray-900 shadow'
+                        ? 'bg-[#111111] text-white border-gray-900 shadow'
                         : 'bg-white text-gray-700 border-gray-200 hover:border-gray-400 hover:bg-gray-50'
                     }`}
                   >
@@ -404,7 +404,7 @@ export default function HomePage() {
       <Script src={HTML2CANVAS_SCRIPT_SRC} strategy="afterInteractive" />
 
       {/* 푸터 */}
-      <footer className="bg-gray-800 text-gray-400 text-sm py-10 px-4 md:px-8 mt-auto">
+      <footer className="bg-[#111111] text-gray-400 text-sm py-10 px-4 md:px-8 mt-auto">
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col md:flex-row items-center md:items-start justify-between gap-6">
             <div>
@@ -425,7 +425,7 @@ export default function HomePage() {
               <Link href="/contact" className="hover:text-white transition-colors">문의</Link>
             </nav>
           </div>
-          <div className="border-t border-gray-700 mt-8 pt-6 text-center text-xs text-gray-500">
+          <div className="border-t border-white/10 mt-8 pt-6 text-center text-xs text-gray-500">
             <p>© {new Date().getFullYear()} 네이버 블로그 디자인 도구. All rights reserved.</p>
             <p className="mt-1">문의 및 제휴: andn1026@gmail.com</p>
           </div>

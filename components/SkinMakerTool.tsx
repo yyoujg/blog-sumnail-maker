@@ -383,7 +383,7 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
 
   // ── render ──
   return (
-    <div className={`font-sans text-gray-800 ${embedded ? '' : 'min-h-screen bg-gray-50 py-8 px-4 md:px-8'}`}>
+    <div className={`font-sans text-gray-800 ${embedded ? '' : 'min-h-screen bg-[#f5f5f0] py-8 px-4 md:px-8'}`}>
       <div className={embedded ? '' : 'max-w-6xl mx-auto'}>
 
       {!embedded && (
@@ -401,7 +401,7 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
             onClick={() => { loadTemplate(tpl); setSidebarTab('design'); }}
             className={`flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-sm font-semibold border transition ${
               activeTemplateId === tpl.id
-                ? 'bg-gray-900 text-white border-gray-900 shadow'
+                ? 'bg-[#111111] text-white border-[#111111] shadow'
                 : 'bg-white text-gray-700 border-gray-200 hover:border-gray-400 hover:bg-gray-50'
             }`}
           >
@@ -739,7 +739,7 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
           {/* 액션 버튼 */}
           <div className="flex gap-2 mb-4">
             <button onClick={downloadSkin}
-              className="flex-1 flex items-center justify-center gap-2 py-3.5 px-4 rounded-xl font-bold text-white bg-gray-900 hover:bg-gray-800 hover:shadow-lg hover:-translate-y-0.5 transition-all text-sm">
+              className="flex-1 flex items-center justify-center gap-2 py-3.5 px-4 rounded-xl font-bold text-white bg-[#111111] hover:bg-[#222222] hover:shadow-lg hover:-translate-y-0.5 transition-all text-sm">
               <Download className="w-4 h-4" /> 이미지 다운로드
             </button>
             <button onClick={() => setShowGuide(true)}

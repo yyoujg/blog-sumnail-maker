@@ -132,7 +132,7 @@ export default function BlogListPage() {
   const totalPosts = blogPosts.length;
 
   return (
-    <div className="min-h-screen bg-gray-50 font-sans">
+    <div className="min-h-screen bg-[#f5f5f0] font-sans">
       <div className="max-w-2xl mx-auto px-4 py-8 md:py-12">
 
         <Link href="/" className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-900 transition-colors mb-8">
@@ -171,7 +171,7 @@ export default function BlogListPage() {
           {categorized.map((cat) => (
             <section key={cat.id} id={cat.id}>
               <div className="flex items-center gap-2 mb-4">
-                <span className="flex items-center justify-center w-7 h-7 bg-gray-900 text-white rounded-lg">
+                <span className="flex items-center justify-center w-7 h-7 bg-[#111111] text-white rounded-lg">
                   {cat.icon}
                 </span>
                 <h2 className="text-base font-bold text-gray-900">{cat.label}</h2>
@@ -202,7 +202,7 @@ export default function BlogListPage() {
         </div>
 
         {/* 하단 CTA */}
-        <div className="mt-12 p-6 bg-gray-900 rounded-xl text-center">
+        <div className="mt-12 p-6 bg-[#111111] rounded-xl text-center">
           <p className="text-sm text-gray-400 mb-3">조회수 잘 나오는 썸네일, 지금 바로 만들어보세요</p>
           <Link
             href="/"

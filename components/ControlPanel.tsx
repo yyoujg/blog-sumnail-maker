@@ -175,7 +175,7 @@ export default function ControlPanel({
                       onClick={() => setCategory(opt)}
                       className={`text-xs px-2.5 py-1 rounded-full border transition ${
                         category === opt
-                          ? 'bg-gray-900 text-white border-gray-900'
+                          ? 'bg-[#111111] text-white border-[#111111]'
                           : 'bg-gray-50 text-gray-600 border-gray-200 hover:border-gray-400'
                       }`}
                     >
@@ -258,7 +258,7 @@ export default function ControlPanel({
                         title={`${v === 'top' ? '상단' : v === 'middle' ? '중간' : '하단'} ${h === 'left' ? '왼쪽' : h === 'center' ? '가운데' : '오른쪽'}`}
                         onClick={() => { setTextAlign(h); setTextVAlign(v); }}
                         className={`w-9 h-9 rounded border flex p-1.5 transition ${
-                          isActive ? 'bg-gray-900 border-gray-900' : 'bg-white border-gray-200 hover:border-gray-400'
+                          isActive ? 'bg-[#111111] border-[#111111]' : 'bg-white border-gray-200 hover:border-gray-400'
                         }`}
                       >
                         <span className={`flex w-full h-full ${dotPos}`}>
@@ -312,13 +312,13 @@ export default function ControlPanel({
             <div className="flex gap-2">
               <button
                 onClick={() => setBgType('color')}
-                className={`flex-1 py-2 text-sm font-medium rounded-lg transition ${bgType === 'color' ? 'bg-gray-800 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
+                className={`flex-1 py-2 text-sm font-medium rounded-lg transition ${bgType === 'color' ? 'bg-[#111111] text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
               >
                 단색 배경
               </button>
               <button
                 onClick={() => setBgType('image')}
-                className={`flex-1 py-2 text-sm font-medium rounded-lg transition ${bgType === 'image' ? 'bg-gray-800 text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
+                className={`flex-1 py-2 text-sm font-medium rounded-lg transition ${bgType === 'image' ? 'bg-[#111111] text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
               >
                 이미지 배경
               </button>
