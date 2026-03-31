@@ -5,6 +5,7 @@ import {
   PAGE_TITLE,
   PAGE_DESCRIPTION,
   ADSENSE_CLIENT,
+  ADSENSE_SCRIPT_SRC,
   FONT_LINK_HREF,
   GTAG_ID,
   SITE_URL,
@@ -63,6 +64,9 @@ export default function RootLayout({
       </head>
       <body>
         {children}
+
+        {/* 애드센스 전역 스크립트 */}
+        <Script src={ADSENSE_SCRIPT_SRC} strategy="afterInteractive" crossOrigin="anonymous" />
 
         {/* 카카오톡 오픈채팅 플로팅 버튼 */}
         <a
