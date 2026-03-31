@@ -14,10 +14,12 @@ export default async function OGImage({ params }: { params: Promise<{ slug: stri
   const title = post?.title ?? '블로그 가이드';
   const summary = post?.summary ?? '네이버 블로그 운영 팁';
 
-  // 제목이 길면 두 줄로 분리
-  const MAX = 22;
-  const line1 = title.length > MAX ? title.slice(0, title.lastIndexOf(' ', MAX) || MAX) : title;
-  const line2 = title.length > MAX ? title.slice(line1.length).trim() : '';
+  const MAX = 20;
+  const spaceIdx = title.lastIndexOf(' ', MAX);
+  const breakAt = spaceIdx > 0 ? spaceIdx : MAX;
+  const line1 = title.length > MAX ? title.slice(0, breakAt) : title;
+  const line2 = title.length > MAX ? title.slice(breakAt).trim() : '';
+  const shortSummary = summary.length > 80 ? summary.slice(0, 80) + '…' : summary;
 
   return new ImageResponse(
     (
@@ -31,22 +33,10 @@ export default async function OGImage({ params }: { params: Promise<{ slug: stri
           justifyContent: 'space-between',
           padding: '56px 72px',
           fontFamily: 'sans-serif',
-          position: 'relative',
         }}
       >
-        {/* 배경 격자 */}
-        <div
-          style={{
-            position: 'absolute',
-            inset: 0,
-            backgroundImage:
-              'radial-gradient(circle at 1px 1px, rgba(255,255,255,0.04) 1px, transparent 0)',
-            backgroundSize: '40px 40px',
-          }}
-        />
-
-        {/* 상단 카테고리 태그 */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+        {/* 상단 태그 */}
+        <div style={{ display: 'flex' }}>
           <div
             style={{
               background: 'rgba(255,255,255,0.1)',
@@ -56,44 +46,44 @@ export default async function OGImage({ params }: { params: Promise<{ slug: stri
               color: '#94a3b8',
               fontSize: 17,
               fontWeight: 600,
+              display: 'flex',
             }}
           >
             블로그 가이드
           </div>
         </div>
 
-        {/* 메인 제목 */}
+        {/* 제목 + 요약 */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-          <div
-            style={{
-              color: '#ffffff',
-              fontSize: line2 ? 52 : 58,
-              fontWeight: 800,
-              lineHeight: 1.2,
-              letterSpacing: -0.5,
-            }}
-          >
-            {line1}
-            {line2 && (
-              <>
-                <br />
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+            <span
+              style={{
+                color: '#ffffff',
+                fontSize: line2 ? 50 : 56,
+                fontWeight: 800,
+                lineHeight: 1.2,
+                letterSpacing: -0.5,
+              }}
+            >
+              {line1}
+            </span>
+            {line2 ? (
+              <span
+                style={{
+                  color: '#ffffff',
+                  fontSize: 50,
+                  fontWeight: 800,
+                  lineHeight: 1.2,
+                  letterSpacing: -0.5,
+                }}
+              >
                 {line2}
-              </>
-            )}
+              </span>
+            ) : null}
           </div>
-          <div
-            style={{
-              color: '#94a3b8',
-              fontSize: 22,
-              fontWeight: 400,
-              lineHeight: 1.5,
-              maxWidth: 900,
-              overflow: 'hidden',
-              display: '-webkit-box',
-            }}
-          >
-            {summary.length > 80 ? summary.slice(0, 80) + '…' : summary}
-          </div>
+          <span style={{ color: '#94a3b8', fontSize: 22, fontWeight: 400, lineHeight: 1.5 }}>
+            {shortSummary}
+          </span>
         </div>
 
         {/* 하단 브랜드 */}
@@ -111,7 +101,7 @@ export default async function OGImage({ params }: { params: Promise<{ slug: stri
                 justifyContent: 'center',
               }}
             >
-              <div style={{ width: 14, height: 14, background: '#0f172a', borderRadius: 2 }} />
+              <div style={{ width: 14, height: 14, background: '#0f172a', borderRadius: 2, display: 'flex' }} />
             </div>
             <span style={{ color: '#64748b', fontSize: 20, fontWeight: 600 }}>BlogKit</span>
           </div>

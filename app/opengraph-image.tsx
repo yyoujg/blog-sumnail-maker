@@ -18,20 +18,8 @@ export default function OGImage() {
           justifyContent: 'space-between',
           padding: '64px 72px',
           fontFamily: 'sans-serif',
-          position: 'relative',
         }}
       >
-        {/* 배경 격자 패턴 */}
-        <div
-          style={{
-            position: 'absolute',
-            inset: 0,
-            backgroundImage:
-              'radial-gradient(circle at 1px 1px, rgba(255,255,255,0.04) 1px, transparent 0)',
-            backgroundSize: '40px 40px',
-          }}
-        />
-
         {/* 상단 브랜드 */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
           <div
@@ -45,7 +33,7 @@ export default function OGImage() {
               justifyContent: 'center',
             }}
           >
-            <div style={{ width: 18, height: 18, background: '#0f172a', borderRadius: 3 }} />
+            <div style={{ width: 18, height: 18, background: '#0f172a', borderRadius: 3, display: 'flex' }} />
           </div>
           <span style={{ color: '#94a3b8', fontSize: 22, fontWeight: 600, letterSpacing: 1 }}>
             BlogKit
@@ -54,14 +42,7 @@ export default function OGImage() {
 
         {/* 메인 콘텐츠 */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 12,
-              marginBottom: 4,
-            }}
-          >
+          <div style={{ display: 'flex' }}>
             <div
               style={{
                 background: 'rgba(255,255,255,0.1)',
@@ -71,33 +52,29 @@ export default function OGImage() {
                 color: '#94a3b8',
                 fontSize: 16,
                 fontWeight: 600,
+                display: 'flex',
               }}
             >
               무료 · 설치 없음 · 바로 시작
             </div>
           </div>
-          <div
-            style={{
-              color: '#ffffff',
-              fontSize: 60,
-              fontWeight: 800,
-              lineHeight: 1.15,
-              letterSpacing: -1,
-            }}
-          >
-            네이버 블로그
-            <br />
-            썸네일 메이커
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            <span style={{ color: '#ffffff', fontSize: 60, fontWeight: 800, lineHeight: 1.15, letterSpacing: -1 }}>
+              네이버 블로그
+            </span>
+            <span style={{ color: '#ffffff', fontSize: 60, fontWeight: 800, lineHeight: 1.15, letterSpacing: -1 }}>
+              썸네일 메이커
+            </span>
           </div>
-          <div style={{ color: '#94a3b8', fontSize: 26, fontWeight: 500, lineHeight: 1.5 }}>
+          <span style={{ color: '#94a3b8', fontSize: 26, fontWeight: 500 }}>
             조회수 잘 나오는 썸네일, 1분 완성
-          </div>
+          </span>
         </div>
 
-        {/* 하단 URL */}
+        {/* 하단 */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <span style={{ color: '#475569', fontSize: 18 }}>www.blogsumnail.com</span>
-          <div style={{ display: 'flex', gap: 16 }}>
+          <div style={{ display: 'flex', gap: 12 }}>
             {['썸네일 메이커', '스킨 메이커', '블로그 가이드'].map((t) => (
               <div
                 key={t}
@@ -108,6 +85,7 @@ export default function OGImage() {
                   padding: '8px 16px',
                   color: '#64748b',
                   fontSize: 15,
+                  display: 'flex',
                 }}
               >
                 {t}
