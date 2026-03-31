@@ -14,7 +14,6 @@ export const metadata: Metadata = {
     description: '버그 제보, 기능 제안, 제휴 문의는 이메일로 보내주세요.',
     type: 'website',
     url: 'https://www.blogsumnail.com/contact',
-    images: [{ url: 'https://www.blogsumnail.com/og-image.png', width: 1200, height: 630 }],
   },
   twitter: {
     card: 'summary_large_image',

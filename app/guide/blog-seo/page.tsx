@@ -16,7 +16,6 @@ export const metadata: Metadata = {
     description: '네이버 블로그 조회수가 안 나오는 이유와 해결법. 제목, 키워드, 글 구조 3가지만 바꾸면 조회수가 달라집니다.',
     type: 'article',
     url: 'https://www.blogsumnail.com/guide/blog-seo',
-    images: [{ url: 'https://www.blogsumnail.com/og-image.png', width: 1200, height: 630 }],
   },
   twitter: {
     card: 'summary_large_image',

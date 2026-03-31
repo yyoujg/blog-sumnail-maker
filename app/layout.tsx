@@ -24,14 +24,6 @@ export const metadata: Metadata = {
     description: '프로그램 설치 없이 웹에서 바로 만드는 깔끔한 블로그 썸네일 이미지',
     type: 'website',
     url: SITE_URL,
-    images: [
-      {
-        url: `${SITE_URL}/og-image.png`,
-        width: 1200,
-        height: 630,
-        alt: PAGE_TITLE,
-      },
-    ],
   },
   alternates: {
     canonical: SITE_URL,
@@ -43,7 +35,6 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: PAGE_TITLE,
     description: PAGE_DESCRIPTION,
-    images: [`${SITE_URL}/og-image.png`],
   },
   other: {
     'google-adsense-account': ADSENSE_CLIENT,

@@ -16,7 +16,6 @@ export const metadata: Metadata = {
     description: '네이버 블로그 썸네일을 무료로 쉽게 만드는 방법. 조회수 잘 나오는 썸네일의 특징과 제작 팁을 알아보세요.',
     type: 'article',
     url: 'https://www.blogsumnail.com/guide/thumbnail',
-    images: [{ url: 'https://www.blogsumnail.com/og-image.png', width: 1200, height: 630 }],
   },
   twitter: {
     card: 'summary_large_image',

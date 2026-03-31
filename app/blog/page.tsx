@@ -15,7 +15,6 @@ export const metadata: Metadata = {
     description: '네이버 블로그 운영에 도움이 되는 썸네일, 수익화, 체험단, SEO 가이드 모음.',
     type: 'website',
     url: 'https://www.blogsumnail.com/blog',
-    images: [{ url: 'https://www.blogsumnail.com/og-image.png', width: 1200, height: 630 }],
   },
   twitter: {
     card: 'summary_large_image',
