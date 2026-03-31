@@ -702,7 +702,7 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
                       <img src={el.src} width={el.w} height={el.h} style={{ display: 'block', pointerEvents: 'none' }} alt="" />
                     ) : (
                       <div
-                        style={{ fontSize: el.fontSize, color: el.color, fontWeight: el.fontWeight, whiteSpace: 'nowrap', padding: '0 8px', outline: 'none' }}
+                        style={{ fontSize: el.fontSize, color: el.color, fontWeight: el.fontWeight, whiteSpace: 'nowrap', padding: '0 8px', outline: 'none', cursor: (selectedId === el.id && sidebarTab === 'design') ? 'text' : 'inherit' }}
                         contentEditable={selectedId === el.id && sidebarTab === 'design' ? true : false}
                         suppressContentEditableWarning
                         onBlur={e => updateEl(el.id, { text: e.currentTarget.innerText })}
