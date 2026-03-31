@@ -1,15 +1,12 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import Link from 'next/link';
 import Script from 'next/script';
 import {
   Image as ImageIcon,
   Layout,
   Sparkles,
-  Zap,
-  ChevronLeft,
-  ChevronRight,
 } from 'lucide-react';
 import type { TextAlign, TextVAlign, FrameType, BgType } from '@/lib/types';
 import ControlPanel from '@/components/ControlPanel';
@@ -160,12 +157,6 @@ export default function HomePage() {
   const [activePresetId, setActivePresetId] = useState<string | null>('cafe');
   const [isDownloadDone, setIsDownloadDone] = useState(false);
   const [activeMainTab, setActiveMainTab] = useState<'thumbnail' | 'skin'>('thumbnail');
-  const [heroSlide, setHeroSlide] = useState(0);
-
-  useEffect(() => {
-    const timer = setInterval(() => setHeroSlide(s => (s + 1) % 2), 5000);
-    return () => clearInterval(timer);
-  }, []);
 
   const previewRef = useRef<HTMLDivElement>(null);
   const [isDownloading, setIsDownloading] = useState(false);
@@ -297,203 +288,39 @@ export default function HomePage() {
         </div>
       </header>
 
-      {/* ── 히어로 슬라이더 ── */}
-      <section className="bg-gradient-to-br from-gray-900 to-gray-800 text-white relative overflow-hidden">
-        {/* Slides */}
-        <div
-          className="flex transition-transform duration-700 ease-in-out"
-          style={{ transform: `translateX(-${heroSlide * 100}%)` }}
-        >
-          {/* ── 슬라이드 1: 썸네일 메이커 ── */}
-          <div className="w-full flex-shrink-0 py-12 px-4 md:px-8">
-            <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
-              <div>
-                <div className="inline-flex items-center gap-2 bg-white/10 text-white/90 text-xs font-medium px-3 py-1 rounded-full mb-5">
-                  <ImageIcon className="w-3.5 h-3.5" />
-                  썸네일 메이커
-                </div>
-                <h1 className="text-3xl md:text-5xl font-bold leading-tight mb-4">
-                  조회수 잘 나오는<br />썸네일, 1분 완성
-                </h1>
-                <p className="text-gray-300 text-base leading-relaxed mb-6">
-                  제목만 입력하면 끝. 디자인 없이 바로 다운로드.
-                </p>
-                <div className="relative mb-5">
-                  <input
-                    type="text"
-                    value={title}
-                    onChange={e => { setTitle(e.target.value); setActivePresetId(null); }}
-                    placeholder="블로그 글 제목을 입력하세요"
-                    className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3.5 text-white placeholder-white/40 text-sm focus:outline-none focus:border-white/50 focus:bg-white/15 transition pr-28"
-                  />
-                  <button
-                    onClick={() => { setActiveMainTab('thumbnail'); scrollToTool(); }}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 bg-white text-gray-900 font-bold text-xs px-4 py-2 rounded-lg hover:bg-gray-100 transition"
-                  >
-                    미리보기 →
-                  </button>
-                </div>
-                <div className="grid grid-cols-2 gap-2 mb-5">
-                  {STYLE_PRESETS.map((preset) => (
-                    <button
-                      key={preset.id}
-                      onClick={() => { applyPreset(preset); setActiveMainTab('thumbnail'); scrollToTool(); }}
-                      className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold border transition text-left ${
-                        activePresetId === preset.id
-                          ? 'bg-white text-gray-900 border-white'
-                          : 'bg-white/10 border-white/20 text-white hover:bg-white/20'
-                      }`}
-                    >
-                      <span className="text-base">{preset.emoji}</span>
-                      <span>{preset.label}</span>
-                    </button>
-                  ))}
-                </div>
-                <button
-                  onClick={() => { setActiveMainTab('thumbnail'); scrollToTool(); }}
-                  className="flex items-center gap-2 bg-white text-gray-900 font-bold text-sm px-6 py-3 rounded-xl hover:bg-gray-100 transition shadow-lg"
-                >
-                  <Zap className="w-4 h-4" />
-                  썸네일 만들기 (추천)
-                </button>
-              </div>
-              <div className="hidden lg:grid grid-cols-2 gap-3">
-                {[
-                  '/images/blog_thumbnail.png',
-                  '/images/blog_thumbnail_2.png',
-                  '/images/blog_thumbnail_3.png',
-                  '/images/blog_thumbnail_4.png',
-                ].map((src, i) => (
-                  <div key={i} className="aspect-square rounded-2xl overflow-hidden shadow-lg">
-                    <img src={src} alt={`썸네일 예시 ${i + 1}`} className="w-full h-full object-cover" />
-                  </div>
-                ))}
-              </div>
-            </div>
+      {/* ── 슬림 히어로 ── */}
+      <section className="bg-gradient-to-br from-gray-900 to-gray-800 text-white py-7 px-4 md:px-8">
+        <div className="max-w-6xl mx-auto flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <div>
+            <h1 className="text-2xl md:text-3xl font-bold leading-tight">
+              {activeMainTab === 'thumbnail' ? '조회수 잘 나오는 썸네일, 1분 완성' : '5분 만에 완성하는 홈페이지형 블로그'}
+            </h1>
+            <p className="text-gray-400 text-sm mt-1">
+              {activeMainTab === 'thumbnail'
+                ? '제목만 입력하면 끝. 디자인 없이 바로 다운로드.'
+                : '배너 스킨 + 카테고리 링크 위젯을 한 번에. 예제 템플릿으로 바로 시작.'}
+            </p>
           </div>
-
-          {/* ── 슬라이드 2: 스킨 메이커 ── */}
-          <div className="w-full flex-shrink-0 py-12 px-4 md:px-8">
-            <div className="max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
-              <div>
-                <div className="inline-flex items-center gap-2 bg-white/10 text-white/90 text-xs font-medium px-3 py-1 rounded-full mb-5">
-                  <Layout className="w-3.5 h-3.5" />
-                  스킨 메이커
-                </div>
-                <h1 className="text-3xl md:text-5xl font-bold leading-tight mb-4">
-                  5분 만에 완성하는<br />홈페이지형 블로그
-                </h1>
-                <p className="text-gray-300 text-base leading-relaxed mb-6">
-                  배너 스킨 + 카테고리 링크 위젯을 한 번에.<br />예제 템플릿으로 바로 시작.
-                </p>
-                <div className="grid grid-cols-2 gap-2 mb-5">
-                  {[
-                    { emoji: '🍜', label: '맛집 리뷰' },
-                    { emoji: '🎁', label: '체험단' },
-                    { emoji: '📈', label: '재테크' },
-                    { emoji: '🌿', label: '라이프스타일' },
-                  ].map((t) => (
-                    <div key={t.label} className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold bg-white/10 border border-white/20 text-white">
-                      <span className="text-base">{t.emoji}</span>
-                      <span>{t.label}</span>
-                    </div>
-                  ))}
-                </div>
-                <button
-                  onClick={() => { setActiveMainTab('skin'); scrollToTool(); }}
-                  className="flex items-center gap-2 bg-white text-gray-900 font-bold text-sm px-6 py-3 rounded-xl hover:bg-gray-100 transition shadow-lg"
-                >
-                  <Layout className="w-4 h-4" />
-                  스킨 만들기
-                </button>
-              </div>
-              {/* 스킨 배너 스타일 미리보기 4종 */}
-              <div className="hidden lg:flex flex-col gap-3">
-                {[
-                  {
-                    img: '/images/260208에디션엠/에디션엠-혜화역카페-내부인테리어.JPG',
-                    overlay: 0.45,
-                    name: '카페·맛집 블로그',
-                    sub: '감성 카페 & 맛집 기록',
-                    cats: ['홈', '카페', '맛집', '후기'],
-                    accent: '#fdcb6e',
-                  },
-                  {
-                    img: '/images/260124포인핸드서울숲점/12_음료_아이스라떼_강아지배경.JPG',
-                    overlay: 0.4,
-                    name: '체험단 블로그',
-                    sub: '솔직한 제품·서비스 후기',
-                    cats: ['홈', '제품', '리뷰', '총평'],
-                    accent: '#fd79a8',
-                  },
-                  {
-                    img: '/images/251231지관서가/안동북카페-지관서가-1층내부-서가창가뷰.JPG',
-                    overlay: 0.38,
-                    name: '라이프스타일 블로그',
-                    sub: '일상·여행·취미 기록',
-                    cats: ['홈', '일상', '여행', '취미'],
-                    accent: '#55efc4',
-                  },
-                  {
-                    img: '/images/260313코어바디필라테스/IMG_8443.JPG',
-                    overlay: 0.48,
-                    name: '운동·취미 블로그',
-                    sub: '필라테스·운동 후기',
-                    cats: ['홈', '운동', '필라테스', '후기'],
-                    accent: '#74b9ff',
-                  },
-                ].map((skin, i) => (
-                  <div key={i} className="rounded-xl overflow-hidden shadow-md flex-shrink-0 relative"
-                    style={{ backgroundImage: `url('${skin.img}')`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
-                    <div className="absolute inset-0" style={{ background: `rgba(0,0,0,${skin.overlay})` }} />
-                    <div className="relative z-10 px-4 py-5 flex items-center justify-between">
-                      <div>
-                        <p className="font-bold text-sm text-white leading-snug">{skin.name}</p>
-                        <p className="text-[10px] mt-1 text-white/70">{skin.sub}</p>
-                      </div>
-                      <div className="w-5 h-5 rounded-full" style={{ background: skin.accent }} />
-                    </div>
-                    <div className="relative z-10 flex border-t border-white/20">
-                      {skin.cats.map((cat, j) => (
-                        <div key={cat} className="flex-1 text-center py-2 text-[9px] font-semibold"
-                          style={{
-                            color: j === 0 ? '#ffffff' : 'rgba(255,255,255,0.55)',
-                            borderBottom: j === 0 ? '2px solid #ffffff' : '2px solid transparent',
-                          }}>
-                          {cat}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
+          {activeMainTab === 'thumbnail' && (
+            <div className="relative w-full md:w-96 flex-shrink-0">
+              <input
+                type="text"
+                value={title}
+                onChange={e => { setTitle(e.target.value); setActivePresetId(null); }}
+                placeholder="블로그 글 제목을 입력하세요"
+                className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-white/40 text-sm focus:outline-none focus:border-white/50 focus:bg-white/15 transition"
+              />
             </div>
-          </div>
-        </div>
-
-        {/* 이전/다음 버튼 */}
-        <button
-          onClick={() => setHeroSlide(s => (s - 1 + 2) % 2)}
-          className="absolute left-3 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/25 text-white rounded-full p-2 transition"
-        >
-          <ChevronLeft className="w-5 h-5" />
-        </button>
-        <button
-          onClick={() => setHeroSlide(s => (s + 1) % 2)}
-          className="absolute right-3 top-1/2 -translate-y-1/2 bg-white/10 hover:bg-white/25 text-white rounded-full p-2 transition"
-        >
-          <ChevronRight className="w-5 h-5" />
-        </button>
-
-        {/* 닷 인디케이터 */}
-        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
-          {[0, 1].map(i => (
+          )}
+          {activeMainTab === 'skin' && (
             <button
-              key={i}
-              onClick={() => setHeroSlide(i)}
-              className={`rounded-full transition-all duration-300 ${heroSlide === i ? 'w-6 h-2 bg-white' : 'w-2 h-2 bg-white/40 hover:bg-white/70'}`}
-            />
-          ))}
+              onClick={() => setActiveMainTab('skin')}
+              className="flex items-center gap-2 bg-white text-gray-900 font-bold text-sm px-5 py-2.5 rounded-xl hover:bg-gray-100 transition shadow-md flex-shrink-0"
+            >
+              <Layout className="w-4 h-4" />
+              스킨 만들기
+            </button>
+          )}
         </div>
       </section>
 
