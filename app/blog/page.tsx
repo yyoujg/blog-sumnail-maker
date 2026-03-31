@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { blogPosts, type BlogPost } from '@/data/blogPosts';
-import { BookOpen, ArrowRight, Image, TrendingUp, Gift, Search, Smartphone, ArrowLeft } from 'lucide-react';
+import { BookOpen, ArrowRight, Image, TrendingUp, Gift, Search, Smartphone } from 'lucide-react';
+import SiteHeader from '@/components/SiteHeader';
 
 export const metadata: Metadata = {
   title: '블로그 & 가이드',
@@ -133,12 +134,8 @@ export default function BlogListPage() {
 
   return (
     <div className="min-h-screen bg-[#f5f5f0] font-sans">
+      <SiteHeader />
       <div className="max-w-2xl mx-auto px-4 py-8 md:py-12">
-
-        <Link href="/" className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-900 transition-colors mb-8">
-          <ArrowLeft className="w-3.5 h-3.5" />
-          홈으로
-        </Link>
 
         {/* 헤더 */}
         <div className="mb-8">

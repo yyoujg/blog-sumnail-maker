@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { blogPosts } from '@/data/blogPosts';
 import { ArrowLeft, ArrowRight, BookOpen, BookMarked } from 'lucide-react';
+import SiteHeader from '@/components/SiteHeader';
 import CoupangRecommendations from '@/components/CoupangRecommendations';
 import AdBanner from '@/components/AdBanner';
 
@@ -125,6 +126,7 @@ export default async function BlogPostPage({ params }: PageProps) {
 
   return (
     <div className="min-h-screen bg-[#f5f5f0] font-sans">
+      <SiteHeader />
       <div className="max-w-2xl mx-auto px-4 py-8 md:py-12">
 
         <Link

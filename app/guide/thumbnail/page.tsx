@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import SiteHeader from '@/components/SiteHeader';
 import AdBanner from '@/components/AdBanner';
 import CoupangCard from '@/components/CoupangCard';
 
@@ -27,12 +28,9 @@ export const metadata: Metadata = {
 export default function ThumbnailGuidePage() {
   return (
     <div className="min-h-screen bg-[#f5f5f0] text-gray-800 font-sans">
+      <SiteHeader />
       <div className="max-w-2xl mx-auto px-4 py-10">
-        <Link href="/" className="text-sm text-gray-500 hover:text-gray-900 transition">
-          ← 홈으로
-        </Link>
-
-        <h1 className="text-3xl font-bold text-gray-900 mt-6 mb-3 leading-tight">
+<h1 className="text-3xl font-bold text-gray-900 mt-6 mb-3 leading-tight">
           블로그 썸네일 만들기<br />클릭률 올리는 방법
         </h1>
         <p className="text-gray-500 text-sm mb-2">
