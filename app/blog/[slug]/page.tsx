@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { blogPosts } from '@/data/blogPosts';
 import { ArrowLeft, ArrowRight, BookOpen, BookMarked } from 'lucide-react';
 import SiteHeader from '@/components/SiteHeader';
+import SiteFooter from '@/components/SiteFooter';
 import AdBanner from '@/components/AdBanner';
 
 interface PageProps {
@@ -289,6 +290,7 @@ export default async function BlogPostPage({ params }: PageProps) {
         </nav>
 
       </div>
+      <SiteFooter />
     </div>
   );
 }

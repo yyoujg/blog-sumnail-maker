@@ -8,6 +8,7 @@ import type { TextAlign, TextVAlign, FrameType, BgType } from '@/lib/types';
 import ControlPanel from '@/components/ControlPanel';
 import ThumbnailPreview from '@/components/ThumbnailPreview';
 import SkinMakerTool from '@/components/SkinMakerTool';
+import SiteFooter from '@/components/SiteFooter';
 import { HTML2CANVAS_SCRIPT_SRC } from '@/lib/constants';
 
 declare global {
@@ -271,8 +272,9 @@ export default function HomePage() {
             </button>
           </div>
 
-          <nav className="flex items-center gap-4">
-            <Link href="/blog" className="text-sm font-medium text-white/60 hover:text-white transition">블로그</Link>
+          <nav className="flex items-center gap-1">
+            <Link href="/blog" className="px-3 py-2 text-sm font-semibold text-white/60 hover:text-white hover:bg-white/10 rounded-lg transition-colors">블로그 가이드</Link>
+            <Link href="/guide/thumbnail" className="px-3 py-2 text-sm font-semibold text-white/60 hover:text-white hover:bg-white/10 rounded-lg transition-colors">썸네일 팁</Link>
           </nav>
         </div>
       </header>
@@ -357,23 +359,7 @@ export default function HomePage() {
       {/* html2canvas: 썸네일 다운로드 기능이 있는 이 페이지에서만 로드 */}
       <Script src={HTML2CANVAS_SCRIPT_SRC} strategy="afterInteractive" />
 
-      {/* 푸터 */}
-      <footer className="bg-[#111111] px-4 md:px-8 py-6 mt-auto">
-        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2 text-white font-bold text-sm select-none">
-            <Sparkles className="w-4 h-4 text-white/40" />
-            BlogKit
-          </div>
-          <nav className="flex items-center gap-5 text-xs text-white/40">
-            <Link href="/blog" className="hover:text-white transition-colors">블로그</Link>
-            <Link href="/about" className="hover:text-white transition-colors">About</Link>
-            <Link href="/privacy" className="hover:text-white transition-colors">개인정보처리방침</Link>
-            <Link href="/terms" className="hover:text-white transition-colors">이용약관</Link>
-            <Link href="/contact" className="hover:text-white transition-colors">문의</Link>
-          </nav>
-          <p className="text-xs text-white/20">© {new Date().getFullYear()} BlogKit</p>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }

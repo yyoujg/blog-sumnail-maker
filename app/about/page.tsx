@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import SiteHeader from '@/components/SiteHeader';
+import SiteFooter from '@/components/SiteFooter';
 import { Image as ImageIcon, Lightbulb, Users, Rocket, CheckCircle, Layout } from 'lucide-react';
 
 export const metadata: Metadata = {
@@ -176,6 +177,7 @@ export default function AboutPage() {
           </div>
         </div>
       </div>
+      <SiteFooter />
     </div>
   );
 }

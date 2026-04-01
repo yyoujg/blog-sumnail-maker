@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import SiteHeader from '@/components/SiteHeader';
+import SiteFooter from '@/components/SiteFooter';
 import AdBanner from '@/components/AdBanner';
 
 export const metadata: Metadata = {
@@ -146,6 +147,7 @@ export default function ThumbnailGuidePage() {
           </div>
         </section>
       </div>
+      <SiteFooter />
     </div>
   );
 }

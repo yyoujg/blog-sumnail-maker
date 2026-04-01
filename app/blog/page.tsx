@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { blogPosts, type BlogPost } from '@/data/blogPosts';
 import { BookOpen, ArrowRight, Image, TrendingUp, Gift, Search, Smartphone } from 'lucide-react';
 import SiteHeader from '@/components/SiteHeader';
+import SiteFooter from '@/components/SiteFooter';
 
 export const metadata: Metadata = {
   title: '블로그 & 가이드',
@@ -222,17 +223,7 @@ export default function BlogListPage() {
 
       </div>
 
-      <footer className="bg-[#111111] text-gray-400 text-sm py-8 px-4 md:px-8 mt-auto">
-        <div className="max-w-2xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-xs text-gray-500">© {new Date().getFullYear()} BlogKit. All rights reserved.</p>
-          <nav className="flex flex-wrap justify-center gap-x-5 gap-y-2 text-xs">
-            <Link href="/about" className="hover:text-white transition-colors">About</Link>
-            <Link href="/privacy" className="hover:text-white transition-colors">개인정보 처리방침</Link>
-            <Link href="/terms" className="hover:text-white transition-colors">이용약관</Link>
-            <Link href="/contact" className="hover:text-white transition-colors">문의</Link>
-          </nav>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   );
 }

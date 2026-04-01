@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import SiteHeader from '@/components/SiteHeader';
+import SiteFooter from '@/components/SiteFooter';
 import { Mail, Bug, Lightbulb, MessageSquare } from 'lucide-react';
 
 export const metadata: Metadata = {
@@ -127,6 +128,7 @@ export default function ContactPage() {
           </div>
         </div>
       </div>
+      <SiteFooter />
     </div>
   );
 }

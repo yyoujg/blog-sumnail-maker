@@ -1,18 +1,28 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import SiteHeader from '@/components/SiteHeader';
+import SiteFooter from '@/components/SiteFooter';
 
 export const metadata: Metadata = {
   title: '개인정보 처리방침',
   description: '네이버 블로그 썸네일 메이커의 개인정보 처리방침입니다.',
+  keywords: '개인정보처리방침, 블로그 썸네일 메이커, BlogKit',
+  openGraph: {
+    title: '개인정보 처리방침 — BlogKit',
+    description: '네이버 블로그 썸네일 메이커의 개인정보 처리방침입니다.',
+    type: 'website',
+    url: 'https://www.blogsumnail.com/privacy',
+  },
+  alternates: {
+    canonical: 'https://www.blogsumnail.com/privacy',
+  },
 };
 
 export default function PrivacyPage() {
   return (
-    <div className="min-h-screen bg-[#f5f5f0] text-gray-800 font-sans p-4 md:p-8">
-      <div className="max-w-3xl mx-auto">
-        <Link href="/" className="text-gray-900 hover:underline text-sm mb-6 inline-block">
-          ← 홈으로 돌아가기
-        </Link>
+    <div className="min-h-screen bg-[#f5f5f0] text-gray-800 font-sans">
+      <SiteHeader />
+      <div className="max-w-3xl mx-auto px-4 py-8 md:py-12">
         <h1 className="text-3xl font-bold text-gray-900 mb-6">개인정보 처리방침</h1>
         <div className="bg-white rounded-xl shadow-sm p-6 md:p-8 space-y-6 text-sm leading-relaxed text-gray-700">
 
@@ -110,6 +120,7 @@ export default function PrivacyPage() {
           <p className="text-xs text-gray-400">최종 수정일: 2026년 3월 9일</p>
         </div>
       </div>
+      <SiteFooter />
     </div>
   );
 }
