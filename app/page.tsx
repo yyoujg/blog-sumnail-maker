@@ -31,8 +31,8 @@ const STYLE_PRESETS = [
     overlayOpacity: 30,
     textAlign: 'left' as TextAlign,
     textVAlign: 'bottom' as TextVAlign,
-    title: '분위기 좋은 수원 로스터리 카페',
-    subtitle: '혼자 가기 딱 좋은 조용한 감성 카페',
+    title: '분위기 좋은\n감성 카페 기록',
+    subtitle: '혼자 오기 딱 좋은 조용한 공간',
     category: '카페 기록',
     categoryOptions: ['카페 기록', '맛집 탐방', '방문 후기', '재방문 리스트'],
   },
@@ -49,8 +49,8 @@ const STYLE_PRESETS = [
     overlayOpacity: 30,
     textAlign: 'center' as TextAlign,
     textVAlign: 'middle' as TextVAlign,
-    title: '솔직한 카페 디저트 후기',
-    subtitle: '직접 먹어봤습니다 — 추천 vs 비추',
+    title: '솔직한 체험단\n디저트 후기',
+    subtitle: '직접 먹고 평가했습니다',
     category: '체험 후기',
     categoryOptions: ['체험 후기', '솔직 후기', '제품 리뷰', '사용 전/후'],
   },
@@ -67,8 +67,8 @@ const STYLE_PRESETS = [
     overlayOpacity: 30,
     textAlign: 'left' as TextAlign,
     textVAlign: 'bottom' as TextVAlign,
-    title: '월급쟁이 재테크 실전기',
-    subtitle: '직장인도 할 수 있는 절약과 투자',
+    title: '직장인\n재테크 실전기',
+    subtitle: '절약과 투자, 지금 시작하세요',
     category: '재테크',
     categoryOptions: ['재테크 기초', '절약 팁', '투자 후기', '부업 기록'],
   },
@@ -85,8 +85,8 @@ const STYLE_PRESETS = [
     overlayOpacity: 30,
     textAlign: 'right' as TextAlign,
     textVAlign: 'top' as TextVAlign,
-    title: '국내 이색 공간 추천',
-    subtitle: '일상 탈출 나들이 코스로 딱입니다',
+    title: '국내 이색 공간\n나들이 추천',
+    subtitle: '일상 탈출 코스로 딱입니다',
     category: '나들이',
     categoryOptions: ['나들이', '국내 여행', '이색 체험', '여행 준비'],
   },
@@ -103,7 +103,7 @@ const STYLE_PRESETS = [
     overlayOpacity: 30,
     textAlign: 'left' as TextAlign,
     textVAlign: 'bottom' as TextVAlign,
-    title: '기타 독학 6개월 솔직 후기',
+    title: '기타 독학\n6개월 솔직 후기',
     subtitle: '입문자가 꼭 알아야 할 것들',
     category: '취미',
     categoryOptions: ['취미', '음악', '독학 후기', '입문 가이드'],
@@ -121,7 +121,7 @@ const STYLE_PRESETS = [
     overlayOpacity: 30,
     textAlign: 'center' as TextAlign,
     textVAlign: 'middle' as TextVAlign,
-    title: '고양이 카페 일상 기록',
+    title: '고양이 카페\n일상 기록',
     subtitle: '힐링이 필요할 때 찾는 단골 공간',
     category: '일상',
     categoryOptions: ['일상', '힐링', '동물 카페', '자기계발'],
@@ -130,8 +130,8 @@ const STYLE_PRESETS = [
 
 
 export default function HomePage() {
-  const [title, setTitle] = useState('분위기 좋은 수원 로스터리 카페');
-  const [subtitle, setSubtitle] = useState('혼자 가기 딱 좋은 조용한 감성 카페');
+  const [title, setTitle] = useState('분위기 좋은\n감성 카페 기록');
+  const [subtitle, setSubtitle] = useState('혼자 오기 딱 좋은 조용한 공간');
   const [category, setCategory] = useState('카페 기록');
 
   const [bgType, setBgType] = useState<BgType>('image');
