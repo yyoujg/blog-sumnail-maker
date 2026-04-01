@@ -3,11 +3,7 @@
 import { useState, useRef } from 'react';
 import Link from 'next/link';
 import Script from 'next/script';
-import {
-  Image as ImageIcon,
-  Layout,
-  Sparkles,
-} from 'lucide-react';
+import { Image as ImageIcon, Layout, Sparkles } from 'lucide-react';
 import type { TextAlign, TextVAlign, FrameType, BgType } from '@/lib/types';
 import ControlPanel from '@/components/ControlPanel';
 import ThumbnailPreview from '@/components/ThumbnailPreview';
@@ -179,10 +175,6 @@ export default function HomePage() {
     setActivePresetId(preset.id);
   };
 
-  const scrollToTool = () => {
-    document.getElementById('tool')?.scrollIntoView({ behavior: 'smooth' });
-  };
-
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -262,7 +254,7 @@ export default function HomePage() {
               }}
             />
             <button
-              onClick={() => { setActiveMainTab('thumbnail'); scrollToTool(); }}
+              onClick={() => setActiveMainTab('thumbnail')}
               className={`relative z-10 flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-lg transition-colors duration-200 ${
                 activeMainTab === 'thumbnail' ? 'text-gray-900' : 'text-white/70 hover:text-white'
               }`}
@@ -271,7 +263,7 @@ export default function HomePage() {
               썸네일 메이커
             </button>
             <button
-              onClick={() => { setActiveMainTab('skin'); scrollToTool(); }}
+              onClick={() => setActiveMainTab('skin')}
               className={`relative z-10 flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-lg transition-colors duration-200 ${
                 activeMainTab === 'skin' ? 'text-gray-900' : 'text-white/70 hover:text-white'
               }`}
@@ -288,42 +280,6 @@ export default function HomePage() {
         </div>
       </header>
 
-      {/* ── 슬림 히어로 ── */}
-      <section className="bg-[#111111] text-white py-7 px-4 md:px-8">
-        <div className="max-w-6xl mx-auto flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-          <div>
-            <h1 className="text-2xl md:text-3xl font-bold leading-tight">
-              {activeMainTab === 'thumbnail' ? '조회수 잘 나오는 썸네일, 1분 완성' : '5분 만에 완성하는 홈페이지형 블로그'}
-            </h1>
-            <p className="text-gray-400 text-sm mt-1">
-              {activeMainTab === 'thumbnail'
-                ? '제목만 입력하면 끝. 디자인 없이 바로 다운로드.'
-                : '배너 스킨 + 카테고리 링크 위젯을 한 번에. 예제 템플릿으로 바로 시작.'}
-            </p>
-          </div>
-          {activeMainTab === 'thumbnail' && (
-            <div className="relative w-full md:w-96 flex-shrink-0">
-              <input
-                type="text"
-                value={title}
-                onChange={e => { setTitle(e.target.value); setActivePresetId(null); }}
-                placeholder="블로그 글 제목을 입력하세요"
-                className="w-full bg-white/10 border border-white/20 rounded-xl px-4 py-3 text-white placeholder-white/40 text-sm focus:outline-none focus:border-white/50 focus:bg-white/15 transition"
-              />
-            </div>
-          )}
-          {activeMainTab === 'skin' && (
-            <button
-              onClick={() => setActiveMainTab('skin')}
-              className="flex items-center gap-2 bg-white text-gray-900 font-bold text-sm px-5 py-2.5 rounded-xl hover:bg-gray-100 transition shadow-md flex-shrink-0"
-            >
-              <Layout className="w-4 h-4" />
-              스킨 만들기
-            </button>
-          )}
-        </div>
-      </section>
-
       {/* ── 도구 탭 ── */}
       <section id="tool" className="py-8 px-4 md:px-8">
         <div className="max-w-6xl mx-auto">
@@ -333,7 +289,6 @@ export default function HomePage() {
             <>
               {/* 스타일 프리셋 선택 */}
               <div className="flex flex-wrap items-center justify-center gap-2 mb-8">
-                <span className="text-xs font-semibold text-gray-400 mr-1">조회수 잘 나오는 템플릿:</span>
                 {STYLE_PRESETS.map((preset) => (
                   <button
                     key={preset.id}
