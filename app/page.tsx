@@ -235,16 +235,14 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-[#f5f5f0] text-gray-800 font-sans flex flex-col">
 
-      {/* ── 헤더 / 네비게이션 ── */}
+      {/* ── 헤더 ── */}
       <header className="sticky top-0 z-50 bg-[#111111] border-b border-white/10 px-4 md:px-8">
         <div className="max-w-6xl mx-auto flex items-center justify-between h-14">
-          {/* 로고 */}
-          <div className="flex items-center gap-2 text-white font-bold text-sm">
+          <Link href="/" className="flex items-center gap-2 text-white font-bold text-sm select-none cursor-none">
             <Sparkles className="w-4 h-4 text-white/60" />
             BlogKit
-          </div>
+          </Link>
 
-          {/* 슬라이딩 pill */}
           <div className="relative flex bg-white/10 rounded-xl p-1">
             <div
               className="absolute top-1 bottom-1 rounded-lg bg-white transition-transform duration-200 ease-in-out pointer-events-none"
@@ -255,26 +253,25 @@ export default function HomePage() {
             />
             <button
               onClick={() => setActiveMainTab('thumbnail')}
-              className={`relative z-10 flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-lg transition-colors duration-200 ${
-                activeMainTab === 'thumbnail' ? 'text-gray-900' : 'text-white/70 hover:text-white'
+              className={`relative z-10 flex items-center gap-1.5 px-4 py-2 text-sm font-semibold rounded-lg transition-colors duration-200 ${
+                activeMainTab === 'thumbnail' ? 'text-gray-900' : 'text-white/60 hover:text-white'
               }`}
             >
-              <ImageIcon className="w-4 h-4" />
-              썸네일 메이커
+              <ImageIcon className="w-3.5 h-3.5" />
+              썸네일
             </button>
             <button
               onClick={() => setActiveMainTab('skin')}
-              className={`relative z-10 flex items-center gap-2 px-4 py-2 text-sm font-semibold rounded-lg transition-colors duration-200 ${
-                activeMainTab === 'skin' ? 'text-gray-900' : 'text-white/70 hover:text-white'
+              className={`relative z-10 flex items-center gap-1.5 px-4 py-2 text-sm font-semibold rounded-lg transition-colors duration-200 ${
+                activeMainTab === 'skin' ? 'text-gray-900' : 'text-white/60 hover:text-white'
               }`}
             >
-              <Layout className="w-4 h-4" />
-              스킨 메이커
+              <Layout className="w-3.5 h-3.5" />
+              스킨
             </button>
           </div>
 
-          {/* 우측 네비 */}
-          <nav className="hidden md:flex items-center gap-5">
+          <nav className="flex items-center gap-4">
             <Link href="/blog" className="text-sm font-medium text-white/60 hover:text-white transition">블로그</Link>
           </nav>
         </div>
@@ -361,30 +358,20 @@ export default function HomePage() {
       <Script src={HTML2CANVAS_SCRIPT_SRC} strategy="afterInteractive" />
 
       {/* 푸터 */}
-      <footer className="bg-[#111111] text-gray-400 text-sm py-10 px-4 md:px-8 mt-auto">
-        <div className="max-w-6xl mx-auto">
-          <div className="flex flex-col md:flex-row items-center md:items-start justify-between gap-6">
-            <div>
-              <div className="flex items-center gap-2 text-white font-semibold mb-2">
-                <Sparkles className="w-5 h-5 text-gray-400" />
-                네이버 블로그 디자인 도구
-              </div>
-              <p className="text-xs text-gray-500 max-w-xs leading-relaxed">
-                썸네일 메이커와 스킨 메이커를 누구나 무료로 사용할 수 있습니다. 가입·설치 없이 바로 시작하세요.
-              </p>
-            </div>
-            <nav className="flex flex-wrap justify-center md:justify-end gap-x-5 gap-y-2 text-xs">
-              <Link href="/about" className="hover:text-white transition-colors">About</Link>
-              <Link href="/blog" className="hover:text-white transition-colors">블로그</Link>
-              <Link href="/privacy" className="hover:text-white transition-colors">개인정보 처리방침</Link>
-              <Link href="/terms" className="hover:text-white transition-colors">이용약관</Link>
-              <Link href="/contact" className="hover:text-white transition-colors">문의</Link>
-            </nav>
+      <footer className="bg-[#111111] px-4 md:px-8 py-6 mt-auto">
+        <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-2 text-white font-bold text-sm select-none">
+            <Sparkles className="w-4 h-4 text-white/40" />
+            BlogKit
           </div>
-          <div className="border-t border-white/10 mt-8 pt-6 text-center text-xs text-gray-500">
-            <p>© {new Date().getFullYear()} 네이버 블로그 디자인 도구. All rights reserved.</p>
-            <p className="mt-1">문의 및 제휴: andn1026@gmail.com</p>
-          </div>
+          <nav className="flex items-center gap-5 text-xs text-white/40">
+            <Link href="/blog" className="hover:text-white transition-colors">블로그</Link>
+            <Link href="/about" className="hover:text-white transition-colors">About</Link>
+            <Link href="/privacy" className="hover:text-white transition-colors">개인정보처리방침</Link>
+            <Link href="/terms" className="hover:text-white transition-colors">이용약관</Link>
+            <Link href="/contact" className="hover:text-white transition-colors">문의</Link>
+          </nav>
+          <p className="text-xs text-white/20">© {new Date().getFullYear()} BlogKit</p>
         </div>
       </footer>
     </div>
