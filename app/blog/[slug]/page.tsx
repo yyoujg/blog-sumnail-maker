@@ -54,7 +54,7 @@ function linkify(text: string): React.ReactNode[] {
       urlPattern.lastIndex = 0;
       const href = part.startsWith('http') ? part : `https://${part}`;
       return (
-        <a key={i} href={href} target="_blank" rel="noopener noreferrer"
+        <a key={i} href={href} target="_blank" rel="nofollow noopener noreferrer"
           className="text-blue-600 underline underline-offset-2 hover:text-blue-800 break-all">
           {part}
         </a>
@@ -109,6 +109,8 @@ function renderContent(content: string) {
   );
 }
 
+const SITE_URL = 'https://www.blogsumnail.com';
+
 export default async function BlogPostPage({ params }: PageProps) {
   const { slug } = await params;
   const postIndex = blogPosts.findIndex((p) => p.slug === slug);
@@ -124,8 +126,33 @@ export default async function BlogPostPage({ params }: PageProps) {
   const extraRelated = blogPosts.filter((p) => p.slug !== slug && !CORE_RELATED.includes(p.slug));
   const relatedPosts = [...coreRelated, ...extraRelated].slice(0, 3);
 
+  const articleSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: post.title,
+    description: post.summary,
+    datePublished: post.date,
+    dateModified: post.date,
+    author: { '@type': 'Organization', name: 'BlogKit', url: SITE_URL },
+    publisher: { '@type': 'Organization', name: 'BlogKit', url: SITE_URL },
+    url: `${SITE_URL}/blog/${post.slug}`,
+    mainEntityOfPage: { '@type': 'WebPage', '@id': `${SITE_URL}/blog/${post.slug}` },
+  };
+
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: '홈', item: SITE_URL },
+      { '@type': 'ListItem', position: 2, name: '블로그 가이드', item: `${SITE_URL}/blog` },
+      { '@type': 'ListItem', position: 3, name: post.title, item: `${SITE_URL}/blog/${post.slug}` },
+    ],
+  };
+
   return (
     <div className="min-h-screen bg-[#f5f5f0] font-sans">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <SiteHeader />
       <div className="max-w-2xl mx-auto px-4 py-8 md:py-12">
 

@@ -132,8 +132,18 @@ export default function BlogListPage() {
 
   const totalPosts = blogPosts.length;
 
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: '홈', item: 'https://www.blogsumnail.com' },
+      { '@type': 'ListItem', position: 2, name: '블로그 가이드', item: 'https://www.blogsumnail.com/blog' },
+    ],
+  };
+
   return (
     <div className="min-h-screen bg-[#f5f5f0] font-sans">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <SiteHeader />
       <div className="max-w-2xl mx-auto px-4 py-8 md:py-12">
 
