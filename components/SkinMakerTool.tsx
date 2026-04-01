@@ -72,7 +72,7 @@ const BLOG_TEMPLATES: BlogTemplate[] = [
     emoji: '🍜',
     desc: '맛집·카페·레시피',
     bg: '#1a1a1a',
-    bgImage: '/images/260320일상엔베이커리/일상엔-바닐라라떼-아메리카노-두바이초코몽블랑-메인.JPG',
+    bgImage: '/images/260208에디션엠/에디션엠-감귤케이크-딸기음료-메인.JPG',
     bgOverlay: 30,
     bgPosition: 'center center',
     cw: 1920, ch: 450,
@@ -255,6 +255,11 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
     setSelectedId(null);
     setActiveTemplateId(tpl.id);
   };
+
+  useEffect(() => {
+    loadTemplate(BLOG_TEMPLATES[0]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     const wrapper = previewWrapperRef.current;
