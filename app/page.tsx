@@ -372,7 +372,6 @@ export default function HomePage() {
               </p>
             </div>
             <nav className="flex flex-wrap justify-center md:justify-end gap-x-5 gap-y-2 text-xs">
-              <Link href="/skin-maker" className="hover:text-white transition-colors font-medium text-gray-300">스킨 메이커</Link>
               <Link href="/about" className="hover:text-white transition-colors">About</Link>
               <Link href="/blog" className="hover:text-white transition-colors">블로그</Link>
               <Link href="/privacy" className="hover:text-white transition-colors">개인정보 처리방침</Link>
