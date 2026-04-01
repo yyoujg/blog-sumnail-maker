@@ -4,7 +4,6 @@ import React, { type RefObject } from 'react';
 import Link from 'next/link';
 import { Download } from 'lucide-react';
 import type { TextAlign, TextVAlign, FrameType, BgType } from '@/lib/types';
-import CoupangCard from './CoupangCard';
 
 interface ThumbnailPreviewProps {
   previewRef: RefObject<HTMLDivElement | null>;
@@ -263,18 +262,6 @@ export default function ThumbnailPreview({
           >
             조회수 올리는 방법 보기 →
           </Link>
-        </div>
-      </div>
-
-      {/* ── 광고 1개 ── */}
-      <div className="w-full max-w-[500px] mt-12">
-        <hr className="border-gray-100 mb-12" />
-        <div className="max-w-[340px] mx-auto">
-          <CoupangCard
-            src="https://coupa.ng/clQwSN"
-            name="셀루미 초경량 스마트폰 삼각대"
-            desc="배경 사진 직접 찍어 쓰는 분들께 추천해요. 손떨림 없이 고정된 앵글로 찍으면 썸네일 소스 퀄리티가 확 달라집니다."
-          />
         </div>
       </div>
 

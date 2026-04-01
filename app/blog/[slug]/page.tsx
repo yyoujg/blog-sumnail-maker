@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { blogPosts } from '@/data/blogPosts';
 import { ArrowLeft, ArrowRight, BookOpen, BookMarked } from 'lucide-react';
 import SiteHeader from '@/components/SiteHeader';
-import CoupangRecommendations from '@/components/CoupangRecommendations';
 import AdBanner from '@/components/AdBanner';
 
 interface PageProps {
@@ -221,8 +220,6 @@ export default async function BlogPostPage({ params }: PageProps) {
         </article>
 
         <AdBanner type="adsense" position="blog-post-bottom" />
-
-        <CoupangRecommendations />
 
         {/* CTA */}
         <div className="mt-10 p-6 bg-[#111111] rounded-2xl text-center">

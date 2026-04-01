@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import SiteHeader from '@/components/SiteHeader';
 import AdBanner from '@/components/AdBanner';
-import CoupangCard from '@/components/CoupangCard';
 
 export const metadata: Metadata = {
   title: '블로그 썸네일 만들기 - 클릭률 올리는 썸네일 완전 가이드',
@@ -121,18 +120,6 @@ export default function ThumbnailGuidePage() {
           <Link href="/" className="text-sm font-semibold text-gray-900 underline underline-offset-2">
             클릭되는 썸네일 직접 만들어보기 →
           </Link>
-        </div>
-
-        {/* 쿠팡 상품 */}
-        <div className="mt-10">
-          <p className="text-sm text-gray-600 mb-1">썸네일 퀄리티가 올라가면 조회수도 같이 올라갑니다</p>
-          <p className="text-sm text-gray-600 mb-1">블로그 운영할 때 이런 장비 많이 씁니다</p>
-          <p className="text-xs text-gray-400 mb-3">초반에는 가성비 위주로 시작해도 충분합니다</p>
-          <CoupangCard
-            src="https://coupa.ng/clQwSN"
-            name="셀루미 초경량 스마트폰 삼각대"
-            desc="배경 사진 직접 찍어 쓰는 분들께 추천해요. 손떨림 없이 고정된 앵글로 찍으면 썸네일 소스 퀄리티가 확 달라집니다."
-          />
         </div>
 
         {/* CTA 3 - 재전환 (상품 아래) */}
