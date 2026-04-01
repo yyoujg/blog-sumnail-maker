@@ -248,19 +248,14 @@ export default function ThumbnailPreview({
         )}
       </button>
       {/* ── CTA 영역 ── */}
-      <div className="w-full max-w-[500px] mt-12">
-        <hr className="border-gray-100 mb-12" />
-        <div className="bg-white border border-[#e5e7eb] rounded-xl p-5">
-          <p className="font-semibold text-sm text-gray-800 mb-2">썸네일만으로는 부족합니다</p>
-          <p className="text-xs text-gray-500 mb-1">조회수는 이것으로 결정됩니다</p>
-          <ul className="text-xs text-gray-500 mb-3 space-y-0.5 pl-3">
-            <li>- 제목</li>
-            <li>- 키워드</li>
-            <li>- 글 구조</li>
-          </ul>
+      <div className="w-full max-w-[500px] mt-4">
+        <div className="bg-[#111111] rounded-2xl p-5">
+          <p className="text-xs font-semibold text-white/40 uppercase tracking-widest mb-2">다음 단계</p>
+          <p className="font-bold text-base text-white mb-1 leading-snug">조회수는 썸네일이 아니라<br />제목·키워드·글 구조로 결정됩니다</p>
+          <p className="text-xs text-white/50 mb-4">블로그 2달차가 직접 써본 실전 가이드</p>
           <Link
             href="/guide/blog-seo"
-            className="text-sm font-semibold text-gray-900 underline underline-offset-2"
+            className="inline-flex items-center gap-1.5 px-4 py-2 bg-white text-[#111111] text-xs font-bold rounded-lg hover:bg-white/90 transition"
           >
             조회수 올리는 방법 보기 →
           </Link>

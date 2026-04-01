@@ -393,13 +393,14 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
       )}
 
       {/* 스타일 선택 탭 */}
-      <div className="flex flex-wrap items-center justify-center gap-2 mb-8">
-        <span className="text-xs font-semibold text-gray-400 mr-1">스타일 선택:</span>
+      <div className="mb-6">
+        <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">스타일 선택</p>
+        <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-hide">
         {BLOG_TEMPLATES.map((tpl) => (
           <button
             key={tpl.id}
             onClick={() => { loadTemplate(tpl); setSidebarTab('design'); }}
-            className={`flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-sm font-semibold border transition ${
+            className={`flex-shrink-0 flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-sm font-semibold border transition ${
               activeTemplateId === tpl.id
                 ? 'bg-[#111111] text-white border-[#111111] shadow'
                 : 'bg-white text-gray-700 border-gray-200 hover:border-gray-400 hover:bg-gray-50'
@@ -412,11 +413,12 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
         {activeTemplateId && (
           <button
             onClick={() => { setElements([]); setRects([]); setActiveTemplateId(null); }}
-            className="px-3 py-2 rounded-xl text-xs font-semibold text-gray-400 hover:text-gray-600 transition"
+            className="flex-shrink-0 px-3 py-2 rounded-xl text-xs font-semibold text-gray-400 hover:text-gray-600 transition"
           >
             초기화
           </button>
         )}
+        </div>
       </div>
 
       {/* 두 컬럼 레이아웃 */}
@@ -743,7 +745,7 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
               <Download className="w-4 h-4" /> 이미지 다운로드
             </button>
             <button onClick={() => setShowGuide(true)}
-              className="flex-1 flex items-center justify-center gap-2 py-3.5 px-4 rounded-xl font-bold text-white bg-blue-600 hover:bg-blue-500 transition text-sm">
+              className="flex-1 flex items-center justify-center gap-2 py-3.5 px-4 rounded-xl font-bold text-white bg-[#111111] hover:bg-[#222222] hover:shadow-lg hover:-translate-y-0.5 transition-all text-sm">
               <BookOpen className="w-4 h-4" /> 블로그에 적용하기
             </button>
           </div>
