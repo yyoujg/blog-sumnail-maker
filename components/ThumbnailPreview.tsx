@@ -74,6 +74,8 @@ export default function ThumbnailPreview({
             color: textColor,
             borderColor: 'transparent',
             outline: 'none',
+            userSelect: 'none',
+            cursor: 'default',
           }}
         >
           <div
