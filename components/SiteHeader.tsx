@@ -16,7 +16,7 @@ export default function SiteHeader() {
   return (
     <header className="sticky top-0 z-50 bg-[#111111] border-b border-white/10 px-4 md:px-8">
       <div className="max-w-6xl mx-auto flex items-center justify-between h-14">
-        <Link href="/" className="flex items-center gap-2 text-white font-bold text-sm select-none">
+        <Link href="/" className="flex items-center gap-2 text-white font-bold text-sm select-none cursor-none">
           <Sparkles className="w-4 h-4 text-white/60" />
           BlogKit
         </Link>

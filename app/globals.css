@@ -17,4 +17,7 @@ body {
   img {
     display: inline-block;
   }
+  a, button {
+    cursor: pointer;
+  }
 }
