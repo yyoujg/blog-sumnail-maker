@@ -128,10 +128,15 @@ export default function ThumbnailGuidePage() {
           <p className="text-sm text-gray-700 font-medium mb-1">
             장비보다 중요한 건 썸네일입니다
           </p>
-          <p className="text-sm text-gray-500 mb-2">지금 바로 적용해보세요</p>
-          <Link href="/" className="text-sm font-semibold text-gray-900 underline underline-offset-2">
-            1분 만에 썸네일 완성하기 →
-          </Link>
+          <p className="text-sm text-gray-500 mb-3">지금 바로 적용해보세요</p>
+          <div className="flex flex-wrap gap-3">
+            <Link href="/" className="inline-block px-4 py-2 bg-[#111111] text-white text-sm font-semibold rounded-lg hover:bg-gray-800 transition">
+              썸네일 만들기 →
+            </Link>
+            <Link href="/#popular-templates" className="inline-block px-4 py-2 bg-white border border-gray-300 text-gray-800 text-sm font-semibold rounded-lg hover:border-gray-500 transition">
+              인기 템플릿 보기 →
+            </Link>
+          </div>
         </div>
 
         {/* 관련 글 */}

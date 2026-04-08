@@ -356,6 +356,70 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* 다운로드 완료 후 다음 단계 */}
+      {isDownloadDone && activeMainTab === 'thumbnail' && (
+        <section className="px-4 md:px-8 py-6 bg-white border-t border-gray-100">
+          <div className="max-w-6xl mx-auto">
+            <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">다운로드 완료 - 다음 단계</p>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              <Link href="/blog/how-to-make-blog-thumbnail" className="flex items-start gap-3 p-4 rounded-xl border border-gray-200 hover:border-gray-400 hover:shadow-sm transition bg-[#f5f5f0]">
+                <span className="text-xl mt-0.5">📝</span>
+                <div>
+                  <p className="text-sm font-bold text-gray-900 mb-0.5">이 썸네일로 글 쓰는 법</p>
+                  <p className="text-xs text-gray-500">글 구조부터 이미지 삽입까지</p>
+                </div>
+              </Link>
+              <Link href="/blog/blog-writing-tips" className="flex items-start gap-3 p-4 rounded-xl border border-gray-200 hover:border-gray-400 hover:shadow-sm transition bg-[#f5f5f0]">
+                <span className="text-xl mt-0.5">🔤</span>
+                <div>
+                  <p className="text-sm font-bold text-gray-900 mb-0.5">조회수 잘 나오는 제목 쓰는 법</p>
+                  <p className="text-xs text-gray-500">클릭률 2배 높이는 제목 공식</p>
+                </div>
+              </Link>
+              <Link href="/blog/blog-monetization-guide" className="flex items-start gap-3 p-4 rounded-xl border border-gray-200 hover:border-gray-400 hover:shadow-sm transition bg-[#f5f5f0]">
+                <span className="text-xl mt-0.5">💰</span>
+                <div>
+                  <p className="text-sm font-bold text-gray-900 mb-0.5">블로그 수익화 시작하기</p>
+                  <p className="text-xs text-gray-500">애드포스트·체험단·CPA 연결법</p>
+                </div>
+              </Link>
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* 인기 템플릿 */}
+      <section id="popular-templates" className="px-4 md:px-8 py-10 border-t border-gray-200">
+        <div className="max-w-6xl mx-auto">
+          <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">인기 템플릿</p>
+          <h2 className="text-xl font-bold text-gray-900 mb-6">클릭률 높은 썸네일 스타일</h2>
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            {STYLE_PRESETS.map((preset) => (
+              <button
+                key={preset.id}
+                onClick={() => {
+                  applyPreset(preset);
+                  setActiveMainTab('thumbnail');
+                  document.getElementById('tool')?.scrollIntoView({ behavior: 'smooth' });
+                }}
+                className="text-left group"
+              >
+                <div className="aspect-video bg-gray-200 relative rounded-xl overflow-hidden mb-2 shadow-sm group-hover:shadow-md transition-shadow">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={preset.bgImage} alt={preset.label} className="w-full h-full object-cover" />
+                  <div className="absolute inset-0 bg-black/30 flex items-end p-2">
+                    <span className="text-white text-xs font-bold drop-shadow">{preset.label}</span>
+                  </div>
+                </div>
+                <p className="text-sm font-semibold text-gray-700 group-hover:text-gray-900 transition-colors">
+                  {preset.emoji} {preset.label}
+                </p>
+              </button>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* html2canvas: 썸네일 다운로드 기능이 있는 이 페이지에서만 로드 */}
       <Script src={HTML2CANVAS_SCRIPT_SRC} strategy="afterInteractive" />
 

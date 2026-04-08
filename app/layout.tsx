@@ -71,22 +71,21 @@ export default function RootLayout({
             right: '24px',
             zIndex: 50,
             display: 'flex',
-            flexDirection: 'column',
+            flexDirection: 'row',
             alignItems: 'center',
-            gap: '4px',
+            gap: '6px',
             backgroundColor: '#FEE500',
             color: '#3C1E1E',
-            borderRadius: '50px',
-            padding: '10px 16px',
-            boxShadow: '0 4px 12px rgba(0,0,0,0.2)',
+            borderRadius: '999px',
+            padding: '10px 18px',
+            boxShadow: '0 2px 12px rgba(0,0,0,0.15)',
             textDecoration: 'none',
-            fontSize: '12px',
-            fontWeight: '600',
-            lineHeight: '1.2',
+            fontSize: '13px',
+            fontWeight: '700',
             whiteSpace: 'nowrap',
           }}
         >
-          <span style={{ fontSize: '18px' }}>💬</span>
+          <span style={{ fontSize: '16px', lineHeight: 1 }}>💬</span>
           <span>오류·제안</span>
         </a>
 
