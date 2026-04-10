@@ -32,7 +32,7 @@ interface ThumbnailPreviewProps {
   titleFontSize?: number;
 }
 
-const OUTLINE = '-2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000, 0 0 8px rgba(0,0,0,0.4)';
+const OUTLINE = '-1px -1px 0 rgba(0,0,0,0.75), 1px -1px 0 rgba(0,0,0,0.75), -1px 1px 0 rgba(0,0,0,0.75), 1px 1px 0 rgba(0,0,0,0.75), 0 2px 10px rgba(0,0,0,0.55)';
 const EMOJI_RE = /([\u{1F000}-\u{1FFFF}][\uFE0F\u20E3]?|[\u{2300}-\u{27BF}][\uFE0F\u20E3]?)/gu;
 
 function renderWithOutline(line: string) {
@@ -226,7 +226,7 @@ export default function ThumbnailPreview({
                   style={{
                     wordBreak: 'keep-all',
                     textShadow: textShadow
-                      ? '-1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000'
+                      ? '-1px -1px 0 rgba(0,0,0,0.65), 1px -1px 0 rgba(0,0,0,0.65), -1px 1px 0 rgba(0,0,0,0.65), 1px 1px 0 rgba(0,0,0,0.65), 0 2px 8px rgba(0,0,0,0.4)'
                       : undefined,
                   }}
                 >
