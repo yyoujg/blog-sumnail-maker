@@ -27,7 +27,7 @@ const STYLE_PRESETS = [
     bgColor: '#1a1a1a',
     bgImage: '/images/251116애플하우스/IMG_6831.JPG',
     textColor: '#ffffff',
-    fontFamily: `'Noto Sans KR', sans-serif`,
+    fontFamily: `'Jua', sans-serif`,
     frameType: 'band' as FrameType,
     overlayOpacity: 10,
     textAlign: 'left' as TextAlign,
@@ -165,7 +165,7 @@ export default function HomePage() {
   const [bgImage, setBgImage] = useState<string | null>('/images/251116애플하우스/IMG_6831.JPG');
 
   const [textColor, setTextColor] = useState('#ffffff');
-  const [fontFamily, setFontFamily] = useState(`'Noto Sans KR', sans-serif`);
+  const [fontFamily, setFontFamily] = useState(`'Jua', sans-serif`);
   const [textAlign, setTextAlign] = useState<TextAlign>('left');
   const [textVAlign, setTextVAlign] = useState<TextVAlign>('bottom');
   const [textOffsetX, setTextOffsetX] = useState(0);
