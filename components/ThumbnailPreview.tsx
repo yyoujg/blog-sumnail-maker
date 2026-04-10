@@ -28,6 +28,7 @@ interface ThumbnailPreviewProps {
   onFormatChange: (f: 'png' | 'jpg') => void;
   downloadScale: 1 | 2;
   onScaleChange: (s: 1 | 2) => void;
+  textShadow?: boolean;
 }
 
 export default function ThumbnailPreview({
@@ -53,6 +54,7 @@ export default function ThumbnailPreview({
   onFormatChange,
   downloadScale,
   onScaleChange,
+  textShadow = false,
 }: ThumbnailPreviewProps) {
   return (
     <div className="flex-1 flex flex-col items-center lg:sticky lg:top-8 h-fit">
@@ -154,7 +156,12 @@ export default function ThumbnailPreview({
               {title && (
                 <h1
                   className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight break-keep"
-                  style={{ wordBreak: 'keep-all' }}
+                  style={{
+                    wordBreak: 'keep-all',
+                    textShadow: textShadow
+                      ? '-2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000, 0 0 8px rgba(0,0,0,0.4)'
+                      : undefined,
+                  }}
                 >
                   {title.split('\n').map((line, i) => (
                     <React.Fragment key={i}>
@@ -165,7 +172,15 @@ export default function ThumbnailPreview({
                 </h1>
               )}
               {subtitle && (
-                <p className="text-sm sm:text-base md:text-xl opacity-80 break-keep font-medium" style={{ wordBreak: 'keep-all' }}>
+                <p
+                  className="text-sm sm:text-base md:text-xl opacity-80 break-keep font-medium"
+                  style={{
+                    wordBreak: 'keep-all',
+                    textShadow: textShadow
+                      ? '-1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000'
+                      : undefined,
+                  }}
+                >
                   {subtitle}
                 </p>
               )}

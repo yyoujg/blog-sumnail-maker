@@ -20,8 +20,27 @@ declare global {
 
 const STYLE_PRESETS = [
   {
+    id: 'naver',
+    label: '아웃라인',
+    emoji: '📝',
+    bgType: 'image' as BgType,
+    bgColor: '#1a1a1a',
+    bgImage: '/images/250118코르크베이크바/IMG_7577.JPG',
+    textColor: '#ffffff',
+    fontFamily: `'Noto Sans KR', sans-serif`,
+    frameType: 'band' as FrameType,
+    overlayOpacity: 10,
+    textAlign: 'left' as TextAlign,
+    textVAlign: 'bottom' as TextVAlign,
+    title: '편의점 신상\n포도 젤리 후기',
+    subtitle: '직접 먹어봤습니다',
+    category: '편의점 리뷰',
+    categoryOptions: ['편의점 리뷰', '신상 리뷰', '맛집 후기', '제품 후기'],
+    textShadow: true,
+  },
+  {
     id: 'cafe',
-    label: '카페·맛집',
+    label: '감성',
     emoji: '🍽️',
     bgType: 'image' as BgType,
     bgColor: '#1a1a1a',
@@ -36,10 +55,11 @@ const STYLE_PRESETS = [
     subtitle: '혼자 오기 딱 좋은 조용한 공간',
     category: '카페 기록',
     categoryOptions: ['카페 기록', '맛집 탐방', '방문 후기', '재방문 리스트'],
+    textShadow: false,
   },
   {
     id: 'review',
-    label: '체험단·리뷰',
+    label: '보더',
     emoji: '🎁',
     bgType: 'image' as BgType,
     bgColor: '#1a1a1a',
@@ -54,10 +74,11 @@ const STYLE_PRESETS = [
     subtitle: '직접 먹고 평가했습니다',
     category: '체험 후기',
     categoryOptions: ['체험 후기', '솔직 후기', '제품 리뷰', '사용 전/후'],
+    textShadow: false,
   },
   {
     id: 'finance',
-    label: '재테크·부업',
+    label: '골드',
     emoji: '📈',
     bgType: 'image' as BgType,
     bgColor: '#0a2540',
@@ -72,10 +93,11 @@ const STYLE_PRESETS = [
     subtitle: '절약과 투자, 지금 시작하세요',
     category: '재테크',
     categoryOptions: ['재테크 기초', '절약 팁', '투자 후기', '부업 기록'],
+    textShadow: false,
   },
   {
     id: 'travel',
-    label: '여행·나들이',
+    label: '클래식',
     emoji: '✈️',
     bgType: 'image' as BgType,
     bgColor: '#2d3436',
@@ -90,10 +112,11 @@ const STYLE_PRESETS = [
     subtitle: '일상 탈출 코스로 딱입니다',
     category: '나들이',
     categoryOptions: ['나들이', '국내 여행', '이색 체험', '여행 준비'],
+    textShadow: false,
   },
   {
     id: 'hobby',
-    label: '취미·일상',
+    label: '팝',
     emoji: '🎸',
     bgType: 'image' as BgType,
     bgColor: '#1a1a1a',
@@ -108,10 +131,11 @@ const STYLE_PRESETS = [
     subtitle: '입문자가 꼭 알아야 할 것들',
     category: '취미',
     categoryOptions: ['취미', '음악', '독학 후기', '입문 가이드'],
+    textShadow: false,
   },
   {
     id: 'lifestyle',
-    label: '라이프스타일',
+    label: '미니멀',
     emoji: '🌿',
     bgType: 'image' as BgType,
     bgColor: '#1a1a1a',
@@ -126,32 +150,34 @@ const STYLE_PRESETS = [
     subtitle: '힐링이 필요할 때 찾는 단골 공간',
     category: '일상',
     categoryOptions: ['일상', '힐링', '동물 카페', '자기계발'],
+    textShadow: false,
   },
 ] as const;
 
 
 export default function HomePage() {
-  const [title, setTitle] = useState('분위기 좋은\n감성 카페 기록');
-  const [subtitle, setSubtitle] = useState('혼자 오기 딱 좋은 조용한 공간');
-  const [category, setCategory] = useState('카페 기록');
+  const [title, setTitle] = useState('편의점 신상\n포도 젤리 후기');
+  const [subtitle, setSubtitle] = useState('직접 먹어봤습니다');
+  const [category, setCategory] = useState('편의점 리뷰');
 
   const [bgType, setBgType] = useState<BgType>('image');
   const [bgColor, setBgColor] = useState('#1a1a1a');
-  const [bgImage, setBgImage] = useState<string | null>('/images/260208에디션엠/에디션엠-감귤케이크-딸기음료-메인.JPG');
+  const [bgImage, setBgImage] = useState<string | null>('/images/250118코르크베이크바/IMG_7577.JPG');
 
   const [textColor, setTextColor] = useState('#ffffff');
-  const [fontFamily, setFontFamily] = useState(`'Nanum Myeongjo', serif`);
+  const [fontFamily, setFontFamily] = useState(`'Noto Sans KR', sans-serif`);
   const [textAlign, setTextAlign] = useState<TextAlign>('left');
   const [textVAlign, setTextVAlign] = useState<TextVAlign>('bottom');
   const [textOffsetX, setTextOffsetX] = useState(0);
   const [textOffsetY, setTextOffsetY] = useState(0);
 
-  const [overlayOpacity, setOverlayOpacity] = useState(18);
+  const [overlayOpacity, setOverlayOpacity] = useState(10);
   const [frameType, setFrameType] = useState<FrameType>('band');
+  const [textShadow, setTextShadow] = useState(true);
 
   const [downloadFormat, setDownloadFormat] = useState<'png' | 'jpg'>('png');
   const [downloadScale, setDownloadScale] = useState<1 | 2>(2);
-  const [activePresetId, setActivePresetId] = useState<string | null>('cafe');
+  const [activePresetId, setActivePresetId] = useState<string | null>('naver');
   const [isDownloadDone, setIsDownloadDone] = useState(false);
   const [activeMainTab, setActiveMainTab] = useState<'thumbnail' | 'skin'>('thumbnail');
 
@@ -173,6 +199,7 @@ export default function HomePage() {
     setTextVAlign(preset.textVAlign);
     setTextOffsetX(0);
     setTextOffsetY(0);
+    setTextShadow(preset.textShadow);
     setActivePresetId(preset.id);
   };
 
@@ -340,6 +367,7 @@ export default function HomePage() {
                   textColor={textColor} fontFamily={fontFamily} textAlign={textAlign} textVAlign={textVAlign} textOffsetX={textOffsetX} textOffsetY={textOffsetY}
                   bgType={bgType} bgColor={bgColor} bgImage={bgImage}
                   overlayOpacity={overlayOpacity} frameType={frameType}
+                  textShadow={textShadow}
                   onDownload={downloadThumbnail} isDownloading={isDownloading} isDownloadDone={isDownloadDone}
                   downloadFormat={downloadFormat} onFormatChange={setDownloadFormat}
                   downloadScale={downloadScale} onScaleChange={setDownloadScale}
