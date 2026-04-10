@@ -18,6 +18,7 @@ export const FONTS = [
   { name: 'GmarketSans', value: `'GmarketSans', sans-serif` },
   { name: '카페24써라운드', value: `'Cafe24Ssurround', sans-serif` },
   { name: '에스코어드림', value: `'S-CoreDream', sans-serif` },
+  { name: '제주돌담', value: `'EF_jejudoldam', cursive` },
   { name: '주아', value: `'Jua', sans-serif` },
   { name: '도현', value: `'Do Hyeon', sans-serif` },
   { name: '노토 산스', value: `'Noto Sans KR', sans-serif` },
