@@ -1,6 +1,6 @@
 'use client';
 
-import React, { type RefObject } from 'react';
+import React, { type RefObject, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { Download } from 'lucide-react';
 import type { TextAlign, TextVAlign, FrameType, BgType } from '@/lib/types';
@@ -29,6 +29,63 @@ interface ThumbnailPreviewProps {
   downloadScale: 1 | 2;
   onScaleChange: (s: 1 | 2) => void;
   textShadow?: boolean;
+}
+
+function FitWidthTitle({ lines, fontFamily, color, shadow }: {
+  lines: string[];
+  fontFamily: string;
+  color: string;
+  shadow: boolean;
+}) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [sizes, setSizes] = useState<number[]>([]);
+
+  useEffect(() => {
+    document.fonts.ready.then(() => {
+      if (!containerRef.current) return;
+      const containerWidth = containerRef.current.offsetWidth;
+      if (containerWidth === 0) return;
+      const newSizes = lines.map(line => {
+        if (!line.trim()) return 48;
+        const el = document.createElement('span');
+        el.style.cssText = `position:fixed;left:-9999px;white-space:nowrap;font-weight:900;font-family:${fontFamily};`;
+        document.body.appendChild(el);
+        let lo = 10, hi = 200;
+        while (hi - lo > 1) {
+          const mid = (lo + hi) >> 1;
+          el.style.fontSize = `${mid}px`;
+          el.textContent = line;
+          if (el.offsetWidth >= containerWidth) hi = mid;
+          else lo = mid;
+        }
+        document.body.removeChild(el);
+        return lo;
+      });
+      setSizes(newSizes);
+    });
+  }, [lines.join('\n'), fontFamily]);
+
+  return (
+    <div ref={containerRef} style={{ width: '100%' }}>
+      {lines.map((line, i) => (
+        <div
+          key={i}
+          style={{
+            fontSize: sizes[i] ? `${sizes[i]}px` : '3rem',
+            fontWeight: 900,
+            color,
+            lineHeight: 1.15,
+            whiteSpace: 'nowrap',
+            textShadow: shadow
+              ? '-2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000, 0 0 8px rgba(0,0,0,0.4)'
+              : undefined,
+          }}
+        >
+          {line}
+        </div>
+      ))}
+    </div>
+  );
 }
 
 export default function ThumbnailPreview({
@@ -154,22 +211,26 @@ export default function ThumbnailPreview({
                 </span>
               )}
               {title && (
-                <h1
-                  className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight break-keep"
-                  style={{
-                    wordBreak: 'keep-all',
-                    textShadow: textShadow
-                      ? '-2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000, 0 0 8px rgba(0,0,0,0.4)'
-                      : undefined,
-                  }}
-                >
-                  {title.split('\n').map((line, i) => (
-                    <React.Fragment key={i}>
-                      {line}
-                      <br />
-                    </React.Fragment>
-                  ))}
-                </h1>
+                textShadow ? (
+                  <FitWidthTitle
+                    lines={title.split('\n')}
+                    fontFamily={fontFamily}
+                    color={textColor}
+                    shadow
+                  />
+                ) : (
+                  <h1
+                    className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight break-keep"
+                    style={{ wordBreak: 'keep-all' }}
+                  >
+                    {title.split('\n').map((line, i) => (
+                      <React.Fragment key={i}>
+                        {line}
+                        <br />
+                      </React.Fragment>
+                    ))}
+                  </h1>
+                )
               )}
               {subtitle && (
                 <p
