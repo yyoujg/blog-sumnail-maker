@@ -7,7 +7,7 @@ export const ADSENSE_SCRIPT_SRC = `https://pagead2.googlesyndication.com/pagead/
 export const ADSENSE_AD_SLOT = '9150939859';
 
 export const FONT_LINK_HREF =
-  'https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Do+Hyeon&family=Jua&family=Noto+Sans+KR:wght@700;900&display=swap';
+  'https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Do+Hyeon&family=Jua&display=swap';
 
 export const HTML2CANVAS_SCRIPT_SRC =
   'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
@@ -18,7 +18,8 @@ export const FONTS = [
   { name: '제주돌담', value: `'EF_jejudoldam', cursive` },
   { name: '주아', value: `'Jua', sans-serif` },
   { name: '도현', value: `'Do Hyeon', sans-serif` },
-  { name: '노토 산스', value: `'Noto Sans KR', sans-serif` },
+  { name: '프리텐다드', value: `'Pretendard', sans-serif` },
+  { name: '지마켓 산스', value: `'GmarketSans', sans-serif` },
 ] as const;
 
 export const SITE_URL = 'https://www.blogsumnail.com';

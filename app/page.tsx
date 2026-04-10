@@ -46,7 +46,7 @@ const STYLE_PRESETS = [
     bgColor: '#1a1a1a',
     bgImage: '/images/260208에디션엠/에디션엠-감귤케이크-딸기음료-메인.JPG',
     textColor: '#ffffff',
-    fontFamily: `'Gothic A1', sans-serif`,
+    fontFamily: `'Pretendard', sans-serif`,
     frameType: 'band' as FrameType,
     overlayOpacity: 30,
     textAlign: 'left' as TextAlign,
@@ -65,7 +65,7 @@ const STYLE_PRESETS = [
     bgColor: '#1a1a1a',
     bgImage: '/images/250118코르크베이크바/IMG_7578.JPG',
     textColor: '#ffffff',
-    fontFamily: `'Noto Sans KR', sans-serif`,
+    fontFamily: `'Pretendard', sans-serif`,
     frameType: 'solid' as FrameType,
     overlayOpacity: 30,
     textAlign: 'center' as TextAlign,
@@ -84,7 +84,7 @@ const STYLE_PRESETS = [
     bgColor: '#0a2540',
     bgImage: '/images/251231지관서가/안동북카페-지관서가-1층내부-서가창가뷰.JPG',
     textColor: '#fdcb6e',
-    fontFamily: `'Noto Sans KR', sans-serif`,
+    fontFamily: `'Pretendard', sans-serif`,
     frameType: 'corners' as FrameType,
     overlayOpacity: 30,
     textAlign: 'left' as TextAlign,
@@ -103,7 +103,7 @@ const STYLE_PRESETS = [
     bgColor: '#2d3436',
     bgImage: '/images/251217포트웰브/포트웰브_바카운터프로젝터.JPG',
     textColor: '#ffffff',
-    fontFamily: `'Gothic A1', sans-serif`,
+    fontFamily: `'Pretendard', sans-serif`,
     frameType: 'double' as FrameType,
     overlayOpacity: 30,
     textAlign: 'right' as TextAlign,
@@ -141,7 +141,7 @@ const STYLE_PRESETS = [
     bgColor: '#1a1a1a',
     bgImage: '/images/260317야옹이네고양이카페/IMG_8552.JPG',
     textColor: '#ffffff',
-    fontFamily: `'Nanum Gothic', sans-serif`,
+    fontFamily: `'Pretendard', sans-serif`,
     frameType: 'none' as FrameType,
     overlayOpacity: 30,
     textAlign: 'center' as TextAlign,
@@ -177,9 +177,11 @@ export default function HomePage() {
   const [titleFontSize, setTitleFontSize] = useState(60);
   const [bgOffsetX, setBgOffsetX] = useState(50);
   const [bgOffsetY, setBgOffsetY] = useState(50);
+  const [bgRotation, setBgRotation] = useState(0);
 
   const [downloadFormat, setDownloadFormat] = useState<'png' | 'jpg'>('png');
   const [downloadScale, setDownloadScale] = useState<1 | 2>(2);
+  const [fileName, setFileName] = useState('blog_thumbnail');
   const [activePresetId, setActivePresetId] = useState<string | null>('naver');
   const [isDownloadDone, setIsDownloadDone] = useState(false);
   const [activeMainTab, setActiveMainTab] = useState<'thumbnail' | 'skin'>('thumbnail');
@@ -206,6 +208,7 @@ export default function HomePage() {
     setTitleFontSize(60);
     setBgOffsetX(50);
     setBgOffsetY(50);
+    setBgRotation(0);
     setActivePresetId(preset.id);
   };
 
@@ -220,6 +223,7 @@ export default function HomePage() {
           setBgType('image');
           setBgOffsetX(50);
           setBgOffsetY(50);
+          setBgRotation(0);
           setActivePresetId(null);
         }
       };
@@ -253,7 +257,7 @@ export default function HomePage() {
       const quality = downloadFormat === 'jpg' ? 0.95 : undefined;
       const dataUrl = canvas.toDataURL(mimeType, quality);
       const link = document.createElement('a');
-      link.download = `blog_thumbnail.${downloadFormat}`;
+      link.download = `${fileName || 'blog_thumbnail'}.${downloadFormat}`;
       link.href = dataUrl;
       link.click();
       setIsDownloadDone(true);
@@ -381,9 +385,12 @@ export default function HomePage() {
                   bgOffsetX={bgOffsetX}
                   bgOffsetY={bgOffsetY}
                   onBgOffsetChange={(x, y) => { setBgOffsetX(x); setBgOffsetY(y); }}
+                  bgRotation={bgRotation}
+                  onBgRotate={() => setBgRotation(r => (r + 90) % 360)}
                   onDownload={downloadThumbnail} isDownloading={isDownloading} isDownloadDone={isDownloadDone}
                   downloadFormat={downloadFormat} onFormatChange={setDownloadFormat}
                   downloadScale={downloadScale} onScaleChange={setDownloadScale}
+                  fileName={fileName} setFileName={setFileName}
                 />
               </div>
             </>

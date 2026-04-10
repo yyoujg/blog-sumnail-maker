@@ -28,11 +28,15 @@ interface ThumbnailPreviewProps {
   onFormatChange: (f: 'png' | 'jpg') => void;
   downloadScale: 1 | 2;
   onScaleChange: (s: 1 | 2) => void;
+  fileName: string;
+  setFileName: (v: string) => void;
   textShadow?: boolean;
   titleFontSize?: number;
   bgOffsetX: number;
   bgOffsetY: number;
   onBgOffsetChange: (x: number, y: number) => void;
+  bgRotation: number;
+  onBgRotate: () => void;
 }
 
 const OUTLINE = '-1px -1px 0 rgba(0,0,0,0.75), 1px -1px 0 rgba(0,0,0,0.75), -1px 1px 0 rgba(0,0,0,0.75), 1px 1px 0 rgba(0,0,0,0.75), 0 2px 10px rgba(0,0,0,0.55)';
@@ -100,11 +104,15 @@ export default function ThumbnailPreview({
   onFormatChange,
   downloadScale,
   onScaleChange,
+  fileName,
+  setFileName,
   textShadow = false,
   titleFontSize = 60,
   bgOffsetX,
   bgOffsetY,
   onBgOffsetChange,
+  bgRotation,
+  onBgRotate,
 }: ThumbnailPreviewProps) {
   const [isDragging, setIsDragging] = useState(false);
   const dragRef = useRef<{ startX: number; startY: number; startOX: number; startOY: number } | null>(null);
@@ -147,8 +155,9 @@ export default function ThumbnailPreview({
           미리보기 (1:1 비율)
         </h3>
 
+        <div className="relative w-full max-w-[500px]">
         <div
-          className={`w-full max-w-[500px] aspect-square relative overflow-hidden ${textShadow ? 'p-0' : 'p-8 sm:p-12'}`}
+          className={`w-full aspect-square relative overflow-hidden z-0 ${textShadow ? 'p-0' : 'p-8 sm:p-12'}`}
           ref={previewRef}
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
@@ -159,9 +168,6 @@ export default function ThumbnailPreview({
           onTouchEnd={handleDragEnd}
           style={{
             backgroundColor: bgType === 'color' ? bgColor : '#ffffff',
-            backgroundImage: bgType === 'image' && bgImage ? `url('${bgImage}')` : 'none',
-            backgroundSize: 'cover',
-            backgroundPosition: `${bgOffsetX}% ${bgOffsetY}%`,
             fontFamily: fontFamily,
             boxShadow: 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.05)',
             color: textColor,
@@ -171,9 +177,21 @@ export default function ThumbnailPreview({
             cursor: bgType === 'image' && bgImage ? (isDragging ? 'grabbing' : 'grab') : 'default',
           }}
         >
+          {bgType === 'image' && bgImage && (
+            <div
+              className="absolute inset-0"
+              style={{
+                backgroundImage: `url('${bgImage}')`,
+                backgroundSize: 'cover',
+                backgroundPosition: `${bgOffsetX}% ${bgOffsetY}%`,
+                transform: `rotate(${bgRotation}deg)`,
+                zIndex: 0,
+              }}
+            />
+          )}
           <div
-            className="absolute inset-0 z-0 pointer-events-none"
-            style={{ backgroundColor: `rgba(0, 0, 0, ${overlayOpacity / 100})` }}
+            className="absolute inset-0 pointer-events-none"
+            style={{ backgroundColor: `rgba(0, 0, 0, ${overlayOpacity / 100})`, zIndex: 1 }}
           />
 
           {frameType === 'solid' && (
@@ -219,7 +237,7 @@ export default function ThumbnailPreview({
               alignItems:
                 textAlign === 'center' ? 'center' :
                 textAlign === 'right' ? 'flex-end' : 'flex-start',
-              padding: textShadow ? '0 22px 22px' : (frameType === 'none' || frameType === 'band') ? '1.75rem' : '2.5rem',
+              padding: textShadow ? '22px' :(frameType === 'none' || frameType === 'band') ? '1.75rem' : '2.5rem',
             }}
           >
             <div
@@ -283,6 +301,16 @@ export default function ThumbnailPreview({
             </div>
           </div>
         </div>
+        {bgType === 'image' && bgImage && (
+          <button
+            onClick={onBgRotate}
+            className="absolute top-2 right-2 bg-black/50 hover:bg-black/70 text-white rounded-full w-9 h-9 flex items-center justify-center text-lg transition-all z-10"
+            title="이미지 90도 회전"
+          >
+            &#8635;
+          </button>
+        )}
+        </div>
 
         {/* 결과 이미지 아래 심리 자극 문구 */}
         <p className="mt-3 text-xs text-center text-green-700 font-semibold bg-green-50 rounded-xl px-4 py-2 w-full max-w-[500px]">
@@ -331,6 +359,19 @@ export default function ThumbnailPreview({
                 </button>
               ))}
             </div>
+          </div>
+        </div>
+        <div>
+          <p className="text-xs font-semibold text-gray-500 mb-1.5">파일명</p>
+          <div className="flex items-center gap-1">
+            <input
+              type="text"
+              value={fileName}
+              onChange={(e) => setFileName(e.target.value)}
+              placeholder="blog_thumbnail"
+              className="flex-1 px-3 py-1.5 text-xs border border-gray-300 rounded-lg focus:outline-none focus:border-gray-500"
+            />
+            <span className="text-xs text-gray-400">.{downloadFormat}</span>
           </div>
         </div>
         {downloadFormat === 'jpg' && (
