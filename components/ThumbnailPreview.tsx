@@ -1,6 +1,6 @@
 'use client';
 
-import React, { type RefObject, useEffect, useRef, useState } from 'react';
+import React, { type RefObject } from 'react';
 import Link from 'next/link';
 import { Download } from 'lucide-react';
 import type { TextAlign, TextVAlign, FrameType, BgType } from '@/lib/types';
@@ -31,47 +31,19 @@ interface ThumbnailPreviewProps {
   textShadow?: boolean;
 }
 
-function FitWidthTitle({ lines, fontFamily, color, shadow }: {
+function FitWidthTitle({ lines, color, shadow }: {
   lines: string[];
-  fontFamily: string;
+  fontFamily?: string;
   color: string;
   shadow: boolean;
 }) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [sizes, setSizes] = useState<number[]>([]);
-
-  useEffect(() => {
-    document.fonts.ready.then(() => {
-      if (!containerRef.current) return;
-      const containerWidth = containerRef.current.offsetWidth;
-      if (containerWidth === 0) return;
-      const newSizes = lines.map(line => {
-        if (!line.trim()) return 48;
-        const el = document.createElement('span');
-        el.style.cssText = `position:fixed;left:-9999px;white-space:nowrap;font-weight:900;font-family:${fontFamily};`;
-        document.body.appendChild(el);
-        let lo = 10, hi = 200;
-        while (hi - lo > 1) {
-          const mid = (lo + hi) >> 1;
-          el.style.fontSize = `${mid}px`;
-          el.textContent = line;
-          if (el.offsetWidth >= containerWidth) hi = mid;
-          else lo = mid;
-        }
-        document.body.removeChild(el);
-        return lo;
-      });
-      setSizes(newSizes);
-    });
-  }, [lines.join('\n'), fontFamily]);
-
   return (
-    <div ref={containerRef} style={{ width: '100%' }}>
+    <div style={{ width: '100%' }}>
       {lines.map((line, i) => (
         <div
           key={i}
           style={{
-            fontSize: sizes[i] ? `${sizes[i]}px` : '3rem',
+            fontSize: '70px',
             fontWeight: 900,
             color,
             lineHeight: 1.15,
@@ -121,7 +93,7 @@ export default function ThumbnailPreview({
         </h3>
 
         <div
-          className={`w-full max-w-[500px] aspect-square relative overflow-hidden ${textShadow ? 'p-3' : 'p-8 sm:p-12'}`}
+          className={`w-full max-w-[500px] aspect-square relative overflow-hidden ${textShadow ? 'p-0' : 'p-8 sm:p-12'}`}
           ref={previewRef}
           style={{
             backgroundColor: bgType === 'color' ? bgColor : '#ffffff',
@@ -185,7 +157,7 @@ export default function ThumbnailPreview({
               alignItems:
                 textAlign === 'center' ? 'center' :
                 textAlign === 'right' ? 'flex-end' : 'flex-start',
-              padding: textShadow ? '0.75rem' : (frameType === 'none' || frameType === 'band') ? '1.75rem' : '2.5rem',
+              padding: textShadow ? '1rem' : (frameType === 'none' || frameType === 'band') ? '1.75rem' : '2.5rem',
             }}
           >
             <div
