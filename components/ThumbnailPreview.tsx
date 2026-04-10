@@ -192,7 +192,15 @@ export default function ThumbnailPreview({
               {category && (
                 <span
                   className="text-xs font-bold tracking-wider uppercase border rounded-full px-3 py-1 w-fit"
-                  style={{ borderColor: textColor, opacity: 0.9 }}
+                  style={textShadow ? {
+                    borderColor: 'rgba(255,255,255,0.6)',
+                    backgroundColor: 'rgba(0,0,0,0.45)',
+                    color: '#ffffff',
+                    textShadow: '0 1px 4px rgba(0,0,0,0.6)',
+                  } : {
+                    borderColor: textColor,
+                    opacity: 0.9,
+                  }}
                 >
                   {category}
                 </span>
