@@ -29,6 +29,13 @@
 }
 
 @font-face {
+  font-family: 'KerisKedyuche';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2601-3@1.0/KERISKEDU_B.woff2') format('woff2');
+  font-weight: 700;
+  font-display: swap;
+}
+
+@font-face {
   font-family: 'EF_jejudoldam';
   src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2107@1.1/EF_Jejudoldam.woff') format('woff');
   font-weight: normal;
