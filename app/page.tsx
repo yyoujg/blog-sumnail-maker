@@ -246,13 +246,17 @@ export default function HomePage() {
       const h = element.offsetHeight;
       element.style.setProperty('width', `${w}px`);
       element.style.setProperty('height', `${h}px`);
+      element.style.setProperty('box-shadow', 'none');
       const canvas = await window.html2canvas(element, {
         scale: downloadScale,
         useCORS: true,
         backgroundColor: bgType === 'color' ? bgColor : '#ffffff',
+        scrollX: -window.scrollX,
+        scrollY: -window.scrollY,
       });
       element.style.removeProperty('width');
       element.style.removeProperty('height');
+      element.style.removeProperty('box-shadow');
       const mimeType = downloadFormat === 'jpg' ? 'image/jpeg' : 'image/png';
       const quality = downloadFormat === 'jpg' ? 0.95 : undefined;
       const dataUrl = canvas.toDataURL(mimeType, quality);
