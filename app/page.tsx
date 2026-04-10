@@ -29,7 +29,7 @@ const STYLE_PRESETS = [
     textColor: '#ffffff',
     fontFamily: `'Jua', sans-serif`,
     frameType: 'band' as FrameType,
-    overlayOpacity: 10,
+    overlayOpacity: 0,
     textAlign: 'left' as TextAlign,
     textVAlign: 'bottom' as TextVAlign,
     title: '맥주 맛집 🍺\n치킨 세트 후기',
@@ -171,7 +171,7 @@ export default function HomePage() {
   const [textOffsetX, setTextOffsetX] = useState(0);
   const [textOffsetY, setTextOffsetY] = useState(0);
 
-  const [overlayOpacity, setOverlayOpacity] = useState(10);
+  const [overlayOpacity, setOverlayOpacity] = useState(0);
   const [frameType, setFrameType] = useState<FrameType>('band');
   const [textShadow, setTextShadow] = useState(true);
   const [titleFontSize, setTitleFontSize] = useState(60);
