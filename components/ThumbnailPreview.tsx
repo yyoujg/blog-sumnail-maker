@@ -203,7 +203,7 @@ export default function ThumbnailPreview({
                     lines={title.split('\n')}
                     fontFamily={fontFamily}
                     color={textColor}
-                    shadow
+                    shadow={!fontFamily.includes('KerisKedyuche') && !fontFamily.includes('EF_jejudoldam')}
                     fontSize={titleFontSize}
                   />
                 ) : (
@@ -225,7 +225,7 @@ export default function ThumbnailPreview({
                   className="text-sm sm:text-base md:text-xl opacity-80 break-keep font-medium"
                   style={{
                     wordBreak: 'keep-all',
-                    textShadow: textShadow
+                    textShadow: textShadow && !fontFamily.includes('KerisKedyuche') && !fontFamily.includes('EF_jejudoldam')
                       ? '-1px -1px 0 rgba(0,0,0,0.65), 1px -1px 0 rgba(0,0,0,0.65), -1px 1px 0 rgba(0,0,0,0.65), 1px 1px 0 rgba(0,0,0,0.65), 0 2px 8px rgba(0,0,0,0.4)'
                       : undefined,
                   }}
