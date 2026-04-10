@@ -31,6 +31,20 @@ interface ThumbnailPreviewProps {
   textShadow?: boolean;
 }
 
+const OUTLINE = '-2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000, 0 0 8px rgba(0,0,0,0.4)';
+const EMOJI_RE = /([\u{1F000}-\u{1FFFF}][\uFE0F\u20E3]?|[\u{2300}-\u{27BF}][\uFE0F\u20E3]?)/gu;
+
+function renderWithOutline(line: string) {
+  const parts = line.split(EMOJI_RE);
+  return parts.map((seg, i) =>
+    seg === '' ? null : (
+      <span key={i} style={{ textShadow: i % 2 === 1 ? 'none' : OUTLINE }}>
+        {seg}
+      </span>
+    )
+  );
+}
+
 function FitWidthTitle({ lines, color, shadow }: {
   lines: string[];
   fontFamily?: string;
@@ -48,12 +62,9 @@ function FitWidthTitle({ lines, color, shadow }: {
             color,
             lineHeight: 1.15,
             whiteSpace: 'nowrap',
-            textShadow: shadow
-              ? '-2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000, 0 0 8px rgba(0,0,0,0.4)'
-              : undefined,
           }}
         >
-          {line}
+          {shadow ? renderWithOutline(line) : line}
         </div>
       ))}
     </div>
@@ -93,7 +104,7 @@ export default function ThumbnailPreview({
         </h3>
 
         <div
-          className={`w-full max-w-[500px] aspect-square relative overflow-hidden ${textShadow ? 'p-[15px]' : 'p-8 sm:p-12'}`}
+          className={`w-full max-w-[500px] aspect-square relative overflow-hidden ${textShadow ? 'p-0' : 'p-8 sm:p-12'}`}
           ref={previewRef}
           style={{
             backgroundColor: bgType === 'color' ? bgColor : '#ffffff',
@@ -157,7 +168,7 @@ export default function ThumbnailPreview({
               alignItems:
                 textAlign === 'center' ? 'center' :
                 textAlign === 'right' ? 'flex-end' : 'flex-start',
-              padding: textShadow ? '15px' : (frameType === 'none' || frameType === 'band') ? '1.75rem' : '2.5rem',
+              padding: textShadow ? '0 15px 15px' : (frameType === 'none' || frameType === 'band') ? '1.75rem' : '2.5rem',
             }}
           >
             <div
