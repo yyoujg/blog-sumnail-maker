@@ -34,7 +34,7 @@ const STYLE_PRESETS = [
     textVAlign: 'bottom' as TextVAlign,
     title: '맥주 맛집 🍺\n치킨 세트 후기',
     subtitle: '수제맥주랑 먹으니 완벽했습니다',
-    category: '맛집 후기',
+    category: '',
     categoryOptions: ['맛집 후기', '술집 추천', '안주 맛집', '재방문 의사'],
     textShadow: true,
   },
@@ -158,7 +158,7 @@ const STYLE_PRESETS = [
 export default function HomePage() {
   const [title, setTitle] = useState('맥주 맛집 🍺\n치킨 세트 후기');
   const [subtitle, setSubtitle] = useState('수제맥주랑 먹으니 완벽했습니다');
-  const [category, setCategory] = useState('맛집 후기');
+  const [category, setCategory] = useState('');
 
   const [bgType, setBgType] = useState<BgType>('image');
   const [bgColor, setBgColor] = useState('#1a1a1a');

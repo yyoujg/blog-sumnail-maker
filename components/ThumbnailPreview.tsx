@@ -189,7 +189,7 @@ export default function ThumbnailPreview({
                 transform: `translate(${textOffsetX}%, ${textOffsetY}%)`,
               }}
             >
-              {category && !textShadow && (
+              {category && (
                 <span
                   className="text-xs font-bold tracking-wider uppercase border rounded-full px-3 py-1 w-fit"
                   style={{ borderColor: textColor, opacity: 0.9 }}
