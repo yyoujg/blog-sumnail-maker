@@ -175,6 +175,8 @@ export default function HomePage() {
   const [frameType, setFrameType] = useState<FrameType>('band');
   const [textShadow, setTextShadow] = useState(true);
   const [titleFontSize, setTitleFontSize] = useState(60);
+  const [bgOffsetX, setBgOffsetX] = useState(50);
+  const [bgOffsetY, setBgOffsetY] = useState(50);
 
   const [downloadFormat, setDownloadFormat] = useState<'png' | 'jpg'>('png');
   const [downloadScale, setDownloadScale] = useState<1 | 2>(2);
@@ -202,6 +204,8 @@ export default function HomePage() {
     setTextOffsetY(0);
     setTextShadow(preset.textShadow);
     setTitleFontSize(60);
+    setBgOffsetX(50);
+    setBgOffsetY(50);
     setActivePresetId(preset.id);
   };
 
@@ -214,6 +218,8 @@ export default function HomePage() {
         if (target && typeof target.result === 'string') {
           setBgImage(target.result);
           setBgType('image');
+          setBgOffsetX(50);
+          setBgOffsetY(50);
           setActivePresetId(null);
         }
       };
@@ -372,6 +378,9 @@ export default function HomePage() {
                   overlayOpacity={overlayOpacity} frameType={frameType}
                   textShadow={textShadow}
                   titleFontSize={titleFontSize}
+                  bgOffsetX={bgOffsetX}
+                  bgOffsetY={bgOffsetY}
+                  onBgOffsetChange={(x, y) => { setBgOffsetX(x); setBgOffsetY(y); }}
                   onDownload={downloadThumbnail} isDownloading={isDownloading} isDownloadDone={isDownloadDone}
                   downloadFormat={downloadFormat} onFormatChange={setDownloadFormat}
                   downloadScale={downloadScale} onScaleChange={setDownloadScale}

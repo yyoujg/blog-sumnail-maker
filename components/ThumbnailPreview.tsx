@@ -1,6 +1,6 @@
 'use client';
 
-import React, { type RefObject } from 'react';
+import React, { type RefObject, useRef, useState } from 'react';
 import Link from 'next/link';
 import { Download } from 'lucide-react';
 import type { TextAlign, TextVAlign, FrameType, BgType } from '@/lib/types';
@@ -30,6 +30,9 @@ interface ThumbnailPreviewProps {
   onScaleChange: (s: 1 | 2) => void;
   textShadow?: boolean;
   titleFontSize?: number;
+  bgOffsetX: number;
+  bgOffsetY: number;
+  onBgOffsetChange: (x: number, y: number) => void;
 }
 
 const OUTLINE = '-1px -1px 0 rgba(0,0,0,0.75), 1px -1px 0 rgba(0,0,0,0.75), -1px 1px 0 rgba(0,0,0,0.75), 1px 1px 0 rgba(0,0,0,0.75), 0 2px 10px rgba(0,0,0,0.55)';
@@ -99,7 +102,44 @@ export default function ThumbnailPreview({
   onScaleChange,
   textShadow = false,
   titleFontSize = 60,
+  bgOffsetX,
+  bgOffsetY,
+  onBgOffsetChange,
 }: ThumbnailPreviewProps) {
+  const [isDragging, setIsDragging] = useState(false);
+  const dragRef = useRef<{ startX: number; startY: number; startOX: number; startOY: number } | null>(null);
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    if (bgType !== 'image' || !bgImage) return;
+    e.preventDefault();
+    setIsDragging(true);
+    dragRef.current = { startX: e.clientX, startY: e.clientY, startOX: bgOffsetX, startOY: bgOffsetY };
+  };
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!dragRef.current) return;
+    const el = e.currentTarget as HTMLDivElement;
+    const s = 100 / el.offsetWidth;
+    const nx = Math.max(0, Math.min(100, dragRef.current.startOX - (e.clientX - dragRef.current.startX) * s));
+    const ny = Math.max(0, Math.min(100, dragRef.current.startOY - (e.clientY - dragRef.current.startY) * s));
+    onBgOffsetChange(nx, ny);
+  };
+  const handleDragEnd = () => { setIsDragging(false); dragRef.current = null; };
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (bgType !== 'image' || !bgImage) return;
+    const t = e.touches[0];
+    setIsDragging(true);
+    dragRef.current = { startX: t.clientX, startY: t.clientY, startOX: bgOffsetX, startOY: bgOffsetY };
+  };
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!dragRef.current) return;
+    const t = e.touches[0];
+    const el = e.currentTarget as HTMLDivElement;
+    const s = 100 / el.offsetWidth;
+    const nx = Math.max(0, Math.min(100, dragRef.current.startOX - (t.clientX - dragRef.current.startX) * s));
+    const ny = Math.max(0, Math.min(100, dragRef.current.startOY - (t.clientY - dragRef.current.startY) * s));
+    onBgOffsetChange(nx, ny);
+  };
   return (
     <div className="flex-1 flex flex-col items-center lg:sticky lg:top-8 h-fit">
       <div className="w-full bg-white p-4 rounded-2xl shadow-sm border border-gray-200 mb-4 flex flex-col items-center">
@@ -110,18 +150,25 @@ export default function ThumbnailPreview({
         <div
           className={`w-full max-w-[500px] aspect-square relative overflow-hidden ${textShadow ? 'p-0' : 'p-8 sm:p-12'}`}
           ref={previewRef}
+          onMouseDown={handleMouseDown}
+          onMouseMove={handleMouseMove}
+          onMouseUp={handleDragEnd}
+          onMouseLeave={handleDragEnd}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleDragEnd}
           style={{
             backgroundColor: bgType === 'color' ? bgColor : '#ffffff',
             backgroundImage: bgType === 'image' && bgImage ? `url('${bgImage}')` : 'none',
             backgroundSize: 'cover',
-            backgroundPosition: 'center',
+            backgroundPosition: `${bgOffsetX}% ${bgOffsetY}%`,
             fontFamily: fontFamily,
             boxShadow: 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.05)',
             color: textColor,
             borderColor: 'transparent',
             outline: 'none',
             userSelect: 'none',
-            cursor: 'default',
+            cursor: bgType === 'image' && bgImage ? (isDragging ? 'grabbing' : 'grab') : 'default',
           }}
         >
           <div
