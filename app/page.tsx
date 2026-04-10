@@ -174,7 +174,7 @@ export default function HomePage() {
   const [overlayOpacity, setOverlayOpacity] = useState(10);
   const [frameType, setFrameType] = useState<FrameType>('band');
   const [textShadow, setTextShadow] = useState(true);
-  const [titleFontSize, setTitleFontSize] = useState(70);
+  const [titleFontSize, setTitleFontSize] = useState(60);
 
   const [downloadFormat, setDownloadFormat] = useState<'png' | 'jpg'>('png');
   const [downloadScale, setDownloadScale] = useState<1 | 2>(2);
@@ -201,7 +201,7 @@ export default function HomePage() {
     setTextOffsetX(0);
     setTextOffsetY(0);
     setTextShadow(preset.textShadow);
-    setTitleFontSize(70);
+    setTitleFontSize(60);
     setActivePresetId(preset.id);
   };
 

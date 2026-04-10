@@ -98,7 +98,7 @@ export default function ThumbnailPreview({
   downloadScale,
   onScaleChange,
   textShadow = false,
-  titleFontSize = 70,
+  titleFontSize = 60,
 }: ThumbnailPreviewProps) {
   return (
     <div className="flex-1 flex flex-col items-center lg:sticky lg:top-8 h-fit">
@@ -172,7 +172,7 @@ export default function ThumbnailPreview({
               alignItems:
                 textAlign === 'center' ? 'center' :
                 textAlign === 'right' ? 'flex-end' : 'flex-start',
-              padding: textShadow ? '0 15px 15px' : (frameType === 'none' || frameType === 'band') ? '1.75rem' : '2.5rem',
+              padding: textShadow ? '0 22px 22px' : (frameType === 'none' || frameType === 'band') ? '1.75rem' : '2.5rem',
             }}
           >
             <div
