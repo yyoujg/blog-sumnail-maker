@@ -29,6 +29,7 @@ interface ThumbnailPreviewProps {
   downloadScale: 1 | 2;
   onScaleChange: (s: 1 | 2) => void;
   textShadow?: boolean;
+  titleFontSize?: number;
 }
 
 const OUTLINE = '-2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000, 2px 2px 0 #000, 0 0 8px rgba(0,0,0,0.4)';
@@ -45,23 +46,25 @@ function renderWithOutline(line: string) {
   );
 }
 
-function FitWidthTitle({ lines, color, shadow }: {
+function FitWidthTitle({ lines, color, shadow, fontSize }: {
   lines: string[];
   fontFamily?: string;
   color: string;
   shadow: boolean;
+  fontSize: number;
 }) {
   return (
-    <div style={{ width: '100%' }}>
+    <div style={{ width: '100%', overflow: 'hidden' }}>
       {lines.map((line, i) => (
         <div
           key={i}
           style={{
-            fontSize: '70px',
+            fontSize: `${fontSize}px`,
             fontWeight: 900,
             color,
             lineHeight: 1.15,
             whiteSpace: 'nowrap',
+            overflow: 'hidden',
           }}
         >
           {shadow ? renderWithOutline(line) : line}
@@ -95,6 +98,7 @@ export default function ThumbnailPreview({
   downloadScale,
   onScaleChange,
   textShadow = false,
+  titleFontSize = 70,
 }: ThumbnailPreviewProps) {
   return (
     <div className="flex-1 flex flex-col items-center lg:sticky lg:top-8 h-fit">
@@ -200,6 +204,7 @@ export default function ThumbnailPreview({
                     fontFamily={fontFamily}
                     color={textColor}
                     shadow
+                    fontSize={titleFontSize}
                   />
                 ) : (
                   <h1

@@ -25,17 +25,17 @@ const STYLE_PRESETS = [
     emoji: '📝',
     bgType: 'image' as BgType,
     bgColor: '#1a1a1a',
-    bgImage: '/images/251116애플하우스/IMG_6822.JPG',
+    bgImage: '/images/251116애플하우스/IMG_6831.JPG',
     textColor: '#ffffff',
     fontFamily: `'Noto Sans KR', sans-serif`,
     frameType: 'band' as FrameType,
     overlayOpacity: 10,
     textAlign: 'left' as TextAlign,
     textVAlign: 'bottom' as TextVAlign,
-    title: '분식 맛집 🌶️\n떡볶이 세트 후기',
-    subtitle: '국물까지 싹 비웠습니다',
-    category: '분식 맛집',
-    categoryOptions: ['분식 맛집', '맛집 후기', '재방문 의사', '솔직 리뷰'],
+    title: '맥주 맛집 🍺\n치킨 세트 후기',
+    subtitle: '수제맥주랑 먹으니 완벽했습니다',
+    category: '맛집 후기',
+    categoryOptions: ['맛집 후기', '술집 추천', '안주 맛집', '재방문 의사'],
     textShadow: true,
   },
   {
@@ -156,13 +156,13 @@ const STYLE_PRESETS = [
 
 
 export default function HomePage() {
-  const [title, setTitle] = useState('분식 맛집 🌶️\n떡볶이 세트 후기');
-  const [subtitle, setSubtitle] = useState('국물까지 싹 비웠습니다');
-  const [category, setCategory] = useState('분식 맛집');
+  const [title, setTitle] = useState('맥주 맛집 🍺\n치킨 세트 후기');
+  const [subtitle, setSubtitle] = useState('수제맥주랑 먹으니 완벽했습니다');
+  const [category, setCategory] = useState('맛집 후기');
 
   const [bgType, setBgType] = useState<BgType>('image');
   const [bgColor, setBgColor] = useState('#1a1a1a');
-  const [bgImage, setBgImage] = useState<string | null>('/images/251116애플하우스/IMG_6822.JPG');
+  const [bgImage, setBgImage] = useState<string | null>('/images/251116애플하우스/IMG_6831.JPG');
 
   const [textColor, setTextColor] = useState('#ffffff');
   const [fontFamily, setFontFamily] = useState(`'Noto Sans KR', sans-serif`);
@@ -174,6 +174,7 @@ export default function HomePage() {
   const [overlayOpacity, setOverlayOpacity] = useState(10);
   const [frameType, setFrameType] = useState<FrameType>('band');
   const [textShadow, setTextShadow] = useState(true);
+  const [titleFontSize, setTitleFontSize] = useState(70);
 
   const [downloadFormat, setDownloadFormat] = useState<'png' | 'jpg'>('png');
   const [downloadScale, setDownloadScale] = useState<1 | 2>(2);
@@ -200,6 +201,7 @@ export default function HomePage() {
     setTextOffsetX(0);
     setTextOffsetY(0);
     setTextShadow(preset.textShadow);
+    setTitleFontSize(70);
     setActivePresetId(preset.id);
   };
 
@@ -360,6 +362,7 @@ export default function HomePage() {
                   onImageUpload={handleImageUpload}
                   overlayOpacity={overlayOpacity} setOverlayOpacity={setOverlayOpacity}
                   frameType={frameType} setFrameType={setFrameType}
+                  {...(textShadow ? { titleFontSize, setTitleFontSize } : {})}
                 />
                 <ThumbnailPreview
                   previewRef={previewRef}
@@ -368,6 +371,7 @@ export default function HomePage() {
                   bgType={bgType} bgColor={bgColor} bgImage={bgImage}
                   overlayOpacity={overlayOpacity} frameType={frameType}
                   textShadow={textShadow}
+                  titleFontSize={titleFontSize}
                   onDownload={downloadThumbnail} isDownloading={isDownloading} isDownloadDone={isDownloadDone}
                   downloadFormat={downloadFormat} onFormatChange={setDownloadFormat}
                   downloadScale={downloadScale} onScaleChange={setDownloadScale}

@@ -47,6 +47,8 @@ interface ControlPanelProps {
   setOverlayOpacity: (v: number) => void;
   frameType: FrameType;
   setFrameType: (v: FrameType) => void;
+  titleFontSize?: number;
+  setTitleFontSize?: (v: number) => void;
 }
 
 function ColorSwatches({
@@ -128,6 +130,8 @@ export default function ControlPanel({
   setOverlayOpacity,
   frameType,
   setFrameType,
+  titleFontSize,
+  setTitleFontSize,
 }: ControlPanelProps) {
   const [activeTab, setActiveTab] = useState<'text' | 'style' | 'bg'>('text');
 
@@ -234,6 +238,19 @@ export default function ControlPanel({
               <label className="block text-sm font-medium text-gray-700 mb-2">글자 색상</label>
               <ColorSwatches colors={TEXT_COLORS} selected={textColor} onSelect={setTextColor} />
             </div>
+            {titleFontSize !== undefined && setTitleFontSize && (
+              <div>
+                <label className="flex justify-between text-sm font-medium text-gray-700 mb-1">
+                  <span>제목 크기</span>
+                  <span className="tabular-nums text-gray-500">{titleFontSize}px</span>
+                </label>
+                <input
+                  type="range" min="40" max="110" value={titleFontSize}
+                  onChange={(e) => setTitleFontSize(Number(e.target.value))}
+                  className="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-gray-800"
+                />
+              </div>
+            )}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">텍스트 위치</label>
               <div className="grid grid-cols-3 gap-1 w-fit">
