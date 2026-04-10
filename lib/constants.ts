@@ -7,7 +7,7 @@ export const ADSENSE_SCRIPT_SRC = `https://pagead2.googlesyndication.com/pagead/
 export const ADSENSE_AD_SLOT = '9150939859';
 
 export const FONT_LINK_HREF =
-  'https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Do+Hyeon&family=Gothic+A1:wght@700;900&family=Jua&family=Nanum+Gothic:wght@700&family=Noto+Sans+KR:wght@700;900&family=Sunflower:wght@700&display=swap';
+  'https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Do+Hyeon&family=Gamja+Flower&family=Gothic+A1:wght@700;900&family=Jua&family=Kirang+Haerang&family=Nanum+Gothic:wght@700&family=Noto+Sans+KR:wght@700;900&family=Sunflower:wght@700&family=Yeon+Sung&display=swap';
 
 export const HTML2CANVAS_SCRIPT_SRC =
   'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
@@ -18,6 +18,9 @@ export const FONTS = [
   { name: '고딕A1', value: `'Gothic A1', sans-serif` },
   { name: '도현', value: `'Do Hyeon', sans-serif` },
   { name: '주아', value: `'Jua', sans-serif` },
+  { name: '연성', value: `'Yeon Sung', cursive` },
+  { name: '감자꽃', value: `'Gamja Flower', cursive` },
+  { name: '기랑해랑', value: `'Kirang Haerang', cursive` },
   { name: '나눔 고딕', value: `'Nanum Gothic', sans-serif` },
   { name: '선플라워', value: `'Sunflower', sans-serif` },
 ] as const;
