@@ -25,17 +25,17 @@ const STYLE_PRESETS = [
     emoji: '📝',
     bgType: 'image' as BgType,
     bgColor: '#1a1a1a',
-    bgImage: '/images/250118코르크베이크바/IMG_7577.JPG',
+    bgImage: '/images/251116애플하우스/IMG_6822.JPG',
     textColor: '#ffffff',
     fontFamily: `'Noto Sans KR', sans-serif`,
     frameType: 'band' as FrameType,
     overlayOpacity: 10,
     textAlign: 'left' as TextAlign,
     textVAlign: 'bottom' as TextVAlign,
-    title: '편의점 신상\n포도 젤리 후기',
-    subtitle: '직접 먹어봤습니다',
-    category: '편의점 리뷰',
-    categoryOptions: ['편의점 리뷰', '신상 리뷰', '맛집 후기', '제품 후기'],
+    title: '분식 맛집 🌶️\n떡볶이 세트 후기',
+    subtitle: '국물까지 싹 비웠습니다',
+    category: '분식 맛집',
+    categoryOptions: ['분식 맛집', '맛집 후기', '재방문 의사', '솔직 리뷰'],
     textShadow: true,
   },
   {
@@ -156,13 +156,13 @@ const STYLE_PRESETS = [
 
 
 export default function HomePage() {
-  const [title, setTitle] = useState('편의점 신상\n포도 젤리 후기');
-  const [subtitle, setSubtitle] = useState('직접 먹어봤습니다');
-  const [category, setCategory] = useState('편의점 리뷰');
+  const [title, setTitle] = useState('분식 맛집 🌶️\n떡볶이 세트 후기');
+  const [subtitle, setSubtitle] = useState('국물까지 싹 비웠습니다');
+  const [category, setCategory] = useState('분식 맛집');
 
   const [bgType, setBgType] = useState<BgType>('image');
   const [bgColor, setBgColor] = useState('#1a1a1a');
-  const [bgImage, setBgImage] = useState<string | null>('/images/250118코르크베이크바/IMG_7577.JPG');
+  const [bgImage, setBgImage] = useState<string | null>('/images/251116애플하우스/IMG_6822.JPG');
 
   const [textColor, setTextColor] = useState('#ffffff');
   const [fontFamily, setFontFamily] = useState(`'Noto Sans KR', sans-serif`);

@@ -93,7 +93,7 @@ export default function ThumbnailPreview({
         </h3>
 
         <div
-          className={`w-full max-w-[500px] aspect-square relative overflow-hidden ${textShadow ? 'p-0' : 'p-8 sm:p-12'}`}
+          className={`w-full max-w-[500px] aspect-square relative overflow-hidden ${textShadow ? 'p-[15px]' : 'p-8 sm:p-12'}`}
           ref={previewRef}
           style={{
             backgroundColor: bgType === 'color' ? bgColor : '#ffffff',
@@ -157,7 +157,7 @@ export default function ThumbnailPreview({
               alignItems:
                 textAlign === 'center' ? 'center' :
                 textAlign === 'right' ? 'flex-end' : 'flex-start',
-              padding: textShadow ? '1rem' : (frameType === 'none' || frameType === 'band') ? '1.75rem' : '2.5rem',
+              padding: textShadow ? '15px' : (frameType === 'none' || frameType === 'band') ? '1.75rem' : '2.5rem',
             }}
           >
             <div
