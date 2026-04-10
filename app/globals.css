@@ -1,43 +1,15 @@
 @import "tailwindcss";
 
 @font-face {
-  font-family: 'NanumSquareRound';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_two@1.0/NanumSquareRoundEB.woff') format('woff');
-  font-weight: 800;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Cafe24Ssurround';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2105_2@1.0/Cafe24Ssurround.woff2') format('woff2');
-  font-weight: normal;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'GmarketSans';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2001@1.1/GmarketSansBold.woff') format('woff');
-  font-weight: 700;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'S-CoreDream';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-6Bold.woff') format('woff');
-  font-weight: 700;
-  font-display: swap;
-}
-
-@font-face {
   font-family: 'KerisKedyuche';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2601-3@1.0/KERISKEDU_B.woff2') format('woff2');
+  src: url('./asset/케리스 케듀체/KERISKEDU_B.ttf') format('truetype');
   font-weight: 700;
   font-display: swap;
 }
 
 @font-face {
   font-family: 'EF_jejudoldam';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2107@1.1/EF_Jejudoldam.woff') format('woff');
+  src: url('./asset/EF_jejudoldam(TTF).ttf') format('truetype');
   font-weight: normal;
   font-display: swap;
 }
