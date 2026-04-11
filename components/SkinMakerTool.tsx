@@ -430,7 +430,7 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
       <div className="flex flex-col lg:flex-row gap-6">
 
         {/* ── 왼쪽: 컨트롤 패널 ── */}
-        <div className="w-full lg:w-72 flex-shrink-0 bg-white rounded-2xl shadow-sm border border-gray-200 h-fit">
+        <div className="w-full lg:w-72 flex-shrink-0 order-2 lg:order-1 bg-white rounded-2xl shadow-sm border border-gray-200 h-fit">
 
           {/* 탭 헤더 */}
           <div className="flex border-b border-gray-200">
@@ -655,7 +655,7 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
         </div>
 
         {/* ── 오른쪽: 캔버스 + 액션 ── */}
-        <div className="flex-1 min-w-0 flex flex-col">
+        <div className="flex-1 min-w-0 order-1 lg:order-2 flex flex-col">
 
           {/* 캔버스 카드 */}
           <div className="w-full bg-white p-4 rounded-2xl shadow-sm border border-gray-200 mb-4">

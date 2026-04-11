@@ -315,7 +315,7 @@ export default function HomePage() {
             </button>
           </div>
 
-          <nav className="flex items-center gap-1">
+          <nav className="hidden md:flex items-center gap-1">
             <Link href="/blog" className="px-3 py-2 text-sm font-semibold text-white/60 hover:text-white hover:bg-white/10 rounded-lg transition-colors">블로그 가이드</Link>
             <Link href="/guide/thumbnail" className="px-3 py-2 text-sm font-semibold text-white/60 hover:text-white hover:bg-white/10 rounded-lg transition-colors">썸네일 팁</Link>
           </nav>

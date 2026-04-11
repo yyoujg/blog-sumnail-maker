@@ -142,7 +142,7 @@ export default function ControlPanel({
   ];
 
   return (
-    <div className="flex-1 bg-white rounded-2xl shadow-sm border border-gray-200 h-fit">
+    <div className="flex-1 order-2 lg:order-1 bg-white rounded-2xl shadow-sm border border-gray-200 h-fit">
       {/* 탭 헤더 */}
       <div className="flex border-b border-gray-200">
         {TABS.map((tab) => (
