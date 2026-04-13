@@ -242,10 +242,12 @@ export default function HomePage() {
     setIsDownloading(true);
     try {
       await document.fonts.ready;
-      const w = element.offsetWidth;
-      const h = element.offsetHeight;
+      const rect = element.getBoundingClientRect();
+      const w = Math.round(rect.width);
+      const h = Math.round(rect.height);
       element.style.setProperty('width', `${w}px`);
       element.style.setProperty('height', `${h}px`);
+      element.style.setProperty('aspect-ratio', 'auto');
       element.style.setProperty('box-shadow', 'none');
       const canvas = await window.html2canvas(element, {
         scale: downloadScale,
@@ -253,9 +255,12 @@ export default function HomePage() {
         backgroundColor: bgType === 'color' ? bgColor : '#ffffff',
         scrollX: -window.scrollX,
         scrollY: -window.scrollY,
+        windowWidth: document.documentElement.scrollWidth,
+        windowHeight: document.documentElement.scrollHeight,
       });
       element.style.removeProperty('width');
       element.style.removeProperty('height');
+      element.style.removeProperty('aspect-ratio');
       element.style.removeProperty('box-shadow');
       const mimeType = downloadFormat === 'jpg' ? 'image/jpeg' : 'image/png';
       const quality = downloadFormat === 'jpg' ? 0.95 : undefined;
