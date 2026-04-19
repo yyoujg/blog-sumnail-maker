@@ -9,6 +9,7 @@ import ControlPanel from '@/components/ControlPanel';
 import ThumbnailPreview from '@/components/ThumbnailPreview';
 import SkinMakerTool from '@/components/SkinMakerTool';
 import SiteFooter from '@/components/SiteFooter';
+import AdBanner from '@/components/AdBanner';
 import { HTML2CANVAS_SCRIPT_SRC } from '@/lib/constants';
 
 declare global {
@@ -27,7 +28,7 @@ const STYLE_PRESETS = [
     bgColor: '#1a1a1a',
     bgImage: '/images/251116애플하우스/IMG_6831.JPG',
     textColor: '#ffffff',
-    fontFamily: `'Jua', sans-serif`,
+    fontFamily: `'Pretendard', sans-serif`,
     frameType: 'band' as FrameType,
     overlayOpacity: 0,
     textAlign: 'left' as TextAlign,
@@ -445,6 +446,13 @@ export default function HomePage() {
         </section>
       )}
 
+      {/* 광고 */}
+      <div className="px-4 md:px-8">
+        <div className="max-w-6xl mx-auto">
+          <AdBanner position="home-mid" type="adsense" />
+        </div>
+      </div>
+
       {/* 인기 템플릿 */}
       <section id="popular-templates" className="px-4 md:px-8 py-10 border-t border-gray-200">
         <div className="max-w-6xl mx-auto">
@@ -476,6 +484,13 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* 광고 */}
+      <div className="px-4 md:px-8">
+        <div className="max-w-6xl mx-auto">
+          <AdBanner position="home-bottom" type="adsense" />
+        </div>
+      </div>
 
       {/* html2canvas: 썸네일 다운로드 기능이 있는 이 페이지에서만 로드 */}
       <Script src={HTML2CANVAS_SCRIPT_SRC} strategy="afterInteractive" />
