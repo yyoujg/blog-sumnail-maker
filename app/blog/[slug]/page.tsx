@@ -120,6 +120,7 @@ export default async function BlogPostPage({ params }: PageProps) {
 
   const prevPost = postIndex > 0 ? blogPosts[postIndex - 1] : null;
   const nextPost = postIndex < blogPosts.length - 1 ? blogPosts[postIndex + 1] : null;
+  const midAdAfterIndex = post.sections.length >= 4 ? Math.floor(post.sections.length / 2) - 1 : -1;
 
   const CORE_RELATED = ['naver-blog-thumbnail-size', 'thumbnail-failure-cases', 'thumbnail-text-tips'];
   const coreRelated = blogPosts.filter((p) => p.slug !== slug && CORE_RELATED.includes(p.slug));
@@ -198,27 +199,62 @@ export default async function BlogPostPage({ params }: PageProps) {
           {/* 본문 섹션 */}
           <div className="space-y-5">
             {post.sections.map((section, i) => (
-              <section
-                key={i}
-                className="bg-white rounded-2xl border border-gray-100 overflow-hidden"
-              >
-                {/* 섹션 헤더 */}
-                <div className="flex items-center gap-3 px-6 py-4 border-b border-gray-100 bg-gray-50">
-                  <span className="flex-shrink-0 w-6 h-6 bg-[#111111] text-white rounded-md flex items-center justify-center text-xs font-bold">
-                    {i + 1}
-                  </span>
-                  <h2 className="text-[15px] md:text-base font-bold text-gray-900 leading-snug">
-                    {section.heading}
-                  </h2>
-                </div>
-                {/* 섹션 본문 */}
-                <div className="px-6 py-5">
-                  {renderContent(section.content)}
-                </div>
-              </section>
+              <div key={i} className="space-y-5">
+                <section className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
+                  {/* 섹션 헤더 */}
+                  <div className="flex items-center gap-3 px-6 py-4 border-b border-gray-100 bg-gray-50">
+                    <span className="flex-shrink-0 w-6 h-6 bg-[#111111] text-white rounded-md flex items-center justify-center text-xs font-bold">
+                      {i + 1}
+                    </span>
+                    <h2 className="text-[15px] md:text-base font-bold text-gray-900 leading-snug">
+                      {section.heading}
+                    </h2>
+                  </div>
+                  {/* 섹션 본문 */}
+                  <div className="px-6 py-5">
+                    {renderContent(section.content)}
+                  </div>
+                </section>
+
+                {i === midAdAfterIndex && (
+                  <AdBanner type="adsense" position="blog-post-mid" />
+                )}
+              </div>
             ))}
           </div>
         </article>
+
+        {/* 쿠팡 파트너스: 추천 장비(자연스럽게) */}
+        <section className="mt-10 bg-white rounded-2xl border border-gray-100 overflow-hidden">
+          <div className="px-6 py-4 border-b border-gray-100 bg-gray-50">
+            <h2 className="text-[15px] md:text-base font-bold text-gray-900 leading-snug">
+              썸네일/사진 퀄리티 올리는 추천 장비
+            </h2>
+            <p className="text-xs text-gray-500 mt-1">
+              조명·배경지만 바꿔도 썸네일 배경 사진 퀄리티가 크게 달라집니다.
+            </p>
+          </div>
+          <div className="px-6 py-5">
+            <div className="text-[15px] text-gray-700 leading-[1.85]">
+              <p className="mb-3">
+                실내/저녁 촬영이 많다면 미니 LED 조명, 플랫레이 사진을 자주 찍는다면 초경량 삼각대,
+                배경이 지저분해 보인다면 촬영 배경지를 추천합니다.
+              </p>
+              <p className="text-sm text-gray-500">
+                아래는 관련 제품을 한 번에 볼 수 있는 쿠팡 파트너스 영역입니다.
+              </p>
+            </div>
+            <AdBanner type="coupang" position={`blog-post-reco-${slug}`} />
+            <div className="mt-2 flex flex-wrap gap-3">
+              <Link href="/" className="text-sm font-semibold text-gray-900 underline underline-offset-2">
+                썸네일 메이커로 바로 만들기 →
+              </Link>
+              <Link href="/blog" className="text-sm font-semibold text-gray-900 underline underline-offset-2">
+                블로그 가이드 전체 보기 →
+              </Link>
+            </div>
+          </div>
+        </section>
 
         <AdBanner type="adsense" position="blog-post-bottom" />
 

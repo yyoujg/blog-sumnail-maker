@@ -38,6 +38,21 @@ export const blogPosts: BlogPost[] = [
         heading: '수익화 순서 추천',
         content: '1단계(시작~2개월): 포스팅 20개 이상 + 체험단 신청 시작 / 2단계(2~4개월): 애드센스 신청 + 쿠팡 파트너스 링크 추가 / 3단계(6개월~): 방문자 늘면서 세 채널 동시 운영. 처음부터 수익을 기대하기보다 일단 콘텐츠를 쌓으면서 채널을 하나씩 여는 방식이 현실적이에요.',
       },
+      {
+        heading: '바로 적용 체크리스트 (오늘 할 일)',
+        content:
+          'STEP 1. 내 블로그에서 가장 많이 읽히는 글 3개를 고른다(검색 유입 있는 글) / STEP 2. 그 3개 글을 1,500자 이상으로 보강한다(가격·위치·주차·메뉴·결론) / STEP 3. 본문 중간에 “다음 단계: 썸네일 만들기” 내부 링크를 넣는다(https://www.blogsumnail.com) / STEP 4. 글 하단에 “추천 장비/추천 제품” 섹션을 만든다(쿠팡 파트너스 연결) / STEP 5. 마지막에 관련 글 2~3개를 링크해 체류를 늘린다(https://www.blogsumnail.com/blog).',
+      },
+      {
+        heading: '수익이 나는 흐름(핵심 구조)',
+        content:
+          '유입(검색) → 체류(긴 글·목차·사진) → 행동(썸네일 생성) → 수익(광고/쿠팡). “툴만 던져두면 돈이 된다”가 아니라, 독자가 먼저 읽고 납득한 다음에 움직이게 해야 전환이 생깁니다. 그래서 짧은 글 80개보다, 긴 글 10개가 더 빨리 돈이 됩니다.',
+      },
+      {
+        heading: '다음에 읽을 글 (내부 링크)',
+        content:
+          '네이버 블로그 썸네일 허브 가이드: https://www.blogsumnail.com/blog/how-to-make-blog-thumbnail / 조회수 안 나오는 이유: https://www.blogsumnail.com/blog/blog-views-zero-reasons / 키워드 전략 완전판: https://www.blogsumnail.com/blog/blog-keyword-strategy-complete / 전체 가이드 목록: https://www.blogsumnail.com/blog',
+      },
     ],
   },
   {
@@ -158,6 +173,21 @@ export const blogPosts: BlogPost[] = [
         heading: '원칙 6 — 도구를 제대로 활용하면 5분이면 충분',
         content: '포토샵이나 캔바 없이도 됩니다. 이 썸네일 메이커에서 배경색이나 이미지를 고르고, 제목·서브타이틀·카테고리를 입력한 뒤 PNG로 바로 저장할 수 있어요. 프리셋을 선택하면 어울리는 폰트와 색 조합이 자동으로 맞춰지기 때문에 디자인 감각이 없어도 됩니다. 처음 한 번만 본인 스타일을 정해두면 다음부터는 텍스트만 바꿔서 쓰면 됩니다.',
       },
+      {
+        heading: 'STEP: 10분 안에 “클릭되는 썸네일” 만드는 순서',
+        content:
+          'STEP 1. 제목에서 키워드만 남긴다(10자 이내). 예: “성수동 카페” / STEP 2. 서브타이틀은 “조건”으로 만든다. 예: “주차 가능·조용한 곳” / STEP 3. 오버레이 20~40%로 글자 가독성을 확보한다 / STEP 4. 카테고리 레이블을 1개만 넣는다(맛집/카페/체험단) / STEP 5. 같은 폰트·색을 20개 글에 유지해 통일감을 만든다.',
+      },
+      {
+        heading: '지금 바로 썸네일 만들기 (CTA)',
+        content:
+          '이 글의 원칙대로 바로 만들어보면 이해가 가장 빨라요. 썸네일 메이커 열기: https://www.blogsumnail.com (배경 선택 → 제목/서브타이틀 입력 → PNG 저장).',
+      },
+      {
+        heading: '관련 가이드 (내부 링크)',
+        content:
+          '텍스트를 줄이는 5단계: https://www.blogsumnail.com/blog/thumbnail-text-tips / 실패 사례로 배우기: https://www.blogsumnail.com/blog/thumbnail-failure-cases / 전체 가이드: https://www.blogsumnail.com/blog',
+      },
     ],
   },
   {
@@ -189,6 +219,21 @@ export const blogPosts: BlogPost[] = [
       {
         heading: '단계 5 — 부연 설명은 서브타이틀로',
         content: '메인 제목을 짧게 줄이고 나서 추가 정보가 필요하면 서브타이틀 영역에 작은 폰트로 넣으세요. "을지로 카페 솔직 후기 / 포토존 있음, 주차 가능" 구조가 읽기 좋아요. 이 메이커의 서브타이틀 입력란이 바로 그 용도입니다.',
+      },
+      {
+        heading: '실전 예시: 20자 → 10자로 줄이기',
+        content:
+          '예시 1) “성수동 감성 카페 추천 주차 가능한 곳” → 메인: “성수동 카페” / 서브: “주차 가능·조용” / 레이블: “카페”.\n예시 2) “솔직 체험단 디저트 후기(단점 포함)” → 메인: “솔직 체험단” / 서브: “단점 포함” / 레이블: “체험단”.\n핵심은 메인 텍스트를 “키워드”로, 나머지는 서브/레이블로 분해하는 겁니다.',
+      },
+      {
+        heading: '바로 적용 체크리스트',
+        content:
+          'STEP 1. 썸네일 문구를 1문장으로 적는다 / STEP 2. 명사 2개만 남긴다 / STEP 3. 숫자·조건(주차/웨이팅/가격)을 서브타이틀로 보낸다 / STEP 4. 카테고리 레이블 1개로 정보 밀도를 채운다 / STEP 5. 실제 검색 목록에서 “손톱 크기”로 보고 읽히는지 확인한다.',
+      },
+      {
+        heading: '지금 만들어보기 (CTA)',
+        content:
+          '텍스트를 줄였으면 바로 썸네일에 넣어보세요. 썸네일 메이커: https://www.blogsumnail.com / 썸네일 허브 가이드: https://www.blogsumnail.com/blog/how-to-make-blog-thumbnail / 전체 가이드: https://www.blogsumnail.com/blog',
       },
     ],
   },
@@ -345,6 +390,21 @@ export const blogPosts: BlogPost[] = [
       {
         heading: '보정은 밝기와 대비만',
         content: '찍은 사진을 그대로 올리지 않아요. 네이버 블로그 앱의 기본 편집 기능에서 밝기를 10~15% 올리고 대비를 약간 높이면 사진이 훨씬 생동감 있어 보입니다. Snapseed 무료 앱을 쓰면 더 세밀하게 조정할 수 있는데, 처음엔 블로그 앱 기본 편집만으로도 충분해요.',
+      },
+      {
+        heading: 'STEP: 방문 후 15분 “사진 정리 루틴”',
+        content:
+          'STEP 1. 썸네일 후보 2장 먼저 고른다(여백 있는 사진) / STEP 2. 본문용은 “외관-내부-메뉴-가격표-주차” 순으로 5~7장만 남긴다 / STEP 3. 밝기(+10~15)·대비(+5~10)만 최소 보정 / STEP 4. 사진 아래 한 줄 캡션을 넣는다(검색 의도에 답) / STEP 5. 마지막에 썸네일을 만들고 업로드한다(https://www.blogsumnail.com).',
+      },
+      {
+        heading: '추천 장비를 자연스럽게 넣는 문장 (쿠팡 연결용)',
+        content:
+          '저녁 실내 촬영이 많다면 “미니 LED 조명” 하나만 있어도 결과가 크게 달라집니다. 플랫레이를 자주 찍는다면 “초경량 삼각대”가 흔들림을 없애줘요. 이런 문장 다음에 추천 장비 섹션을 두면 광고처럼 보이지 않고 클릭이 자연스럽습니다.',
+      },
+      {
+        heading: '관련 가이드 (내부 링크)',
+        content:
+          '카페·맛집 사진 더 자세히: https://www.blogsumnail.com/blog/cafe-food-photo-guide / 썸네일 허브 가이드: https://www.blogsumnail.com/blog/how-to-make-blog-thumbnail / 전체 가이드: https://www.blogsumnail.com/blog',
       },
     ],
   },
@@ -525,6 +585,21 @@ export const blogPosts: BlogPost[] = [
       {
         heading: '해결 방법',
         content: '핵심 단어 1~2개만 남기고, 대비를 강하게, 강조 요소 하나 추가. 저는 이 세 가지로 기준을 바꾼 뒤에 같은 키워드에서 클릭률이 달라졌어요. 이 썸네일 메이커에서 배경과 텍스트 색을 조합하면 대비는 자동으로 잡힙니다.',
+      },
+      {
+        heading: '실전 교정: “내 썸네일이 실패인지” 30초 체크',
+        content:
+          'STEP 1. 썸네일을 휴대폰에서 아주 작게 본다(손톱 크기) / STEP 2. 0.5초 안에 읽히는 단어가 1개라도 있는지 확인 / STEP 3. 배경과 텍스트 대비가 충분한지(밝은 배경+밝은 글씨는 실패) / STEP 4. 카테고리 레이블 1개가 있는지 / STEP 5. “왜 클릭해야 하지?”를 만드는 단어(솔직/후기/실패/꿀팁)가 있는지.',
+      },
+      {
+        heading: '지금 바로 바꿔서 테스트하기 (CTA)',
+        content:
+          '실패 사례는 “바로 수정”할 때 효과가 큽니다. 같은 글로도 클릭이 달라져요. 썸네일 메이커: https://www.blogsumnail.com',
+      },
+      {
+        heading: '관련 가이드 (내부 링크)',
+        content:
+          '썸네일 허브 가이드: https://www.blogsumnail.com/blog/how-to-make-blog-thumbnail / 썸네일 텍스트 줄이기: https://www.blogsumnail.com/blog/thumbnail-text-tips / 전체 가이드: https://www.blogsumnail.com/blog',
       },
     ],
   },
@@ -773,6 +848,21 @@ export const blogPosts: BlogPost[] = [
       {
         heading: '이유 7 — 너무 빨리 포기한다',
         content: '글을 올리고 며칠 안에 "조회수 없다"며 포기하는 게 가장 흔한 실수예요. 블로그 글이 검색에 안정적으로 노출되기까지 최소 2~4주가 걸려요. 30개 이상 글이 쌓이고 3개월이 지나야 결과가 나옵니다. 조급하지 않게 꾸준히 쌓는 게 가장 중요해요.',
+      },
+      {
+        heading: '한 번에 고치지 말고, 우선순위대로',
+        content:
+          '조회수를 올릴 때 “다 바꾸기”는 오래 못 갑니다. 효과 큰 것부터 바꾸세요. ① 제목(키워드) ② 썸네일(클릭) ③ 첫 문단(체류) ④ 소제목/사진(정보 밀도) ⑤ 내부 링크(순환). 이 순서대로만 손보면 같은 글로도 지표가 달라집니다.',
+      },
+      {
+        heading: '오늘 바로 할 수 있는 10분 점검표',
+        content:
+          'STEP 1. 제목 첫 15자 안에 메인 키워드가 있는가 / STEP 2. 썸네일 텍스트가 10자 이내인가 / STEP 3. 첫 문단 3문장 안에 결론이 있는가 / STEP 4. 소제목이 3개 이상인가 / STEP 5. 본문 중간에 툴 링크(https://www.blogsumnail.com)가 있는가 / STEP 6. 마지막에 관련 글 2개 이상 링크가 있는가(https://www.blogsumnail.com/blog).',
+      },
+      {
+        heading: '관련 가이드 (내부 링크)',
+        content:
+          '키워드 전략 완전판: https://www.blogsumnail.com/blog/blog-keyword-strategy-complete / 썸네일 허브: https://www.blogsumnail.com/blog/how-to-make-blog-thumbnail / 전체 가이드: https://www.blogsumnail.com/blog',
       },
     ],
   },
@@ -1094,6 +1184,21 @@ export const blogPosts: BlogPost[] = [
         heading: '블로그용 썸네일 사진은 따로 찍어야 합니다',
         content: '블로그 포스팅 사진과 썸네일용 사진은 용도가 달라요. 포스팅 본문 사진은 상세하게 여러 각도로 많이 찍는 게 좋지만, 썸네일은 텍스트를 넣어야 하기 때문에 여백이 있는 구도로 찍어야 합니다. 저는 카페 방문 때 꼭 배경이 깔끔하고 음식이 중앙에 있는 사진 1~2장을 따로 찍어둬요. 이 사진이 나중에 썸네일 배경이 됩니다. 텍스트를 올릴 공간이 필요하기 때문에 음식 위쪽이나 좌우로 여백이 있는 구도가 좋아요. 다크한 배경이나 단색에 가까운 배경이 텍스트 가독성이 높습니다. 사진을 찍을 때 이 사진에 글자를 올리면 어떻게 보일까를 함께 상상하면서 촬영하면 좋은 썸네일이 만들어집니다. 사진과 썸네일 두 가지를 동시에 잡으면 블로그 작업 효율도 높아져요.',
       },
+      {
+        heading: '바로 적용 체크리스트 (카페/맛집 촬영)',
+        content:
+          'STEP 1. 창가 자리 확보(빛 방향이 50%) / STEP 2. 같은 메뉴를 각도 3개(45도·부감·수평)로 찍기 / STEP 3. 테이블 위 잡동사니 치우기(배경 단순화) / STEP 4. 노출은 “약간 어둡게”로 맞춰 색을 살리기 / STEP 5. 썸네일 후보 사진 1~2장은 “여백 있는 구도”로 따로 확보.',
+      },
+      {
+        heading: '촬영 후 바로 썸네일까지 연결하기 (CTA)',
+        content:
+          '촬영이 끝났으면 썸네일을 바로 만들어 두는 게 가장 효율적입니다. 썸네일 메이커: https://www.blogsumnail.com (사진 업로드 → 오버레이 20~40% → 키워드 텍스트).',
+      },
+      {
+        heading: '관련 가이드 (내부 링크)',
+        content:
+          '사진 기본 루틴(스마트폰): https://www.blogsumnail.com/blog/blog-photo-tips / 썸네일 텍스트 줄이기: https://www.blogsumnail.com/blog/thumbnail-text-tips / 전체 가이드: https://www.blogsumnail.com/blog',
+      },
     ],
   },
   {
@@ -1230,6 +1335,16 @@ export const blogPosts: BlogPost[] = [
         heading: '주 1회는 "연결 글"을 의식하기',
         content: '시리즈 글·이전 글 링크·같은 카테고리 추천을 본문 중간에 한 번씩 넣으면 체류가 길어지고 지표가 안정됩니다. 방문자가 늘고 체류가 늘면 광고 노출과 제휴 전환 여지도 같이 커집니다.',
       },
+      {
+        heading: 'STEP: “유입 → 체류 → 행동 → 수익” 글 구조 템플릿',
+        content:
+          'STEP 1(유입). 제목은 “키워드 + 상황/조건”으로 만든다. 예: “블로그 조회수 올리는 방법(초보 기준)” / STEP 2(체류). 소제목 5개 이상으로 쪼개고 체크리스트/리스트를 넣는다 / STEP 3(행동). 본문 중간에 “지금 썸네일 만들기” 링크를 넣는다(https://www.blogsumnail.com) / STEP 4(수익). 독자가 궁금해하는 순간 뒤에 광고·추천 섹션을 넣는다(장비/도구/재료) / STEP 5(순환). 마지막에 관련 글 2~3개로 다음 클릭을 만든다.',
+      },
+      {
+        heading: '다음에 읽을 글 (내부 링크)',
+        content:
+          '수익화 허브: https://www.blogsumnail.com/blog/blog-monetization-guide / 키워드 전략: https://www.blogsumnail.com/blog/blog-keyword-strategy-complete / 조회수 0 이유: https://www.blogsumnail.com/blog/blog-views-zero-reasons / 전체 가이드: https://www.blogsumnail.com/blog',
+      },
     ],
   },
   {
@@ -1328,6 +1443,21 @@ export const blogPosts: BlogPost[] = [
         heading: '핵심 정리',
         content:
           '① 블로그는 키워드 게임이다. ② 메인 + 서브 구조는 필수다. ③ 제목과 본문 모두에 녹인다. ④ 경쟁 낮은 키워드부터 시작한다. 한 줄 결론: 글을 쓰지 말고, 검색어를 공략하라.',
+      },
+      {
+        heading: 'STEP: 키워드 정하고 글 쓰는 10분 루틴',
+        content:
+          'STEP 1. 네이버 자동완성에서 “조건형” 키워드를 5개 뽑는다(주차/혼자/가격/웨이팅) / STEP 2. 그중 1개를 메인, 2개를 서브로 결정 / STEP 3. 제목 앞 15자 안에 메인을 넣는다 / STEP 4. 첫 문단 3문장 안에 메인과 결론을 같이 넣는다 / STEP 5. 소제목 3개에 서브 키워드를 자연스럽게 분산 / STEP 6. 본문 중간에 썸네일 CTA를 1회 넣어 행동을 만든다(https://www.blogsumnail.com).',
+      },
+      {
+        heading: '키워드만으로 끝내지 말 것(체류·전환까지)',
+        content:
+          '키워드는 “들어오는 문”이고, 체류는 “머무는 방”, 전환은 “나가는 문”입니다. 그래서 키워드 글이라도 체크리스트/예시/실수/정리 섹션이 있어야 읽히고, 그 안에서 툴(썸네일 생성)이나 추천 섹션(쿠팡)으로 자연스럽게 이어집니다.',
+      },
+      {
+        heading: '관련 가이드 (내부 링크)',
+        content:
+          '조회수 안 나오는 이유: https://www.blogsumnail.com/blog/blog-views-zero-reasons / 수익화 허브: https://www.blogsumnail.com/blog/blog-monetization-guide / 전체 가이드: https://www.blogsumnail.com/blog',
       },
     ],
   },
@@ -1978,6 +2108,21 @@ export const blogPosts: BlogPost[] = [
       {
         heading: '분기 추가는 금지',
         content: '템플릿이 길어지면 다시 느려집니다. 분기가 필요하면 템플릿을 두 개로 나누세요.',
+      },
+      {
+        heading: '템플릿 1: 방문 후기(카페/맛집) 기본 골격',
+        content:
+          'STEP 1. 한 줄 결론(추천/비추천) / STEP 2. 위치·주차·웨이팅 / STEP 3. 메뉴·가격·추천 메뉴 / STEP 4. 사진 포인트(창가/조명/구도) / STEP 5. 총평 + 재방문 의사 / STEP 6. 관련 글 2개 링크 + 썸네일 만들기 링크(https://www.blogsumnail.com).',
+      },
+      {
+        heading: '템플릿 2: 정보형(가이드) 골격',
+        content:
+          'STEP 1. 문제(왜 안 되는지) / STEP 2. 원리(왜 그렇게 되는지) / STEP 3. 해결 체크리스트 / STEP 4. 흔한 실수 / STEP 5. 바로 적용 CTA(썸네일 만들기) / STEP 6. 다음 글 링크(https://www.blogsumnail.com/blog).',
+      },
+      {
+        heading: '관련 가이드 (내부 링크)',
+        content:
+          '조회수 안 나오는 이유: https://www.blogsumnail.com/blog/blog-views-zero-reasons / 썸네일 허브: https://www.blogsumnail.com/blog/how-to-make-blog-thumbnail / 전체 가이드: https://www.blogsumnail.com/blog',
       },
     ],
   },

@@ -18,6 +18,7 @@ import {
 } from 'lucide-react';
 import SiteHeader from '@/components/SiteHeader';
 import SiteFooter from '@/components/SiteFooter';
+import AdBanner from '@/components/AdBanner';
 
 export const metadata: Metadata = {
   title: '블로그 & 가이드',
@@ -214,6 +215,19 @@ const CATEGORIES: Category[] = [
   },
 ];
 
+const PILLAR_SLUGS = [
+  'how-to-make-blog-thumbnail',
+  'thumbnail-text-tips',
+  'thumbnail-failure-cases',
+  'blog-views-zero-reasons',
+  'blog-keyword-strategy-complete',
+  'blog-photo-tips',
+  'cafe-food-photo-guide',
+  'blog-writing-templates',
+  'blog-visitors-revenue-strategy',
+  'blog-monetization-guide',
+] as const;
+
 function PostCard({ post }: { post: BlogPost }) {
   const mins = readingTime(post);
   return (
@@ -239,6 +253,11 @@ function PostCard({ post }: { post: BlogPost }) {
 
 export default function BlogListPage() {
   const slugSet = new Set(blogPosts.map((p) => p.slug));
+  const pillarSlugSet = new Set<string>(PILLAR_SLUGS);
+  const pillarPosts = PILLAR_SLUGS
+    .filter((s) => slugSet.has(s))
+    .map((s) => blogPosts.find((p) => p.slug === s)!)
+    .filter(Boolean);
 
   // 카테고리별로 매핑
   const categorized = CATEGORIES.map((cat) => ({
@@ -280,6 +299,29 @@ export default function BlogListPage() {
             네이버 블로그 운영에 도움이 되는 가이드 <span className="font-medium text-gray-700">{totalPosts}개</span>
           </p>
         </div>
+
+        {/* 핵심 가이드 10 (허브) */}
+        {pillarPosts.length > 0 && (
+          <section className="mb-10">
+            <div className="flex items-center justify-between mb-4">
+              <div>
+                <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">Start here</p>
+                <h2 className="text-base font-bold text-gray-900 mt-1">처음 시작이라면 이것부터 (핵심 가이드)</h2>
+                <p className="text-xs text-gray-500 mt-1">
+                  검색 유입 → 체류시간 → 썸네일 생성 → 추천/광고 흐름을 만드는 &ldquo;긴 글&rdquo; 모음
+                </p>
+              </div>
+              <span className="text-xs text-gray-400">{pillarPosts.length}개</span>
+            </div>
+            <div className="space-y-2.5">
+              {pillarPosts.map((post) => (
+                <PostCard key={post.slug} post={post} />
+              ))}
+            </div>
+          </section>
+        )}
+
+        <AdBanner position="blog-list-top" type="adsense" />
 
         {/* 카테고리 바로가기 */}
         <div className="flex flex-wrap gap-2 mb-10">
@@ -342,6 +384,8 @@ export default function BlogListPage() {
             썸네일 메이커 사용하기
           </Link>
         </div>
+
+        <AdBanner position="blog-list-bottom" type="adsense" />
 
       </div>
 
