@@ -3,7 +3,7 @@
 import { useState, useRef } from 'react';
 import Link from 'next/link';
 import Script from 'next/script';
-import { Image as ImageIcon, Layout, Sparkles } from 'lucide-react';
+import { Image as ImageIcon, Layout, Sparkles, BookOpen } from 'lucide-react';
 import type { TextAlign, TextVAlign, FrameType, BgType } from '@/lib/types';
 import ControlPanel from '@/components/ControlPanel';
 import ThumbnailPreview from '@/components/ThumbnailPreview';
@@ -327,6 +327,63 @@ export default function HomePage() {
           </nav>
         </div>
       </header>
+
+      {/* 사이트 목적 — 도구 + 정보성 콘텐츠 */}
+      <section
+        aria-labelledby="site-intro-heading"
+        className="px-4 md:px-8 py-8 md:py-10 border-b border-gray-200 bg-white"
+      >
+        <div className="max-w-6xl mx-auto">
+          <div className="flex items-start gap-3 mb-4">
+            <BookOpen className="w-6 h-6 text-gray-900 flex-shrink-0 mt-0.5" aria-hidden />
+            <div>
+              <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">BlogKit</p>
+              <h1 id="site-intro-heading" className="text-2xl md:text-3xl font-bold text-gray-900 leading-tight">
+                네이버 블로그 썸네일 무료 제작과 운영 가이드
+              </h1>
+            </div>
+          </div>
+          <div className="space-y-4 text-sm text-gray-600 leading-relaxed max-w-4xl">
+            <p>
+              이 사이트는 단순히 이미지 한 장을 내보내는 도구만 제공하지 않습니다. 맛집·카페·여행 등 네이버
+              블로그에서 클릭이 나오려면 <strong className="font-semibold text-gray-800">대표 이미지 문구</strong>가
+              검색 키워드와 읽는 맥락을 동시에 맞춰야 한다는 전제를 바탕으로, 제작기와 함께{' '}
+              <strong className="font-semibold text-gray-800">실전 노하우 글</strong>을 같은 도메인에 모아
+              두었습니다. 그래서 홈에서는 바로 썸네일·스킨을 만들고, 블로그 섹션에서는 제목·키워드·사진까지
+              연결되는 긴 글을 이어 읽을 수 있습니다.
+            </p>
+            <p>
+              아래 도구는 브라우저 안에서만 동작하며, 배경으로 올린 사진은 서버로 전송되지 않습니다. 작업
+              흐름은 &ldquo;가이드로 왜 이렇게 쓰는지 이해 → 같은 스타일로 썸네일 통일 → 글 본문과 톤
+              맞추기&rdquo; 순서를 추천합니다. 운영 목적과 연락처는{' '}
+              <Link href="/about" className="text-gray-900 font-medium underline underline-offset-2 hover:no-underline">
+                About
+              </Link>
+              에 정리해 두었습니다.
+            </p>
+          </div>
+          <div className="mt-6 flex flex-wrap gap-2">
+            <Link
+              href="/blog"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#111111] text-white text-sm font-semibold hover:bg-gray-800 transition-colors"
+            >
+              블로그·가이드 전체 보기
+            </Link>
+            <Link
+              href="/guide/thumbnail"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white border border-gray-200 text-sm font-semibold text-gray-800 hover:border-gray-400 transition-colors"
+            >
+              썸네일 만드는 법 (가이드)
+            </Link>
+            <Link
+              href="/guide/blog-seo"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white border border-gray-200 text-sm font-semibold text-gray-800 hover:border-gray-400 transition-colors"
+            >
+              블로그 검색 노출 기초
+            </Link>
+          </div>
+        </div>
+      </section>
 
       {/* ── 도구 탭 ── */}
       <section id="tool" className="px-4 md:px-8 py-6">
