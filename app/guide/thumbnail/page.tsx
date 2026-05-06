@@ -4,8 +4,11 @@ import SiteHeader from '@/components/SiteHeader';
 import SiteFooter from '@/components/SiteFooter';
 import AdBanner from '@/components/AdBanner';
 
+const GUIDE_PAGE_TITLE =
+  '블로그 썸네일 만들기: 클릭률(CTR)과 조회수 올리는 3가지 비밀 - BlogKit';
+
 export const metadata: Metadata = {
-  title: '블로그 썸네일 만들기 - 클릭률 올리는 썸네일 완전 가이드',
+  title: { absolute: GUIDE_PAGE_TITLE },
   description:
     '네이버 블로그 썸네일을 무료로 쉽게 만드는 방법. 조회수 잘 나오는 썸네일의 특징과 제작 팁을 알아보세요.',
   keywords: '블로그 썸네일 만들기, 네이버 블로그 썸네일, 썸네일 무료 제작, 클릭률 올리는 썸네일, 블로그 대표이미지, 썸네일 사이즈',
@@ -13,14 +16,14 @@ export const metadata: Metadata = {
     canonical: 'https://www.blogsumnail.com/guide/thumbnail',
   },
   openGraph: {
-    title: '블로그 썸네일 만들기 - 클릭률 올리는 썸네일 완전 가이드',
+    title: GUIDE_PAGE_TITLE,
     description: '네이버 블로그 썸네일을 무료로 쉽게 만드는 방법. 조회수 잘 나오는 썸네일의 특징과 제작 팁을 알아보세요.',
     type: 'article',
     url: 'https://www.blogsumnail.com/guide/thumbnail',
   },
   twitter: {
     card: 'summary_large_image',
-    title: '블로그 썸네일 만들기 - 클릭률 올리는 썸네일 완전 가이드',
+    title: GUIDE_PAGE_TITLE,
     description: '네이버 블로그 썸네일을 무료로 쉽게 만드는 방법.',
   },
 };
@@ -30,14 +33,16 @@ export default function ThumbnailGuidePage() {
     <div className="min-h-screen bg-[#f5f5f0] text-gray-800 font-sans">
       <SiteHeader />
       <div className="max-w-2xl mx-auto px-4 py-10">
-<h1 className="text-3xl font-bold text-gray-900 mt-6 mb-3 leading-tight">
-          블로그 썸네일 만들기<br />클릭률 올리는 방법
+        <h1 className="text-3xl font-bold text-gray-900 mt-6 mb-3 leading-tight">
+          블로그 썸네일 만들기<br />
+          클릭률(CTR)과 조회수 올리는 3가지 비밀
         </h1>
         <p className="text-gray-500 text-sm mb-2">
-          이 글은 블로그 조회수를 올리고 싶은 분들을 위한 실전 가이드입니다.
+          이 글은 <strong className="text-gray-700 font-semibold">조회수</strong>를 올리고 싶은 분들을 위한 실전 가이드입니다.
+          목록에서의 첫 클릭은 <strong className="text-gray-700 font-semibold">블로그 방문자 늘리기</strong>의 시작입니다.
         </p>
         <p className="text-gray-500 text-sm mb-8">
-          썸네일 하나로 조회수가 바뀝니다. 핵심만 정리했습니다.
+          썸네일 하나로 <strong className="text-gray-700 font-semibold">조회수</strong>가 바뀝니다. 핵심만 정리했습니다.
         </p>
 
         {/* 광고 상단 1개 */}
@@ -49,6 +54,7 @@ export default function ThumbnailGuidePage() {
           <p className="text-gray-600 text-sm leading-relaxed mb-3">
             네이버 블로그 목록에서 사용자는 0.3초 안에 클릭 여부를 결정합니다.
             아무리 좋은 글이어도 썸네일이 흐리거나 텍스트가 안 보이면 클릭이 일어나지 않습니다.
+            그래서 <strong className="text-gray-900">조회수</strong>를 올리려면 썸네일 가독성이 먼저입니다.
           </p>
           <p className="text-gray-600 text-sm leading-relaxed">
             조회수가 낮은 블로그의 공통점은 단 하나입니다.{' '}
@@ -72,7 +78,7 @@ export default function ThumbnailGuidePage() {
           <h2 className="text-xl font-bold text-gray-900 mb-3">잘 되는 썸네일의 3가지 특징</h2>
           <div className="flex flex-col gap-3">
             {[
-              { num: '01', title: '텍스트가 짧고 굵다', desc: '15자 이내의 핵심 키워드만. 긴 문장은 작은 썸네일에서 읽히지 않습니다.' },
+              { num: '01', title: '텍스트가 짧고 굵다', desc: '15자 이내의 핵심 키워드만. 긴 문장은 작은 썸네일에서 읽히지 않아 클릭과 조회수로 이어지기 어렵습니다.' },
               { num: '02', title: '배경과 텍스트 대비가 높다', desc: '어두운 배경 + 흰 텍스트, 또는 밝은 배경 + 검정 텍스트. 중간 톤은 피하세요.' },
               { num: '03', title: '카테고리 레이블이 있다', desc: '"맛집", "체험단", "재테크" 같은 레이블이 있으면 독자가 글 주제를 바로 파악합니다.' },
             ].map((item) => (
@@ -116,7 +122,7 @@ export default function ThumbnailGuidePage() {
             결국 중요한 건 &ldquo;클릭되는 썸네일&rdquo;입니다
           </p>
           <p className="text-sm text-gray-500 mb-2">
-            조회수는 여기서 시작됩니다
+            <strong className="text-gray-800 font-semibold">조회수</strong>는 여기서 시작됩니다
           </p>
           <Link href="/" className="text-sm font-semibold text-gray-900 underline underline-offset-2">
             클릭되는 썸네일 직접 만들어보기 →

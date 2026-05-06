@@ -23,6 +23,7 @@ const STYLE_PRESETS = [
   {
     id: 'naver',
     label: '아웃라인',
+    imageAlt: '네이버 블로그 맛집 썸네일 204x204 치킨·맥주 후기 스타일 예시',
     emoji: '📝',
     bgType: 'image' as BgType,
     bgColor: '#1a1a1a',
@@ -42,6 +43,7 @@ const STYLE_PRESETS = [
   {
     id: 'cafe',
     label: '감성',
+    imageAlt: '네이버 블로그 카페·디저트 썸네일 204x204 감성 스타일 예시',
     emoji: '🍽️',
     bgType: 'image' as BgType,
     bgColor: '#1a1a1a',
@@ -61,6 +63,7 @@ const STYLE_PRESETS = [
   {
     id: 'review',
     label: '보더',
+    imageAlt: '네이버 블로그 체험단·디저트 리뷰 썸네일 204x204 예시',
     emoji: '🎁',
     bgType: 'image' as BgType,
     bgColor: '#1a1a1a',
@@ -80,6 +83,7 @@ const STYLE_PRESETS = [
   {
     id: 'finance',
     label: '골드',
+    imageAlt: '네이버 블로그 재테크·정보 썸네일 204x204 골드 톤 예시',
     emoji: '📈',
     bgType: 'image' as BgType,
     bgColor: '#0a2540',
@@ -99,6 +103,7 @@ const STYLE_PRESETS = [
   {
     id: 'travel',
     label: '클래식',
+    imageAlt: '네이버 블로그 여행·나들이 썸네일 204x204 예시',
     emoji: '✈️',
     bgType: 'image' as BgType,
     bgColor: '#2d3436',
@@ -118,6 +123,7 @@ const STYLE_PRESETS = [
   {
     id: 'hobby',
     label: '팝',
+    imageAlt: '네이버 블로그 취미·독학 후기 썸네일 204x204 예시',
     emoji: '🎸',
     bgType: 'image' as BgType,
     bgColor: '#1a1a1a',
@@ -137,6 +143,7 @@ const STYLE_PRESETS = [
   {
     id: 'lifestyle',
     label: '미니멀',
+    imageAlt: '네이버 블로그 고양이 카페·일상 썸네일 204x204 예시',
     emoji: '🌿',
     bgType: 'image' as BgType,
     bgColor: '#1a1a1a',
@@ -528,7 +535,7 @@ export default function HomePage() {
               >
                 <div className="aspect-video bg-gray-200 relative rounded-xl overflow-hidden mb-2 shadow-sm group-hover:shadow-md transition-shadow">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={preset.bgImage} alt={preset.label} className="w-full h-full object-cover" />
+                  <img src={preset.bgImage} alt={preset.imageAlt} className="w-full h-full object-cover" />
                   <div className="absolute inset-0 bg-black/30 flex items-end p-2">
                     <span className="text-white text-xs font-bold drop-shadow">{preset.label}</span>
                   </div>

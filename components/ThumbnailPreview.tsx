@@ -151,9 +151,14 @@ export default function ThumbnailPreview({
   return (
     <div className="flex-1 order-1 lg:order-2 flex flex-col items-center lg:sticky lg:top-8 h-fit">
       <div className="w-full bg-white p-4 rounded-2xl shadow-sm border border-gray-200 mb-4 flex flex-col items-center">
-        <h3 className="w-full text-left font-semibold text-gray-800 mb-4 px-2">
-          미리보기 (1:1 비율)
-        </h3>
+        <div className="w-full px-2 mb-4">
+          <h3 className="text-left font-semibold text-gray-800">
+            미리보기 (1:1 비율)
+          </h3>
+          <p className="text-xs text-gray-400 mt-1 leading-snug">
+            네이버 모바일 최적화 (204x204 완벽 지원)
+          </p>
+        </div>
 
         <div className="relative w-full max-w-[500px]">
         <div
