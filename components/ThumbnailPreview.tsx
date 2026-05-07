@@ -221,10 +221,12 @@ export default function ThumbnailPreview({
           )}
           {frameType === 'band' && (
             <div
-              className="absolute bottom-0 left-0 right-0 z-10 pointer-events-none"
+              className="absolute inset-0 z-10 pointer-events-none"
               style={{
-                height: '55%',
-                background: 'linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.55) 45%, rgba(0,0,0,0) 100%)',
+                // html2canvas에서 height 경계(hairline seam)가 생기는 케이스를 피하기 위해
+                // 하단 밴드를 "부분 높이 div"가 아니라 "전체 overlay + 그라데이션"으로 렌더링합니다.
+                background:
+                  'linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.70) 28%, rgba(0,0,0,0.55) 45%, rgba(0,0,0,0.22) 62%, rgba(0,0,0,0) 72%)',
               }}
             />
           )}
