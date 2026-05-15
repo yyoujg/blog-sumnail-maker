@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { blogPosts } from '@/data/blogPosts';
+import Image from 'next/image';
+import { blogPosts, type BlogSection } from '@/data/blogPosts';
 import { ArrowLeft, ArrowRight, BookOpen, BookMarked } from 'lucide-react';
 import SiteHeader from '@/components/SiteHeader';
 import SiteFooter from '@/components/SiteFooter';
@@ -109,6 +110,28 @@ function renderContent(content: string) {
   );
 }
 
+function SectionImage({ section }: { section: BlogSection }) {
+  if (!section.imageUrl) return null;
+  const alt = section.imageAlt ?? section.heading;
+  return (
+    <figure className="mb-5">
+      <Image
+        src={section.imageUrl}
+        alt={alt}
+        width={800}
+        height={800}
+        className="w-full h-auto rounded-xl border border-gray-100 object-cover"
+        sizes="(max-width: 672px) 100vw, 672px"
+      />
+      {section.imageCaption && (
+        <figcaption className="mt-2 text-xs text-gray-500 leading-relaxed px-1">
+          {section.imageCaption}
+        </figcaption>
+      )}
+    </figure>
+  );
+}
+
 const SITE_URL = 'https://www.blogsumnail.com';
 
 export default async function BlogPostPage({ params }: PageProps) {
@@ -181,15 +204,20 @@ export default async function BlogPostPage({ params }: PageProps) {
 
           {/* 목차 */}
           {post.sections.length > 2 && (
-            <nav className="mb-10 bg-white rounded-2xl border border-gray-200 overflow-hidden">
+            <nav aria-label="목차" className="mb-10 bg-white rounded-2xl border border-gray-200 overflow-hidden">
               <div className="px-5 py-3 bg-[#f5f5f0] border-b border-gray-100">
-                <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">목차</p>
+                <h2 className="text-xs font-bold text-gray-400 uppercase tracking-widest">목차</h2>
               </div>
               <ol className="p-5 space-y-2">
                 {post.sections.map((section, i) => (
-                  <li key={i} className="flex gap-3 text-sm text-gray-600 hover:text-gray-900 transition-colors">
-                    <span className="text-gray-300 font-mono flex-shrink-0">{String(i + 1).padStart(2, '0')}</span>
-                    <span>{section.heading}</span>
+                  <li key={i}>
+                    <a
+                      href={`#section-${i}`}
+                      className="flex gap-3 text-sm text-gray-600 hover:text-gray-900 transition-colors"
+                    >
+                      <span className="text-gray-300 font-mono flex-shrink-0">{String(i + 1).padStart(2, '0')}</span>
+                      <span>{section.heading}</span>
+                    </a>
                   </li>
                 ))}
               </ol>
@@ -200,7 +228,7 @@ export default async function BlogPostPage({ params }: PageProps) {
           <div className="space-y-5">
             {post.sections.map((section, i) => (
               <div key={i} className="space-y-5">
-                <section className="bg-white rounded-2xl border border-gray-100 overflow-hidden">
+                <section id={`section-${i}`} className="bg-white rounded-2xl border border-gray-100 overflow-hidden scroll-mt-24">
                   {/* 섹션 헤더 */}
                   <div className="flex items-center gap-3 px-6 py-4 border-b border-gray-100 bg-gray-50">
                     <span className="flex-shrink-0 w-6 h-6 bg-[#111111] text-white rounded-md flex items-center justify-center text-xs font-bold">
@@ -212,6 +240,7 @@ export default async function BlogPostPage({ params }: PageProps) {
                   </div>
                   {/* 섹션 본문 */}
                   <div className="px-6 py-5">
+                    <SectionImage section={section} />
                     {renderContent(section.content)}
                   </div>
                 </section>
