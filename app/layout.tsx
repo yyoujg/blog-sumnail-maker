@@ -4,6 +4,8 @@ import './globals.css';
 import {
   PAGE_TITLE,
   PAGE_DESCRIPTION,
+  PAGE_KEYWORDS,
+  OG_DESCRIPTION,
   ADSENSE_CLIENT,
   ADSENSE_SCRIPT_SRC,
   FONT_LINK_HREF,
@@ -11,17 +13,46 @@ import {
   SITE_URL,
 } from '@/lib/constants';
 
+const structuredData = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'BlogKit',
+    url: SITE_URL,
+    description: PAGE_DESCRIPTION,
+    inLanguage: 'ko',
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Blog',
+    name: 'BlogKit 가이드',
+    url: `${SITE_URL}/blog`,
+    description: '네이버 블로그 CTR·검색유입·썸네일 전략 가이드',
+    inLanguage: 'ko',
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: 'BlogKit 썸네일 만들기',
+    url: SITE_URL,
+    applicationCategory: 'DesignApplication',
+    operatingSystem: 'Web',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
+    description: '가이드를 실습하는 보조 무료 썸네일·스킨 제작 도구',
+  },
+];
+
 
 export const metadata: Metadata = {
   title: {
     default: PAGE_TITLE,
-    template: `%s — 네이버 블로그 썸네일 메이커`,
+    template: `%s — BlogKit`,
   },
   description: PAGE_DESCRIPTION,
-  keywords: '네이버 블로그 썸네일 만들기, 블로그 썸네일 무료, 썸네일 자동 생성, 블로그 조회수 올리는 썸네일, 체험단 썸네일, 네이버 썸네일 사이즈 1:1, 블로그 대표 이미지 만들기, 썸네일 메이커, 블로그 스킨 만들기',
+  keywords: PAGE_KEYWORDS,
   openGraph: {
     title: PAGE_TITLE,
-    description: '프로그램 설치 없이 웹에서 바로 만드는 깔끔한 블로그 썸네일 이미지',
+    description: OG_DESCRIPTION,
     type: 'website',
     url: SITE_URL,
   },
@@ -89,11 +120,11 @@ export default function RootLayout({
           <span>오류·제안</span>
         </a>
 
-        {/* 구조화 데이터 (SoftwareApplication) */}
+        {/* 구조화 데이터 (WebSite + Blog + WebApplication) */}
         <Script
           id="ld-json"
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: `{"@context":"https://schema.org","@type":"SoftwareApplication","name":"네이버 블로그 썸네일 메이커","operatingSystem":"Web","applicationCategory":"DesignApplication","offers":{"@type":"Offer","price":"0","priceCurrency":"KRW"},"url":"${SITE_URL}","description":"${PAGE_DESCRIPTION}"}` }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
         />
 
         {/* Google Tag */}

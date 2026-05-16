@@ -5,11 +5,11 @@ import SiteFooter from '@/components/SiteFooter';
 
 export const metadata: Metadata = {
   title: '개인정보 처리방침',
-  description: '네이버 블로그 썸네일 메이커의 개인정보 처리방침입니다.',
-  keywords: '개인정보처리방침, 블로그 썸네일 메이커, BlogKit',
+  description: 'BlogKit(블로그 CTR·검색·썸네일 가이드) 개인정보 처리방침입니다.',
+  keywords: '개인정보처리방침, BlogKit, 블로그 가이드',
   openGraph: {
     title: '개인정보 처리방침 — BlogKit',
-    description: '네이버 블로그 썸네일 메이커의 개인정보 처리방침입니다.',
+    description: 'BlogKit 개인정보 처리방침입니다.',
     type: 'website',
     url: 'https://www.blogsumnail.com/privacy',
   },

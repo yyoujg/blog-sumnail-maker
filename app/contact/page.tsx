@@ -6,20 +6,20 @@ import { Mail, Bug, Lightbulb, MessageSquare } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: '문의',
-  description: '버그 제보, 기능 제안, 제휴 문의는 이메일로 보내주세요.',
-  keywords: '블로그 썸네일 메이커 문의, 버그 제보, 기능 제안, 제휴 문의',
+  description: 'BlogKit 가이드·도구 관련 문의, 버그 제보, 기능 제안, 제휴 문의는 이메일로 보내주세요.',
+  keywords: 'BlogKit 문의, 블로그 가이드 문의, 버그 제보, 기능 제안, 제휴 문의',
   alternates: {
     canonical: 'https://www.blogsumnail.com/contact',
   },
   openGraph: {
-    title: '문의 — 네이버 블로그 썸네일 메이커',
+    title: '문의 — BlogKit',
     description: '버그 제보, 기능 제안, 제휴 문의는 이메일로 보내주세요.',
     type: 'website',
     url: 'https://www.blogsumnail.com/contact',
   },
   twitter: {
     card: 'summary_large_image',
-    title: '문의 — 네이버 블로그 썸네일 메이커',
+    title: '문의 — BlogKit',
     description: '버그 제보, 기능 제안, 제휴 문의는 이메일로 보내주세요.',
   },
 };
@@ -34,7 +34,7 @@ export default function ContactPage() {
           <MessageSquare className="w-7 h-7 text-gray-900" />
           <h1 className="text-3xl font-bold text-gray-900">문의</h1>
         </div>
-        <p className="text-gray-500 mb-8">서비스 이용 중 불편한 점이나 건의사항을 편하게 보내주세요.</p>
+        <p className="text-gray-500 mb-8">가이드·도구 이용 중 불편한 점이나 건의사항을 편하게 보내주세요.</p>
 
         <div className="space-y-5">
           <div className="bg-white rounded-xl shadow-sm p-6 md:p-8">

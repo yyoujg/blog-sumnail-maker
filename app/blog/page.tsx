@@ -21,22 +21,22 @@ import SiteFooter from '@/components/SiteFooter';
 import AdBanner from '@/components/AdBanner';
 
 export const metadata: Metadata = {
-  title: '블로그 & 가이드',
-  description: '네이버 블로그 운영에 도움이 되는 썸네일, 수익화, 체험단, SEO 가이드 모음.',
-  keywords: '네이버 블로그 가이드, 블로그 수익화, 블로그 체험단, 블로그 SEO, 블로그 조회수 올리기, 블로그 운영 팁',
+  title: '블로그 CTR·검색·썸네일 전략 가이드',
+  description: '네이버 블로그 CTR, 검색 노출, 키워드, 제목, 썸네일 문구, 수익화·체험단까지 80편 이상의 실전 가이드 모음.',
+  keywords: '네이버 블로그 CTR, 블로그 검색 노출, 키워드 전략, 썸네일 문구, 블로그 제목, 블로그 SEO, 블로그 조회수',
   alternates: {
     canonical: 'https://www.blogsumnail.com/blog',
   },
   openGraph: {
-    title: '블로그 & 가이드 — 네이버 블로그 썸네일 메이커',
-    description: '네이버 블로그 운영에 도움이 되는 썸네일, 수익화, 체험단, SEO 가이드 모음.',
+    title: '블로그 CTR·검색·썸네일 전략 가이드 — BlogKit',
+    description: '네이버 블로그 CTR, 검색 노출, 키워드, 제목, 썸네일 문구까지 실전 가이드 80편 이상.',
     type: 'website',
     url: 'https://www.blogsumnail.com/blog',
   },
   twitter: {
     card: 'summary_large_image',
-    title: '블로그 & 가이드 — 네이버 블로그 썸네일 메이커',
-    description: '네이버 블로그 운영에 도움이 되는 썸네일, 수익화, 체험단, SEO 가이드 모음.',
+    title: '블로그 CTR·검색·썸네일 전략 가이드 — BlogKit',
+    description: '네이버 블로그 CTR, 검색 노출, 키워드, 제목, 썸네일 문구까지 실전 가이드 80편 이상.',
   },
 };
 
@@ -63,6 +63,7 @@ const CATEGORIES: Category[] = [
     label: '썸네일 만들기',
     icon: <Image className="w-4 h-4" />,
     slugs: [
+      'thumbnail-real-cases-copy-patterns-by-niche',
       'naver-blog-thumbnail-size',
       'how-to-make-blog-thumbnail',
       'thumbnail-text-tips',
@@ -146,6 +147,7 @@ const CATEGORIES: Category[] = [
     label: '방문자 상승 전략',
     icon: <BarChart3 className="w-4 h-4" />,
     slugs: [
+      'advanced-ctr-growth-strategy',
       'one-post-1000-visitors',
       'sub-keyword-traffic-boost',
       'visitor-growth-core-structure',
@@ -159,6 +161,7 @@ const CATEGORIES: Category[] = [
     label: '운영 실전 팁',
     icon: <Wrench className="w-4 h-4" />,
     slugs: [
+      'practical-blog-tips-keywords-titles-efficiency',
       'blog-writing-speed-5-tips',
       'draft-save-naver-blog',
       'blog-writing-templates',
@@ -185,6 +188,7 @@ const CATEGORIES: Category[] = [
     label: '설정 & 기능 활용',
     icon: <Settings2 className="w-4 h-4" />,
     slugs: [
+      'blog-features-100-usage',
       'blog-spam-block-settings',
       'neighbor-vs-mutual-neighbor',
       'blog-category-move-caution',
@@ -216,6 +220,7 @@ const CATEGORIES: Category[] = [
 ];
 
 const PILLAR_SLUGS = [
+  'practical-blog-tips-keywords-titles-efficiency',
   'how-to-make-blog-thumbnail',
   'thumbnail-text-tips',
   'thumbnail-failure-cases',

@@ -8,9 +8,9 @@ export default function SiteHeader() {
   const pathname = usePathname();
 
   const navLinks = [
-    { href: '/', label: '썸네일 메이커' },
     { href: '/blog', label: '블로그 가이드' },
     { href: '/guide/thumbnail', label: '썸네일 팁' },
+    { href: '/', label: '썸네일 만들기' },
     { href: '/about', label: 'About' },
   ];
 

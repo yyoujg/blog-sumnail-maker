@@ -11,6 +11,14 @@ import SkinMakerTool from '@/components/SkinMakerTool';
 import SiteFooter from '@/components/SiteFooter';
 import AdBanner from '@/components/AdBanner';
 import { HTML2CANVAS_SCRIPT_SRC } from '@/lib/constants';
+import { blogPosts } from '@/data/blogPosts';
+
+const HOME_PILLAR_SLUGS = [
+  'how-to-make-blog-thumbnail',
+  'blog-keyword-strategy-complete',
+  'high-ctr-thumbnail',
+  'blog-views-zero-reasons',
+] as const;
 
 declare global {
   interface Window {
@@ -288,6 +296,9 @@ export function HomeTool({ seoAfterTool }: { seoAfterTool?: React.ReactNode }) {
   };
 
   const activePreset = STYLE_PRESETS.find(p => p.id === activePresetId) ?? null;
+  const pillarPosts = HOME_PILLAR_SLUGS.map((slug) => blogPosts.find((p) => p.slug === slug)).filter(
+    (p): p is NonNullable<typeof p> => p != null,
+  );
 
   return (
     <div className="min-h-screen bg-[#f5f5f0] text-gray-800 font-sans flex flex-col">
@@ -331,6 +342,7 @@ export function HomeTool({ seoAfterTool }: { seoAfterTool?: React.ReactNode }) {
           <nav className="hidden md:flex items-center gap-1">
             <Link href="/blog" className="px-3 py-2 text-sm font-semibold text-white/60 hover:text-white hover:bg-white/10 rounded-lg transition-colors">블로그 가이드</Link>
             <Link href="/guide/thumbnail" className="px-3 py-2 text-sm font-semibold text-white/60 hover:text-white hover:bg-white/10 rounded-lg transition-colors">썸네일 팁</Link>
+            <a href="#tool" className="px-3 py-2 text-sm font-semibold text-white/60 hover:text-white hover:bg-white/10 rounded-lg transition-colors">썸네일 만들기</a>
           </nav>
         </div>
       </header>
@@ -346,42 +358,58 @@ export function HomeTool({ seoAfterTool }: { seoAfterTool?: React.ReactNode }) {
             <div>
               <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">BlogKit</p>
               <h1 id="site-intro-heading" className="text-2xl md:text-3xl font-bold text-gray-900 leading-tight">
-                네이버 블로그 썸네일 무료 제작과 운영 가이드
+                네이버 블로그 CTR·검색유입·썸네일 전략
               </h1>
+              <p className="text-sm text-gray-500 mt-2">
+                검색 노출·제목·키워드·썸네일 문구를 다루는 가이드 허브 — 실습용 무료 도구 포함
+              </p>
             </div>
           </div>
           <div className="space-y-4 text-sm text-gray-600 leading-relaxed max-w-4xl">
             <p>
-              이 사이트는 단순히 이미지 한 장을 내보내는 도구만 제공하지 않습니다. 맛집·카페·여행 등 네이버
-              블로그에서 클릭이 나오려면 <strong className="font-semibold text-gray-800">대표 이미지 문구</strong>가
-              검색 키워드와 읽는 맥락을 동시에 맞춰야 한다는 전제를 바탕으로, 제작기와 함께{' '}
-              <strong className="font-semibold text-gray-800">실전 노하우 글</strong>을 같은 도메인에 모아
-              두었습니다. 그래서 홈에서는 바로 썸네일·스킨을 만들고, 블로그 섹션에서는 제목·키워드·사진까지
-              연결되는 긴 글을 이어 읽을 수 있습니다.
+              BlogKit은 네이버 블로그 운영자를 위한 <strong className="font-semibold text-gray-800">콘텐츠·연구
+              가이드</strong> 사이트입니다. 클릭률(CTR), 검색 유입, 제목 구조, 키워드 배치, 썸네일 문구 패턴을
+              80편 이상의 글로 정리해 두었고, 같은 도메인에서 가이드를 읽은 뒤 바로 적용할 수 있는{' '}
+              <strong className="font-semibold text-gray-800">무료 썸네일·스킨 도구</strong>를 보조로 제공합니다.
             </p>
             <p>
-              아래 도구는 브라우저 안에서만 동작하며, 배경으로 올린 사진은 서버로 전송되지 않습니다. 작업
-              흐름은 &ldquo;가이드로 왜 이렇게 쓰는지 이해 → 같은 스타일로 썸네일 통일 → 글 본문과 톤
-              맞추기&rdquo; 순서를 추천합니다. 운영 목적과 연락처는{' '}
+              권장 흐름은 &ldquo;가이드로 전략 이해 → 썸네일 문구·디자인 통일 → 글 본문과 톤 맞추기&rdquo;입니다.
+              아래 <a href="#tool" className="text-gray-900 font-medium underline underline-offset-2 hover:no-underline">썸네일 만들기</a>에서
+              실습하고, 운영 방침·연락처는{' '}
               <Link href="/about" className="text-gray-900 font-medium underline underline-offset-2 hover:no-underline">
                 About
               </Link>
               에 정리해 두었습니다.
             </p>
           </div>
+          <div className="mt-8">
+            <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">핵심 가이드</p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {pillarPosts.map((post) => (
+                <Link
+                  key={post.slug}
+                  href={`/blog/${post.slug}`}
+                  className="block p-4 bg-[#f5f5f0] rounded-xl border border-gray-100 hover:border-gray-300 hover:shadow-sm transition-all"
+                >
+                  <p className="text-sm font-bold text-gray-900 leading-snug mb-1">{post.title}</p>
+                  <p className="text-xs text-gray-500 line-clamp-2">{post.summary}</p>
+                </Link>
+              ))}
+            </div>
+          </div>
           <div className="mt-6 flex flex-wrap gap-2">
             <Link
               href="/blog"
               className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#111111] text-white text-sm font-semibold hover:bg-gray-800 transition-colors"
             >
-              블로그·가이드 전체 보기
+              가이드 전체 보기
             </Link>
-            <Link
-              href="/guide/thumbnail"
+            <a
+              href="#tool"
               className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white border border-gray-200 text-sm font-semibold text-gray-800 hover:border-gray-400 transition-colors"
             >
-              썸네일 만드는 법 (가이드)
-            </Link>
+              썸네일 만들기
+            </a>
             <Link
               href="/guide/blog-seo"
               className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white border border-gray-200 text-sm font-semibold text-gray-800 hover:border-gray-400 transition-colors"

@@ -2,14 +2,19 @@ import Link from 'next/link';
 
 const FAQ_ITEMS = [
   {
+    question: 'BlogKit은 어떤 콘텐츠를 제공하나요?',
+    answer:
+      '네이버 블로그 CTR, 검색 노출, 키워드·제목 구조, 썸네일 문구, 글쓰기·수익화·체험단 등을 다루는 가이드 허브입니다. 80편 이상의 글을 카테고리별로 읽을 수 있고, 홈의 무료 썸네일·스킨 도구로 가이드 내용을 바로 실습할 수 있습니다.',
+  },
+  {
     question: '네이버 블로그 썸네일 권장 사이즈는 몇 px인가요?',
     answer:
       '포스팅 대표 이미지는 1:1 비율, 800×800px을 권장합니다. 모바일 목록에서 잘리지 않고 텍스트가 선명하게 보이려면 고화질(2×) 저장도 함께 쓰면 좋습니다. 자세한 기준은 블로그 가이드 글에서 정리해 두었습니다.',
   },
   {
-    question: 'BlogKit 썸네일 메이커는 무료인가요?',
+    question: '썸네일 만들기 도구는 무료인가요?',
     answer:
-      '네, 브라우저에서 바로 쓰는 무료 도구입니다. 회원가입 없이 제목·배경·프레임을 맞춘 뒤 PNG 또는 JPG로 저장할 수 있습니다. 배경으로 올린 사진은 서버로 전송되지 않습니다.',
+      '네, 가이드를 실습하는 보조 무료 도구입니다. 회원가입 없이 제목·배경·프레임을 맞춘 뒤 PNG 또는 JPG로 저장할 수 있으며, 배경 사진은 서버로 전송되지 않습니다.',
   },
   {
     question: '직접 찍은 사진을 배경으로 쓸 수 있나요?',
@@ -59,7 +64,7 @@ export default function HomeSeoContent() {
       <div className="max-w-4xl mx-auto space-y-12">
         <div>
           <h2 id="home-guide-heading" className="text-xl md:text-2xl font-bold text-gray-900 mb-6">
-            썸네일 메이커 사용 가이드
+            썸네일 전략 실습 가이드
           </h2>
           <div className="space-y-8">
             <div>
@@ -100,9 +105,13 @@ export default function HomeSeoContent() {
             <Link href="/blog/how-to-make-blog-thumbnail" className="font-semibold text-gray-900 underline underline-offset-2">
               썸네일 완전 가이드
             </Link>
-            와{' '}
-            <Link href="/guide/thumbnail" className="font-semibold text-gray-900 underline underline-offset-2">
-              썸네일 만드는 법
+            ,{' '}
+            <Link href="/blog/blog-keyword-strategy-complete" className="font-semibold text-gray-900 underline underline-offset-2">
+              키워드 전략
+            </Link>
+            ,{' '}
+            <Link href="/blog/high-ctr-thumbnail" className="font-semibold text-gray-900 underline underline-offset-2">
+              CTR 썸네일 문구
             </Link>
             에서 이어서 읽을 수 있습니다.
           </p>
@@ -142,9 +151,9 @@ export default function HomeSeoContent() {
             <Link href="/guide/blog-seo" className="font-semibold text-gray-900 underline underline-offset-2">
               검색 노출 기초
             </Link>
-            로 글 구조까지 맞추는 흐름을 추천합니다. 실전 문구 패턴은{' '}
-            <Link href="/blog/high-ctr-thumbnail" className="font-semibold text-gray-900 underline underline-offset-2">
-              클릭률 높이는 썸네일 문구
+            로 글 구조까지 맞추는 흐름을 추천합니다. 실전 운영 팁은{' '}
+            <Link href="/blog/practical-blog-tips-keywords-titles-efficiency" className="font-semibold text-gray-900 underline underline-offset-2">
+              키워드·제목·효율화 총정리
             </Link>
             글에서 확인할 수 있습니다.
           </p>
