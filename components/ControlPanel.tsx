@@ -49,6 +49,10 @@ interface ControlPanelProps {
   setFrameType: (v: FrameType) => void;
   titleFontSize?: number;
   setTitleFontSize?: (v: number) => void;
+  bgScale?: number;
+  setBgScale?: (v: number) => void;
+  bandDarkness?: number;
+  setBandDarkness?: (v: number) => void;
 }
 
 function ColorSwatches({
@@ -132,6 +136,10 @@ export default function ControlPanel({
   setFrameType,
   titleFontSize,
   setTitleFontSize,
+  bgScale = 100,
+  setBgScale,
+  bandDarkness = 100,
+  setBandDarkness,
 }: ControlPanelProps) {
   const [activeTab, setActiveTab] = useState<'text' | 'style' | 'bg'>('text');
 
@@ -374,6 +382,33 @@ export default function ControlPanel({
                     <Trash2 className="w-3 h-3" /> 이미지 제거
                   </button>
                 )}
+                {bgImage && setBgScale && (
+                  <div>
+                    <label className="flex justify-between text-sm font-medium text-gray-700 mb-1">
+                      <span>배경 확대</span>
+                      <span>{bgScale}%</span>
+                    </label>
+                    <input
+                      type="range"
+                      min={100}
+                      max={250}
+                      step={5}
+                      value={bgScale}
+                      onChange={(e) => setBgScale(Number(e.target.value))}
+                      className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-gray-800"
+                    />
+                    <p className="text-xs text-gray-400 mt-1">미리보기에서 드래그로 위치를 조절할 수 있습니다</p>
+                    {bgScale !== 100 && (
+                      <button
+                        type="button"
+                        onClick={() => setBgScale(100)}
+                        className="text-xs text-gray-400 hover:text-gray-700 transition mt-1"
+                      >
+                        확대 초기화
+                      </button>
+                    )}
+                  </div>
+                )}
               </div>
             )}
 
@@ -403,6 +438,32 @@ export default function ControlPanel({
                 <option value="corners">모서리 포인트</option>
               </select>
             </div>
+
+            {frameType === 'band' && setBandDarkness && (
+              <div>
+                <label className="flex justify-between text-sm font-medium text-gray-700 mb-1">
+                  <span>하단 그라데이션 어둡기</span>
+                  <span>{bandDarkness}%</span>
+                </label>
+                <input
+                  type="range"
+                  min={0}
+                  max={100}
+                  value={bandDarkness}
+                  onChange={(e) => setBandDarkness(Number(e.target.value))}
+                  className="w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-gray-800"
+                />
+                {bandDarkness !== 100 && (
+                  <button
+                    type="button"
+                    onClick={() => setBandDarkness(100)}
+                    className="text-xs text-gray-400 hover:text-gray-700 transition mt-1"
+                  >
+                    어둡기 초기화
+                  </button>
+                )}
+              </div>
+            )}
           </>
         )}
       </div>

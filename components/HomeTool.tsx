@@ -181,7 +181,7 @@ export function HomeTool({ seoAfterTool }: { seoAfterTool?: React.ReactNode }) {
   const [bgImage, setBgImage] = useState<string | null>('/images/251116애플하우스/IMG_6831.JPG');
 
   const [textColor, setTextColor] = useState('#ffffff');
-  const [fontFamily, setFontFamily] = useState(`'Jua', sans-serif`);
+  const [fontFamily, setFontFamily] = useState(`'Pretendard', sans-serif`);
   const [textAlign, setTextAlign] = useState<TextAlign>('left');
   const [textVAlign, setTextVAlign] = useState<TextVAlign>('bottom');
   const [textOffsetX, setTextOffsetX] = useState(0);
@@ -189,11 +189,13 @@ export function HomeTool({ seoAfterTool }: { seoAfterTool?: React.ReactNode }) {
 
   const [overlayOpacity, setOverlayOpacity] = useState(0);
   const [frameType, setFrameType] = useState<FrameType>('band');
+  const [bandDarkness, setBandDarkness] = useState(100);
   const [textShadow, setTextShadow] = useState(true);
   const [titleFontSize, setTitleFontSize] = useState(60);
   const [bgOffsetX, setBgOffsetX] = useState(50);
   const [bgOffsetY, setBgOffsetY] = useState(50);
   const [bgRotation, setBgRotation] = useState(0);
+  const [bgScale, setBgScale] = useState(100);
 
   const [downloadFormat, setDownloadFormat] = useState<'png' | 'jpg'>('png');
   const [downloadScale, setDownloadScale] = useState<1 | 2>(2);
@@ -225,6 +227,8 @@ export function HomeTool({ seoAfterTool }: { seoAfterTool?: React.ReactNode }) {
     setBgOffsetX(50);
     setBgOffsetY(50);
     setBgRotation(0);
+    setBgScale(100);
+    setBandDarkness(100);
     setActivePresetId(preset.id);
   };
 
@@ -240,6 +244,7 @@ export function HomeTool({ seoAfterTool }: { seoAfterTool?: React.ReactNode }) {
           setBgOffsetX(50);
           setBgOffsetY(50);
           setBgRotation(0);
+          setBgScale(100);
           setActivePresetId(null);
         }
       };
@@ -474,6 +479,8 @@ export function HomeTool({ seoAfterTool }: { seoAfterTool?: React.ReactNode }) {
                   onImageUpload={handleImageUpload}
                   overlayOpacity={overlayOpacity} setOverlayOpacity={setOverlayOpacity}
                   frameType={frameType} setFrameType={setFrameType}
+                  bgScale={bgScale} setBgScale={setBgScale}
+                  bandDarkness={bandDarkness} setBandDarkness={setBandDarkness}
                   {...(textShadow ? { titleFontSize, setTitleFontSize } : {})}
                 />
                 <ThumbnailPreview
@@ -482,6 +489,7 @@ export function HomeTool({ seoAfterTool }: { seoAfterTool?: React.ReactNode }) {
                   textColor={textColor} fontFamily={fontFamily} textAlign={textAlign} textVAlign={textVAlign} textOffsetX={textOffsetX} textOffsetY={textOffsetY}
                   bgType={bgType} bgColor={bgColor} bgImage={bgImage}
                   overlayOpacity={overlayOpacity} frameType={frameType}
+                  bandDarkness={bandDarkness}
                   textShadow={textShadow}
                   titleFontSize={titleFontSize}
                   bgOffsetX={bgOffsetX}
@@ -489,6 +497,8 @@ export function HomeTool({ seoAfterTool }: { seoAfterTool?: React.ReactNode }) {
                   onBgOffsetChange={(x, y) => { setBgOffsetX(x); setBgOffsetY(y); }}
                   bgRotation={bgRotation}
                   onBgRotate={() => setBgRotation(r => (r + 90) % 360)}
+                  bgScale={bgScale}
+                  onBgScaleChange={setBgScale}
                   onDownload={downloadThumbnail} isDownloading={isDownloading} isDownloadDone={isDownloadDone}
                   downloadFormat={downloadFormat} onFormatChange={setDownloadFormat}
                   downloadScale={downloadScale} onScaleChange={setDownloadScale}

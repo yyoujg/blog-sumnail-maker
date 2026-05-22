@@ -21,6 +21,7 @@ interface ThumbnailPreviewProps {
   bgImage: string | null;
   overlayOpacity: number;
   frameType: FrameType;
+  bandDarkness: number;
   onDownload: () => void;
   isDownloading: boolean;
   isDownloadDone: boolean;
@@ -37,9 +38,19 @@ interface ThumbnailPreviewProps {
   onBgOffsetChange: (x: number, y: number) => void;
   bgRotation: number;
   onBgRotate: () => void;
+  bgScale: number;
+  onBgScaleChange: (v: number) => void;
 }
 
 const OUTLINE = '-1px -1px 0 rgba(0,0,0,0.75), 1px -1px 0 rgba(0,0,0,0.75), -1px 1px 0 rgba(0,0,0,0.75), 1px 1px 0 rgba(0,0,0,0.75), 0 2px 10px rgba(0,0,0,0.55)';
+
+const BAND_GRADIENT_BASE = [0.92, 0.7, 0.55, 0.22] as const;
+
+function bandGradient(darkness: number) {
+  const m = darkness / 100;
+  const [a0, a1, a2, a3] = BAND_GRADIENT_BASE.map((a) => a * m);
+  return `linear-gradient(to top, rgba(0,0,0,${a0}) 0%, rgba(0,0,0,${a1}) 28%, rgba(0,0,0,${a2}) 45%, rgba(0,0,0,${a3}) 62%, rgba(0,0,0,0) 72%)`;
+}
 const EMOJI_RE = /([\u{1F000}-\u{1FFFF}][\uFE0F\u20E3]?|[\u{2300}-\u{27BF}][\uFE0F\u20E3]?)/gu;
 
 function renderWithOutline(line: string) {
@@ -97,6 +108,7 @@ export default function ThumbnailPreview({
   bgImage,
   overlayOpacity,
   frameType,
+  bandDarkness,
   onDownload,
   isDownloading,
   isDownloadDone,
@@ -113,6 +125,8 @@ export default function ThumbnailPreview({
   onBgOffsetChange,
   bgRotation,
   onBgRotate,
+  bgScale,
+  onBgScaleChange,
 }: ThumbnailPreviewProps) {
   const [isDragging, setIsDragging] = useState(false);
   const dragRef = useRef<{ startX: number; startY: number; startOX: number; startOY: number } | null>(null);
@@ -187,7 +201,7 @@ export default function ThumbnailPreview({
               className="absolute inset-0"
               style={{
                 backgroundImage: `url('${bgImage}')`,
-                backgroundSize: 'cover',
+                backgroundSize: bgScale === 100 ? 'cover' : `${bgScale}%`,
                 backgroundPosition: `${bgOffsetX}% ${bgOffsetY}%`,
                 transform: `rotate(${bgRotation}deg)`,
                 zIndex: 0,
@@ -225,8 +239,7 @@ export default function ThumbnailPreview({
               style={{
                 // html2canvas에서 height 경계(hairline seam)가 생기는 케이스를 피하기 위해
                 // 하단 밴드를 "부분 높이 div"가 아니라 "전체 overlay + 그라데이션"으로 렌더링합니다.
-                background:
-                  'linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.70) 28%, rgba(0,0,0,0.55) 45%, rgba(0,0,0,0.22) 62%, rgba(0,0,0,0) 72%)',
+                background: bandGradient(bandDarkness),
               }}
             />
           )}
@@ -309,13 +322,34 @@ export default function ThumbnailPreview({
           </div>
         </div>
         {bgType === 'image' && bgImage && (
-          <button
-            onClick={onBgRotate}
-            className="absolute top-2 right-2 bg-black/50 hover:bg-black/70 text-white rounded-full w-9 h-9 flex items-center justify-center text-lg transition-all z-10"
-            title="이미지 90도 회전"
-          >
-            &#8635;
-          </button>
+          <div className="absolute top-2 right-2 flex flex-col gap-1.5 z-10">
+            <button
+              type="button"
+              onClick={() => onBgScaleChange(Math.min(250, bgScale + 10))}
+              disabled={bgScale >= 250}
+              className="bg-black/50 hover:bg-black/70 disabled:opacity-40 text-white rounded-full w-9 h-9 flex items-center justify-center text-lg font-bold transition-all"
+              title="배경 확대"
+            >
+              +
+            </button>
+            <button
+              type="button"
+              onClick={() => onBgScaleChange(Math.max(100, bgScale - 10))}
+              disabled={bgScale <= 100}
+              className="bg-black/50 hover:bg-black/70 disabled:opacity-40 text-white rounded-full w-9 h-9 flex items-center justify-center text-lg font-bold transition-all"
+              title="배경 축소"
+            >
+              −
+            </button>
+            <button
+              type="button"
+              onClick={onBgRotate}
+              className="bg-black/50 hover:bg-black/70 text-white rounded-full w-9 h-9 flex items-center justify-center text-lg transition-all"
+              title="이미지 90도 회전"
+            >
+              &#8635;
+            </button>
+          </div>
         )}
         </div>
 
