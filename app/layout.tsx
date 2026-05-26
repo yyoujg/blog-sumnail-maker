@@ -84,7 +84,7 @@ export default function RootLayout({
         <link rel="preload" as="image" href="/images/260208에디션엠/에디션엠-감귤케이크-딸기음료-메인.JPG" />
         <link rel="preload" as="image" href="/images/260208에디션엠/에디션엠-혜화역카페-내부좌석공간.JPG" />
         {/* 애드센스 전역 스크립트 */}
-        <Script src={ADSENSE_SCRIPT_SRC} strategy="afterInteractive" crossOrigin="anonymous" />
+        <script async src={ADSENSE_SCRIPT_SRC} crossOrigin="anonymous"></script>
       </head>
       <body>
         {children}
