@@ -40,6 +40,16 @@ const structuredData = [
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
     description: '가이드를 실습하는 보조 무료 썸네일·스킨 제작 도구',
   },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: 'BlogKit 스킨메이커',
+    url: `${SITE_URL}/skin-maker`,
+    applicationCategory: 'DesignApplication',
+    operatingSystem: 'Web',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
+    description: '네이버 블로그 스킨 배경과 투명 위젯을 무료로 디자인하는 도구',
+  },
 ];
 
 

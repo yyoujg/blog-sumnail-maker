@@ -13,6 +13,7 @@ export function GET() {
       changefreq: 'monthly',
       priority: '0.8',
     })),
+    { loc: `${SITE_URL}/skin-maker`, lastmod: '2026-05-27', changefreq: 'monthly', priority: '0.8' },
     { loc: `${SITE_URL}/guide/thumbnail`, lastmod: '2026-04-19', changefreq: 'monthly', priority: '0.7' },
     { loc: `${SITE_URL}/guide/blog-seo`, lastmod: '2026-04-19', changefreq: 'monthly', priority: '0.7' },
     { loc: `${SITE_URL}/about`, lastmod: '2026-04-19', changefreq: 'monthly', priority: '0.6' },

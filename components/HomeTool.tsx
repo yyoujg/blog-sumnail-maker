@@ -348,6 +348,7 @@ export function HomeTool({ seoAfterTool }: { seoAfterTool?: React.ReactNode }) {
             <Link href="/blog" className="px-3 py-2 text-sm font-semibold text-white/60 hover:text-white hover:bg-white/10 rounded-lg transition-colors">블로그 가이드</Link>
             <Link href="/guide/thumbnail" className="px-3 py-2 text-sm font-semibold text-white/60 hover:text-white hover:bg-white/10 rounded-lg transition-colors">썸네일 팁</Link>
             <a href="#tool" className="px-3 py-2 text-sm font-semibold text-white/60 hover:text-white hover:bg-white/10 rounded-lg transition-colors">썸네일 만들기</a>
+            <Link href="/skin-maker" className="px-3 py-2 text-sm font-semibold text-white/60 hover:text-white hover:bg-white/10 rounded-lg transition-colors">스킨메이커</Link>
           </nav>
         </div>
       </header>
@@ -420,6 +421,12 @@ export function HomeTool({ seoAfterTool }: { seoAfterTool?: React.ReactNode }) {
               className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white border border-gray-200 text-sm font-semibold text-gray-800 hover:border-gray-400 transition-colors"
             >
               블로그 검색 노출 기초
+            </Link>
+            <Link
+              href="/skin-maker"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white border border-gray-200 text-sm font-semibold text-gray-800 hover:border-gray-400 transition-colors"
+            >
+              블로그 스킨메이커
             </Link>
           </div>
         </div>
@@ -523,7 +530,7 @@ export function HomeTool({ seoAfterTool }: { seoAfterTool?: React.ReactNode }) {
         <section className="px-4 md:px-8 py-6 bg-white border-t border-gray-100">
           <div className="max-w-6xl mx-auto">
             <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">다운로드 완료 - 다음 단계</p>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
               <Link href="/blog/how-to-make-blog-thumbnail" className="flex items-start gap-3 p-4 rounded-xl border border-gray-200 hover:border-gray-400 hover:shadow-sm transition bg-[#f5f5f0]">
                 <span className="text-xl mt-0.5">📝</span>
                 <div>
@@ -536,6 +543,13 @@ export function HomeTool({ seoAfterTool }: { seoAfterTool?: React.ReactNode }) {
                 <div>
                   <p className="text-sm font-bold text-gray-900 mb-0.5">조회수 잘 나오는 제목 쓰는 법</p>
                   <p className="text-xs text-gray-500">클릭률 2배 높이는 제목 공식</p>
+                </div>
+              </Link>
+              <Link href="/skin-maker" className="flex items-start gap-3 p-4 rounded-xl border border-gray-200 hover:border-gray-400 hover:shadow-sm transition bg-[#f5f5f0]">
+                <span className="text-xl mt-0.5">🎨</span>
+                <div>
+                  <p className="text-sm font-bold text-gray-900 mb-0.5">블로그 스킨도 같은 톤으로</p>
+                  <p className="text-xs text-gray-500">무료 스킨메이커로 상단 영역 통일</p>
                 </div>
               </Link>
               <Link href="/blog/blog-monetization-guide" className="flex items-start gap-3 p-4 rounded-xl border border-gray-200 hover:border-gray-400 hover:shadow-sm transition bg-[#f5f5f0]">
