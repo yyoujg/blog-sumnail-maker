@@ -17,9 +17,9 @@ const nextConfig: NextConfig = {
   async redirects() {
     return [
       {
-        source: '/:path*',
+        source: '/:path((?!ads\\.txt$).*)',
         has: [{ type: 'host', value: 'blogsumnail.com' }],
-        destination: 'https://www.blogsumnail.com/:path*',
+        destination: 'https://www.blogsumnail.com/:path',
         permanent: true,
       },
       {
