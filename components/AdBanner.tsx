@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ADSENSE_CLIENT, ADSENSE_AD_SLOT } from '@/lib/constants';
 
 const TRACKING_CODE = 'AF2506117';
@@ -24,24 +24,36 @@ declare global {
 
 export default function AdBanner({ position, type }: AdBannerProps) {
   const adsenseRef = useRef<HTMLModElement>(null);
+  const [filled, setFilled] = useState(false);
 
   useEffect(() => {
-    if (type !== 'adsense' || !ADSENSE_AD_SLOT || !adsenseRef.current) return;
-    if (adsenseRef.current.offsetWidth === 0) return;
+    const ins = adsenseRef.current;
+    if (type !== 'adsense' || !ADSENSE_AD_SLOT || !ins) return;
+    if (ins.offsetWidth === 0) return;
     try {
       (window.adsbygoogle = window.adsbygoogle || []).push({});
     } catch (e) {
       console.warn('AdSense push error', e);
     }
+    // 광고가 실제로 채워졌을 때만 영역을 노출 (미충전 빈 박스 방지)
+    const sync = () => setFilled(ins.getAttribute('data-ad-status') === 'filled');
+    sync();
+    const observer = new MutationObserver(sync);
+    observer.observe(ins, { attributes: true, attributeFilter: ['data-ad-status'] });
+    return () => observer.disconnect();
   }, [type]);
 
-  const wrapperClass =
+  const wrapperClass = filled
+    ? 'w-full flex flex-col items-center justify-center py-4 my-4 bg-gray-50 rounded-xl border border-gray-200 overflow-hidden'
+    : 'w-full overflow-hidden';
+
+  const filledClass =
     'w-full flex flex-col items-center justify-center py-4 my-4 bg-gray-50 rounded-xl border border-gray-200 overflow-hidden';
 
   if (type === 'coupang') {
     const subId = encodeURIComponent(position);
     return (
-      <div className={wrapperClass} data-ad-position={position}>
+      <div className={filledClass} data-ad-position={position}>
         <iframe
           src={coupangUrl(subId, 680, 140)}
           width="680"
@@ -67,13 +79,7 @@ export default function AdBanner({ position, type }: AdBannerProps) {
   }
 
   if (!ADSENSE_AD_SLOT) {
-    return (
-      <div className={wrapperClass} data-ad-position={position}>
-        <div className="flex items-center justify-center h-[100px] text-gray-400 text-sm">
-          애드센스 광고 영역
-        </div>
-      </div>
-    );
+    return null;
   }
 
   return (

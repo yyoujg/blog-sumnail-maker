@@ -70,4 +70,8 @@ body {
   .scrollbar-hide::-webkit-scrollbar {
     display: none;
   }
+  /* 광고 미충전 시 빈 영역 collapse */
+  ins.adsbygoogle[data-ad-status="unfilled"] {
+    display: none !important;
+  }
 }
