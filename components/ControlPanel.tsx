@@ -74,8 +74,10 @@ function ColorSwatches({
           key={c}
           type="button"
           title={c}
+          aria-label={`색상 ${c}`}
+          aria-pressed={selected.toLowerCase() === c.toLowerCase()}
           onClick={() => onSelect(c)}
-          className="w-7 h-7 rounded-full transition-transform hover:scale-110 flex-shrink-0"
+          className="w-7 h-7 rounded-full transition-transform hover:scale-110 flex-shrink-0 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-500 focus-visible:ring-offset-1"
           style={{
             backgroundColor: c,
             border: selected.toLowerCase() === c.toLowerCase() ? '3px solid #1e293b' : '2px solid #e2e8f0',
@@ -158,10 +160,10 @@ export default function ControlPanel({
             key={tab.id}
             type="button"
             onClick={() => setActiveTab(tab.id)}
-            className={`flex-1 flex items-center justify-center gap-1.5 py-3 text-sm font-semibold transition border-b-2 -mb-px ${
+            className={`flex-1 flex items-center justify-center gap-1.5 py-3 text-sm font-semibold transition border-b-2 -mb-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-500 focus-visible:ring-inset ${
               activeTab === tab.id
                 ? 'border-gray-900 text-gray-900'
-                : 'border-transparent text-gray-400 hover:text-gray-600'
+                : 'border-transparent text-gray-500 hover:text-gray-700'
             }`}
           >
             {tab.icon}
@@ -276,13 +278,16 @@ export default function ControlPanel({
                       'bottom-center': 'items-end justify-center',
                       'bottom-right': 'items-end justify-end',
                     }[`${v}-${h}`];
+                    const posLabel = `${v === 'top' ? '상단' : v === 'middle' ? '중간' : '하단'} ${h === 'left' ? '왼쪽' : h === 'center' ? '가운데' : '오른쪽'}`;
                     return (
                       <button
                         key={`${v}-${h}`}
                         type="button"
-                        title={`${v === 'top' ? '상단' : v === 'middle' ? '중간' : '하단'} ${h === 'left' ? '왼쪽' : h === 'center' ? '가운데' : '오른쪽'}`}
+                        title={posLabel}
+                        aria-label={`텍스트 위치 ${posLabel}`}
+                        aria-pressed={isActive}
                         onClick={() => { setTextAlign(h); setTextVAlign(v); }}
-                        className={`w-9 h-9 rounded border flex p-1.5 transition ${
+                        className={`w-9 h-9 rounded border flex p-1.5 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-500 focus-visible:ring-offset-1 ${
                           isActive ? 'bg-[#111111] border-[#111111]' : 'bg-white border-gray-200 hover:border-gray-400'
                         }`}
                       >
@@ -337,13 +342,13 @@ export default function ControlPanel({
             <div className="flex gap-2">
               <button
                 onClick={() => setBgType('color')}
-                className={`flex-1 py-2 text-sm font-medium rounded-lg transition ${bgType === 'color' ? 'bg-[#111111] text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
+                className={`flex-1 py-2 text-sm font-medium rounded-lg transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-500 ${bgType === 'color' ? 'bg-[#111111] text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
               >
                 단색 배경
               </button>
               <button
                 onClick={() => setBgType('image')}
-                className={`flex-1 py-2 text-sm font-medium rounded-lg transition ${bgType === 'image' ? 'bg-[#111111] text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
+                className={`flex-1 py-2 text-sm font-medium rounded-lg transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-500 ${bgType === 'image' ? 'bg-[#111111] text-white' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
               >
                 이미지 배경
               </button>

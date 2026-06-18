@@ -182,7 +182,7 @@ export default async function BlogPostPage({ params }: PageProps) {
 
         <Link
           href="/blog"
-          className="text-gray-400 hover:text-gray-800 text-sm mb-10 inline-flex items-center gap-1.5 transition-colors"
+          className="text-gray-500 hover:text-gray-800 text-sm mb-10 inline-flex items-center gap-1.5 transition-colors rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-500"
         >
           <ArrowLeft className="w-3.5 h-3.5" />
           블로그 목록으로
@@ -310,7 +310,7 @@ export default async function BlogPostPage({ params }: PageProps) {
               <Link
                 key={related.slug}
                 href={`/blog/${related.slug}`}
-                className="flex items-center justify-between gap-3 p-4 bg-white rounded-xl border border-gray-200 hover:border-gray-300 hover:shadow-sm transition-all group"
+                className="flex items-center justify-between gap-3 p-4 bg-white rounded-xl border border-gray-200 hover:border-gray-300 hover:shadow-sm transition-all group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-500"
               >
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-semibold text-gray-800 group-hover:text-gray-900 line-clamp-1">
@@ -329,7 +329,7 @@ export default async function BlogPostPage({ params }: PageProps) {
           {prevPost ? (
             <Link
               href={`/blog/${prevPost.slug}`}
-              className="flex flex-col p-4 bg-white rounded-xl border border-gray-200 hover:border-gray-300 transition-colors group"
+              className="flex flex-col p-4 bg-white rounded-xl border border-gray-200 hover:border-gray-300 transition-colors group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-500"
             >
               <span className="text-xs text-gray-400 mb-1.5 flex items-center gap-1">
                 <ArrowLeft className="w-3 h-3" /> 이전 글
@@ -342,7 +342,7 @@ export default async function BlogPostPage({ params }: PageProps) {
           {nextPost ? (
             <Link
               href={`/blog/${nextPost.slug}`}
-              className="flex flex-col p-4 bg-white rounded-xl border border-gray-200 hover:border-gray-300 transition-colors group text-right"
+              className="flex flex-col p-4 bg-white rounded-xl border border-gray-200 hover:border-gray-300 transition-colors group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-500 text-right"
             >
               <span className="text-xs text-gray-400 mb-1.5 flex items-center gap-1 justify-end">
                 다음 글 <ArrowRight className="w-3 h-3" />

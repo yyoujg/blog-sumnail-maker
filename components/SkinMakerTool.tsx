@@ -203,6 +203,7 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
   const [imgUrl, setImgUrl] = useState('');
   const [activeTemplateId, setActiveTemplateId] = useState<string | null>(null);
   const [showGrowthTips, setShowGrowthTips] = useState(false);
+  const [isDownloadingSkin, setIsDownloadingSkin] = useState(false);
 
   const [elements, setElements] = useState<CanvasElement[]>([]);
   const [selectedId, setSelectedId] = useState<number | null>(null);
@@ -312,6 +313,8 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
 
   // ── download ──
   const downloadSkin = async () => {
+    setIsDownloadingSkin(true);
+    try {
     const canvas = document.createElement('canvas');
     canvas.width = cw; canvas.height = ch;
     const ctx = canvas.getContext('2d')!;
@@ -378,6 +381,9 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
       }
     }
     triggerDownload(canvas.toDataURL('image/png'), '블로그_스킨.png');
+    } finally {
+      setIsDownloadingSkin(false);
+    }
   };
 
   const downloadWidget = () => {
@@ -405,7 +411,8 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
           <button
             key={tpl.id}
             onClick={() => { loadTemplate(tpl); setSidebarTab('design'); }}
-            className={`flex-shrink-0 flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-sm font-semibold border transition ${
+            title={tpl.desc}
+            className={`flex-shrink-0 flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-sm font-semibold border transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-500 ${
               activeTemplateId === tpl.id
                 ? 'bg-[#111111] text-white border-[#111111] shadow'
                 : 'bg-white text-gray-700 border-gray-200 hover:border-gray-400 hover:bg-gray-50'
@@ -442,10 +449,10 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
               <button
                 key={tab.id}
                 onClick={() => setSidebarTab(tab.id)}
-                className={`flex-1 flex items-center justify-center gap-1.5 py-3 text-sm font-semibold transition border-b-2 -mb-px ${
+                className={`flex-1 flex items-center justify-center gap-1.5 py-3 text-sm font-semibold transition border-b-2 -mb-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-500 focus-visible:ring-inset ${
                   sidebarTab === tab.id
                     ? 'border-gray-900 text-gray-900'
-                    : 'border-transparent text-gray-400 hover:text-gray-600'
+                    : 'border-transparent text-gray-500 hover:text-gray-700'
                 }`}
               >
                 {tab.icon}
@@ -463,10 +470,12 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">배경 크기</label>
                   <div className="grid grid-cols-2 gap-3">
-                    {([['가로', cw, setCw], ['세로', ch, setCh]] as [string, number, (v: number) => void][]).map(([label, val, setter]) => (
-                      <div key={label} className="bg-gray-50 border border-gray-200 rounded-lg px-3 py-2">
+                    {([['가로', cw, setCw, 600, 3000], ['세로', ch, setCh, 200, 1200]] as [string, number, (v: number) => void, number, number][]).map(([label, val, setter, min, max]) => (
+                      <div key={label} className="bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 focus-within:ring-2 focus-within:ring-gray-500">
                         <div className="text-xs font-semibold text-gray-400 mb-1">{label} (px)</div>
-                        <input type="number" value={val} onChange={e => setter(+e.target.value || val)}
+                        <input type="number" value={val} min={min} max={max} step={10}
+                          aria-label={`배경 ${label} 크기 (px)`}
+                          onChange={e => setter(Math.max(min, Math.min(max, +e.target.value || val)))}
                           className="bg-transparent border-none outline-none font-bold text-sm w-full text-gray-700" />
                       </div>
                     ))}
@@ -509,8 +518,12 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
                     )}
                     {selectedEl.type === 'image' && (
                       <div>
-                        <label className="block text-xs font-semibold text-gray-500 mb-1">크기 조절 (너비)</label>
+                        <label className="flex justify-between text-xs font-semibold text-gray-500 mb-1">
+                          <span>크기 조절 (너비)</span>
+                          <span className="tabular-nums text-gray-400">{selectedEl.w}px</span>
+                        </label>
                         <input type="range" min="50" max="1000" value={selectedEl.w}
+                          aria-label="이미지 너비 조절"
                           onChange={e => { const w = +e.target.value; updateEl(selectedEl.id, { w, h: Math.round(w * selectedEl.h / selectedEl.w) }); }}
                           className="w-full accent-gray-800" />
                       </div>
@@ -551,8 +564,9 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
                           <span className="text-xs font-semibold text-gray-600 flex-1 truncate">
                             {el.type === 'image' ? '이미지' : el.text}
                           </span>
-                          <button onClick={e => { e.stopPropagation(); removeEl(el.id); }}
-                            className="text-gray-300 hover:text-red-400 transition p-0.5">
+                          <button onClick={e => { e.stopPropagation(); if (confirm('이 요소를 삭제할까요?')) removeEl(el.id); }}
+                            aria-label="요소 삭제"
+                            className="text-gray-300 hover:text-red-400 transition p-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-500 rounded">
                             <Trash2 size={13} />
                           </button>
                         </div>
@@ -589,8 +603,9 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
                             <span className="text-xs font-bold bg-gray-200 text-gray-700 rounded px-2 py-0.5">
                               위젯 칸 {Math.floor(r.x / 175) + 1}
                             </span>
-                            <button onClick={() => setRects(prev => prev.filter(x => x.id !== r.id))}
-                              className="text-gray-300 hover:text-red-400 transition">
+                            <button onClick={() => { if (confirm('이 링크 영역을 삭제할까요?')) setRects(prev => prev.filter(x => x.id !== r.id)); }}
+                              aria-label="링크 영역 삭제"
+                              className="text-gray-300 hover:text-red-400 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-500 rounded">
                               <Trash2 size={13} />
                             </button>
                           </div>
@@ -678,7 +693,7 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
                   <div style={{ position: 'absolute', inset: 0, backgroundColor: `rgba(0,0,0,${bgOverlay / 100})`, pointerEvents: 'none', zIndex: 1 }} />
                 )}
                 {/* Grid guide */}
-                <div style={{ position: 'absolute', inset: 0, display: 'flex', pointerEvents: 'none', opacity: 0.15, zIndex: 2 }}>
+                <div style={{ position: 'absolute', inset: 0, display: 'flex', pointerEvents: 'none', opacity: 0.25, zIndex: 2 }}>
                   {Array.from({ length: 11 }, (_, i) => (
                     <div key={i} style={{ width: WIDGET_W, marginRight: WIDGET_GAP, height: '100%', borderRight: '1px dashed #18181b', flexShrink: 0 }} />
                   ))}
@@ -709,7 +724,7 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
                       <img src={el.src} width={el.w} height={el.h} style={{ display: 'block', pointerEvents: 'none' }} alt="" />
                     ) : (
                       <div
-                        style={{ fontSize: el.fontSize, color: el.color, fontWeight: el.fontWeight, whiteSpace: 'nowrap', padding: '0 8px', outline: 'none', cursor: (selectedId === el.id && sidebarTab === 'design') ? 'text' : 'inherit' }}
+                        style={{ fontSize: el.fontSize, color: el.color, fontWeight: el.fontWeight, whiteSpace: 'nowrap', padding: '0 8px', outline: 'none', borderRadius: 4, background: (selectedId === el.id && sidebarTab === 'design') ? 'rgba(250,204,21,0.25)' : 'transparent', cursor: (selectedId === el.id && sidebarTab === 'design') ? 'text' : 'inherit' }}
                         contentEditable={selectedId === el.id && sidebarTab === 'design' ? true : false}
                         suppressContentEditableWarning
                         onBlur={e => updateEl(el.id, { text: e.currentTarget.innerText })}
@@ -746,11 +761,22 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
           {/* 액션 버튼 */}
           <div className="flex gap-2 mb-4">
             <button onClick={downloadSkin}
-              className="flex-1 flex items-center justify-center gap-2 py-3.5 px-4 rounded-xl font-bold text-white bg-[#111111] hover:bg-[#222222] hover:shadow-lg hover:-translate-y-0.5 transition-all text-sm">
-              <Download className="w-4 h-4" /> 이미지 다운로드
+              disabled={isDownloadingSkin}
+              aria-busy={isDownloadingSkin}
+              aria-label="블로그 스킨 이미지 다운로드"
+              className={`flex-1 flex items-center justify-center gap-2 py-3.5 px-4 rounded-xl font-bold text-white transition-all text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-500 focus-visible:ring-offset-1 ${
+                isDownloadingSkin
+                  ? 'bg-gray-400 cursor-not-allowed'
+                  : 'bg-[#111111] hover:bg-[#222222] hover:shadow-lg hover:-translate-y-0.5'
+              }`}>
+              {isDownloadingSkin ? (
+                <span className="animate-pulse">이미지 생성 중...</span>
+              ) : (
+                <><Download className="w-4 h-4" /> 이미지 다운로드</>
+              )}
             </button>
             <button onClick={() => setShowGuide(true)}
-              className="flex-1 flex items-center justify-center gap-2 py-3.5 px-4 rounded-xl font-bold text-white bg-[#111111] hover:bg-[#222222] hover:shadow-lg hover:-translate-y-0.5 transition-all text-sm">
+              className="flex-1 flex items-center justify-center gap-2 py-3.5 px-4 rounded-xl font-bold text-white bg-[#111111] hover:bg-[#222222] hover:shadow-lg hover:-translate-y-0.5 transition-all text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-500 focus-visible:ring-offset-1">
               <BookOpen className="w-4 h-4" /> 블로그에 적용하기
             </button>
           </div>
@@ -796,7 +822,7 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
                 <div style={{ fontSize: 22, fontWeight: 900, fontStyle: 'italic' }}>DONE!</div>
                 <div style={{ color: '#94a3b8', fontSize: 13, marginTop: 4 }}>네이버 블로그 위젯 설정에 이 코드를 복사해 넣으세요.</div>
               </div>
-              <button onClick={() => setShowCode(false)} style={{ background: 'rgba(255,255,255,0.1)', border: 'none', color: '#fff', cursor: 'pointer', borderRadius: '50%', width: 32, height: 32, fontSize: 16 }}>✕</button>
+              <button onClick={() => setShowCode(false)} aria-label="닫기" style={{ background: 'rgba(255,255,255,0.1)', border: 'none', color: '#fff', cursor: 'pointer', borderRadius: '50%', width: 32, height: 32, fontSize: 16 }}>✕</button>
             </div>
             <div style={{ padding: 24, overflowY: 'auto' }}>
               {!imgUrl && <div style={{ background: '#f4f4f5', color: '#52525b', border: '1px solid #d4d4d8', borderRadius: 10, padding: '10px 14px', fontSize: 12, fontWeight: 700, marginBottom: 12 }}>⚠️ [링크] 탭에서 투명 이미지 주소를 입력하지 않았습니다.</div>}
@@ -822,7 +848,7 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
               <div style={{ fontWeight: 800, fontSize: 17, display: 'flex', alignItems: 'center', gap: 8 }}>
                 <BookOpen size={18} style={{ color: '#18181b' }} /> 홈페이지형 블로그 적용 가이드
               </div>
-              <button onClick={() => setShowGuide(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 18, color: '#94a3b8' }}>✕</button>
+              <button onClick={() => setShowGuide(false)} aria-label="닫기" style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 18, color: '#94a3b8' }}>✕</button>
             </div>
             <div style={{ overflowY: 'auto', padding: 24, flex: 1 }}>
               {[

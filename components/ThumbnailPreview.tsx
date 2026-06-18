@@ -322,13 +322,14 @@ export default function ThumbnailPreview({
           </div>
         </div>
         {bgType === 'image' && bgImage && (
-          <div className="absolute top-2 right-2 flex flex-col gap-1.5 z-10">
+          <div className="absolute top-2 right-2 flex flex-col items-center gap-1.5 z-10">
             <button
               type="button"
               onClick={() => onBgScaleChange(Math.min(250, bgScale + 10))}
               disabled={bgScale >= 250}
-              className="bg-black/50 hover:bg-black/70 disabled:opacity-40 text-white rounded-full w-9 h-9 flex items-center justify-center text-lg font-bold transition-all"
+              className="bg-black/50 hover:bg-black/70 disabled:opacity-40 text-white rounded-full w-9 h-9 flex items-center justify-center text-lg font-bold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
               title="배경 확대"
+              aria-label={`배경 확대 (현재 ${bgScale}%)`}
             >
               +
             </button>
@@ -336,19 +337,30 @@ export default function ThumbnailPreview({
               type="button"
               onClick={() => onBgScaleChange(Math.max(100, bgScale - 10))}
               disabled={bgScale <= 100}
-              className="bg-black/50 hover:bg-black/70 disabled:opacity-40 text-white rounded-full w-9 h-9 flex items-center justify-center text-lg font-bold transition-all"
+              className="bg-black/50 hover:bg-black/70 disabled:opacity-40 text-white rounded-full w-9 h-9 flex items-center justify-center text-lg font-bold transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
               title="배경 축소"
+              aria-label={`배경 축소 (현재 ${bgScale}%)`}
             >
               −
             </button>
             <button
               type="button"
               onClick={onBgRotate}
-              className="bg-black/50 hover:bg-black/70 text-white rounded-full w-9 h-9 flex items-center justify-center text-lg transition-all"
+              className="bg-black/50 hover:bg-black/70 text-white rounded-full w-9 h-9 flex items-center justify-center text-lg transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
               title="이미지 90도 회전"
+              aria-label={`이미지 90도 회전 (현재 ${bgRotation}도)`}
             >
               &#8635;
             </button>
+            {bgRotation !== 0 && (
+              <span className="bg-black/60 text-white text-[10px] font-bold tabular-nums rounded-full px-1.5 py-0.5">{bgRotation}°</span>
+            )}
+          </div>
+        )}
+
+        {bgType === 'image' && bgImage && !isDragging && (
+          <div className="absolute bottom-2 left-1/2 -translate-x-1/2 z-10 pointer-events-none bg-black/55 text-white text-[11px] font-medium rounded-full px-3 py-1 whitespace-nowrap">
+            드래그해서 배경 위치 조절
           </div>
         )}
         </div>
@@ -425,7 +437,9 @@ export default function ThumbnailPreview({
       <button
         onClick={onDownload}
         disabled={isDownloading}
-        className={`w-full max-w-[500px] flex items-center justify-center gap-2 py-4 px-6 rounded-xl font-bold text-lg text-white shadow-lg transition-all ${
+        aria-busy={isDownloading}
+        aria-label={`${downloadFormat.toUpperCase()} 썸네일 다운로드`}
+        className={`w-full max-w-[500px] flex items-center justify-center gap-2 py-4 px-6 rounded-xl font-bold text-lg text-white shadow-lg transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-500 focus-visible:ring-offset-2 ${
           isDownloading
             ? 'bg-blue-400 cursor-not-allowed'
             : 'bg-[#111111] hover:bg-[#111111] hover:shadow-xl hover:-translate-y-1'

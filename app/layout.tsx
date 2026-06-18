@@ -105,6 +105,7 @@ export default function RootLayout({
           target="_blank"
           rel="noopener noreferrer"
           title="오류/제안 카카오톡 오픈채팅"
+          aria-label="오류/제안 카카오톡 오픈채팅 열기"
           style={{
             position: 'fixed',
             bottom: '24px',

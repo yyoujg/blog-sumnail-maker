@@ -238,7 +238,7 @@ function PostCard({ post }: { post: BlogPost }) {
   return (
     <Link
       href={`/blog/${post.slug}`}
-      className="flex items-start justify-between gap-3 p-4 bg-white rounded-xl border border-gray-200 hover:border-gray-300 hover:shadow-sm transition-all group"
+      className="flex items-start justify-between gap-3 p-4 bg-white rounded-xl border border-gray-200 hover:border-gray-300 hover:shadow-sm transition-all group focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-500"
     >
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2 mb-1">
@@ -334,7 +334,7 @@ export default function BlogListPage() {
             <a
               key={cat.id}
               href={`#${cat.id}`}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-gray-200 rounded-full text-xs font-medium text-gray-600 hover:border-gray-400 hover:text-gray-900 transition-colors"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-white border border-gray-200 rounded-full text-xs font-medium text-gray-600 hover:border-gray-400 hover:text-gray-900 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-500"
             >
               {cat.icon}
               {cat.label}
@@ -383,7 +383,7 @@ export default function BlogListPage() {
           <p className="text-sm text-gray-400 mb-3">조회수 잘 나오는 썸네일, 지금 바로 만들어보세요</p>
           <Link
             href="/"
-            className="inline-flex items-center gap-2 bg-white text-gray-900 text-sm font-semibold px-5 py-2.5 rounded-lg hover:bg-gray-100 transition-colors"
+            className="inline-flex items-center gap-2 bg-white text-gray-900 text-sm font-semibold px-5 py-2.5 rounded-lg hover:bg-gray-100 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
           >
             <BookOpen className="w-4 h-4" />
             썸네일 메이커 사용하기

@@ -326,7 +326,8 @@ export function HomeTool({ seoAfterTool }: { seoAfterTool?: React.ReactNode }) {
             />
             <button
               onClick={() => setActiveMainTab('thumbnail')}
-              className={`relative z-10 flex items-center gap-1.5 px-4 py-2 text-sm font-semibold rounded-lg transition-colors duration-200 ${
+              aria-pressed={activeMainTab === 'thumbnail'}
+              className={`relative z-10 flex items-center gap-1.5 px-4 py-2 text-sm font-semibold rounded-lg transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70 ${
                 activeMainTab === 'thumbnail' ? 'text-gray-900' : 'text-white/60 hover:text-white'
               }`}
             >
@@ -335,7 +336,8 @@ export function HomeTool({ seoAfterTool }: { seoAfterTool?: React.ReactNode }) {
             </button>
             <button
               onClick={() => setActiveMainTab('skin')}
-              className={`relative z-10 flex items-center gap-1.5 px-4 py-2 text-sm font-semibold rounded-lg transition-colors duration-200 ${
+              aria-pressed={activeMainTab === 'skin'}
+              className={`relative z-10 flex items-center gap-1.5 px-4 py-2 text-sm font-semibold rounded-lg transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70 ${
                 activeMainTab === 'skin' ? 'text-gray-900' : 'text-white/60 hover:text-white'
               }`}
             >
@@ -345,10 +347,10 @@ export function HomeTool({ seoAfterTool }: { seoAfterTool?: React.ReactNode }) {
           </div>
 
           <nav className="hidden md:flex items-center gap-1">
-            <Link href="/blog" className="px-3 py-2 text-sm font-semibold text-white/60 hover:text-white hover:bg-white/10 rounded-lg transition-colors">블로그 가이드</Link>
-            <Link href="/guide/thumbnail" className="px-3 py-2 text-sm font-semibold text-white/60 hover:text-white hover:bg-white/10 rounded-lg transition-colors">썸네일 팁</Link>
-            <a href="#tool" className="px-3 py-2 text-sm font-semibold text-white/60 hover:text-white hover:bg-white/10 rounded-lg transition-colors">썸네일 만들기</a>
-            <Link href="/skin-maker" className="px-3 py-2 text-sm font-semibold text-white/60 hover:text-white hover:bg-white/10 rounded-lg transition-colors">스킨메이커</Link>
+            <Link href="/blog" className="px-3 py-2 text-sm font-semibold text-white/70 hover:text-white hover:bg-white/10 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70">블로그 가이드</Link>
+            <Link href="/guide/thumbnail" className="px-3 py-2 text-sm font-semibold text-white/70 hover:text-white hover:bg-white/10 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70">썸네일 팁</Link>
+            <a href="#tool" className="px-3 py-2 text-sm font-semibold text-white/70 hover:text-white hover:bg-white/10 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70">썸네일 만들기</a>
+            <Link href="/skin-maker" className="px-3 py-2 text-sm font-semibold text-white/70 hover:text-white hover:bg-white/10 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70">스킨메이커</Link>
           </nav>
         </div>
       </header>

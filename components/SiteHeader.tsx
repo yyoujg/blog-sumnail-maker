@@ -28,10 +28,10 @@ export default function SiteHeader() {
               <Link
                 key={link.href}
                 href={link.href}
-                className={`px-3 py-2 text-sm font-semibold rounded-lg whitespace-nowrap transition-colors ${
+                className={`px-3 py-2 text-sm font-semibold rounded-lg whitespace-nowrap transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70 ${
                   isActive
                     ? 'bg-white/15 text-white'
-                    : 'text-white/60 hover:text-white hover:bg-white/10'
+                    : 'text-white/70 hover:text-white hover:bg-white/10'
                 }`}
               >
                 {link.label}
