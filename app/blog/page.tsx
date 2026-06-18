@@ -238,7 +238,7 @@ function PostCard({ post }: { post: BlogPost }) {
   return (
     <Link
       href={`/blog/${post.slug}`}
-      className="flex items-start justify-between gap-3 p-4 bg-white rounded-xl border border-gray-100 hover:border-gray-300 hover:shadow-sm transition-all group"
+      className="flex items-start justify-between gap-3 p-4 bg-white rounded-xl border border-gray-200 hover:border-gray-300 hover:shadow-sm transition-all group"
     >
       <div className="flex-1 min-w-0">
         <div className="flex items-center gap-2 mb-1">
@@ -292,7 +292,7 @@ export default function BlogListPage() {
     <div className="min-h-screen bg-[#f5f5f0] font-sans">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <SiteHeader />
-      <div className="max-w-2xl mx-auto px-4 py-8 md:py-12">
+      <div className="max-w-2xl mx-auto px-4 md:px-8 py-8 md:py-12">
 
         {/* 헤더 */}
         <div className="mb-8">
@@ -344,7 +344,7 @@ export default function BlogListPage() {
         </div>
 
         {/* 카테고리별 섹션 */}
-        <div className="space-y-12">
+        <div className="space-y-10">
           {categorized.map((cat) => (
             <section key={cat.id} id={cat.id}>
               <div className="flex items-center gap-2 mb-4">
@@ -379,7 +379,7 @@ export default function BlogListPage() {
         </div>
 
         {/* 하단 CTA */}
-        <div className="mt-12 p-6 bg-[#111111] rounded-xl text-center">
+        <div className="mt-10 p-6 bg-[#111111] rounded-2xl text-center">
           <p className="text-sm text-gray-400 mb-3">조회수 잘 나오는 썸네일, 지금 바로 만들어보세요</p>
           <Link
             href="/"

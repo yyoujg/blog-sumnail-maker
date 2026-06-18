@@ -178,7 +178,7 @@ export default async function BlogPostPage({ params }: PageProps) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <SiteHeader />
-      <div className="max-w-2xl mx-auto px-4 py-8 md:py-12">
+      <div className="max-w-2xl mx-auto px-4 md:px-8 py-8 md:py-12">
 
         <Link
           href="/blog"
@@ -310,7 +310,7 @@ export default async function BlogPostPage({ params }: PageProps) {
               <Link
                 key={related.slug}
                 href={`/blog/${related.slug}`}
-                className="flex items-center justify-between gap-3 p-4 bg-white rounded-xl border border-gray-100 hover:border-gray-300 hover:shadow-sm transition-all group"
+                className="flex items-center justify-between gap-3 p-4 bg-white rounded-xl border border-gray-200 hover:border-gray-300 hover:shadow-sm transition-all group"
               >
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-semibold text-gray-800 group-hover:text-gray-900 line-clamp-1">
@@ -325,11 +325,11 @@ export default async function BlogPostPage({ params }: PageProps) {
         </div>
 
         {/* 이전/다음 글 */}
-        <nav className="mt-6 grid grid-cols-2 gap-3">
+        <nav className="mt-8 grid grid-cols-2 gap-3">
           {prevPost ? (
             <Link
               href={`/blog/${prevPost.slug}`}
-              className="flex flex-col p-4 bg-white rounded-xl border border-gray-100 hover:border-gray-300 transition-colors group"
+              className="flex flex-col p-4 bg-white rounded-xl border border-gray-200 hover:border-gray-300 transition-colors group"
             >
               <span className="text-xs text-gray-400 mb-1.5 flex items-center gap-1">
                 <ArrowLeft className="w-3 h-3" /> 이전 글
@@ -342,7 +342,7 @@ export default async function BlogPostPage({ params }: PageProps) {
           {nextPost ? (
             <Link
               href={`/blog/${nextPost.slug}`}
-              className="flex flex-col p-4 bg-white rounded-xl border border-gray-100 hover:border-gray-300 transition-colors group text-right"
+              className="flex flex-col p-4 bg-white rounded-xl border border-gray-200 hover:border-gray-300 transition-colors group text-right"
             >
               <span className="text-xs text-gray-400 mb-1.5 flex items-center gap-1 justify-end">
                 다음 글 <ArrowRight className="w-3 h-3" />

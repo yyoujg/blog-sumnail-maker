@@ -395,7 +395,7 @@ export function HomeTool({ seoAfterTool }: { seoAfterTool?: React.ReactNode }) {
                 <Link
                   key={post.slug}
                   href={`/blog/${post.slug}`}
-                  className="block p-4 bg-[#f5f5f0] rounded-xl border border-gray-100 hover:border-gray-300 hover:shadow-sm transition-all"
+                  className="block p-4 bg-[#f5f5f0] rounded-xl border border-gray-200 hover:border-gray-300 hover:shadow-sm transition-all"
                 >
                   <p className="text-sm font-bold text-gray-900 leading-snug mb-1">{post.title}</p>
                   <p className="text-xs text-gray-500 line-clamp-2">{post.summary}</p>
@@ -433,7 +433,7 @@ export function HomeTool({ seoAfterTool }: { seoAfterTool?: React.ReactNode }) {
       </section>
 
       {/* ── 도구 탭 ── */}
-      <section id="tool" className="px-4 md:px-8 py-6">
+      <section id="tool" className="px-4 md:px-8 py-8 md:py-10">
         <div className="max-w-6xl mx-auto">
 
           {/* 썸네일 메이커 탭 */}
@@ -531,28 +531,28 @@ export function HomeTool({ seoAfterTool }: { seoAfterTool?: React.ReactNode }) {
           <div className="max-w-6xl mx-auto">
             <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">다운로드 완료 - 다음 단계</p>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-              <Link href="/blog/how-to-make-blog-thumbnail" className="flex items-start gap-3 p-4 rounded-xl border border-gray-200 hover:border-gray-400 hover:shadow-sm transition bg-[#f5f5f0]">
+              <Link href="/blog/how-to-make-blog-thumbnail" className="flex items-start gap-3 p-4 rounded-xl border border-gray-200 hover:border-gray-300 hover:shadow-sm transition bg-[#f5f5f0]">
                 <span className="text-xl mt-0.5">📝</span>
                 <div>
                   <p className="text-sm font-bold text-gray-900 mb-0.5">이 썸네일로 글 쓰는 법</p>
                   <p className="text-xs text-gray-500">글 구조부터 이미지 삽입까지</p>
                 </div>
               </Link>
-              <Link href="/blog/blog-writing-tips" className="flex items-start gap-3 p-4 rounded-xl border border-gray-200 hover:border-gray-400 hover:shadow-sm transition bg-[#f5f5f0]">
+              <Link href="/blog/blog-writing-tips" className="flex items-start gap-3 p-4 rounded-xl border border-gray-200 hover:border-gray-300 hover:shadow-sm transition bg-[#f5f5f0]">
                 <span className="text-xl mt-0.5">🔤</span>
                 <div>
                   <p className="text-sm font-bold text-gray-900 mb-0.5">조회수 잘 나오는 제목 쓰는 법</p>
                   <p className="text-xs text-gray-500">클릭률 2배 높이는 제목 공식</p>
                 </div>
               </Link>
-              <Link href="/skin-maker" className="flex items-start gap-3 p-4 rounded-xl border border-gray-200 hover:border-gray-400 hover:shadow-sm transition bg-[#f5f5f0]">
+              <Link href="/skin-maker" className="flex items-start gap-3 p-4 rounded-xl border border-gray-200 hover:border-gray-300 hover:shadow-sm transition bg-[#f5f5f0]">
                 <span className="text-xl mt-0.5">🎨</span>
                 <div>
                   <p className="text-sm font-bold text-gray-900 mb-0.5">블로그 스킨도 같은 톤으로</p>
                   <p className="text-xs text-gray-500">무료 스킨메이커로 상단 영역 통일</p>
                 </div>
               </Link>
-              <Link href="/blog/blog-monetization-guide" className="flex items-start gap-3 p-4 rounded-xl border border-gray-200 hover:border-gray-400 hover:shadow-sm transition bg-[#f5f5f0]">
+              <Link href="/blog/blog-monetization-guide" className="flex items-start gap-3 p-4 rounded-xl border border-gray-200 hover:border-gray-300 hover:shadow-sm transition bg-[#f5f5f0]">
                 <span className="text-xl mt-0.5">💰</span>
                 <div>
                   <p className="text-sm font-bold text-gray-900 mb-0.5">블로그 수익화 시작하기</p>
@@ -572,7 +572,7 @@ export function HomeTool({ seoAfterTool }: { seoAfterTool?: React.ReactNode }) {
       </div>
 
       {/* 인기 템플릿 */}
-      <section id="popular-templates" className="px-4 md:px-8 py-10 border-t border-gray-200">
+      <section id="popular-templates" className="px-4 md:px-8 py-8 md:py-10 border-t border-gray-200">
         <div className="max-w-6xl mx-auto">
           <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">인기 템플릿</p>
           <h2 className="text-xl font-bold text-gray-900 mb-6">클릭률 높은 썸네일 스타일</h2>
