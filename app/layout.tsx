@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import Script from 'next/script';
 import './globals.css';
 import {
@@ -11,6 +11,11 @@ import {
   FONT_LINK_HREF,
   GTAG_ID,
   SITE_URL,
+  SITE_NAME,
+  CONTACT_EMAIL,
+  THEME_COLOR,
+  GOOGLE_SITE_VERIFICATION,
+  NAVER_SITE_VERIFICATION,
 } from '@/lib/constants';
 
 const structuredData = [
@@ -50,10 +55,24 @@ const structuredData = [
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
     description: '네이버 블로그 스킨 배경과 투명 위젯을 무료로 디자인하는 도구',
   },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: SITE_NAME,
+    url: SITE_URL,
+    logo: `${SITE_URL}/icon`,
+    description: PAGE_DESCRIPTION,
+    contactPoint: {
+      '@type': 'ContactPoint',
+      email: CONTACT_EMAIL,
+      contactType: 'customer support',
+    },
+  },
 ];
 
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
   title: {
     default: PAGE_TITLE,
     template: `%s — BlogKit`,
@@ -71,15 +90,35 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: '/favicon.svg',
+    apple: '/apple-icon',
   },
   twitter: {
     card: 'summary_large_image',
     title: PAGE_TITLE,
     description: PAGE_DESCRIPTION,
   },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+      'max-video-preview': -1,
+    },
+  },
+  verification: {
+    ...(GOOGLE_SITE_VERIFICATION ? { google: GOOGLE_SITE_VERIFICATION } : {}),
+    ...(NAVER_SITE_VERIFICATION ? { other: { 'naver-site-verification': NAVER_SITE_VERIFICATION } } : {}),
+  },
   other: {
     'google-adsense-account': ADSENSE_CLIENT,
   },
+};
+
+export const viewport: Viewport = {
+  themeColor: THEME_COLOR,
 };
 
 export default function RootLayout({

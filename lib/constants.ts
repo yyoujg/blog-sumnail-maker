@@ -28,3 +28,9 @@ export const FONTS = [
 
 export const SITE_URL = 'https://www.blogsumnail.com';
 export const GTAG_ID = 'G-XFEZWR8108';
+
+export const SITE_NAME = 'BlogKit';
+export const CONTACT_EMAIL = 'andn1026@gmail.com';
+export const THEME_COLOR = '#111827';
+export const GOOGLE_SITE_VERIFICATION = 'lbbZuLph9bDaA5Xt69lmjFTz8eseie-TpiXWh3HknEg';
+export const NAVER_SITE_VERIFICATION = '';
