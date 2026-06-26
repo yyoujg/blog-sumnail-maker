@@ -95,8 +95,6 @@ const CATEGORIES: Category[] = [
     icon: <Type className="w-4 h-4" />,
     slugs: [
       'blog-title-formula-ctr',
-      'blog-title-structure-ranking',
-      'blog-titles-that-get-clicks',
     ],
   },
   {

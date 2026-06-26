@@ -62,6 +62,9 @@ const nextConfig: NextConfig = {
       { source: '/blog/blog-visitors-revenue-strategy', destination: '/blog/blog-monetization-guide', permanent: true },
       { source: '/blog/blog-info-review-revenue-structure', destination: '/blog/blog-monetization-guide', permanent: true },
       { source: '/blog/visitors-to-money-flow', destination: '/blog/blog-monetization-guide', permanent: true },
+      // 제목 클러스터 통폐합 301
+      { source: '/blog/blog-title-structure-ranking', destination: '/blog/blog-title-formula-ctr', permanent: true },
+      { source: '/blog/blog-titles-that-get-clicks', destination: '/blog/blog-title-formula-ctr', permanent: true },
     ];
   },
 };
