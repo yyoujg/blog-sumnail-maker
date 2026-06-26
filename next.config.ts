@@ -65,6 +65,16 @@ const nextConfig: NextConfig = {
       // 제목 클러스터 통폐합 301
       { source: '/blog/blog-title-structure-ranking', destination: '/blog/blog-title-formula-ctr', permanent: true },
       { source: '/blog/blog-titles-that-get-clicks', destination: '/blog/blog-title-formula-ctr', permanent: true },
+      // 방문자·지수 클러스터 통폐합 301
+      { source: '/blog/blog-views-zero-reasons', destination: '/blog/naver-blog-increase-visitors', permanent: true },
+      { source: '/blog/one-post-1000-visitors', destination: '/blog/naver-blog-increase-visitors', permanent: true },
+      { source: '/blog/visitor-growth-core-structure', destination: '/blog/naver-blog-increase-visitors', permanent: true },
+      { source: '/blog/advanced-ctr-growth-strategy', destination: '/blog/naver-blog-increase-visitors', permanent: true },
+      { source: '/blog/practical-blog-tips-keywords-titles-efficiency', destination: '/blog/naver-blog-increase-visitors', permanent: true },
+      { source: '/blog/ranked-but-no-visitors-fix', destination: '/blog/naver-blog-increase-visitors', permanent: true },
+      { source: '/blog/informational-posts-blog-index', destination: '/blog/raise-blog-index-case-study', permanent: true },
+      { source: '/blog/info-only-posts-index-growth', destination: '/blog/raise-blog-index-case-study', permanent: true },
+      { source: '/blog/daily-post-not-growing-fix', destination: '/blog/raise-blog-index-case-study', permanent: true },
     ];
   },
 };

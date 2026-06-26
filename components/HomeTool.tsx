@@ -17,7 +17,7 @@ const HOME_PILLAR_SLUGS = [
   'how-to-make-blog-thumbnail',
   'blog-keyword-strategy-complete',
   'high-ctr-thumbnail',
-  'blog-views-zero-reasons',
+  'naver-blog-increase-visitors',
 ] as const;
 
 declare global {

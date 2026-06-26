@@ -104,7 +104,6 @@ const CATEGORIES: Category[] = [
     slugs: [
       'blog-post-structure-ranking',
       'readable-writing-three-tips',
-      'informational-posts-blog-index',
       'blog-writing-basic-structure',
       'blog-writing-tips',
     ],
@@ -115,9 +114,7 @@ const CATEGORIES: Category[] = [
     icon: <Sprout className="w-4 h-4" />,
     slugs: [
       'early-blog-posts-what-to-write',
-      'daily-post-not-growing-fix',
       'raise-blog-index-case-study',
-      'info-only-posts-index-growth',
       'blog-real-experience',
     ],
   },
@@ -126,12 +123,7 @@ const CATEGORIES: Category[] = [
     label: '방문자 상승 전략',
     icon: <BarChart3 className="w-4 h-4" />,
     slugs: [
-      'advanced-ctr-growth-strategy',
-      'one-post-1000-visitors',
-      'visitor-growth-core-structure',
-      'ranked-but-no-visitors-fix',
       'naver-blog-increase-visitors',
-      'blog-views-zero-reasons',
     ],
   },
   {
@@ -139,7 +131,6 @@ const CATEGORIES: Category[] = [
     label: '운영 실전 팁',
     icon: <Wrench className="w-4 h-4" />,
     slugs: [
-      'practical-blog-tips-keywords-titles-efficiency',
       'blog-writing-speed-5-tips',
       'draft-save-naver-blog',
       'blog-writing-templates',
@@ -193,11 +184,10 @@ const CATEGORIES: Category[] = [
 ];
 
 const PILLAR_SLUGS = [
-  'practical-blog-tips-keywords-titles-efficiency',
+  'naver-blog-increase-visitors',
   'how-to-make-blog-thumbnail',
   'high-ctr-thumbnail',
   'naver-blog-thumbnail-size',
-  'blog-views-zero-reasons',
   'blog-keyword-strategy-complete',
   'blog-photo-tips',
   'cafe-food-photo-guide',

@@ -152,7 +152,7 @@ export default function HomeSeoContent() {
               검색 노출 기초
             </Link>
             로 글 구조까지 맞추는 흐름을 추천합니다. 실전 운영 팁은{' '}
-            <Link href="/blog/practical-blog-tips-keywords-titles-efficiency" className="font-semibold text-gray-900 underline underline-offset-2">
+            <Link href="/blog/naver-blog-increase-visitors" className="font-semibold text-gray-900 underline underline-offset-2">
               키워드·제목·효율화 총정리
             </Link>
             글에서 확인할 수 있습니다.
