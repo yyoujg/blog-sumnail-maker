@@ -75,6 +75,13 @@ const nextConfig: NextConfig = {
       { source: '/blog/informational-posts-blog-index', destination: '/blog/raise-blog-index-case-study', permanent: true },
       { source: '/blog/info-only-posts-index-growth', destination: '/blog/raise-blog-index-case-study', permanent: true },
       { source: '/blog/daily-post-not-growing-fix', destination: '/blog/raise-blog-index-case-study', permanent: true },
+      // 글쓰기 클러스터 통폐합 301
+      { source: '/blog/blog-writing-speed-5-tips', destination: '/blog/blog-writing-tips', permanent: true },
+      { source: '/blog/blog-writing-templates', destination: '/blog/blog-writing-tips', permanent: true },
+      { source: '/blog/draft-save-naver-blog', destination: '/blog/blog-writing-tips', permanent: true },
+      { source: '/blog/blog-post-structure-ranking', destination: '/blog/blog-writing-basic-structure', permanent: true },
+      { source: '/blog/readable-writing-three-tips', destination: '/blog/blog-writing-basic-structure', permanent: true },
+      { source: '/blog/writers-block-blog-ideas', destination: '/blog/blog-content-planning', permanent: true },
     ];
   },
 };

@@ -102,8 +102,6 @@ const CATEGORIES: Category[] = [
     label: '글쓰기 전략 (본문)',
     icon: <FileText className="w-4 h-4" />,
     slugs: [
-      'blog-post-structure-ranking',
-      'readable-writing-three-tips',
       'blog-writing-basic-structure',
       'blog-writing-tips',
     ],
@@ -131,10 +129,6 @@ const CATEGORIES: Category[] = [
     label: '운영 실전 팁',
     icon: <Wrench className="w-4 h-4" />,
     slugs: [
-      'blog-writing-speed-5-tips',
-      'draft-save-naver-blog',
-      'blog-writing-templates',
-      'writers-block-blog-ideas',
       'blog-apps-2026',
       'blog-photo-tips',
       'review-schedule-apps-2026',
@@ -191,7 +185,7 @@ const PILLAR_SLUGS = [
   'blog-keyword-strategy-complete',
   'blog-photo-tips',
   'cafe-food-photo-guide',
-  'blog-writing-templates',
+  'blog-writing-tips',
   'blog-monetization-guide',
 ] as const;
 
