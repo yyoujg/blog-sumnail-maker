@@ -82,6 +82,11 @@ const nextConfig: NextConfig = {
       { source: '/blog/blog-post-structure-ranking', destination: '/blog/blog-writing-basic-structure', permanent: true },
       { source: '/blog/readable-writing-three-tips', destination: '/blog/blog-writing-basic-structure', permanent: true },
       { source: '/blog/writers-block-blog-ideas', destination: '/blog/blog-content-planning', permanent: true },
+      // 체험단 클러스터 통폐합 301
+      { source: '/blog/review-blog-selection', destination: '/blog/review-blog-tips', permanent: true },
+      { source: '/blog/free-product-blog', destination: '/blog/review-blog-tips', permanent: true },
+      { source: '/blog/review-blog-income', destination: '/blog/review-blog-tips', permanent: true },
+      { source: '/blog/review-blog-monetization', destination: '/blog/review-blog-tips', permanent: true },
     ];
   },
 };

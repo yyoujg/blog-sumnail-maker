@@ -166,12 +166,8 @@ const CATEGORIES: Category[] = [
     slugs: [
       'blog-monetization-guide',
       'adsense-guide',
-      'review-blog-monetization',
-      'review-blog-income',
       'blog-affiliate-platforms-2026',
-      'free-product-blog',
       'review-blog-tips',
-      'review-blog-selection',
       'experiential-sites-2026',
     ],
   },
