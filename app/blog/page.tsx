@@ -89,11 +89,6 @@ const CATEGORIES: Category[] = [
     icon: <KeyRound className="w-4 h-4" />,
     slugs: [
       'blog-keyword-strategy-complete',
-      'blog-keyword-structure-1000-visitors',
-      'main-vs-sub-keyword-guide',
-      'indexed-vs-buried-posts-keyword',
-      'keyword-placement-title-body',
-      'blog-keyword-research',
       'blog-keyword-tools-2026',
       'naver-blog-seo-guide',
     ],
@@ -106,7 +101,6 @@ const CATEGORIES: Category[] = [
       'blog-title-formula-ctr',
       'blog-title-structure-ranking',
       'blog-titles-that-get-clicks',
-      'keyword-order-and-views',
     ],
   },
   {
@@ -140,7 +134,6 @@ const CATEGORIES: Category[] = [
     slugs: [
       'advanced-ctr-growth-strategy',
       'one-post-1000-visitors',
-      'sub-keyword-traffic-boost',
       'visitor-growth-core-structure',
       'ranked-but-no-visitors-fix',
       'naver-blog-increase-visitors',

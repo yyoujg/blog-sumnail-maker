@@ -44,6 +44,14 @@ const nextConfig: NextConfig = {
       { source: '/blog/thumbnail-size-best', destination: '/blog/naver-blog-thumbnail-size', permanent: true },
       { source: '/blog/thumbnail-failure-cases', destination: '/blog/high-ctr-thumbnail', permanent: true },
       { source: '/blog/thumbnail-low-vs-high-ctr', destination: '/blog/high-ctr-thumbnail', permanent: true },
+      // 키워드 클러스터 통폐합 301
+      { source: '/blog/blog-keyword-research', destination: '/blog/blog-keyword-strategy-complete', permanent: true },
+      { source: '/blog/blog-keyword-structure-1000-visitors', destination: '/blog/blog-keyword-strategy-complete', permanent: true },
+      { source: '/blog/main-vs-sub-keyword-guide', destination: '/blog/blog-keyword-strategy-complete', permanent: true },
+      { source: '/blog/indexed-vs-buried-posts-keyword', destination: '/blog/blog-keyword-strategy-complete', permanent: true },
+      { source: '/blog/keyword-placement-title-body', destination: '/blog/blog-keyword-strategy-complete', permanent: true },
+      { source: '/blog/keyword-order-and-views', destination: '/blog/blog-keyword-strategy-complete', permanent: true },
+      { source: '/blog/sub-keyword-traffic-boost', destination: '/blog/blog-keyword-strategy-complete', permanent: true },
     ];
   },
 };
