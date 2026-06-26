@@ -52,6 +52,16 @@ const nextConfig: NextConfig = {
       { source: '/blog/keyword-placement-title-body', destination: '/blog/blog-keyword-strategy-complete', permanent: true },
       { source: '/blog/keyword-order-and-views', destination: '/blog/blog-keyword-strategy-complete', permanent: true },
       { source: '/blog/sub-keyword-traffic-boost', destination: '/blog/blog-keyword-strategy-complete', permanent: true },
+      // 수익화 클러스터 통폐합 301
+      { source: '/blog/coupang-partners-income', destination: '/blog/blog-monetization-guide', permanent: true },
+      { source: '/blog/blog-income-100k', destination: '/blog/blog-monetization-guide', permanent: true },
+      { source: '/blog/blog-side-job-start', destination: '/blog/blog-monetization-guide', permanent: true },
+      { source: '/blog/adpost-revenue-structure', destination: '/blog/blog-monetization-guide', permanent: true },
+      { source: '/blog/blog-revenue-structure-full', destination: '/blog/blog-monetization-guide', permanent: true },
+      { source: '/blog/blog-money-operation-structure', destination: '/blog/blog-monetization-guide', permanent: true },
+      { source: '/blog/blog-visitors-revenue-strategy', destination: '/blog/blog-monetization-guide', permanent: true },
+      { source: '/blog/blog-info-review-revenue-structure', destination: '/blog/blog-monetization-guide', permanent: true },
+      { source: '/blog/visitors-to-money-flow', destination: '/blog/blog-monetization-guide', permanent: true },
     ];
   },
 };

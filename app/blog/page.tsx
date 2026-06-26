@@ -73,13 +73,9 @@ const CATEGORIES: Category[] = [
     label: '블로그 운영 전략',
     icon: <Compass className="w-4 h-4" />,
     slugs: [
-      'blog-money-operation-structure',
-      'blog-visitors-revenue-strategy',
       'blog-direction-mistakes-beginners',
-      'blog-info-review-revenue-structure',
       'blog-start-guide',
       'blog-content-planning',
-      'blog-side-job-start',
       'naver-vs-tistory-2026',
     ],
   },
@@ -185,14 +181,9 @@ const CATEGORIES: Category[] = [
     label: '수익화 전략',
     icon: <TrendingUp className="w-4 h-4" />,
     slugs: [
-      'blog-revenue-structure-full',
-      'visitors-to-money-flow',
-      'review-blog-monetization',
-      'adpost-revenue-structure',
       'blog-monetization-guide',
       'adsense-guide',
-      'coupang-partners-income',
-      'blog-income-100k',
+      'review-blog-monetization',
       'review-blog-income',
       'blog-affiliate-platforms-2026',
       'free-product-blog',
@@ -213,7 +204,6 @@ const PILLAR_SLUGS = [
   'blog-photo-tips',
   'cafe-food-photo-guide',
   'blog-writing-templates',
-  'blog-visitors-revenue-strategy',
   'blog-monetization-guide',
 ] as const;
 
