@@ -145,7 +145,7 @@ export default async function BlogPostPage({ params }: PageProps) {
   const nextPost = postIndex < blogPosts.length - 1 ? blogPosts[postIndex + 1] : null;
   const midAdAfterIndex = post.sections.length >= 4 ? Math.floor(post.sections.length / 2) - 1 : -1;
 
-  const CORE_RELATED = ['naver-blog-thumbnail-size', 'thumbnail-failure-cases', 'thumbnail-text-tips'];
+  const CORE_RELATED = ['naver-blog-thumbnail-size', 'high-ctr-thumbnail', 'how-to-make-blog-thumbnail'];
   const coreRelated = blogPosts.filter((p) => p.slug !== slug && CORE_RELATED.includes(p.slug));
   const extraRelated = blogPosts.filter((p) => p.slug !== slug && !CORE_RELATED.includes(p.slug));
   const relatedPosts = [...coreRelated, ...extraRelated].slice(0, 3);
