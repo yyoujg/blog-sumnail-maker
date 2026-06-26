@@ -246,6 +246,12 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
     reader.readAsDataURL(file);
   };
 
+  const uploadBgImage = (file: File) => {
+    const reader = new FileReader();
+    reader.onload = (ev) => setBgImage(ev.target?.result as string);
+    reader.readAsDataURL(file);
+  };
+
   const loadTemplate = (tpl: BlogTemplate) => {
     setCw(tpl.cw); setCh(tpl.ch); setBg(tpl.bg);
     setBgImage(tpl.bgImage ?? null);
@@ -486,6 +492,78 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
                   <input type="color" value={bg} onChange={e => setBg(e.target.value)}
                     className="w-full h-10 rounded-lg border border-gray-300 cursor-pointer p-1" />
                 </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">배경 이미지</label>
+                  <label className="flex flex-col items-center justify-center w-full h-28 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 transition relative overflow-hidden">
+                    {bgImage ? (
+                      <>
+                        <img src={bgImage} alt="배경 미리보기" className="absolute inset-0 w-full h-full object-cover opacity-50" />
+                        <span className="relative z-10 bg-white/80 px-3 py-1 rounded text-sm font-medium text-gray-700">이미지 변경</span>
+                      </>
+                    ) : (
+                      <span className="text-sm text-gray-500">클릭하여 이미지 업로드</span>
+                    )}
+                    <input type="file" accept="image/*" className="hidden"
+                      onChange={e => { const f = e.target.files?.[0]; if (f) uploadBgImage(f); e.target.value = ''; }} />
+                  </label>
+                  {bgImage && (
+                    <button type="button" onClick={() => setBgImage(null)}
+                      className="mt-2 w-full text-sm text-gray-500 hover:text-red-500 border border-gray-200 rounded-lg py-1.5 transition">
+                      이미지 제거
+                    </button>
+                  )}
+                </div>
+                {bgImage && (
+                  <>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">어둡게 ({bgOverlay}%)</label>
+                      <input type="range" min={0} max={80} value={bgOverlay}
+                        aria-label="배경 어둡게 정도"
+                        onChange={e => setBgOverlay(+e.target.value)}
+                        className="w-full cursor-pointer accent-gray-700" />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-2">위치</label>
+                      <div className="grid grid-cols-3 gap-1 w-fit">
+                        {(['top', 'center', 'bottom'] as const).map((v) =>
+                          (['left', 'center', 'right'] as const).map((h) => {
+                            const value = `${h} ${v}`;
+                            const isActive = bgPosition === value;
+                            const dotPos = {
+                              'top-left': 'items-start justify-start',
+                              'top-center': 'items-start justify-center',
+                              'top-right': 'items-start justify-end',
+                              'center-left': 'items-center justify-start',
+                              'center-center': 'items-center justify-center',
+                              'center-right': 'items-center justify-end',
+                              'bottom-left': 'items-end justify-start',
+                              'bottom-center': 'items-end justify-center',
+                              'bottom-right': 'items-end justify-end',
+                            }[`${v}-${h}`];
+                            const posLabel = `${v === 'top' ? '상단' : v === 'center' ? '중간' : '하단'} ${h === 'left' ? '왼쪽' : h === 'center' ? '가운데' : '오른쪽'}`;
+                            return (
+                              <button
+                                key={`${v}-${h}`}
+                                type="button"
+                                title={posLabel}
+                                aria-label={`배경 이미지 위치 ${posLabel}`}
+                                aria-pressed={isActive}
+                                onClick={() => setBgPosition(value)}
+                                className={`w-9 h-9 rounded border flex p-1.5 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-500 focus-visible:ring-offset-1 ${
+                                  isActive ? 'bg-[#111111] border-[#111111]' : 'bg-white border-gray-200 hover:border-gray-400'
+                                }`}
+                              >
+                                <span className={`flex w-full h-full ${dotPos}`}>
+                                  <span className={`w-1.5 h-1.5 rounded-full ${isActive ? 'bg-white' : 'bg-gray-400'}`} />
+                                </span>
+                              </button>
+                            );
+                          })
+                        )}
+                      </div>
+                    </div>
+                  </>
+                )}
               </>
             )}
 
