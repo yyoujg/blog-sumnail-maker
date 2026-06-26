@@ -19,7 +19,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'blog-monetization-guide',
     title: '블로그 수익화 시작하기 — 애드센스·쿠팡·체험단 완벽 가이드',
     date: '2026-03-22',
-    summary: '맛집/카페 블로그를 시작하고 2달이 됐는데, 수익화가 생각보다 빠르게 열렸어요. 체험단부터 시작해서 애드센스·쿠팡 파트너스까지 연결되는 구조를 정리했습니다.',
+    summary: '블로그 수익화는 광고·제휴·체험단 세 갈래로 열립니다. 체험단부터 시작해 애드센스·쿠팡 파트너스까지 연결되는 구조와 단계별 순서를 정리했습니다.',
     sections: [
       {
         heading: '수익화, 어디서부터 시작할까',
@@ -82,7 +82,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'review-blog-tips',
     title: '체험단 블로그 꾸미기 — 선정률 높이는 완벽 가이드',
     date: '2026-03-20',
-    summary: '체험단 선정이 안 되는 게 글 실력 때문이 아닐 수 있어요. 직접 선정받으면서 느낀 블로그 첫인상의 중요성과 꾸미기 포인트를 정리했습니다.',
+    summary: '체험단 선정은 글 실력보다 블로그 첫인상에서 갈리는 경우가 많습니다. 선정률을 높이는 꾸미기와 신청서 포인트를 정리했습니다.',
     sections: [
       {
         heading: '체험단 담당자는 블로그를 3초 안에 판단한다',
@@ -122,7 +122,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'adsense-guide',
     title: '네이버 블로그 애드센스 승인 받는 법 — 2026년 최신 가이드',
     date: '2026-03-18',
-    summary: '애드센스 승인이 생각보다 까다로워요. 직접 신청하면서 알게 된 거절 이유와 통과 포인트를 정리했습니다.',
+    summary: '애드센스 승인은 생각보다 까다롭습니다. 자주 나오는 거절 이유와 통과 포인트를 정리했습니다.',
     sections: [
       {
         heading: '애드센스 심사, 실제로 얼마나 걸릴까',
@@ -152,7 +152,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'naver-blog-thumbnail-size',
     title: '네이버 블로그 썸네일 추천 사이즈 정리',
     date: '2026-03-01',
-    summary: '썸네일 사이즈를 잘못 설정하면 모바일에서 잘리거나 흐릿하게 나옵니다. 직접 테스트하면서 확인한 최적 사이즈와 파일 형식을 정리했습니다.',
+    summary: '썸네일 사이즈를 잘못 잡으면 모바일에서 잘리거나 흐릿하게 나옵니다. 최적 사이즈와 파일 형식 기준을 정리했습니다.',
     sections: [
       {
         heading: '사이즈가 왜 중요한가 — 직접 겪은 이야기',
@@ -194,7 +194,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'how-to-make-blog-thumbnail',
     title: '블로그 썸네일 잘 만드는 법 — 초보자 완전 가이드',
     date: '2026-03-02',
-    summary: '썸네일 때문에 포기할 필요 없습니다. 직접 수십 개를 만들어보면서 실제로 클릭 차이가 난 원칙 6가지를 정리했어요.',
+    summary: '썸네일 때문에 포기할 필요 없습니다. 실제로 클릭 차이를 만드는 제작 원칙 6가지를 정리했습니다.',
     sections: [
       {
         heading: '썸네일을 대충 올렸을 때 일어나는 일',
@@ -278,7 +278,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'high-ctr-thumbnail',
     title: '클릭률 높이는 썸네일 문구 패턴 8가지',
     date: '2026-03-04',
-    summary: '검색 결과에서 클릭을 유도하는 문구 패턴을 직접 비교해봤습니다. 어떤 표현이 더 클릭되는지 패턴별로 정리했어요.',
+    summary: '검색 결과에서 클릭을 부르는 썸네일 문구 패턴을 정리했습니다. 어떤 표현이 더 클릭되는지 패턴별로 묶었습니다.',
     sections: [
       {
         heading: '문구 하나 바꿨더니 클릭이 달라졌다',
@@ -346,7 +346,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'naver-blog-increase-visitors',
     title: '네이버 블로그 방문자 늘리는 법 — 실전 전략 7가지',
     date: '2026-03-10',
-    summary: '블로그 2달차에 일 방문자 100명을 넘기면서 실제로 효과 있었던 전략 7가지를 정리했습니다.',
+    summary: '검색이 유입의 대부분인 네이버 블로그에서 일 방문자 100명을 넘기는 데 효과적인 전략 7가지를 정리했습니다.',
     sections: [
       {
         heading: '방문자가 안 늘어나는 진짜 이유',
@@ -406,7 +406,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'blog-photo-tips',
     title: '블로그 사진 잘 찍는 법 — 스마트폰으로도 충분합니다',
     date: '2026-03-11',
-    summary: '맛집/카페 블로그를 운영하면서 스마트폰만으로 사진 퀄리티를 올린 방법을 정리했습니다. 장비보다 빛과 구도가 훨씬 중요해요.',
+    summary: '비싼 장비 없이 스마트폰만으로 블로그 사진 퀄리티를 올리는 법을 정리했습니다. 장비보다 빛과 구도가 훨씬 중요합니다.',
     sections: [
       {
         heading: '비싼 카메라 없어도 됩니다 — 실제로 써봤어요',
@@ -461,7 +461,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'naver-blog-seo-guide',
     title: '네이버 블로그 SEO 최적화 완전 가이드',
     date: '2026-03-12',
-    summary: '블로그를 시작하고 2달 동안 SEO를 공부하면서 실제로 조회수 변화가 있었던 포인트들을 정리했습니다.',
+    summary: '네이버 블로그 SEO에서 실제로 조회수 변화를 만드는 최적화 포인트를 정리했습니다.',
     sections: [
       {
         heading: '네이버 SEO는 구글과 다르다',
@@ -497,7 +497,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'blog-writing-tips',
     title: '블로그 글쓰기 잘하는 법 — 읽히는 글의 구조',
     date: '2026-03-13',
-    summary: '카페/맛집 후기를 쓰면서 어떤 구조가 끝까지 읽히는지 직접 비교해봤습니다. 문장력보다 구조가 훨씬 중요해요.',
+    summary: '끝까지 읽히는 글은 문장력보다 구조에서 갈립니다. 후기 글을 예로 읽히는 글의 구조를 정리했습니다.',
     sections: [
       {
         heading: '내 글이 왜 안 읽힐까',
@@ -547,7 +547,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'experiential-sites-2026',
     title: '블로그 체험단 사이트 총정리 2026 — 무료 추천 30곳 한눈에',
     date: '2026-03-27',
-    summary: '여러 체험단 플랫폼에 직접 가입해서 써보면서 정리했습니다. 초보에게 선정이 잘 되는 곳과 캠페인이 많은 곳을 나눠서 소개해요.',
+    summary: '여러 체험단 플랫폼을 비교해 초보에게 선정이 잘 되는 곳과 캠페인이 많은 곳을 나눠서 정리했습니다.',
     sections: [
       {
         heading: '체험단 사이트, 어디서 신청할 수 있을까',
@@ -575,7 +575,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'blog-keyword-tools-2026',
     title: '블로그 키워드·지수 분석 툴 총정리 — 판다랭크·블랙키위·블덱스 외 20곳',
     date: '2026-03-27',
-    summary: '블로그 2달차에 쓰기 시작한 키워드 분석 툴들을 정리했습니다. 처음엔 뭘 써야 할지 몰랐는데 지금은 2~3개로 정착했어요.',
+    summary: '블로그 키워드·지수 분석 툴을 비교해, 초보가 처음 쓰기 좋은 2~3개를 중심으로 정리했습니다.',
     sections: [
       {
         heading: '분석 툴이 왜 필요한가',
@@ -603,7 +603,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'blog-affiliate-platforms-2026',
     title: '블로그 수익화 제휴 플랫폼 총정리 — 세시간전·쿠팡파트너스·마이리얼트립',
     date: '2026-03-27',
-    summary: '체험단을 하다 보면 자연스럽게 제휴 마케팅으로 연결돼요. 내 블로그 주제에 맞는 제휴 플랫폼을 정리했습니다.',
+    summary: '체험단을 하다 보면 자연스럽게 제휴 마케팅으로 이어집니다. 블로그 주제에 맞는 제휴 플랫폼을 정리했습니다.',
     sections: [
       {
         heading: '제휴 마케팅이 체험단보다 수익이 클 수 있다',
@@ -631,7 +631,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'blog-apps-2026',
     title: '블로그 관련 앱 총정리 (2026) — 나비오·판다랭크·AI 앱까지',
     date: '2026-03-27',
-    summary: '블로그 2달차에 실제로 쓰고 있는 앱들을 정리했습니다. 없으면 불편한 것들 위주예요.',
+    summary: '블로그 운영에 실제로 도움이 되는 앱을 공식 앱부터 AI·분석 앱까지 정리했습니다.',
     sections: [
       {
         heading: '네이버 블로그 공식 앱 — 필수',
@@ -663,7 +663,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'blog-start-guide',
     title: '네이버 블로그 시작하는 법 완전 가이드 — 주제 선정부터 첫 포스팅까지',
     date: '2026-04-01',
-    summary: '블로그를 시작하려는데 뭐부터 해야 할지 모르겠는 분들을 위해 처음부터 끝까지 정리했습니다. 직접 운영하면서 배운 것들을 담았어요.',
+    summary: '블로그를 시작할 때 뭐부터 해야 할지 막막한 분들을 위해, 주제 선정부터 첫 포스팅까지 처음부터 정리했습니다.',
     sections: [
       {
         heading: '어떤 주제로 시작해야 할까',
@@ -707,7 +707,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'naver-vs-tistory-2026',
     title: '네이버 블로그 vs 티스토리 솔직 비교 — 2026년 현실 기준',
     date: '2026-04-10',
-    summary: '두 플랫폼을 모두 직접 운영해봤어요. 어떤 걸 시작해야 할지 고민하는 분들을 위해 장단점과 현실적인 선택 기준을 정리했습니다.',
+    summary: '네이버 블로그와 티스토리를 항목별로 비교했습니다. 목적에 따라 어떤 플랫폼이 맞는지 선택 기준을 정리했습니다.',
     sections: [
       {
         heading: '왜 이 비교가 의미 있나',
@@ -739,7 +739,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'blog-real-experience',
     title: '블로그 8개월 후기 — 방문자 추이와 현실 수익을 솔직하게 공개합니다',
     date: '2026-04-12',
-    summary: '시작한 지 8개월이 됐어요. 방문자 수, 수익, 체험단 현황을 숫자로 공개합니다. 기대보다 느리지만 계속할 이유는 충분했습니다.',
+    summary: '블로그 운영 6~12개월 사이 방문자와 수익이 어떻게 변하는지, 현실적인 추이와 기대치를 단계별로 정리했습니다.',
     sections: [
       {
         heading: '블로그를 시작한 이유',
@@ -771,7 +771,7 @@ export const blogPosts: BlogPost[] = [
     slug: 'blog-content-planning',
     title: '블로그 콘텐츠 계획하는 법 — 6개월치 글감 미리 잡는 방법',
     date: '2026-04-15',
-    summary: '글감이 없어서 포스팅을 건너뛰는 경우가 반복됐어요. 콘텐츠 캘린더를 만든 뒤로 막히는 날이 없어졌습니다. 제 방법을 공유합니다.',
+    summary: '글감이 떨어져 포스팅을 건너뛰는 일이 반복된다면, 6개월치 글감을 미리 잡는 콘텐츠 캘린더 만드는 법을 정리했습니다.',
     sections: [
       {
         heading: '계획 없이 쓰면 항상 막힙니다',
