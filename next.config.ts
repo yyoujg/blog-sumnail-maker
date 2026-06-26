@@ -87,6 +87,19 @@ const nextConfig: NextConfig = {
       { source: '/blog/free-product-blog', destination: '/blog/review-blog-tips', permanent: true },
       { source: '/blog/review-blog-income', destination: '/blog/review-blog-tips', permanent: true },
       { source: '/blog/review-blog-monetization', destination: '/blog/review-blog-tips', permanent: true },
+      // 운영·기타 클러스터 통폐합 301
+      { source: '/blog/naver-blog-category-setup', destination: '/blog/blog-start-guide', permanent: true },
+      { source: '/blog/early-blog-posts-what-to-write', destination: '/blog/blog-start-guide', permanent: true },
+      { source: '/blog/blog-direction-mistakes-beginners', destination: '/blog/blog-start-guide', permanent: true },
+      { source: '/blog/blog-spam-block-settings', destination: '/blog/blog-features-100-usage', permanent: true },
+      { source: '/blog/neighbor-vs-mutual-neighbor', destination: '/blog/blog-features-100-usage', permanent: true },
+      { source: '/blog/blog-category-move-caution', destination: '/blog/blog-features-100-usage', permanent: true },
+      { source: '/blog/check-who-scrapped-post', destination: '/blog/blog-features-100-usage', permanent: true },
+      { source: '/blog/exaggerated-claims-blog-why-bad', destination: '/blog/forbidden-blog-expressions', permanent: true },
+      { source: '/blog/keyword-stuffing-problems', destination: '/blog/forbidden-blog-expressions', permanent: true },
+      { source: '/blog/blog-posts-that-get-suppressed', destination: '/blog/forbidden-blog-expressions', permanent: true },
+      { source: '/blog/cafe-food-photo-guide', destination: '/blog/blog-photo-tips', permanent: true },
+      { source: '/blog/review-schedule-apps-2026', destination: '/blog/blog-apps-2026', permanent: true },
     ];
   },
 };

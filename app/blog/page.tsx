@@ -73,7 +73,6 @@ const CATEGORIES: Category[] = [
     label: '블로그 운영 전략',
     icon: <Compass className="w-4 h-4" />,
     slugs: [
-      'blog-direction-mistakes-beginners',
       'blog-start-guide',
       'blog-content-planning',
       'naver-vs-tistory-2026',
@@ -111,7 +110,6 @@ const CATEGORIES: Category[] = [
     label: '블로그 성장 전략',
     icon: <Sprout className="w-4 h-4" />,
     slugs: [
-      'early-blog-posts-what-to-write',
       'raise-blog-index-case-study',
       'blog-real-experience',
     ],
@@ -131,8 +129,6 @@ const CATEGORIES: Category[] = [
     slugs: [
       'blog-apps-2026',
       'blog-photo-tips',
-      'review-schedule-apps-2026',
-      'cafe-food-photo-guide',
     ],
   },
   {
@@ -140,10 +136,7 @@ const CATEGORIES: Category[] = [
     label: '금지사항 & 패널티',
     icon: <ShieldAlert className="w-4 h-4" />,
     slugs: [
-      'blog-posts-that-get-suppressed',
-      'keyword-stuffing-problems',
       'forbidden-blog-expressions',
-      'exaggerated-claims-blog-why-bad',
     ],
   },
   {
@@ -152,11 +145,6 @@ const CATEGORIES: Category[] = [
     icon: <Settings2 className="w-4 h-4" />,
     slugs: [
       'blog-features-100-usage',
-      'blog-spam-block-settings',
-      'neighbor-vs-mutual-neighbor',
-      'blog-category-move-caution',
-      'check-who-scrapped-post',
-      'naver-blog-category-setup',
     ],
   },
   {
@@ -180,7 +168,6 @@ const PILLAR_SLUGS = [
   'naver-blog-thumbnail-size',
   'blog-keyword-strategy-complete',
   'blog-photo-tips',
-  'cafe-food-photo-guide',
   'blog-writing-tips',
   'blog-monetization-guide',
 ] as const;
