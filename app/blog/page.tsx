@@ -8,13 +8,10 @@ import {
   TrendingUp,
   Compass,
   KeyRound,
-  Type,
   FileText,
   Sprout,
-  BarChart3,
   Wrench,
   ShieldAlert,
-  Settings2,
 } from 'lucide-react';
 import SiteHeader from '@/components/SiteHeader';
 import SiteFooter from '@/components/SiteFooter';
@@ -89,37 +86,23 @@ const CATEGORIES: Category[] = [
     ],
   },
   {
-    id: 'title-ctr',
-    label: '제목 작성법 (CTR)',
-    icon: <Type className="w-4 h-4" />,
-    slugs: [
-      'blog-title-formula-ctr',
-    ],
-  },
-  {
     id: 'writing',
-    label: '글쓰기 전략 (본문)',
+    label: '글쓰기 & 제목 전략',
     icon: <FileText className="w-4 h-4" />,
     slugs: [
+      'blog-title-formula-ctr',
       'blog-writing-basic-structure',
       'blog-writing-tips',
     ],
   },
   {
     id: 'growth',
-    label: '블로그 성장 전략',
+    label: '방문자 & 성장 전략',
     icon: <Sprout className="w-4 h-4" />,
     slugs: [
+      'naver-blog-increase-visitors',
       'raise-blog-index-case-study',
       'blog-real-experience',
-    ],
-  },
-  {
-    id: 'visitors',
-    label: '방문자 상승 전략',
-    icon: <BarChart3 className="w-4 h-4" />,
-    slugs: [
-      'naver-blog-increase-visitors',
     ],
   },
   {
@@ -132,18 +115,11 @@ const CATEGORIES: Category[] = [
     ],
   },
   {
-    id: 'penalties',
-    label: '금지사항 & 패널티',
+    id: 'rules-features',
+    label: '운영 규칙 & 기능',
     icon: <ShieldAlert className="w-4 h-4" />,
     slugs: [
       'forbidden-blog-expressions',
-    ],
-  },
-  {
-    id: 'settings',
-    label: '설정 & 기능 활용',
-    icon: <Settings2 className="w-4 h-4" />,
-    slugs: [
       'blog-features-100-usage',
     ],
   },
