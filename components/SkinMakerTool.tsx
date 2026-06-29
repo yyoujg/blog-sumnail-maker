@@ -12,7 +12,7 @@ import {
 
 // ── Constants ──────────────────────────────────
 const WIDGET_W = 170;
-const WIDGET_GAP = 5;
+const WIDGET_GAP = 10;
 
 interface TextElement {
   id: number;
@@ -83,11 +83,11 @@ const BLOG_TEMPLATES: BlogTemplate[] = [
       { id: 2, type: 'text', text: '매일 새로운 맛집을 찾아 솔직하게 기록합니다 🍽️', x: 680, y: 210, fontSize: 18, color: 'rgba(255,255,255,0.80)', fontWeight: 'normal' },
     ],
     rects: [
-      { id: 101, x: 525, y: 360, w: 170, h: 60, url: 'https://', label: '맛집 탐방', labelColor: '#ffffff' },
-      { id: 102, x: 700, y: 360, w: 170, h: 60, url: 'https://', label: '카페 기록', labelColor: '#ffffff' },
+      { id: 101, x: 515, y: 360, w: 170, h: 60, url: 'https://', label: '맛집 탐방', labelColor: '#ffffff' },
+      { id: 102, x: 695, y: 360, w: 170, h: 60, url: 'https://', label: '카페 기록', labelColor: '#ffffff' },
       { id: 103, x: 875, y: 360, w: 170, h: 60, url: 'https://', label: '레시피', labelColor: '#ffffff' },
-      { id: 104, x: 1050, y: 360, w: 170, h: 60, url: 'https://', label: '배달 후기', labelColor: '#ffffff' },
-      { id: 105, x: 1225, y: 360, w: 170, h: 60, url: 'https://', label: '카페 투어', labelColor: '#ffffff' },
+      { id: 104, x: 1055, y: 360, w: 170, h: 60, url: 'https://', label: '배달 후기', labelColor: '#ffffff' },
+      { id: 105, x: 1235, y: 360, w: 170, h: 60, url: 'https://', label: '카페 투어', labelColor: '#ffffff' },
     ],
   },
   {
@@ -105,11 +105,11 @@ const BLOG_TEMPLATES: BlogTemplate[] = [
       { id: 2, type: 'text', text: '직접 먹어보고 솔직하게 기록합니다 ✔️', x: 760, y: 210, fontSize: 18, color: 'rgba(255,255,255,0.80)', fontWeight: 'normal' },
     ],
     rects: [
-      { id: 101, x: 525, y: 360, w: 170, h: 60, url: 'https://', label: '체험단', labelColor: '#ffffff' },
-      { id: 102, x: 700, y: 360, w: 170, h: 60, url: 'https://', label: '뷰티·스킨', labelColor: '#ffffff' },
+      { id: 101, x: 515, y: 360, w: 170, h: 60, url: 'https://', label: '체험단', labelColor: '#ffffff' },
+      { id: 102, x: 695, y: 360, w: 170, h: 60, url: 'https://', label: '뷰티·스킨', labelColor: '#ffffff' },
       { id: 103, x: 875, y: 360, w: 170, h: 60, url: 'https://', label: '생활용품', labelColor: '#ffffff' },
-      { id: 104, x: 1050, y: 360, w: 170, h: 60, url: 'https://', label: '식품 리뷰', labelColor: '#ffffff' },
-      { id: 105, x: 1225, y: 360, w: 170, h: 60, url: 'https://', label: '서비스', labelColor: '#ffffff' },
+      { id: 104, x: 1055, y: 360, w: 170, h: 60, url: 'https://', label: '식품 리뷰', labelColor: '#ffffff' },
+      { id: 105, x: 1235, y: 360, w: 170, h: 60, url: 'https://', label: '서비스', labelColor: '#ffffff' },
     ],
   },
   {
@@ -127,11 +127,11 @@ const BLOG_TEMPLATES: BlogTemplate[] = [
       { id: 2, type: 'text', text: '몸과 돈, 함께 투자하고 기록합니다 📊', x: 760, y: 210, fontSize: 16, color: '#94a3b8', fontWeight: 'normal' },
     ],
     rects: [
-      { id: 101, x: 525, y: 360, w: 170, h: 60, url: 'https://', label: '주식 투자', labelColor: '#e2e8f0' },
-      { id: 102, x: 700, y: 360, w: 170, h: 60, url: 'https://', label: '부동산', labelColor: '#e2e8f0' },
+      { id: 101, x: 515, y: 360, w: 170, h: 60, url: 'https://', label: '주식 투자', labelColor: '#e2e8f0' },
+      { id: 102, x: 695, y: 360, w: 170, h: 60, url: 'https://', label: '부동산', labelColor: '#e2e8f0' },
       { id: 103, x: 875, y: 360, w: 170, h: 60, url: 'https://', label: '절약 팁', labelColor: '#e2e8f0' },
-      { id: 104, x: 1050, y: 360, w: 170, h: 60, url: 'https://', label: '재테크 정보', labelColor: '#e2e8f0' },
-      { id: 105, x: 1225, y: 360, w: 170, h: 60, url: 'https://', label: '수익 후기', labelColor: '#e2e8f0' },
+      { id: 104, x: 1055, y: 360, w: 170, h: 60, url: 'https://', label: '재테크 정보', labelColor: '#e2e8f0' },
+      { id: 105, x: 1235, y: 360, w: 170, h: 60, url: 'https://', label: '수익 후기', labelColor: '#e2e8f0' },
     ],
   },
   {
@@ -149,11 +149,11 @@ const BLOG_TEMPLATES: BlogTemplate[] = [
       { id: 2, type: 'text', text: '소소하지만 특별한 하루하루를 기록합니다 ☀️', x: 720, y: 210, fontSize: 18, color: 'rgba(255,255,255,0.85)', fontWeight: 'normal' },
     ],
     rects: [
-      { id: 101, x: 525, y: 360, w: 170, h: 60, url: 'https://', label: '일상 기록', labelColor: '#ffffff' },
-      { id: 102, x: 700, y: 360, w: 170, h: 60, url: 'https://', label: '카페·맛집', labelColor: '#ffffff' },
+      { id: 101, x: 515, y: 360, w: 170, h: 60, url: 'https://', label: '일상 기록', labelColor: '#ffffff' },
+      { id: 102, x: 695, y: 360, w: 170, h: 60, url: 'https://', label: '카페·맛집', labelColor: '#ffffff' },
       { id: 103, x: 875, y: 360, w: 170, h: 60, url: 'https://', label: '여행', labelColor: '#ffffff' },
-      { id: 104, x: 1050, y: 360, w: 170, h: 60, url: 'https://', label: '취미·체험', labelColor: '#ffffff' },
-      { id: 105, x: 1225, y: 360, w: 170, h: 60, url: 'https://', label: '리뷰', labelColor: '#ffffff' },
+      { id: 104, x: 1055, y: 360, w: 170, h: 60, url: 'https://', label: '취미·체험', labelColor: '#ffffff' },
+      { id: 105, x: 1235, y: 360, w: 170, h: 60, url: 'https://', label: '리뷰', labelColor: '#ffffff' },
     ],
   },
 ];
@@ -166,10 +166,14 @@ const GROWTH_TIPS = [
 ];
 
 // ── Utilities ──────────────────────────────────
+function widgetNo(rects: LinkRect[], r: LinkRect): number {
+  return [...rects].sort((a, b) => a.x - b.x).findIndex(x => x.id === r.id) + 1;
+}
+
 function buildHTML(rects: LinkRect[], imgSrc: string): string {
   const src = imgSrc || '투명이미지주소를_입력해주세요';
   return rects.map((r, i) => {
-    const head = `<!-- 위젯 칸 ${Math.floor(r.x / (WIDGET_W + WIDGET_GAP)) + 1}번 (영역 ${i + 1}) -->`;
+    const head = `<!-- 위젯 칸 ${widgetNo(rects, r)}번 -->`;
     const w = Math.round(r.w);
     const h = Math.round(r.h);
     // 이미지 = 버튼: 표시 크기를 영역 크기로 강제하고 좌표를 이미지 기준 상대좌표로 → 위치 독립.
@@ -453,8 +457,11 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
     if (sidebarTab !== 'link' || !drawing) return;
     setDrawing(false);
     const p = canvasPos(e);
-    const rect = { id: Date.now(), x: Math.min(startPos.x, p.x), y: Math.min(startPos.y, p.y), w: Math.abs(p.x - startPos.x), h: Math.abs(p.y - startPos.y), url: 'https://' };
-    if (rect.w > 5 && rect.h > 5) setRects(prev => [...prev, rect]);
+    const dragW = Math.abs(p.x - startPos.x);
+    const dragH = Math.abs(p.y - startPos.y);
+    // new.md: 위젯 가로 170px 고정, 세로 최대 600px.
+    const rect = { id: Date.now(), x: Math.min(startPos.x, p.x), y: Math.min(startPos.y, p.y), w: WIDGET_W, h: Math.min(600, Math.round(dragH)), url: 'https://' };
+    if (dragW > 5 && dragH > 5) setRects(prev => [...prev, rect]);
     setPreviewRect(null);
   };
 
@@ -836,7 +843,7 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
                         <div key={r.id} className="bg-gray-50 border border-gray-200 rounded-xl p-3">
                           <div className="flex justify-between items-center mb-2">
                             <span className="text-xs font-bold bg-gray-200 text-gray-700 rounded px-2 py-0.5">
-                              위젯 칸 {Math.floor(r.x / 175) + 1}
+                              위젯 칸 {widgetNo(rects, r)}
                             </span>
                             <div className="flex items-center gap-1.5">
                               <button onClick={() => centerRect(r.id)}
@@ -857,17 +864,21 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
                           <input value={r.url} onChange={e => setRects(prev => prev.map(x => x.id === r.id ? { ...x, url: e.target.value } : x))}
                             className="w-full p-2 border border-gray-300 rounded-lg text-xs outline-none focus:ring-2 focus:ring-gray-500 mb-2"
                             placeholder="이동할 URL 입력" />
-                          {/* 크기 */}
+                          {/* 크기 — 네이버 위젯은 가로 170px 고정, 세로 최대 600px */}
                           <div className="grid grid-cols-2 gap-1.5 mb-2">
-                            {([['너비', 'w'], ['높이', 'h']] as const).map(([lbl, key]) => (
-                              <div key={key}>
-                                <p className="text-[10px] text-gray-400 font-semibold mb-1">{lbl} (px)</p>
-                                <input type="number" min={5} value={Math.round(r[key])}
-                                  aria-label={`링크 영역 ${lbl}`}
-                                  onChange={e => { const v = Math.max(5, +e.target.value || 5); setRects(prev => prev.map(x => x.id === r.id ? { ...x, [key]: v } : x)); }}
-                                  className="w-full p-1.5 border border-gray-300 rounded-lg text-xs outline-none focus:ring-2 focus:ring-gray-500" />
-                              </div>
-                            ))}
+                            <div>
+                              <p className="text-[10px] text-gray-400 font-semibold mb-1">너비 (px)</p>
+                              <input type="text" value="170 (고정)" readOnly tabIndex={-1}
+                                aria-label="링크 영역 너비 (170px 고정)"
+                                className="w-full p-1.5 border border-gray-200 rounded-lg text-xs bg-gray-50 text-gray-400 outline-none cursor-not-allowed" />
+                            </div>
+                            <div>
+                              <p className="text-[10px] text-gray-400 font-semibold mb-1">높이 (px)</p>
+                              <input type="number" min={5} max={600} value={Math.round(r.h)}
+                                aria-label="링크 영역 높이"
+                                onChange={e => { const v = Math.max(5, Math.min(600, +e.target.value || 5)); setRects(prev => prev.map(x => x.id === r.id ? { ...x, h: v } : x)); }}
+                                className="w-full p-1.5 border border-gray-300 rounded-lg text-xs outline-none focus:ring-2 focus:ring-gray-500" />
+                            </div>
                           </div>
                           {/* 색상 */}
                           <div className="grid grid-cols-3 gap-1.5">
@@ -954,10 +965,10 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
                 {bgImage && bgOverlay > 0 && (
                   <div style={{ position: 'absolute', inset: 0, backgroundColor: `rgba(0,0,0,${bgOverlay / 100})`, pointerEvents: 'none', zIndex: 1 }} />
                 )}
-                {/* Grid guide */}
-                <div style={{ position: 'absolute', inset: 0, display: 'flex', pointerEvents: 'none', opacity: 0.25, zIndex: 2 }}>
-                  {Array.from({ length: 11 }, (_, i) => (
-                    <div key={i} style={{ width: WIDGET_W, marginRight: WIDGET_GAP, height: '100%', borderRight: '1px dashed #18181b', flexShrink: 0 }} />
+                {/* 위젯 칸 가이드 — 한 줄 5칸(가로 170px·간격 10px) 가운데 정렬 */}
+                <div style={{ position: 'absolute', inset: 0, display: 'flex', justifyContent: 'center', gap: WIDGET_GAP, pointerEvents: 'none', opacity: 0.3, zIndex: 2 }}>
+                  {Array.from({ length: 5 }, (_, i) => (
+                    <div key={i} style={{ width: WIDGET_W, height: '100%', border: '1px dashed #18181b', flexShrink: 0 }} />
                   ))}
                 </div>
                 {/* 안전 영역 가이드 (가운데 ~966px) */}
