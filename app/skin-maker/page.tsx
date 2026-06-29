@@ -111,7 +111,7 @@ export default function SkinMakerPage() {
 
       {/* 인트로 */}
       <section className="px-4 md:px-8 py-10 md:py-12 bg-white border-b border-gray-200">
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">
             BlogKit 스킨메이커
           </p>
@@ -120,7 +120,7 @@ export default function SkinMakerPage() {
             <br />
             무료 스킨·투명 위젯 디자인 도구
           </h1>
-          <div className="space-y-3 text-sm text-gray-600 leading-relaxed">
+          <div className="space-y-3 text-sm text-gray-600 leading-relaxed max-w-4xl">
             <p>
               <strong className="font-semibold text-gray-800">스킨메이커</strong>는 네이버 블로그
               상단 스킨 배경, 타이틀 이미지, 그리고 투명 위젯 영역까지 한 화면에서 디자인하고 PNG로
