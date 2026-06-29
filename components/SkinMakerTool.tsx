@@ -48,6 +48,7 @@ interface LinkRect {
   labelColor?: string;
   bgColor?: string;      // undefined = 투명
   borderColor?: string;  // undefined = 기본 (#52525b), '' = 테두리 없음
+  newWindow?: boolean;   // true = 새 창(<a target=_blank>), 그 외 = 현재 창(이미지맵)
 }
 
 interface BlogTemplate {
@@ -168,8 +169,12 @@ const GROWTH_TIPS = [
 function buildHTML(rects: LinkRect[], imgSrc: string): string {
   const src = imgSrc || '투명이미지주소를_입력해주세요';
   return rects.map((r, i) => {
+    const head = `<!-- 위젯 칸 ${Math.floor(r.x / (WIDGET_W + WIDGET_GAP)) + 1}번 (영역 ${i + 1}) -->`;
+    if (r.newWindow) {
+      return `${head}\n<a href="${r.url}" target="_blank"><img src="${src}" width="170" /></a>`;
+    }
     const x1 = Math.round(r.x % (WIDGET_W + WIDGET_GAP));
-    return `<!-- 위젯 칸 ${Math.floor(r.x / (WIDGET_W + WIDGET_GAP)) + 1}번 (영역 ${i + 1}) -->\n<img src="${src}" usemap="#map_${i}" />\n<map name="map_${i}">\n <area shape="rect" coords="${x1},${Math.round(r.y)},${x1 + Math.round(r.w)},${Math.round(r.y + r.h)}" href="${r.url}" target="_top" />\n</map>`;
+    return `${head}\n<img src="${src}" usemap="#map_${i}" />\n<map name="map_${i}">\n <area shape="rect" coords="${x1},${Math.round(r.y)},${x1 + Math.round(r.w)},${Math.round(r.y + r.h)}" href="${r.url}" target="_top" />\n</map>`;
   }).join('\n\n');
 }
 
@@ -495,7 +500,7 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">배경 크기</label>
                   <div className="grid grid-cols-2 gap-3">
-                    {([['가로', cw, setCw, 600, 3000], ['세로', ch, setCh, 200, 1200]] as [string, number, (v: number) => void, number, number][]).map(([label, val, setter, min, max]) => (
+                    {([['가로', cw, setCw, 600, 3000], ['세로', ch, setCh, 200, 600]] as [string, number, (v: number) => void, number, number][]).map(([label, val, setter, min, max]) => (
                       <div key={label} className="bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 focus-within:ring-2 focus-within:ring-gray-500">
                         <div className="text-xs font-semibold text-gray-400 mb-1">{label} (px)</div>
                         <input type="number" value={val} min={min} max={max} step={10}
@@ -766,6 +771,14 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
                               />
                             </div>
                           </div>
+                          <label className="flex items-center gap-1.5 text-[11px] text-gray-500 font-semibold mt-2 cursor-pointer">
+                            <input type="checkbox"
+                              checked={!!r.newWindow}
+                              onChange={e => setRects(prev => prev.map(x => x.id === r.id ? { ...x, newWindow: e.target.checked } : x))}
+                              className="w-3 h-3"
+                            />
+                            새 창으로 열기 (외부 링크)
+                          </label>
                         </div>
                       ))}
                     </div>
@@ -806,6 +819,12 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
                     <div key={i} style={{ width: WIDGET_W, marginRight: WIDGET_GAP, height: '100%', borderRight: '1px dashed #18181b', flexShrink: 0 }} />
                   ))}
                 </div>
+                {/* 안전 영역 가이드 (가운데 ~966px) */}
+                {cw >= 966 && (
+                  <div style={{ position: 'absolute', top: 0, bottom: 0, left: (cw - 966) / 2, width: 966, borderLeft: '2px dashed #2563eb', borderRight: '2px dashed #2563eb', pointerEvents: 'none', zIndex: 2, opacity: 0.45 }}>
+                    <span style={{ position: 'absolute', top: 4, left: '50%', transform: 'translateX(-50%)', background: '#2563eb', color: '#fff', fontSize: 11, fontWeight: 700, padding: '2px 8px', borderRadius: 4, whiteSpace: 'nowrap' }}>안전 영역 ~966px</span>
+                  </div>
+                )}
 
                 {/* Empty state */}
                 {elements.length === 0 && (
@@ -964,6 +983,7 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
                 { n: 1, title: '스킨 저장 & 투명 위젯 올리기', steps: ['[스킨 저장]으로 스킨 이미지를 저장하고, [투명 위젯 다운로드]도 저장합니다.', '블로그 [세부 디자인 설정] > [스킨 배경] > [직접 등록] > 상단영역에 스킨 이미지를 올립니다.', '투명 위젯을 비공개 글로 올린 뒤, 우클릭 → 이미지 주소 복사.'] },
                 { n: 2, title: '위젯 코드 복사 & 등록하기', steps: ['[링크] 탭에 투명 이미지 주소를 넣고 [코드 생성].', '[꾸미기 설정] > [레이아웃·위젯 설정]에서 [+ 위젯 직접 등록] 클릭.', '위젯명(투명1~5)과 각 칸 코드를 나눠 5개 등록.'] },
                 { n: 3, title: '레이아웃 정리하기 ⭐', steps: ['상단 레이아웃을 오른쪽 끝에서 2번째(1단 넓은 레이아웃)로 선택.', '투명위젯 1~5번을 타이틀 바로 아래 가로 1줄로 배치.', '[타이틀]과 [블로그 메뉴] 체크 해제. 불필요한 위젯은 숨기기.'] },
+                { n: 4, title: '모바일은 따로 설정하기 📱', steps: ['PC 홈형 스킨(스킨배경+위젯)은 모바일 앱/웹에 적용되지 않습니다.', '블로그 앱 [홈 편집]에서 커버 이미지·커버 스타일을 별도로 선택.', '핵심 메뉴는 외부채널·대표글로 노출되도록 구성하세요.'] },
               ].map(({ n, title, steps }) => (
                 <div key={n} style={{ display: 'flex', gap: 14, marginBottom: 24 }}>
                   <div style={{ width: 30, height: 30, borderRadius: '50%', background: '#f4f4f5', color: '#18181b', fontWeight: 700, display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0, fontSize: 14 }}>{n}</div>
@@ -973,6 +993,14 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
                   </div>
                 </div>
               ))}
+              <div style={{ background: '#f8fafc', border: '1px solid #e2e8f0', borderRadius: 12, padding: 14 }}>
+                <div style={{ fontWeight: 700, fontSize: 13, marginBottom: 8, color: '#0f172a' }}>🔧 안 될 때 체크리스트</div>
+                {[
+                  '위젯이 안 보임 → 레이아웃·위젯 설정에서 위젯 체크와 위치를 다시 확인.',
+                  '"이미지 정보가 올바르지 않습니다" → 투명 이미지의 절대 URL을 다시 정확히 복사.',
+                  '이미지가 안 뜸 → http가 아닌 https 주소를 사용 (혼합 콘텐츠 차단).',
+                ].map((s, i) => <p key={i} style={{ fontSize: 12, color: '#475569', marginBottom: 4, lineHeight: 1.6 }}>· {s}</p>)}
+              </div>
             </div>
             <div style={{ padding: 16, borderTop: '1px solid #f1f5f9', background: '#f8fafc', borderRadius: '0 0 24px 24px', display: 'flex', flexDirection: 'column', gap: 8 }}>
               <div style={{ display: 'flex', gap: 8 }}>
