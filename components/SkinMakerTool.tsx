@@ -170,11 +170,13 @@ function buildHTML(rects: LinkRect[], imgSrc: string): string {
   const src = imgSrc || '투명이미지주소를_입력해주세요';
   return rects.map((r, i) => {
     const head = `<!-- 위젯 칸 ${Math.floor(r.x / (WIDGET_W + WIDGET_GAP)) + 1}번 (영역 ${i + 1}) -->`;
+    const w = Math.round(r.w);
+    const h = Math.round(r.h);
+    // 이미지 = 버튼: 표시 크기를 영역 크기로 강제하고 좌표를 이미지 기준 상대좌표로 → 위치 독립.
     if (r.newWindow) {
-      return `${head}\n<a href="${r.url}" target="_blank"><img src="${src}" width="170" /></a>`;
+      return `${head}\n<a href="${r.url}" target="_blank"><img src="${src}" width="${w}" height="${h}" /></a>`;
     }
-    const x1 = Math.round(r.x % (WIDGET_W + WIDGET_GAP));
-    return `${head}\n<img src="${src}" usemap="#map_${i}" />\n<map name="map_${i}">\n <area shape="rect" coords="${x1},${Math.round(r.y)},${x1 + Math.round(r.w)},${Math.round(r.y + r.h)}" href="${r.url}" target="_top" />\n</map>`;
+    return `${head}\n<img src="${src}" width="${w}" height="${h}" usemap="#map_${i}" />\n<map name="map_${i}">\n <area shape="rect" coords="0,0,${w},${h}" href="${r.url}" target="_top" />\n</map>`;
   }).join('\n\n');
 }
 
@@ -533,9 +535,12 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
   };
 
   const downloadWidget = () => {
+    // ponytail: 영역 높이가 제각각이면 가장 큰 것 기준 1장. 투명이라 각 코드의 width/height로 손실 없이 스케일됨.
+    const w = rects.length ? Math.max(...rects.map(r => Math.round(r.w))) : WIDGET_W;
+    const h = rects.length ? Math.max(...rects.map(r => Math.round(r.h))) : ch;
     const canvas = document.createElement('canvas');
-    canvas.width = WIDGET_W; canvas.height = ch;
-    triggerDownload(canvas.toDataURL('image/png'), `투명위젯_${WIDGET_W}x${ch}.png`);
+    canvas.width = w; canvas.height = h;
+    triggerDownload(canvas.toDataURL('image/png'), `투명위젯_${w}x${h}.png`);
   };
 
   // ── render ──
@@ -1136,7 +1141,7 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
                 { n: 1, title: '디자인 & 링크 영역 잡기', steps: ['[배경]·[디자인] 탭에서 대문을 만들고, [링크] 탭에서 메뉴 위치마다 클릭 영역을 드래그해 그립니다.', "각 영역에 이동할 카테고리/URL을 입력합니다. 외부 링크는 '새 창으로 열기' 체크(내부 카테고리는 현재 창)."] },
                 { n: 2, title: '스킨 이미지 & 투명 위젯 저장', steps: ['[이미지 다운로드]로 스킨 이미지를 저장합니다.', '아래 [투명 위젯 다운로드]로 투명 위젯 PNG도 받습니다.'] },
                 { n: 3, title: '스킨배경 등록 & 위젯 이미지 주소 따기', steps: ['블로그 [관리 > 꾸미기 설정 > 세부 디자인 설정 > (리모컨) 스킨배경 > 직접등록]에 스킨 이미지를 올립니다. (와이드 대문은 타이틀이 아니라 스킨배경에 등록)', '투명 위젯 PNG를 비공개 글로 올린 뒤, 우클릭 → 이미지 주소 복사.'] },
-                { n: 4, title: '위젯 코드 생성 & 등록하기', steps: ['[링크] 탭에 투명 이미지 주소를 넣고 [코드 생성].', '[레이아웃·위젯 설정 > + 위젯 직접 등록]에서 위젯명(투명1~5)과 칸별 코드를 나눠 등록.'] },
+                { n: 4, title: '위젯 코드 생성 & 등록하기', steps: ['[링크] 탭에 투명 이미지 주소를 넣고 [코드 생성].', '[레이아웃·위젯 설정 > + 위젯 직접 등록]에서 위젯명(투명1~5)과 칸별 코드를 나눠 등록.', '코드는 각 메뉴(영역) 크기에 맞춰 생성되어, 위젯을 메뉴 그림 위에 올리면 위치에 상관없이 클릭 영역이 맞습니다.'] },
                 { n: 5, title: '레이아웃 정리하기 ⭐', steps: ['1단 레이아웃 선택(전체정렬 중앙·글 영역 넓게), 투명위젯을 타이틀 바로 아래 가로 1줄로 배치.', "[메뉴 사용 설정]에서 '타이틀' 체크를 해제하거나, [세부 디자인 설정]에서 '블로그 제목 표시'를 끕니다.", '불필요한 위젯은 숨기기.'] },
                 { n: 6, title: '모바일은 따로 설정하기 📱', steps: ['PC 홈형 스킨(스킨배경+위젯)은 모바일 앱/웹에 적용되지 않습니다.', '블로그 앱 [홈 편집]에서 커버 이미지·커버 스타일을 별도로 선택.', '핵심 메뉴는 외부채널·대표글로 노출되도록 구성하세요.'] },
               ].map(({ n, title, steps }) => (
