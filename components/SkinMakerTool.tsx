@@ -486,8 +486,8 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
     setIsDownloadingSkin(true);
     try {
     await document.fonts.ready; // 커스텀/손글씨 폰트가 canvas에 반영되도록 대기
-    // 고해상도 내보내기: 글씨 선명하게(레티나/와이드 화면). 네이버 스킨배경 최대 3000px 한도 내에서 배율 적용.
-    const exportScale = Math.max(1, Math.min(2, 3000 / cw));
+    // 항상 가로 ~3000px로 내보내 네이버 스킨배경(w3000)에서 글씨가 선명하게. (캔버스 크기 무관, 텍스트는 canvas에서 재렌더)
+    const exportScale = Math.min(4, Math.max(1, 3000 / cw));
     const canvas = document.createElement('canvas');
     canvas.width = Math.round(cw * exportScale); canvas.height = Math.round(ch * exportScale);
     const ctx = canvas.getContext('2d')!;
