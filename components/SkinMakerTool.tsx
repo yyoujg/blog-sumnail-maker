@@ -9,6 +9,7 @@ import {
   ExternalLink, ChevronDown, ChevronUp,
   AlignHorizontalJustifyCenter, Undo2,
 } from 'lucide-react';
+import { FONTS } from '@/lib/constants';
 
 // ── Constants ──────────────────────────────────
 const WIDGET_W = 170;
@@ -23,7 +24,10 @@ interface TextElement {
   fontSize: number;
   color: string;
   fontWeight: string;
+  fontFamily?: string;
 }
+
+const DEFAULT_FONT = `'Pretendard', sans-serif`;
 
 interface ImageElement {
   id: number;
@@ -288,7 +292,7 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
 
   const addText = () => {
     const id = Date.now();
-    setElements(prev => [...prev, { id, type: 'text', text: '새 텍스트', x: 910, y: 300, fontSize: 30, color: '#333333', fontWeight: 'bold' }]);
+    setElements(prev => [...prev, { id, type: 'text', text: '새 텍스트', x: 910, y: 300, fontSize: 30, color: '#333333', fontWeight: 'bold', fontFamily: DEFAULT_FONT }]);
     setSelectedId(id);
   };
 
@@ -469,6 +473,7 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
   const downloadSkin = async () => {
     setIsDownloadingSkin(true);
     try {
+    await document.fonts.ready; // 커스텀/손글씨 폰트가 canvas에 반영되도록 대기
     const canvas = document.createElement('canvas');
     canvas.width = cw; canvas.height = ch;
     const ctx = canvas.getContext('2d')!;
@@ -509,7 +514,7 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
           img.src = el.src;
         });
       } else {
-        ctx.font = `${el.fontWeight} ${el.fontSize}px -apple-system, sans-serif`;
+        ctx.font = `${el.fontWeight} ${el.fontSize}px ${el.fontFamily || DEFAULT_FONT}`;
         ctx.fillStyle = el.color;
         ctx.textBaseline = 'top';
         ctx.fillText(el.text, el.x + 8, el.y);
@@ -743,6 +748,16 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
                             <input type="color" value={selectedEl.color} onChange={e => updateEl(selectedEl.id, { color: e.target.value })}
                               className="w-full h-[38px] rounded-lg border border-gray-300 cursor-pointer p-1" />
                           </div>
+                        </div>
+                        <div>
+                          <label className="block text-xs font-semibold text-gray-500 mb-1">폰트</label>
+                          <select value={selectedEl.fontFamily || DEFAULT_FONT}
+                            onChange={e => updateEl(selectedEl.id, { fontFamily: e.target.value })}
+                            className="w-full p-2 border border-gray-300 rounded-lg text-sm outline-none focus:ring-2 focus:ring-gray-500 bg-white">
+                            {FONTS.map(f => (
+                              <option key={f.name} value={f.value} style={{ fontFamily: f.value }}>{f.name}</option>
+                            ))}
+                          </select>
                         </div>
                       </>
                     )}
@@ -1010,7 +1025,7 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
                       <img src={el.src} width={el.w} height={el.h} style={{ display: 'block', pointerEvents: 'none' }} alt="" />
                     ) : (
                       <div
-                        style={{ fontSize: el.fontSize, color: el.color, fontWeight: el.fontWeight, whiteSpace: 'nowrap', padding: '0 8px', outline: 'none', borderRadius: 4, background: (selectedId === el.id && sidebarTab === 'design') ? 'rgba(250,204,21,0.25)' : 'transparent', cursor: (selectedId === el.id && sidebarTab === 'design') ? 'text' : 'inherit' }}
+                        style={{ fontSize: el.fontSize, color: el.color, fontWeight: el.fontWeight, fontFamily: el.fontFamily || DEFAULT_FONT, whiteSpace: 'nowrap', padding: '0 8px', outline: 'none', borderRadius: 4, background: (selectedId === el.id && sidebarTab === 'design') ? 'rgba(250,204,21,0.25)' : 'transparent', cursor: (selectedId === el.id && sidebarTab === 'design') ? 'text' : 'inherit' }}
                         contentEditable={selectedId === el.id && sidebarTab === 'design' ? true : false}
                         suppressContentEditableWarning
                         onBlur={e => updateEl(el.id, { text: e.currentTarget.innerText })}

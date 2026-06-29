@@ -11,7 +11,7 @@ export const ADSENSE_SCRIPT_SRC = `https://pagead2.googlesyndication.com/pagead/
 export const ADSENSE_AD_SLOT = '9150939859';
 
 export const FONT_LINK_HREF =
-  'https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Do+Hyeon&family=Jua&display=swap';
+  'https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Do+Hyeon&family=Jua&family=Nanum+Pen+Script&family=Gaegu&family=Gamja+Flower&display=swap';
 
 export const HTML2CANVAS_SCRIPT_SRC =
   'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
@@ -24,6 +24,9 @@ export const FONTS = [
   { name: '도현', value: `'Do Hyeon', sans-serif` },
   { name: '프리텐다드', value: `'Pretendard', sans-serif` },
   { name: '지마켓 산스', value: `'GmarketSans', sans-serif` },
+  { name: '손글씨 펜', value: `'Nanum Pen Script', cursive` },
+  { name: '손글씨 개구', value: `'Gaegu', cursive` },
+  { name: '손글씨 감자꽃', value: `'Gamja Flower', cursive` },
 ] as const;
 
 export const SITE_URL = 'https://www.blogsumnail.com';
