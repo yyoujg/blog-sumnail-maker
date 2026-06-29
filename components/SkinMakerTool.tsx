@@ -7,7 +7,7 @@ import {
   Type, Image as ImageIcon, Sparkles, Settings2,
   BookOpen, Link as LinkIcon, ArrowLeft, TrendingUp,
   ExternalLink, ChevronDown, ChevronUp,
-  AlignHorizontalJustifyCenter,
+  AlignHorizontalJustifyCenter, Undo2,
 } from 'lucide-react';
 
 // ── Constants ──────────────────────────────────
@@ -184,15 +184,18 @@ function triggerDownload(dataUrl: string, name: string) {
   document.body.appendChild(a); a.click(); document.body.removeChild(a);
 }
 
-function copyText(text: string) {
+function copyText(text: string): boolean {
   const ta = document.createElement('textarea');
   ta.value = text;
   ta.style.cssText = 'position:fixed;left:-9999px';
   document.body.appendChild(ta); ta.select();
-  try { document.execCommand('copy'); alert('복사되었습니다!'); }
-  catch { alert('직접 드래그해서 복사해주세요.'); }
+  let ok = false;
+  try { ok = document.execCommand('copy'); } catch { ok = false; }
   document.body.removeChild(ta);
+  return ok;
 }
+
+const STORAGE_KEY = 'blogkit_skin_state';
 
 // ── Component ───────────────────────────────────
 export default function SkinMakerTool({ embedded = false }: { embedded?: boolean }) {
@@ -224,6 +227,22 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
   const [previewScale, setPreviewScale] = useState(1);
   const selectedEl = elements.find(e => e.id === selectedId) || null;
 
+  // ── toast ──
+  const [toast, setToast] = useState<string | null>(null);
+  const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const showToast = (msg: string) => {
+    setToast(msg);
+    if (toastTimer.current) clearTimeout(toastTimer.current);
+    toastTimer.current = setTimeout(() => setToast(null), 2000);
+  };
+
+  // ── undo history (design state snapshots) ──
+  const [history, setHistory] = useState<string[]>([]);
+  const restoringRef = useRef(false);
+  const prevSnapRef = useRef<string | null>(null);
+  const hydratedRef = useRef(false);
+  const suppressHistoryRef = useRef(false); // 드래그 중 중간 단계 기록 억제
+
   // ── element helpers ──
   const updateEl = (id: number, patch: Partial<CanvasElement>) =>
     setElements(prev => prev.map(e => e.id === id ? { ...e, ...patch } as CanvasElement : e));
@@ -249,6 +268,17 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
   };
   const centerRect = (id: number) =>
     setRects(prev => prev.map(r => r.id === id ? { ...r, x: Math.round((cw - r.w) / 2) } : r));
+
+  // 링크 영역 전체를 한 덩어리로 가로 가운데 정렬 (상대 간격 유지)
+  const centerRectsGroup = () => {
+    setRects(prev => {
+      if (prev.length === 0) return prev;
+      const minX = Math.min(...prev.map(r => r.x));
+      const maxX = Math.max(...prev.map(r => r.x + r.w));
+      const dx = Math.round((cw - (maxX - minX)) / 2 - minX);
+      return prev.map(r => ({ ...r, x: r.x + dx }));
+    });
+  };
 
   const addText = () => {
     const id = Date.now();
@@ -283,8 +313,83 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
     setActiveTemplateId(tpl.id);
   };
 
+  // 마운트: 저장된 작업 복원, 없으면 기본 템플릿
   useEffect(() => {
-    loadTemplate(BLOG_TEMPLATES[0]);
+    let restored = false;
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) {
+        const s = JSON.parse(raw);
+        setCw(s.cw); setCh(s.ch); setBg(s.bg);
+        setBgImage(s.bgImage ?? null);
+        setBgOverlay(s.bgOverlay ?? 0);
+        setBgPosition(s.bgPosition ?? 'center center');
+        setElements(s.elements ?? []);
+        setRects(s.rects ?? []);
+        setImgUrl(s.imgUrl ?? '');
+        setActiveTemplateId(s.activeTemplateId ?? null);
+        restored = true;
+      }
+    } catch { /* 손상된 저장값 무시 */ }
+    if (!restored) loadTemplate(BLOG_TEMPLATES[0]);
+    hydratedRef.current = true;
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // 디자인 상태 스냅샷 (undo + 자동저장 공용)
+  const designSnap = JSON.stringify({ cw, ch, bg, bgImage, bgOverlay, bgPosition, elements, rects });
+
+  // 자동저장 + undo 히스토리 적재
+  useEffect(() => {
+    if (!hydratedRef.current) return;
+    // undo: 복원 중이 아니면 변경 직전 스냅샷을 history에 push
+    if (restoringRef.current) {
+      restoringRef.current = false;
+    } else if (!suppressHistoryRef.current && prevSnapRef.current !== null && prevSnapRef.current !== designSnap) {
+      const prev = prevSnapRef.current;
+      setHistory(h => [...h.slice(-29), prev]);
+    }
+    prevSnapRef.current = designSnap;
+    // 자동저장
+    const payload = { cw, ch, bg, bgImage, bgOverlay, bgPosition, elements, rects, imgUrl, activeTemplateId };
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(payload));
+    } catch {
+      // ponytail: bgImage data URL이 5MB 쿼터 초과 가능. 빼고 재시도, 그래도 실패하면 스킵.
+      try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ ...payload, bgImage: null })); } catch { /* 저장 스킵 */ }
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [designSnap, imgUrl, activeTemplateId]);
+
+  const undo = () => {
+    if (history.length === 0) return;
+    const s = JSON.parse(history[history.length - 1]);
+    restoringRef.current = true;
+    setCw(s.cw); setCh(s.ch); setBg(s.bg);
+    setBgImage(s.bgImage ?? null);
+    setBgOverlay(s.bgOverlay ?? 0);
+    setBgPosition(s.bgPosition ?? 'center center');
+    setElements(s.elements ?? []);
+    setRects(s.rects ?? []);
+    setSelectedId(null);
+    setHistory(h => h.slice(0, -1));
+  };
+  const undoRef = useRef(undo);
+  undoRef.current = undo;
+
+  // Ctrl/Cmd+Z 되돌리기 (입력 필드 포커스 시 제외)
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'z' && !e.shiftKey) {
+        const t = e.target as HTMLElement | null;
+        const tag = t?.tagName;
+        if (tag === 'INPUT' || tag === 'TEXTAREA' || t?.isContentEditable) return;
+        e.preventDefault();
+        undoRef.current();
+      }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -308,9 +413,19 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
     const editing = selectedId === id && sidebarTab === 'design';
     if (!editing) e.preventDefault();
     setSelectedId(id);
+    // 드래그 전체를 undo 1단계로: 시작 스냅샷을 잡고 중간 기록은 억제.
+    const dragStartSnap = prevSnapRef.current;
+    suppressHistoryRef.current = true;
     let px = e.clientX, py = e.clientY;
     const onMove = (me: MouseEvent) => { moveEl(id, (me.clientX - px) / previewScale, (me.clientY - py) / previewScale); px = me.clientX; py = me.clientY; };
-    const onUp = () => { window.removeEventListener('mousemove', onMove); window.removeEventListener('mouseup', onUp); };
+    const onUp = () => {
+      window.removeEventListener('mousemove', onMove);
+      window.removeEventListener('mouseup', onUp);
+      suppressHistoryRef.current = false;
+      if (dragStartSnap !== null && dragStartSnap !== prevSnapRef.current) {
+        setHistory(h => [...h.slice(-29), dragStartSnap]);
+      }
+    };
     window.addEventListener('mousemove', onMove);
     window.addEventListener('mouseup', onUp);
   };
@@ -411,6 +526,7 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
       }
     }
     triggerDownload(canvas.toDataURL('image/png'), '블로그_스킨.png');
+    showToast('스킨 이미지 저장됨');
     } finally {
       setIsDownloadingSkin(false);
     }
@@ -454,7 +570,7 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
         ))}
         {activeTemplateId && (
           <button
-            onClick={() => { setElements([]); setRects([]); setActiveTemplateId(null); }}
+            onClick={() => { setElements([]); setRects([]); setActiveTemplateId(null); try { localStorage.removeItem(STORAGE_KEY); } catch { /* noop */ } }}
             className="flex-shrink-0 px-3 py-2 rounded-xl text-xs font-semibold text-gray-400 hover:text-gray-600 transition"
           >
             초기화
@@ -670,7 +786,7 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
                           <span className="text-xs font-semibold text-gray-600 flex-1 truncate">
                             {el.type === 'image' ? '이미지' : el.text}
                           </span>
-                          <button onClick={e => { e.stopPropagation(); if (confirm('이 요소를 삭제할까요?')) removeEl(el.id); }}
+                          <button onClick={e => { e.stopPropagation(); removeEl(el.id); }}
                             aria-label="요소 삭제"
                             className="text-gray-300 hover:text-red-400 transition p-0.5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-500 rounded">
                             <Trash2 size={13} />
@@ -698,7 +814,15 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
                   <p className="text-xs text-gray-400 mt-1.5 leading-relaxed">* 투명 위젯을 비공개 글로 올린 뒤 이미지 주소를 복사해 붙여넣으세요.</p>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">연결한 링크 목록 ({rects.length})</label>
+                  <div className="flex items-center justify-between mb-2">
+                    <label className="block text-sm font-medium text-gray-700">연결한 링크 목록 ({rects.length})</label>
+                    {rects.length > 0 && (
+                      <button onClick={centerRectsGroup}
+                        className="flex items-center gap-1 text-xs font-semibold text-gray-500 hover:text-gray-800 border border-gray-300 rounded-lg px-2 py-1 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-500">
+                        <AlignHorizontalJustifyCenter size={12} /> 전체 가운데 정렬
+                      </button>
+                    )}
+                  </div>
                   {rects.length === 0 ? (
                     <p className="text-xs text-gray-400 text-center py-4 italic">캔버스에서 드래그해 클릭 영역을 만드세요</p>
                   ) : (
@@ -715,7 +839,7 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
                                 className="text-gray-300 hover:text-gray-700 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-500 rounded">
                                 <AlignHorizontalJustifyCenter size={13} />
                               </button>
-                              <button onClick={() => { if (confirm('이 링크 영역을 삭제할까요?')) setRects(prev => prev.filter(x => x.id !== r.id)); }}
+                              <button onClick={() => setRects(prev => prev.filter(x => x.id !== r.id))}
                                 aria-label="링크 영역 삭제"
                                 className="text-gray-300 hover:text-red-400 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-500 rounded">
                                 <Trash2 size={13} />
@@ -728,6 +852,18 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
                           <input value={r.url} onChange={e => setRects(prev => prev.map(x => x.id === r.id ? { ...x, url: e.target.value } : x))}
                             className="w-full p-2 border border-gray-300 rounded-lg text-xs outline-none focus:ring-2 focus:ring-gray-500 mb-2"
                             placeholder="이동할 URL 입력" />
+                          {/* 크기 */}
+                          <div className="grid grid-cols-2 gap-1.5 mb-2">
+                            {([['너비', 'w'], ['높이', 'h']] as const).map(([lbl, key]) => (
+                              <div key={key}>
+                                <p className="text-[10px] text-gray-400 font-semibold mb-1">{lbl} (px)</p>
+                                <input type="number" min={5} value={Math.round(r[key])}
+                                  aria-label={`링크 영역 ${lbl}`}
+                                  onChange={e => { const v = Math.max(5, +e.target.value || 5); setRects(prev => prev.map(x => x.id === r.id ? { ...x, [key]: v } : x)); }}
+                                  className="w-full p-1.5 border border-gray-300 rounded-lg text-xs outline-none focus:ring-2 focus:ring-gray-500" />
+                              </div>
+                            ))}
+                          </div>
                           {/* 색상 */}
                           <div className="grid grid-cols-3 gap-1.5">
                             <div>
@@ -827,10 +963,16 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
                 )}
 
                 {/* Empty state */}
-                {elements.length === 0 && (
+                {elements.length === 0 && sidebarTab !== 'link' && (
                   <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 12, pointerEvents: 'none' }}>
                     <div style={{ fontSize: 36 }}>🎨</div>
                     <p style={{ fontSize: 16, fontWeight: 700, color: '#94a3b8' }}>위에서 블로그 유형을 선택하세요</p>
+                  </div>
+                )}
+                {sidebarTab === 'link' && rects.length === 0 && (
+                  <div style={{ position: 'absolute', inset: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 10, pointerEvents: 'none', zIndex: 41 }}>
+                    <div style={{ fontSize: 30 }}>🖱️</div>
+                    <p style={{ fontSize: 15, fontWeight: 700, color: '#2563eb', background: 'rgba(255,255,255,0.85)', padding: '6px 14px', borderRadius: 8 }}>메뉴 위치를 드래그해 클릭 영역을 그리세요</p>
                   </div>
                 )}
 
@@ -888,6 +1030,17 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
 
           {/* 액션 버튼 */}
           <div className="flex gap-2 mb-4">
+            <button onClick={undo}
+              disabled={history.length === 0}
+              aria-label="되돌리기"
+              title="되돌리기 (Ctrl+Z)"
+              className={`flex items-center justify-center gap-1.5 py-3.5 px-4 rounded-xl font-bold text-sm border transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-500 ${
+                history.length === 0
+                  ? 'border-gray-200 text-gray-300 cursor-not-allowed'
+                  : 'border-gray-300 text-gray-600 hover:border-gray-500 hover:bg-gray-50'
+              }`}>
+              <Undo2 className="w-4 h-4" /> 되돌리기
+            </button>
             <button onClick={downloadSkin}
               disabled={isDownloadingSkin}
               aria-busy={isDownloadingSkin}
@@ -958,7 +1111,7 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
                 {buildHTML(rects, imgUrl)}
               </pre>
               <div style={{ display: 'flex', gap: 10, marginTop: 16 }}>
-                <button onClick={() => copyText(buildHTML(rects, imgUrl))} style={btnStyle('#18181b', '#fff', false, 'none', 14, 14)}>전체 코드 복사하기</button>
+                <button onClick={() => showToast(copyText(buildHTML(rects, imgUrl)) ? '복사되었습니다' : '복사 실패 - 직접 드래그해 복사하세요')} style={btnStyle('#18181b', '#fff', false, 'none', 14, 14)}>전체 코드 복사하기</button>
                 <button onClick={() => setShowCode(false)} style={btnStyle('#f4f4f5', '#3f3f46', false, 'none', 14, 12)}>닫기</button>
               </div>
             </div>
@@ -1014,6 +1167,14 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
               <button onClick={() => setShowGuide(false)} style={btnStyle('#18181b', '#fff', true, 'none', 14, 14)}>확인했습니다</button>
             </div>
           </div>
+        </div>
+      )}
+
+      {/* ── Toast ── */}
+      {toast && (
+        <div role="status" aria-live="polite"
+          style={{ position: 'fixed', bottom: 28, left: '50%', transform: 'translateX(-50%)', zIndex: 200, background: '#18181b', color: '#fff', fontSize: 14, fontWeight: 600, padding: '11px 20px', borderRadius: 999, boxShadow: '0 8px 24px rgba(0,0,0,0.25)', whiteSpace: 'nowrap' }}>
+          {toast}
         </div>
       )}
     </div>
