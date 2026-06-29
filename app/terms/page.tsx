@@ -28,7 +28,7 @@ export default function TermsPage() {
           <section>
             <h2 className="text-lg font-semibold text-gray-900 mb-2">제1조 (목적)</h2>
             <p>
-              본 약관은 네이버 블로그 썸네일 메이커(이하 "서비스")의 이용 조건 및 절차, 기타 필요한 사항을
+              본 약관은 BlogKit 썸네일 메이커·스킨메이커(이하 "서비스")의 이용 조건 및 절차, 기타 필요한 사항을
               규정함을 목적으로 합니다.
             </p>
           </section>

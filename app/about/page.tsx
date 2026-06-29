@@ -96,7 +96,7 @@ export default function AboutPage() {
             </div>
           </div>
 
-          {/* 스킨 메이커 */}
+          {/* 스킨메이커 */}
           <div className="bg-white rounded-xl shadow-sm p-6 md:p-8">
             <div className="flex items-center gap-2 mb-4">
               <Layout className="w-5 h-5 text-amber-600" />
@@ -173,8 +173,8 @@ export default function AboutPage() {
               {[
                 { label: '예정', text: '썸네일 메이커 — 텍스트 배경 강조(하이라이트) 효과' },
                 { label: '예정', text: '썸네일 메이커 — 이모지·아이콘 삽입 기능' },
-                { label: '예정', text: '스킨 메이커 — 더 많은 스킨 템플릿 추가' },
-                { label: '예정', text: '스킨 메이커 — SNS 링크 아이콘 위젯 지원' },
+                { label: '예정', text: '스킨메이커 — 더 많은 스킨 템플릿 추가' },
+                { label: '예정', text: '스킨메이커 — SNS 링크 아이콘 위젯 지원' },
                 { label: '예정', text: '설정 저장 & 불러오기 기능 (로컬 스토리지)' },
               ].map((item, i) => (
                 <li key={i} className="flex items-start gap-3 text-sm text-gray-700">

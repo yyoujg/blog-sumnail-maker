@@ -52,7 +52,7 @@ export default function ThumbnailGuidePage() {
         <section className="mt-10">
           <h2 className="text-xl font-bold text-gray-900 mb-3">왜 썸네일이 중요한가요?</h2>
           <p className="text-gray-600 text-sm leading-relaxed mb-3">
-            네이버 블로그 목록에서 사용자는 0.3초 안에 클릭 여부를 결정합니다.
+            네이버 블로그 목록에서 사용자는 아주 짧은 순간에 클릭 여부를 결정합니다.
             아무리 좋은 글이어도 썸네일이 흐리거나 텍스트가 안 보이면 클릭이 일어나지 않습니다.
             그래서 <strong className="text-gray-900">조회수</strong>를 올리려면 썸네일 가독성이 먼저입니다.
           </p>
@@ -113,7 +113,7 @@ export default function ThumbnailGuidePage() {
               </div>
             ))}
           </div>
-          <p className="text-xs text-gray-400 mt-2 text-center">위 썸네일은 이 사이트로 1분 안에 만들 수 있습니다.</p>
+          <p className="text-xs text-gray-400 mt-2 text-center">위 썸네일은 이 사이트에서 1분 안에 만들 수 있습니다.</p>
         </section>
 
         {/* CTA 2 - 행동 유도 (본문 중간) */}
