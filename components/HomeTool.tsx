@@ -3,10 +3,11 @@
 import { useState, useRef } from 'react';
 import Link from 'next/link';
 import Script from 'next/script';
-import { Image as ImageIcon, Sparkles, BookOpen } from 'lucide-react';
+import { BookOpen } from 'lucide-react';
 import type { TextAlign, TextVAlign, FrameType, BgType } from '@/lib/types';
 import ControlPanel from '@/components/ControlPanel';
 import ThumbnailPreview from '@/components/ThumbnailPreview';
+import SiteHeader from '@/components/SiteHeader';
 import SiteFooter from '@/components/SiteFooter';
 import AdBanner from '@/components/AdBanner';
 import { HTML2CANVAS_SCRIPT_SRC } from '@/lib/constants';
@@ -307,21 +308,7 @@ export function HomeTool({ seoAfterTool }: { seoAfterTool?: React.ReactNode }) {
     <div className="min-h-screen bg-[#f5f5f0] text-gray-800 font-sans flex flex-col">
 
       {/* ── 헤더 ── */}
-      <header className="sticky top-0 z-50 bg-[#111111] border-b border-white/10 px-4 md:px-8">
-        <div className="max-w-6xl mx-auto flex items-center justify-between h-14">
-          <Link href="/" className="flex items-center gap-2 text-white font-bold text-sm select-none cursor-pointer">
-            <Sparkles className="w-4 h-4 text-white/60" />
-            BlogKit
-          </Link>
-
-          <nav className="hidden md:flex items-center gap-1">
-            <Link href="/blog" className="px-3 py-2 text-sm font-semibold text-white/70 hover:text-white hover:bg-white/10 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70">블로그 가이드</Link>
-            <Link href="/guide/thumbnail" className="px-3 py-2 text-sm font-semibold text-white/70 hover:text-white hover:bg-white/10 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70">썸네일 팁</Link>
-            <a href="#tool" className="px-3 py-2 text-sm font-semibold text-white/70 hover:text-white hover:bg-white/10 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70">썸네일 만들기</a>
-            <Link href="/skin-maker" className="px-3 py-2 text-sm font-semibold text-white/70 hover:text-white hover:bg-white/10 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70">스킨메이커</Link>
-          </nav>
-        </div>
-      </header>
+      <SiteHeader />
 
       {/* 사이트 목적 — 도구 + 정보성 콘텐츠 */}
       <section
