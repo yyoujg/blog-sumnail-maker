@@ -28,7 +28,7 @@ export default function ContactPage() {
   return (
     <div className="min-h-screen bg-[#f5f5f0] text-gray-800 font-sans">
       <SiteHeader />
-      <div className="max-w-3xl mx-auto px-4 py-8 md:py-12">
+      <div className="max-w-3xl mx-auto px-4 md:px-8 py-8 md:py-12">
 
         <div className="flex items-center gap-3 mb-2">
           <MessageSquare className="w-7 h-7 text-gray-900" />

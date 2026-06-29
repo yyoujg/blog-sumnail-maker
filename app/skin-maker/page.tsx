@@ -172,14 +172,14 @@ export default function SkinMakerPage() {
         aria-labelledby="skin-faq-heading"
         className="px-4 md:px-8 py-10 md:py-14 border-t border-gray-200 bg-white"
       >
-        <div className="max-w-4xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           <h2
             id="skin-faq-heading"
             className="text-xl md:text-2xl font-bold text-gray-900 mb-6"
           >
             스킨메이커 자주 묻는 질문 (FAQ)
           </h2>
-          <div className="space-y-6">
+          <div className="space-y-6 max-w-4xl">
             {FAQ_ITEMS.map((item) => (
               <div key={item.question}>
                 <h3 className="text-base font-bold text-gray-900 mb-2">{item.question}</h3>
@@ -188,7 +188,7 @@ export default function SkinMakerPage() {
             ))}
           </div>
 
-          <div className="mt-10 pt-8 border-t border-gray-100 text-sm text-gray-600 leading-relaxed">
+          <div className="mt-10 pt-8 border-t border-gray-100 text-sm text-gray-600 leading-relaxed max-w-4xl">
             <p className="mb-2">
               스킨 디자인 다음 단계로 추천하는 글
             </p>
