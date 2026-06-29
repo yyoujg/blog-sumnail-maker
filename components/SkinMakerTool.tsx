@@ -548,12 +548,11 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
   };
 
   const downloadWidget = () => {
-    // ponytail: 영역 높이가 제각각이면 가장 큰 것 기준 1장. 투명이라 각 코드의 width/height로 손실 없이 스케일됨.
-    const w = rects.length ? Math.max(...rects.map(r => Math.round(r.w))) : WIDGET_W;
-    const h = rects.length ? Math.max(...rects.map(r => Math.round(r.h))) : ch;
+    // 투명 위젯은 컬럼 1칸 = 가로 170px 고정 × 캔버스(대문) 높이. 투명이라 각 코드의 width/height로 손실 없이 스케일됨.
+    const h = Math.min(600, ch); // 위젯 세로 최대 600
     const canvas = document.createElement('canvas');
-    canvas.width = w; canvas.height = h;
-    triggerDownload(canvas.toDataURL('image/png'), `투명위젯_${w}x${h}.png`);
+    canvas.width = WIDGET_W; canvas.height = h;
+    triggerDownload(canvas.toDataURL('image/png'), `투명위젯_${WIDGET_W}x${h}.png`);
   };
 
   // ── render ──
