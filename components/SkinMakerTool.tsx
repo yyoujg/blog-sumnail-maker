@@ -87,11 +87,11 @@ const BLOG_TEMPLATES: BlogTemplate[] = [
       { id: 2, type: 'text', text: '매일 새로운 맛집을 찾아 솔직하게 기록합니다 🍽️', x: 680, y: 210, fontSize: 18, color: 'rgba(255,255,255,0.80)', fontWeight: 'normal' },
     ],
     rects: [
-      { id: 101, x: 515, y: 360, w: 170, h: 60, url: 'https://', label: '맛집 탐방', labelColor: '#ffffff' },
-      { id: 102, x: 695, y: 360, w: 170, h: 60, url: 'https://', label: '카페 기록', labelColor: '#ffffff' },
-      { id: 103, x: 875, y: 360, w: 170, h: 60, url: 'https://', label: '레시피', labelColor: '#ffffff' },
-      { id: 104, x: 1055, y: 360, w: 170, h: 60, url: 'https://', label: '배달 후기', labelColor: '#ffffff' },
-      { id: 105, x: 1235, y: 360, w: 170, h: 60, url: 'https://', label: '카페 투어', labelColor: '#ffffff' },
+      { id: 101, x: 515, y: 0, w: 170, h: 450, url: 'https://', label: '맛집 탐방', labelColor: '#ffffff', borderColor: '' },
+      { id: 102, x: 695, y: 0, w: 170, h: 450, url: 'https://', label: '카페 기록', labelColor: '#ffffff', borderColor: '' },
+      { id: 103, x: 875, y: 0, w: 170, h: 450, url: 'https://', label: '레시피', labelColor: '#ffffff', borderColor: '' },
+      { id: 104, x: 1055, y: 0, w: 170, h: 450, url: 'https://', label: '배달 후기', labelColor: '#ffffff', borderColor: '' },
+      { id: 105, x: 1235, y: 0, w: 170, h: 450, url: 'https://', label: '카페 투어', labelColor: '#ffffff', borderColor: '' },
     ],
   },
   {
@@ -109,11 +109,11 @@ const BLOG_TEMPLATES: BlogTemplate[] = [
       { id: 2, type: 'text', text: '직접 먹어보고 솔직하게 기록합니다 ✔️', x: 760, y: 210, fontSize: 18, color: 'rgba(255,255,255,0.80)', fontWeight: 'normal' },
     ],
     rects: [
-      { id: 101, x: 515, y: 360, w: 170, h: 60, url: 'https://', label: '체험단', labelColor: '#ffffff' },
-      { id: 102, x: 695, y: 360, w: 170, h: 60, url: 'https://', label: '뷰티·스킨', labelColor: '#ffffff' },
-      { id: 103, x: 875, y: 360, w: 170, h: 60, url: 'https://', label: '생활용품', labelColor: '#ffffff' },
-      { id: 104, x: 1055, y: 360, w: 170, h: 60, url: 'https://', label: '식품 리뷰', labelColor: '#ffffff' },
-      { id: 105, x: 1235, y: 360, w: 170, h: 60, url: 'https://', label: '서비스', labelColor: '#ffffff' },
+      { id: 101, x: 515, y: 0, w: 170, h: 450, url: 'https://', label: '체험단', labelColor: '#ffffff', borderColor: '' },
+      { id: 102, x: 695, y: 0, w: 170, h: 450, url: 'https://', label: '뷰티·스킨', labelColor: '#ffffff', borderColor: '' },
+      { id: 103, x: 875, y: 0, w: 170, h: 450, url: 'https://', label: '생활용품', labelColor: '#ffffff', borderColor: '' },
+      { id: 104, x: 1055, y: 0, w: 170, h: 450, url: 'https://', label: '식품 리뷰', labelColor: '#ffffff', borderColor: '' },
+      { id: 105, x: 1235, y: 0, w: 170, h: 450, url: 'https://', label: '서비스', labelColor: '#ffffff', borderColor: '' },
     ],
   },
   {
@@ -131,11 +131,11 @@ const BLOG_TEMPLATES: BlogTemplate[] = [
       { id: 2, type: 'text', text: '몸과 돈, 함께 투자하고 기록합니다 📊', x: 760, y: 210, fontSize: 16, color: '#94a3b8', fontWeight: 'normal' },
     ],
     rects: [
-      { id: 101, x: 515, y: 360, w: 170, h: 60, url: 'https://', label: '주식 투자', labelColor: '#e2e8f0' },
-      { id: 102, x: 695, y: 360, w: 170, h: 60, url: 'https://', label: '부동산', labelColor: '#e2e8f0' },
-      { id: 103, x: 875, y: 360, w: 170, h: 60, url: 'https://', label: '절약 팁', labelColor: '#e2e8f0' },
-      { id: 104, x: 1055, y: 360, w: 170, h: 60, url: 'https://', label: '재테크 정보', labelColor: '#e2e8f0' },
-      { id: 105, x: 1235, y: 360, w: 170, h: 60, url: 'https://', label: '수익 후기', labelColor: '#e2e8f0' },
+      { id: 101, x: 515, y: 0, w: 170, h: 450, url: 'https://', label: '주식 투자', labelColor: '#e2e8f0', borderColor: '' },
+      { id: 102, x: 695, y: 0, w: 170, h: 450, url: 'https://', label: '부동산', labelColor: '#e2e8f0', borderColor: '' },
+      { id: 103, x: 875, y: 0, w: 170, h: 450, url: 'https://', label: '절약 팁', labelColor: '#e2e8f0', borderColor: '' },
+      { id: 104, x: 1055, y: 0, w: 170, h: 450, url: 'https://', label: '재테크 정보', labelColor: '#e2e8f0', borderColor: '' },
+      { id: 105, x: 1235, y: 0, w: 170, h: 450, url: 'https://', label: '수익 후기', labelColor: '#e2e8f0', borderColor: '' },
     ],
   },
   {
@@ -153,11 +153,11 @@ const BLOG_TEMPLATES: BlogTemplate[] = [
       { id: 2, type: 'text', text: '소소하지만 특별한 하루하루를 기록합니다 ☀️', x: 720, y: 210, fontSize: 18, color: 'rgba(255,255,255,0.85)', fontWeight: 'normal' },
     ],
     rects: [
-      { id: 101, x: 515, y: 360, w: 170, h: 60, url: 'https://', label: '일상 기록', labelColor: '#ffffff' },
-      { id: 102, x: 695, y: 360, w: 170, h: 60, url: 'https://', label: '카페·맛집', labelColor: '#ffffff' },
-      { id: 103, x: 875, y: 360, w: 170, h: 60, url: 'https://', label: '여행', labelColor: '#ffffff' },
-      { id: 104, x: 1055, y: 360, w: 170, h: 60, url: 'https://', label: '취미·체험', labelColor: '#ffffff' },
-      { id: 105, x: 1235, y: 360, w: 170, h: 60, url: 'https://', label: '리뷰', labelColor: '#ffffff' },
+      { id: 101, x: 515, y: 0, w: 170, h: 450, url: 'https://', label: '일상 기록', labelColor: '#ffffff', borderColor: '' },
+      { id: 102, x: 695, y: 0, w: 170, h: 450, url: 'https://', label: '카페·맛집', labelColor: '#ffffff', borderColor: '' },
+      { id: 103, x: 875, y: 0, w: 170, h: 450, url: 'https://', label: '여행', labelColor: '#ffffff', borderColor: '' },
+      { id: 104, x: 1055, y: 0, w: 170, h: 450, url: 'https://', label: '취미·체험', labelColor: '#ffffff', borderColor: '' },
+      { id: 105, x: 1235, y: 0, w: 170, h: 450, url: 'https://', label: '리뷰', labelColor: '#ffffff', borderColor: '' },
     ],
   },
 ];
@@ -536,7 +536,8 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
       if (r.label) {
         ctx.font = `bold 20px -apple-system, sans-serif`;
         ctx.fillStyle = r.labelColor || '#333333';
-        ctx.fillText(r.label, r.x + r.w / 2, r.y + r.h / 2);
+        // 긴 컬럼 위젯: 메뉴 글자는 컬럼 하단(메뉴 위치)에 그림
+        ctx.fillText(r.label, r.x + r.w / 2, r.y + r.h - 28);
       }
     }
     triggerDownload(canvas.toDataURL('image/png'), '블로그_스킨.png');
@@ -1047,7 +1048,7 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
                   }}>
                     <span style={{ position: 'absolute', top: 0, left: 0, background: '#52525b', color: '#fff', fontSize: 8, padding: '1px 4px', fontWeight: 700, zIndex: 1 }}>LINK</span>
                     {r.label && (
-                      <span style={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 20, fontWeight: 'bold', color: r.labelColor || '#333333', pointerEvents: 'none', userSelect: 'none' }}>{r.label}</span>
+                      <span style={{ position: 'absolute', left: 0, right: 0, bottom: 16, display: 'flex', alignItems: 'flex-end', justifyContent: 'center', fontSize: 20, fontWeight: 'bold', color: r.labelColor || '#333333', pointerEvents: 'none', userSelect: 'none' }}>{r.label}</span>
                     )}
                   </div>
                 ))}
