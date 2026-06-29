@@ -40,6 +40,13 @@
   font-display: swap;
 }
 
+@font-face {
+  font-family: 'JalnanGothic';
+  src: url('./asset/JalnanGothicTTF.ttf') format('truetype');
+  font-weight: normal;
+  font-display: swap;
+}
+
 :root {
   font-synthesis: none;
   text-rendering: optimizeLegibility;

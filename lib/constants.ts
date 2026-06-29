@@ -18,6 +18,7 @@ export const HTML2CANVAS_SCRIPT_SRC =
 
 export const FONTS = [
   { name: '검은고딕', value: `'Black Han Sans', sans-serif` },
+  { name: '잘난고딕', value: `'JalnanGothic', sans-serif` },
   { name: '케리스케듀', value: `'KerisKedyuche', sans-serif` },
   { name: '제주돌담', value: `'EF_jejudoldam', cursive` },
   { name: '주아', value: `'Jua', sans-serif` },
