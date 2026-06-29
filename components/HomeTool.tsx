@@ -3,11 +3,10 @@
 import { useState, useRef } from 'react';
 import Link from 'next/link';
 import Script from 'next/script';
-import { Image as ImageIcon, Layout, Sparkles, BookOpen } from 'lucide-react';
+import { Image as ImageIcon, Sparkles, BookOpen } from 'lucide-react';
 import type { TextAlign, TextVAlign, FrameType, BgType } from '@/lib/types';
 import ControlPanel from '@/components/ControlPanel';
 import ThumbnailPreview from '@/components/ThumbnailPreview';
-import SkinMakerTool from '@/components/SkinMakerTool';
 import SiteFooter from '@/components/SiteFooter';
 import AdBanner from '@/components/AdBanner';
 import { HTML2CANVAS_SCRIPT_SRC } from '@/lib/constants';
@@ -202,7 +201,6 @@ export function HomeTool({ seoAfterTool }: { seoAfterTool?: React.ReactNode }) {
   const [fileName, setFileName] = useState('blog_thumbnail');
   const [activePresetId, setActivePresetId] = useState<string | null>('naver');
   const [isDownloadDone, setIsDownloadDone] = useState(false);
-  const [activeMainTab, setActiveMainTab] = useState<'thumbnail' | 'skin'>('thumbnail');
 
   const previewRef = useRef<HTMLDivElement>(null);
   const [isDownloading, setIsDownloading] = useState(false);
@@ -316,36 +314,6 @@ export function HomeTool({ seoAfterTool }: { seoAfterTool?: React.ReactNode }) {
             BlogKit
           </Link>
 
-          <div className="relative flex bg-white/10 rounded-xl p-1">
-            <div
-              className="absolute top-1 bottom-1 rounded-lg bg-white transition-transform duration-200 ease-in-out pointer-events-none"
-              style={{
-                width: 'calc(50% - 2px)',
-                transform: activeMainTab === 'skin' ? 'translateX(calc(100% + 4px))' : 'translateX(0)',
-              }}
-            />
-            <button
-              onClick={() => setActiveMainTab('thumbnail')}
-              aria-pressed={activeMainTab === 'thumbnail'}
-              className={`relative z-10 flex items-center gap-1.5 px-4 py-2 text-sm font-semibold rounded-lg transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70 ${
-                activeMainTab === 'thumbnail' ? 'text-gray-900' : 'text-white/60 hover:text-white'
-              }`}
-            >
-              <ImageIcon className="w-3.5 h-3.5" />
-              썸네일
-            </button>
-            <button
-              onClick={() => setActiveMainTab('skin')}
-              aria-pressed={activeMainTab === 'skin'}
-              className={`relative z-10 flex items-center gap-1.5 px-4 py-2 text-sm font-semibold rounded-lg transition-colors duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70 ${
-                activeMainTab === 'skin' ? 'text-gray-900' : 'text-white/60 hover:text-white'
-              }`}
-            >
-              <Layout className="w-3.5 h-3.5" />
-              스킨
-            </button>
-          </div>
-
           <nav className="hidden md:flex items-center gap-1">
             <Link href="/blog" className="px-3 py-2 text-sm font-semibold text-white/70 hover:text-white hover:bg-white/10 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70">블로그 가이드</Link>
             <Link href="/guide/thumbnail" className="px-3 py-2 text-sm font-semibold text-white/70 hover:text-white hover:bg-white/10 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/70">썸네일 팁</Link>
@@ -438,9 +406,8 @@ export function HomeTool({ seoAfterTool }: { seoAfterTool?: React.ReactNode }) {
       <section id="tool" className="px-4 md:px-8 py-8 md:py-10">
         <div className="max-w-6xl mx-auto">
 
-          {/* 썸네일 메이커 탭 */}
-          {activeMainTab === 'thumbnail' && (
-            <>
+          {/* 썸네일 메이커 */}
+          <>
               {/* 스타일 프리셋 선택 */}
               <div className="mb-6">
                 <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">스타일 선택</p>
@@ -514,13 +481,7 @@ export function HomeTool({ seoAfterTool }: { seoAfterTool?: React.ReactNode }) {
                   fileName={fileName} setFileName={setFileName}
                 />
               </div>
-            </>
-          )}
-
-          {/* 스킨 메이커 탭 */}
-          {activeMainTab === 'skin' && (
-            <SkinMakerTool embedded />
-          )}
+          </>
 
         </div>
       </section>
@@ -528,7 +489,7 @@ export function HomeTool({ seoAfterTool }: { seoAfterTool?: React.ReactNode }) {
       {seoAfterTool}
 
       {/* 다운로드 완료 후 다음 단계 */}
-      {isDownloadDone && activeMainTab === 'thumbnail' && (
+      {isDownloadDone && (
         <section className="px-4 md:px-8 py-6 bg-white border-t border-gray-100">
           <div className="max-w-6xl mx-auto">
             <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-4">다운로드 완료 - 다음 단계</p>
@@ -584,7 +545,6 @@ export function HomeTool({ seoAfterTool }: { seoAfterTool?: React.ReactNode }) {
                 key={preset.id}
                 onClick={() => {
                   applyPreset(preset);
-                  setActiveMainTab('thumbnail');
                   document.getElementById('tool')?.scrollIntoView({ behavior: 'smooth' });
                 }}
                 className="text-left group"
