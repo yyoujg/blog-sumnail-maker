@@ -7,6 +7,7 @@ import {
   Type, Image as ImageIcon, Sparkles, Settings2,
   BookOpen, Link as LinkIcon, ArrowLeft, TrendingUp,
   ExternalLink, ChevronDown, ChevronUp,
+  AlignHorizontalJustifyCenter,
 } from 'lucide-react';
 
 // ── Constants ──────────────────────────────────
@@ -230,6 +231,20 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
   const moveEl = (id: number, dx: number, dy: number) =>
     setElements(prev => prev.map(e => e.id === id ? { ...e, x: e.x + dx, y: e.y + dy } : e));
 
+  // ── 가로 가운데 정렬 ──
+  const centerEl = (id: number) => {
+    const el = elements.find(e => e.id === id);
+    if (!el) return;
+    let w = el.type === 'image' ? el.w : 0;
+    if (el.type === 'text') {
+      const node = canvasRef.current?.querySelector(`[data-elid="${id}"]`) as HTMLElement | null;
+      if (node) w = node.getBoundingClientRect().width / previewScale;
+    }
+    updateEl(id, { x: Math.round((cw - w) / 2) });
+  };
+  const centerRect = (id: number) =>
+    setRects(prev => prev.map(r => r.id === id ? { ...r, x: Math.round((cw - r.w) / 2) } : r));
+
   const addText = () => {
     const id = Date.now();
     setElements(prev => [...prev, { id, type: 'text', text: '새 텍스트', x: 910, y: 300, fontSize: 30, color: '#333333', fontWeight: 'bold' }]);
@@ -283,6 +298,10 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
   const startDrag = (e: React.MouseEvent, id: number) => {
     if (sidebarTab === 'link') return;
     e.stopPropagation();
+    // ponytail: 네이티브 이미지/텍스트 드래그가 mousemove를 가로채는 것 방지.
+    // 단, 편집 중인 텍스트는 caret 배치를 위해 기본 동작 유지.
+    const editing = selectedId === id && sidebarTab === 'design';
+    if (!editing) e.preventDefault();
     setSelectedId(id);
     let px = e.clientX, py = e.clientY;
     const onMove = (me: MouseEvent) => { moveEl(id, (me.clientX - px) / previewScale, (me.clientY - py) / previewScale); px = me.clientX; py = me.clientY; };
@@ -606,6 +625,10 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
                           className="w-full accent-gray-800" />
                       </div>
                     )}
+                    <button onClick={() => centerEl(selectedEl.id)}
+                      className="w-full flex items-center justify-center gap-1.5 py-2 rounded-lg border border-gray-300 bg-white text-xs font-semibold text-gray-600 hover:border-gray-500 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-500">
+                      <AlignHorizontalJustifyCenter size={13} /> 가로 가운데 정렬
+                    </button>
                   </div>
                 )}
 
@@ -681,11 +704,18 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
                             <span className="text-xs font-bold bg-gray-200 text-gray-700 rounded px-2 py-0.5">
                               위젯 칸 {Math.floor(r.x / 175) + 1}
                             </span>
-                            <button onClick={() => { if (confirm('이 링크 영역을 삭제할까요?')) setRects(prev => prev.filter(x => x.id !== r.id)); }}
-                              aria-label="링크 영역 삭제"
-                              className="text-gray-300 hover:text-red-400 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-500 rounded">
-                              <Trash2 size={13} />
-                            </button>
+                            <div className="flex items-center gap-1.5">
+                              <button onClick={() => centerRect(r.id)}
+                                aria-label="가로 가운데 정렬" title="가로 가운데 정렬"
+                                className="text-gray-300 hover:text-gray-700 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-500 rounded">
+                                <AlignHorizontalJustifyCenter size={13} />
+                              </button>
+                              <button onClick={() => { if (confirm('이 링크 영역을 삭제할까요?')) setRects(prev => prev.filter(x => x.id !== r.id)); }}
+                                aria-label="링크 영역 삭제"
+                                className="text-gray-300 hover:text-red-400 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-500 rounded">
+                                <Trash2 size={13} />
+                              </button>
+                            </div>
                           </div>
                               <input value={r.label ?? ''} onChange={e => setRects(prev => prev.map(x => x.id === r.id ? { ...x, label: e.target.value } : x))}
                             className="w-full p-2 border border-gray-300 rounded-lg text-xs outline-none focus:ring-2 focus:ring-gray-500 mb-1.5"
@@ -789,6 +819,7 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
                 {elements.map(el => (
                   <div
                     key={el.id}
+                    data-elid={el.id}
                     style={{
                       position: 'absolute', left: el.x, top: el.y, zIndex: selectedId === el.id ? 50 : 10,
                       cursor: sidebarTab !== 'link' ? 'move' : 'default',
