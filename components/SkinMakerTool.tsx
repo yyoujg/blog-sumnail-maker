@@ -83,7 +83,7 @@ const BLOG_TEMPLATES: BlogTemplate[] = [
     bgPosition: 'center center',
     cw: 1920, ch: 450,
     elements: [
-      { id: 1, type: 'text', text: '오늘의 맛집 & 베이커리 기록', x: 630, y: 135, fontSize: 52, color: '#ffffff', fontWeight: 'bold' },
+      { id: 1, type: 'text', text: '오늘의 맛집 & 베이커리 기록', x: 630, y: 135, fontSize: 44, color: '#ffffff', fontWeight: 'bold' },
       { id: 2, type: 'text', text: '매일 새로운 맛집을 찾아 솔직하게 기록합니다 🍽️', x: 680, y: 210, fontSize: 18, color: 'rgba(255,255,255,0.80)', fontWeight: 'normal' },
     ],
     rects: [
@@ -105,7 +105,7 @@ const BLOG_TEMPLATES: BlogTemplate[] = [
     bgPosition: 'center 40%',
     cw: 1920, ch: 450,
     elements: [
-      { id: 1, type: 'text', text: '식당 & 맛집 체험단 후기', x: 650, y: 135, fontSize: 52, color: '#ffffff', fontWeight: 'bold' },
+      { id: 1, type: 'text', text: '식당 & 맛집 체험단 후기', x: 650, y: 135, fontSize: 44, color: '#ffffff', fontWeight: 'bold' },
       { id: 2, type: 'text', text: '직접 먹어보고 솔직하게 기록합니다 ✔️', x: 760, y: 210, fontSize: 18, color: 'rgba(255,255,255,0.80)', fontWeight: 'normal' },
     ],
     rects: [
@@ -127,7 +127,7 @@ const BLOG_TEMPLATES: BlogTemplate[] = [
     bgPosition: 'center 35%',
     cw: 1920, ch: 450,
     elements: [
-      { id: 1, type: 'text', text: '재테크 & 자기계발 기록', x: 660, y: 135, fontSize: 52, color: '#ffffff', fontWeight: 'bold' },
+      { id: 1, type: 'text', text: '재테크 & 자기계발 기록', x: 660, y: 135, fontSize: 44, color: '#ffffff', fontWeight: 'bold' },
       { id: 2, type: 'text', text: '몸과 돈, 함께 투자하고 기록합니다 📊', x: 760, y: 210, fontSize: 16, color: '#94a3b8', fontWeight: 'normal' },
     ],
     rects: [
@@ -149,7 +149,7 @@ const BLOG_TEMPLATES: BlogTemplate[] = [
     bgPosition: 'center 35%',
     cw: 1920, ch: 450,
     elements: [
-      { id: 1, type: 'text', text: '나의 일상 & 취미 기록', x: 670, y: 135, fontSize: 52, color: '#ffffff', fontWeight: 'bold' },
+      { id: 1, type: 'text', text: '나의 일상 & 취미 기록', x: 670, y: 135, fontSize: 44, color: '#ffffff', fontWeight: 'bold' },
       { id: 2, type: 'text', text: '소소하지만 특별한 하루하루를 기록합니다 ☀️', x: 720, y: 210, fontSize: 18, color: 'rgba(255,255,255,0.85)', fontWeight: 'normal' },
     ],
     rects: [
@@ -321,7 +321,19 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
     setRects(tpl.rects);
     setSelectedId(null);
     setActiveTemplateId(tpl.id);
+    centerTextOnLoadRef.current = true; // 렌더 후 타이틀/서브타이틀 가로 가운데 정렬
   };
+
+  // 템플릿 로드 직후 텍스트 요소를 안전영역(=캔버스) 가운데로 정렬
+  const centerTextOnLoadRef = useRef(false);
+  useEffect(() => {
+    if (!centerTextOnLoadRef.current) return;
+    centerTextOnLoadRef.current = false;
+    requestAnimationFrame(() => {
+      elements.forEach(el => { if (el.type === 'text') centerEl(el.id); });
+    });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [elements]);
 
   // 마운트: 저장된 작업 복원, 없으면 기본 템플릿
   useEffect(() => {
@@ -474,9 +486,12 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
     setIsDownloadingSkin(true);
     try {
     await document.fonts.ready; // 커스텀/손글씨 폰트가 canvas에 반영되도록 대기
+    // 고해상도 내보내기: 글씨 선명하게(레티나/와이드 화면). 네이버 스킨배경 최대 3000px 한도 내에서 배율 적용.
+    const exportScale = Math.max(1, Math.min(2, 3000 / cw));
     const canvas = document.createElement('canvas');
-    canvas.width = cw; canvas.height = ch;
+    canvas.width = Math.round(cw * exportScale); canvas.height = Math.round(ch * exportScale);
     const ctx = canvas.getContext('2d')!;
+    ctx.scale(exportScale, exportScale);
     ctx.fillStyle = bg;
     ctx.fillRect(0, 0, cw, ch);
     if (bgImage) {
@@ -537,7 +552,7 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
         ctx.font = `bold 20px -apple-system, sans-serif`;
         ctx.fillStyle = r.labelColor || '#333333';
         // 긴 컬럼 위젯: 메뉴 글자는 컬럼 하단(메뉴 위치)에 그림
-        ctx.fillText(r.label, r.x + r.w / 2, r.y + r.h - 28);
+        ctx.fillText(r.label, r.x + r.w / 2, r.y + Math.round(r.h * 0.7));
       }
     }
     triggerDownload(canvas.toDataURL('image/png'), '블로그_스킨.png');
@@ -1047,7 +1062,7 @@ export default function SkinMakerTool({ embedded = false }: { embedded?: boolean
                   }}>
                     <span style={{ position: 'absolute', top: 0, left: 0, background: '#52525b', color: '#fff', fontSize: 8, padding: '1px 4px', fontWeight: 700, zIndex: 1 }}>LINK</span>
                     {r.label && (
-                      <span style={{ position: 'absolute', left: 0, right: 0, bottom: 16, display: 'flex', alignItems: 'flex-end', justifyContent: 'center', fontSize: 20, fontWeight: 'bold', color: r.labelColor || '#333333', pointerEvents: 'none', userSelect: 'none' }}>{r.label}</span>
+                      <span style={{ position: 'absolute', left: 0, right: 0, top: Math.round(r.h * 0.68), display: 'flex', justifyContent: 'center', fontSize: 20, fontWeight: 'bold', color: r.labelColor || '#333333', pointerEvents: 'none', userSelect: 'none' }}>{r.label}</span>
                     )}
                   </div>
                 ))}
