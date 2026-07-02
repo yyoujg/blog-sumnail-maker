@@ -24,7 +24,7 @@ import {
 import { FONTS } from '@/lib/constants';
 
 // ── Constants ──────────────────────────────────
-const WIDGET_W = 170;
+const WIDGET_W = 186;
 const WIDGET_GAP = 10;
 // 공용 투명위젯 (170×600, 알파 0). 코드가 width/height를 강제하므로 크기 무관하게 재사용됨.
 // 사용자는 비공개글 업로드/주소복사 단계를 건너뛴다.
@@ -133,7 +133,7 @@ const BLOG_TEMPLATES: BlogTemplate[] = [
         x: 680,
         y: 210,
         fontSize: 18,
-        color: 'rgba(255,255,255,0.80)',
+        color: '#e0e0e0',
         fontWeight: 'normal',
       },
     ],
@@ -142,7 +142,7 @@ const BLOG_TEMPLATES: BlogTemplate[] = [
         id: 101,
         x: 515,
         y: 0,
-        w: 170,
+        w: 186,
         h: 450,
         url: 'https://',
         label: '맛집 탐방',
@@ -153,7 +153,7 @@ const BLOG_TEMPLATES: BlogTemplate[] = [
         id: 102,
         x: 695,
         y: 0,
-        w: 170,
+        w: 186,
         h: 450,
         url: 'https://',
         label: '카페 기록',
@@ -164,7 +164,7 @@ const BLOG_TEMPLATES: BlogTemplate[] = [
         id: 103,
         x: 875,
         y: 0,
-        w: 170,
+        w: 186,
         h: 450,
         url: 'https://',
         label: '레시피',
@@ -175,7 +175,7 @@ const BLOG_TEMPLATES: BlogTemplate[] = [
         id: 104,
         x: 1055,
         y: 0,
-        w: 170,
+        w: 186,
         h: 450,
         url: 'https://',
         label: '배달 후기',
@@ -186,7 +186,7 @@ const BLOG_TEMPLATES: BlogTemplate[] = [
         id: 105,
         x: 1235,
         y: 0,
-        w: 170,
+        w: 186,
         h: 450,
         url: 'https://',
         label: '카페 투어',
@@ -224,7 +224,7 @@ const BLOG_TEMPLATES: BlogTemplate[] = [
         x: 760,
         y: 210,
         fontSize: 18,
-        color: 'rgba(255,255,255,0.80)',
+        color: '#e0e0e0',
         fontWeight: 'normal',
       },
     ],
@@ -233,7 +233,7 @@ const BLOG_TEMPLATES: BlogTemplate[] = [
         id: 101,
         x: 515,
         y: 0,
-        w: 170,
+        w: 186,
         h: 450,
         url: 'https://',
         label: '체험단',
@@ -244,7 +244,7 @@ const BLOG_TEMPLATES: BlogTemplate[] = [
         id: 102,
         x: 695,
         y: 0,
-        w: 170,
+        w: 186,
         h: 450,
         url: 'https://',
         label: '뷰티·스킨',
@@ -255,7 +255,7 @@ const BLOG_TEMPLATES: BlogTemplate[] = [
         id: 103,
         x: 875,
         y: 0,
-        w: 170,
+        w: 186,
         h: 450,
         url: 'https://',
         label: '생활용품',
@@ -266,7 +266,7 @@ const BLOG_TEMPLATES: BlogTemplate[] = [
         id: 104,
         x: 1055,
         y: 0,
-        w: 170,
+        w: 186,
         h: 450,
         url: 'https://',
         label: '식품 리뷰',
@@ -277,7 +277,7 @@ const BLOG_TEMPLATES: BlogTemplate[] = [
         id: 105,
         x: 1235,
         y: 0,
-        w: 170,
+        w: 186,
         h: 450,
         url: 'https://',
         label: '서비스',
@@ -324,7 +324,7 @@ const BLOG_TEMPLATES: BlogTemplate[] = [
         id: 101,
         x: 515,
         y: 0,
-        w: 170,
+        w: 186,
         h: 450,
         url: 'https://',
         label: '주식 투자',
@@ -335,7 +335,7 @@ const BLOG_TEMPLATES: BlogTemplate[] = [
         id: 102,
         x: 695,
         y: 0,
-        w: 170,
+        w: 186,
         h: 450,
         url: 'https://',
         label: '부동산',
@@ -346,7 +346,7 @@ const BLOG_TEMPLATES: BlogTemplate[] = [
         id: 103,
         x: 875,
         y: 0,
-        w: 170,
+        w: 186,
         h: 450,
         url: 'https://',
         label: '절약 팁',
@@ -357,7 +357,7 @@ const BLOG_TEMPLATES: BlogTemplate[] = [
         id: 104,
         x: 1055,
         y: 0,
-        w: 170,
+        w: 186,
         h: 450,
         url: 'https://',
         label: '재테크 정보',
@@ -368,7 +368,7 @@ const BLOG_TEMPLATES: BlogTemplate[] = [
         id: 105,
         x: 1235,
         y: 0,
-        w: 170,
+        w: 186,
         h: 450,
         url: 'https://',
         label: '수익 후기',
@@ -406,7 +406,7 @@ const BLOG_TEMPLATES: BlogTemplate[] = [
         x: 720,
         y: 210,
         fontSize: 18,
-        color: 'rgba(255,255,255,0.85)',
+        color: '#e6e6e6',
         fontWeight: 'normal',
       },
     ],
@@ -415,7 +415,7 @@ const BLOG_TEMPLATES: BlogTemplate[] = [
         id: 101,
         x: 515,
         y: 0,
-        w: 170,
+        w: 186,
         h: 450,
         url: 'https://',
         label: '일상 기록',
@@ -426,7 +426,7 @@ const BLOG_TEMPLATES: BlogTemplate[] = [
         id: 102,
         x: 695,
         y: 0,
-        w: 170,
+        w: 186,
         h: 450,
         url: 'https://',
         label: '카페·맛집',
@@ -437,7 +437,7 @@ const BLOG_TEMPLATES: BlogTemplate[] = [
         id: 103,
         x: 875,
         y: 0,
-        w: 170,
+        w: 186,
         h: 450,
         url: 'https://',
         label: '여행',
@@ -448,7 +448,7 @@ const BLOG_TEMPLATES: BlogTemplate[] = [
         id: 104,
         x: 1055,
         y: 0,
-        w: 170,
+        w: 186,
         h: 450,
         url: 'https://',
         label: '취미·체험',
@@ -459,7 +459,7 @@ const BLOG_TEMPLATES: BlogTemplate[] = [
         id: 105,
         x: 1235,
         y: 0,
-        w: 170,
+        w: 186,
         h: 450,
         url: 'https://',
         label: '리뷰',
@@ -545,6 +545,7 @@ export default function SkinMakerTool({
   const [bgOffsetX, setBgOffsetX] = useState(50); // 배경 위치 X (%)
   const [bgOffsetY, setBgOffsetY] = useState(50); // 배경 위치 Y (%)
   const bgDragRef = useRef<{ sx: number; sy: number; ox: number; oy: number } | null>(null);
+  const [labelFont, setLabelFont] = useState(DEFAULT_FONT); // 위젯 라벨 폰트 (기본 Pretendard)
 
   const [sidebarTab, setSidebarTab] = useState<'template' | 'design' | 'link'>(
     'template'
@@ -661,6 +662,29 @@ export default function SkinMakerTool({
     updateEl(id, { y: Math.round((ch - h) / 2) });
   };
 
+  // 요소 높이(렌더 기준) 측정
+  const elHeight = (el: CanvasElement) => {
+    if (el.type === 'image') return el.h;
+    const node = canvasRef.current?.querySelector(
+      `[data-elid="${el.id}"]`
+    ) as HTMLElement | null;
+    return node ? node.getBoundingClientRect().height / previewScale : 0;
+  };
+
+  // 제목+서브제목(위에서부터 텍스트 2개)을 현재 간격 유지한 채 묶음으로 세로 가운데 정렬
+  const centerPairV = () => {
+    const texts = elements
+      .filter((e): e is TextElement => e.type === 'text')
+      .sort((a, b) => a.y - b.y);
+    if (texts.length < 2) return;
+    const [top, bottom] = texts;
+    const groupH = bottom.y + elHeight(bottom) - top.y;
+    const newTopY = Math.round((ch - groupH) / 2);
+    const gap = bottom.y - top.y; // 간격 고정(유지)
+    updateEl(top.id, { y: newTopY });
+    updateEl(bottom.id, { y: newTopY + gap });
+  };
+
   const centerRect = (id: number) =>
     setRects((prev) =>
       prev.map((r) =>
@@ -679,7 +703,7 @@ export default function SkinMakerTool({
     });
   };
 
-  // 링크 5칸을 화면의 위젯 가이드(가운데 정렬 5×170px)에 정확히 스냅.
+  // 링크 5칸을 화면의 위젯 가이드(가운데 정렬 5×186px)에 정확히 스냅.
   // 네이버는 투명위젯을 966px 콘텐츠 영역 가운데에 한 줄로 놓으므로,
   // 배경 라벨을 이 그리드에 맞추면 배경 글자 = 실제 클릭영역이 정확히 일치한다.
   const GRID_COUNT = 5;
@@ -770,6 +794,7 @@ export default function SkinMakerTool({
     }
     setBgScale(tpl.bgScale ?? 100);
     setBgRotation(tpl.bgRotation ?? 0);
+    setLabelFont(DEFAULT_FONT);
     setElements(tpl.elements);
     setRects(tpl.rects);
     setSelectedId(null);
@@ -812,6 +837,7 @@ export default function SkinMakerTool({
         }
         setBgScale(s.bgScale ?? 100);
         setBgRotation(s.bgRotation ?? 0);
+        setLabelFont(s.labelFont ?? DEFAULT_FONT);
         setElements(s.elements ?? []);
         setRects(s.rects ?? []);
         setImgUrl(s.imgUrl || DEFAULT_WIDGET_URL);
@@ -838,6 +864,7 @@ export default function SkinMakerTool({
     bgOffsetY,
     bgScale,
     bgRotation,
+    labelFont,
     elements,
     rects,
   });
@@ -868,6 +895,7 @@ export default function SkinMakerTool({
       bgOffsetY,
       bgScale,
       bgRotation,
+      labelFont,
       elements,
       rects,
       imgUrl,
@@ -903,6 +931,7 @@ export default function SkinMakerTool({
     setBgOffsetY(s.bgOffsetY ?? 50);
     setBgScale(s.bgScale ?? 100);
     setBgRotation(s.bgRotation ?? 0);
+    setLabelFont(s.labelFont ?? DEFAULT_FONT);
     setElements(s.elements ?? []);
     setRects(s.rects ?? []);
     setSelectedId(null);
@@ -1039,7 +1068,7 @@ export default function SkinMakerTool({
     const p = canvasPos(e);
     const dragW = Math.abs(p.x - startPos.x);
     const dragH = Math.abs(p.y - startPos.y);
-    // new.md: 위젯 가로 170px 고정, 세로 최대 600px.
+    // new.md: 위젯 가로 186px 고정, 세로 최대 600px.
     const rect = {
       id: Date.now(),
       x: Math.min(startPos.x, p.x),
@@ -1134,7 +1163,7 @@ export default function SkinMakerTool({
         if (r.label) {
           // FIX: 라벨 위치/baseline/폰트를 미리보기와 동일하게 통일.
           // (기존: baseline 'middle' + 0.7 vs 미리보기 top+0.68 → 위치 불일치)
-          ctx.font = `bold 20px 'Apple SD Gothic Neo','Malgun Gothic','Pretendard',sans-serif`;
+          ctx.font = `15px ${labelFont}`;
           ctx.fillStyle = r.labelColor || '#333333';
           ctx.textAlign = 'center';
           ctx.textBaseline = 'top';
@@ -1153,7 +1182,7 @@ export default function SkinMakerTool({
   };
 
   const downloadWidget = () => {
-    // 투명 위젯은 컬럼 1칸 = 가로 170px 고정 × 캔버스(대문) 높이. 투명이라 각 코드의 width/height로 손실 없이 스케일됨.
+    // 투명 위젯은 컬럼 1칸 = 가로 186px 고정 × 캔버스(대문) 높이. 투명이라 각 코드의 width/height로 손실 없이 스케일됨.
     const h = Math.min(600, ch); // 위젯 세로 최대 600
     const canvas = document.createElement('canvas');
     canvas.width = WIDGET_W;
@@ -1489,6 +1518,39 @@ export default function SkinMakerTool({
                               ))}
                             </select>
                           </div>
+                          <div>
+                            <label className="block text-xs font-semibold text-gray-500 mb-1">
+                              굵기
+                            </label>
+                            <div className="grid grid-cols-2 gap-2">
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  updateEl(selectedEl.id, { fontWeight: 'normal' })
+                                }
+                                className={`py-2 rounded-lg border text-xs font-semibold transition ${
+                                  selectedEl.fontWeight === 'bold'
+                                    ? 'border-gray-200 bg-white text-gray-500 hover:border-gray-400'
+                                    : 'border-gray-900 bg-gray-900 text-white'
+                                }`}
+                              >
+                                보통
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() =>
+                                  updateEl(selectedEl.id, { fontWeight: 'bold' })
+                                }
+                                className={`py-2 rounded-lg border text-xs font-bold transition ${
+                                  selectedEl.fontWeight === 'bold'
+                                    ? 'border-gray-900 bg-gray-900 text-white'
+                                    : 'border-gray-200 bg-white text-gray-500 hover:border-gray-400'
+                                }`}
+                              >
+                                굵게
+                              </button>
+                            </div>
+                          </div>
                         </>
                       )}
                       {selectedEl.type === 'image' && (
@@ -1537,6 +1599,19 @@ export default function SkinMakerTool({
                         </button>
                       </div>
                     </div>
+                  )}
+
+                  {elements.filter((e) => e.type === 'text').length >= 2 && (
+                    <button
+                      onClick={centerPairV}
+                      className="w-full flex items-center justify-center gap-1.5 py-2 rounded-lg border border-gray-300 bg-white text-xs font-semibold text-gray-600 hover:border-gray-500 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-500"
+                    >
+                      <AlignHorizontalJustifyCenter
+                        size={13}
+                        style={{ transform: 'rotate(90deg)' }}
+                      />{' '}
+                      제목+서브 묶음 세로 가운데
+                    </button>
                   )}
 
                   <div>
@@ -1687,6 +1762,26 @@ export default function SkinMakerTool({
                     </details>
                   </div>
                   <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      위젯 글씨 폰트
+                    </label>
+                    <select
+                      value={labelFont}
+                      onChange={(e) => setLabelFont(e.target.value)}
+                      aria-label="위젯 라벨 폰트"
+                      className="w-full p-2 border border-gray-300 rounded-lg text-sm outline-none focus:ring-2 focus:ring-gray-500 bg-white"
+                    >
+                      {FONTS.map((f) => (
+                        <option key={f.name} value={f.value} style={{ fontFamily: f.value }}>
+                          {f.name}
+                        </option>
+                      ))}
+                    </select>
+                    <p className="text-[11px] text-gray-400 mt-1.5">
+                      모든 위젯 칸 라벨에 함께 적용됩니다.
+                    </p>
+                  </div>
+                  <div>
                     <div className="flex items-center justify-between mb-2 gap-1">
                       <label className="block text-sm font-medium text-gray-700 flex-shrink-0">
                         링크 ({rects.length})
@@ -1827,7 +1922,7 @@ export default function SkinMakerTool({
                                 </p>
                               </>
                             )}
-                            {/* 크기 — 네이버 위젯은 가로 170px 고정, 세로 최대 600px */}
+                            {/* 크기 — 위젯 가로 186px 고정, 세로 최대 600px */}
                             <div className="grid grid-cols-2 gap-1.5 mb-2">
                               <div>
                                 <p className="text-[10px] text-gray-400 font-semibold mb-1">
@@ -1835,10 +1930,10 @@ export default function SkinMakerTool({
                                 </p>
                                 <input
                                   type="text"
-                                  value="170 (고정)"
+                                  value="186 (고정)"
                                   readOnly
                                   tabIndex={-1}
-                                  aria-label="링크 영역 너비 (170px 고정)"
+                                  aria-label="링크 영역 너비 (186px 고정)"
                                   className="w-full p-1.5 border border-gray-200 rounded-lg text-xs bg-gray-50 text-gray-400 outline-none cursor-not-allowed"
                                 />
                               </div>
@@ -2071,7 +2166,7 @@ export default function SkinMakerTool({
                       }}
                     />
                   )}
-                  {/* 위젯 칸 가이드 — 한 줄 5칸(가로 170px·간격 10px) 가운데 정렬 */}
+                  {/* 위젯 칸 가이드 — 한 줄 5칸(가로 186px·간격 10px) 가운데 정렬 */}
                   <div
                     style={{
                       position: 'absolute',
@@ -2305,8 +2400,9 @@ export default function SkinMakerTool({
                             top: Math.round(r.h * LABEL_Y_RATIO),
                             display: 'flex',
                             justifyContent: 'center',
-                            fontSize: 20,
-                            fontWeight: 'bold',
+                            fontSize: 15,
+                            fontWeight: 'normal',
+                            fontFamily: labelFont,
                             color: r.labelColor || '#333333',
                             pointerEvents: 'none',
                             userSelect: 'none',
