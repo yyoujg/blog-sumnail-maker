@@ -2437,7 +2437,7 @@ export default function SkinMakerTool({
                       top: 8,
                       right: 8,
                       display: 'flex',
-                      flexDirection: 'column',
+                      flexDirection: 'row',
                       gap: 6,
                       zIndex: 60,
                     }}
