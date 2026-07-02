@@ -12,9 +12,11 @@
 - 배경: 단색, 이미지 업로드, 오버레이 불투명도, 위치 조절
 - 텍스트 레이어: 폰트(검은고딕, 주아, 도현, 프리텐다드 등), 크기, 색상, 굵기, 드래그 배치
 - 이미지 요소: 업로드 후 드래그 이동, 모서리 리사이즈, 비율 유지
-- 클릭형 링크 영역: 캔버스에 사각형을 그려 URL을 지정하고 네이버 블로그 위젯용 HTML(image map) 생성
+- 클릭형 링크 영역: 캔버스에 사각형을 그려 링크를 지정하고 네이버 블로그 위젯용 HTML(image map) 생성
+  - 내 블로그 ID만 입력하면 카테고리 목록을 자동으로 불러와 드롭다운에서 선택(내부 링크는 blogId+categoryNo 자동 조립, 외부 링크는 URL 직접 입력)
+  - 링크 5칸을 위젯 가이드(가로 170px 5칸)에 정확히 맞추는 그리드 스냅
 - 프리셋 템플릿: 맛집 리뷰, 체험단, 재테크, 라이프스타일 등
-- 내보내기: PNG 다운로드, 투명 위젯 슬라이스(170x450), 위젯 HTML 복사
+- 내보내기: PNG 다운로드, 투명 위젯 슬라이스(170x600), 위젯 HTML 복사(공용 투명 위젯 이미지 자동 적용)
 
 ### 가이드 블로그 (`app/blog`, `data/blogPosts.ts`)
 - `data/blogPosts.ts` 단일 소스에서 모든 글을 정적 생성(`generateStaticParams`)
@@ -23,7 +25,7 @@
 - 관련글, 이전/다음 내비게이션, 광고 슬롯
 
 ## 기술 스택
-- Next.js 16.1.6 (App Router, SSG)
+- Next.js 16.1.6 (App Router, SSG + Route Handlers)
 - React 19.2.3 / TypeScript 5
 - Tailwind CSS 4
 - lucide-react (아이콘)
@@ -50,6 +52,7 @@ npm run start
 app/                 Next.js App Router
   page.tsx           홈(썸네일 메이커)
   layout.tsx         루트 레이아웃 (AdSense, Analytics, 구조화 데이터)
+  api/               Route Handlers (naver-categories: 블로그 카테고리 조회 프록시)
   blog/              블로그 목록 및 [slug] 상세
   skin-maker/        스킨 메이커 라우트
   guide/             가이드 페이지

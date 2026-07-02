@@ -539,6 +539,8 @@ export default function SkinMakerTool({
   const [showGuide, setShowGuide] = useState(false);
   const [imgUrl, setImgUrl] = useState(DEFAULT_WIDGET_URL);
   const [blogId, setBlogId] = useState('');
+  const [cats, setCats] = useState<{ no: string; name: string; postCnt: number }[]>([]);
+  const [loadingCats, setLoadingCats] = useState(false);
   const [activeTemplateId, setActiveTemplateId] = useState<string | null>(null);
   const [showGrowthTips, setShowGrowthTips] = useState(false);
   const [isDownloadingSkin, setIsDownloadingSkin] = useState(false);
@@ -568,6 +570,31 @@ export default function SkinMakerTool({
     setToast(msg);
     if (toastTimer.current) clearTimeout(toastTimer.current);
     toastTimer.current = setTimeout(() => setToast(null), 2000);
+  };
+
+  // 내 블로그 카테고리 목록을 서버 경유로 불러온다 (브라우저 직접 호출은 CORS 차단)
+  const loadCats = async () => {
+    if (!blogId) {
+      showToast('블로그 ID를 먼저 입력하세요');
+      return;
+    }
+    setLoadingCats(true);
+    try {
+      const r = await fetch(
+        `/api/naver-categories?blogId=${encodeURIComponent(blogId)}`
+      );
+      const d = await r.json();
+      setCats(d.categories ?? []);
+      showToast(
+        d.categories?.length
+          ? `카테고리 ${d.categories.length}개 불러옴`
+          : '카테고리를 못 가져왔습니다'
+      );
+    } catch {
+      showToast('불러오기 실패');
+    } finally {
+      setLoadingCats(false);
+    }
   };
 
   // ── undo history (design state snapshots) ──
@@ -1591,6 +1618,18 @@ export default function SkinMakerTool({
                     <p className="text-[11px] text-gray-400 mt-1.5 leading-relaxed">
                       blog.naver.com/<b>이부분</b> 이 내 블로그 ID입니다.
                     </p>
+                    <button
+                      onClick={loadCats}
+                      disabled={loadingCats}
+                      className="mt-2 w-full flex items-center justify-center gap-1 text-xs font-semibold text-white bg-[#03c75a] hover:bg-[#02b350] disabled:opacity-50 rounded-lg px-2 py-2 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-500"
+                    >
+                      {loadingCats ? '불러오는 중...' : '카테고리 불러오기'}
+                    </button>
+                    {cats.length > 0 && (
+                      <p className="text-[11px] text-green-600 mt-1.5">
+                        카테고리 {cats.length}개 불러옴 - 각 링크칸에서 선택하세요.
+                      </p>
+                    )}
                   </div>
                   <div>
                     <div className="bg-blue-50 border border-blue-200 rounded-xl p-2.5 mb-2">
@@ -1709,28 +1748,51 @@ export default function SkinMakerTool({
                               />
                             ) : (
                               <>
-                                <input
-                                  value={r.categoryNo ?? ''}
-                                  inputMode="numeric"
-                                  onChange={(e) =>
-                                    setRects((prev) =>
-                                      prev.map((x) =>
-                                        x.id === r.id
-                                          ? {
-                                              ...x,
-                                              categoryNo:
-                                                e.target.value.replace(
-                                                  /[^0-9]/g,
-                                                  ''
-                                                ),
-                                            }
-                                          : x
+                                {cats.length > 0 ? (
+                                  <select
+                                    value={r.categoryNo ?? ''}
+                                    onChange={(e) =>
+                                      setRects((prev) =>
+                                        prev.map((x) =>
+                                          x.id === r.id
+                                            ? { ...x, categoryNo: e.target.value }
+                                            : x
+                                        )
                                       )
-                                    )
-                                  }
-                                  className="w-full p-2 border border-gray-300 rounded-lg text-xs outline-none focus:ring-2 focus:ring-gray-500 mb-1"
-                                  placeholder="카테고리 번호 (예: 53)"
-                                />
+                                    }
+                                    className="w-full p-2 border border-gray-300 rounded-lg text-xs outline-none focus:ring-2 focus:ring-gray-500 mb-1 bg-white"
+                                  >
+                                    <option value="">카테고리 선택</option>
+                                    {cats.map((c) => (
+                                      <option key={c.no} value={c.no}>
+                                        {c.name} ({c.no})
+                                      </option>
+                                    ))}
+                                  </select>
+                                ) : (
+                                  <input
+                                    value={r.categoryNo ?? ''}
+                                    inputMode="numeric"
+                                    onChange={(e) =>
+                                      setRects((prev) =>
+                                        prev.map((x) =>
+                                          x.id === r.id
+                                            ? {
+                                                ...x,
+                                                categoryNo:
+                                                  e.target.value.replace(
+                                                    /[^0-9]/g,
+                                                    ''
+                                                  ),
+                                              }
+                                            : x
+                                        )
+                                      )
+                                    }
+                                    className="w-full p-2 border border-gray-300 rounded-lg text-xs outline-none focus:ring-2 focus:ring-gray-500 mb-1"
+                                    placeholder="카테고리 번호 (예: 53)"
+                                  />
+                                )}
                                 <p className="text-[10px] text-gray-400 mb-2 break-all leading-relaxed">
                                   → {catUrl(blogId, r.categoryNo || '')}
                                 </p>
