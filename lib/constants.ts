@@ -4,7 +4,7 @@ export const PAGE_DESCRIPTION =
 export const PAGE_KEYWORDS =
   '네이버 블로그 CTR, 블로그 검색 노출, 키워드 전략, 썸네일 문구, 블로그 제목 작성법, 네이버 블로그 SEO, 블로그 조회수, 썸네일 만들기, 네이버 블로그 스킨, 블로그 스킨 만들기, 스킨메이커, 투명 위젯';
 export const OG_DESCRIPTION =
-  '블로그 CTR·검색유입·썸네일 전략 가이드 80편 이상과, 가이드를 실습하는 무료 썸네일·스킨 도구를 한곳에서 제공합니다.';
+  '블로그 CTR·검색유입·썸네일 전략 가이드와, 가이드를 실습하는 무료 썸네일·스킨 도구를 한곳에서 제공합니다.';
 
 export const ADSENSE_CLIENT = 'ca-pub-3008434788043586';
 export const ADSENSE_SCRIPT_SRC = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${ADSENSE_CLIENT}`;

@@ -9,7 +9,6 @@ import ControlPanel from '@/components/ControlPanel';
 import ThumbnailPreview from '@/components/ThumbnailPreview';
 import SiteHeader from '@/components/SiteHeader';
 import SiteFooter from '@/components/SiteFooter';
-import AdBanner from '@/components/AdBanner';
 import { HTML2CANVAS_SCRIPT_SRC } from '@/lib/constants';
 import { blogPosts } from '@/data/blogPosts';
 
@@ -332,7 +331,7 @@ export function HomeTool({ seoAfterTool }: { seoAfterTool?: React.ReactNode }) {
             <p>
               BlogKit은 네이버 블로그 운영자를 위한 <strong className="font-semibold text-gray-800">콘텐츠·연구
               가이드</strong> 사이트입니다. 클릭률(CTR), 검색 유입, 제목 구조, 키워드 배치, 썸네일 문구 패턴을
-              80편 이상의 글로 정리해 두었고, 같은 도메인에서 가이드를 읽은 뒤 바로 적용할 수 있는{' '}
+              {blogPosts.length}편의 글로 정리해 두었고, 같은 도메인에서 가이드를 읽은 뒤 바로 적용할 수 있는{' '}
               <strong className="font-semibold text-gray-800">무료 썸네일·스킨 도구</strong>를 보조로 제공합니다.
             </p>
             <p>
@@ -384,6 +383,39 @@ export function HomeTool({ seoAfterTool }: { seoAfterTool?: React.ReactNode }) {
               className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-white border border-gray-200 text-sm font-semibold text-gray-800 hover:border-gray-400 transition-colors"
             >
               블로그 스킨메이커
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ── 가이드 글 목록 (콘텐츠 우선) ── */}
+      <section aria-labelledby="home-posts-heading" className="px-4 md:px-8 py-8 md:py-10 bg-white border-b border-gray-200">
+        <div className="max-w-6xl mx-auto">
+          <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">가이드 글</p>
+          <h2 id="home-posts-heading" className="text-xl font-bold text-gray-900 mb-6">
+            네이버 블로그 운영 실전 가이드
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            {[...blogPosts]
+              .sort((a, b) => b.date.localeCompare(a.date))
+              .map((post) => (
+                <Link
+                  key={post.slug}
+                  href={`/blog/${post.slug}`}
+                  className="block p-4 bg-[#f5f5f0] rounded-xl border border-gray-200 hover:border-gray-300 hover:shadow-sm transition-all"
+                >
+                  <p className="text-xs text-gray-400 mb-1">{post.date}</p>
+                  <p className="text-sm font-bold text-gray-900 leading-snug mb-1">{post.title}</p>
+                  <p className="text-xs text-gray-500 line-clamp-2">{post.summary}</p>
+                </Link>
+              ))}
+          </div>
+          <div className="mt-6">
+            <Link
+              href="/blog"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#111111] text-white text-sm font-semibold hover:bg-gray-800 transition-colors"
+            >
+              가이드 전체 보기
             </Link>
           </div>
         </div>
@@ -514,13 +546,6 @@ export function HomeTool({ seoAfterTool }: { seoAfterTool?: React.ReactNode }) {
         </section>
       )}
 
-      {/* 광고 */}
-      <div className="px-4 md:px-8">
-        <div className="max-w-6xl mx-auto">
-          <AdBanner position="home-mid" type="adsense" />
-        </div>
-      </div>
-
       {/* 인기 템플릿 */}
       <section id="popular-templates" className="px-4 md:px-8 py-8 md:py-10 border-t border-gray-200">
         <div className="max-w-6xl mx-auto">
@@ -551,13 +576,6 @@ export function HomeTool({ seoAfterTool }: { seoAfterTool?: React.ReactNode }) {
           </div>
         </div>
       </section>
-
-      {/* 광고 */}
-      <div className="px-4 md:px-8">
-        <div className="max-w-6xl mx-auto">
-          <AdBanner position="home-bottom" type="adsense" />
-        </div>
-      </div>
 
       {/* html2canvas: 썸네일 다운로드 기능이 있는 이 페이지에서만 로드 */}
       <Script src={HTML2CANVAS_SCRIPT_SRC} strategy="afterInteractive" />

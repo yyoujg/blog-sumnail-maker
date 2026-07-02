@@ -19,21 +19,21 @@ import AdBanner from '@/components/AdBanner';
 
 export const metadata: Metadata = {
   title: '블로그 CTR·검색·썸네일 전략 가이드',
-  description: '네이버 블로그 CTR, 검색 노출, 키워드, 제목, 썸네일 문구, 수익화·체험단까지 80편 이상의 실전 가이드 모음.',
+  description: `네이버 블로그 CTR, 검색 노출, 키워드, 제목, 썸네일 문구, 수익화·체험단까지 총 ${blogPosts.length}편의 실전 가이드 모음.`,
   keywords: '네이버 블로그 CTR, 블로그 검색 노출, 키워드 전략, 썸네일 문구, 블로그 제목, 블로그 SEO, 블로그 조회수',
   alternates: {
     canonical: 'https://www.blogsumnail.com/blog',
   },
   openGraph: {
     title: '블로그 CTR·검색·썸네일 전략 가이드 — BlogKit',
-    description: '네이버 블로그 CTR, 검색 노출, 키워드, 제목, 썸네일 문구까지 실전 가이드 80편 이상.',
+    description: `네이버 블로그 CTR, 검색 노출, 키워드, 제목, 썸네일 문구까지 총 ${blogPosts.length}편의 실전 가이드.`,
     type: 'website',
     url: 'https://www.blogsumnail.com/blog',
   },
   twitter: {
     card: 'summary_large_image',
     title: '블로그 CTR·검색·썸네일 전략 가이드 — BlogKit',
-    description: '네이버 블로그 CTR, 검색 노출, 키워드, 제목, 썸네일 문구까지 실전 가이드 80편 이상.',
+    description: `네이버 블로그 CTR, 검색 노출, 키워드, 제목, 썸네일 문구까지 총 ${blogPosts.length}편의 실전 가이드.`,
   },
 };
 

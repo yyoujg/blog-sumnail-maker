@@ -3,7 +3,6 @@ import Link from 'next/link';
 import SiteHeader from '@/components/SiteHeader';
 import SiteFooter from '@/components/SiteFooter';
 import SkinMakerTool from '@/components/SkinMakerTool';
-import AdBanner from '@/components/AdBanner';
 import { SITE_URL } from '@/lib/constants';
 
 const PAGE_TITLE =
@@ -159,13 +158,6 @@ export default function SkinMakerPage() {
           <SkinMakerTool embedded />
         </div>
       </section>
-
-      {/* 광고 */}
-      <div className="px-4 md:px-8">
-        <div className="max-w-6xl mx-auto">
-          <AdBanner position="skin-maker-mid" type="adsense" />
-        </div>
-      </div>
 
       {/* FAQ */}
       <section

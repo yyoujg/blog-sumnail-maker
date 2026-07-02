@@ -60,7 +60,7 @@ export default function AboutPage() {
               <h2 className="text-xl font-bold text-gray-900">콘텐츠 범위</h2>
             </div>
             <p className="text-sm text-gray-700 leading-relaxed mb-3">
-              80편 이상의 가이드 글을 11개 카테고리(키워드·제목·방문자·수익화·썸네일 등)로 운영합니다.
+              블로그 성장에 필요한 가이드 글을 키워드·제목·방문자·수익화·썸네일 등 카테고리로 운영합니다.
               시즌별 키워드, CTR 제목 공식, 체험단·리뷰 촬영 등 검색 유입과 클릭에 직결되는 주제를
               중심으로 보강하고 있습니다.
             </p>
