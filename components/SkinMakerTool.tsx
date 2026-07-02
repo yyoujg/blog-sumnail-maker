@@ -36,6 +36,14 @@ const catUrl = (blogId: string, categoryNo: string) =>
   `https://blog.naver.com/PostList.naver?blogId=${blogId || 'MY_BLOG_ID'}&categoryNo=${categoryNo || '0'}`;
 const LABEL_Y_RATIO = 0.7; // 라벨 세로 위치 — 미리보기·export 공용 (불일치 방지)
 
+// 템플릿의 bgPosition('center 40%' 등)을 배경 offset(%)로 변환
+function posToOffset(pos?: string): { x: number; y: number } {
+  const [h = 'center', v = 'center'] = (pos ?? 'center center').split(' ');
+  const fx = h === 'left' ? 0 : h === 'right' ? 100 : h.endsWith('%') ? parseFloat(h) : 50;
+  const fy = v === 'top' ? 0 : v === 'bottom' ? 100 : v.endsWith('%') ? parseFloat(v) : 50;
+  return { x: fx, y: fy };
+}
+
 interface TextElement {
   id: number;
   type: 'text';
@@ -86,6 +94,8 @@ interface BlogTemplate {
   bgImage?: string;
   bgOverlay?: number;
   bgPosition?: string;
+  bgScale?: number;
+  bgRotation?: number;
   cw: number;
   ch: number;
   elements: CanvasElement[];
@@ -530,7 +540,11 @@ export default function SkinMakerTool({
   const [bg, setBg] = useState('#f5f1ee');
   const [bgImage, setBgImage] = useState<string | null>(null);
   const [bgOverlay, setBgOverlay] = useState(0);
-  const [bgPosition, setBgPosition] = useState('center center');
+  const [bgScale, setBgScale] = useState(100); // 배경 확대 (%) 100~250
+  const [bgRotation, setBgRotation] = useState(0); // 배경 회전 (deg, 90° 단위)
+  const [bgOffsetX, setBgOffsetX] = useState(50); // 배경 위치 X (%)
+  const [bgOffsetY, setBgOffsetY] = useState(50); // 배경 위치 Y (%)
+  const bgDragRef = useRef<{ sx: number; sy: number; ox: number; oy: number } | null>(null);
 
   const [sidebarTab, setSidebarTab] = useState<'template' | 'design' | 'link'>(
     'template'
@@ -749,7 +763,13 @@ export default function SkinMakerTool({
     setBg(tpl.bg);
     setBgImage(tpl.bgImage ?? null);
     setBgOverlay(tpl.bgOverlay ?? 0);
-    setBgPosition(tpl.bgPosition ?? 'center center');
+    {
+      const off = posToOffset(tpl.bgPosition);
+      setBgOffsetX(off.x);
+      setBgOffsetY(off.y);
+    }
+    setBgScale(tpl.bgScale ?? 100);
+    setBgRotation(tpl.bgRotation ?? 0);
     setElements(tpl.elements);
     setRects(tpl.rects);
     setSelectedId(null);
@@ -785,7 +805,13 @@ export default function SkinMakerTool({
         setBg(s.bg);
         setBgImage(s.bgImage ?? null);
         setBgOverlay(s.bgOverlay ?? 0);
-        setBgPosition(s.bgPosition ?? 'center center');
+        {
+          const off = posToOffset(s.bgPosition);
+          setBgOffsetX(s.bgOffsetX ?? off.x);
+          setBgOffsetY(s.bgOffsetY ?? off.y);
+        }
+        setBgScale(s.bgScale ?? 100);
+        setBgRotation(s.bgRotation ?? 0);
         setElements(s.elements ?? []);
         setRects(s.rects ?? []);
         setImgUrl(s.imgUrl || DEFAULT_WIDGET_URL);
@@ -808,7 +834,10 @@ export default function SkinMakerTool({
     bg,
     bgImage,
     bgOverlay,
-    bgPosition,
+    bgOffsetX,
+    bgOffsetY,
+    bgScale,
+    bgRotation,
     elements,
     rects,
   });
@@ -835,7 +864,10 @@ export default function SkinMakerTool({
       bg,
       bgImage,
       bgOverlay,
-      bgPosition,
+      bgOffsetX,
+      bgOffsetY,
+      bgScale,
+      bgRotation,
       elements,
       rects,
       imgUrl,
@@ -867,7 +899,10 @@ export default function SkinMakerTool({
     setBg(s.bg);
     setBgImage(s.bgImage ?? null);
     setBgOverlay(s.bgOverlay ?? 0);
-    setBgPosition(s.bgPosition ?? 'center center');
+    setBgOffsetX(s.bgOffsetX ?? 50);
+    setBgOffsetY(s.bgOffsetY ?? 50);
+    setBgScale(s.bgScale ?? 100);
+    setBgRotation(s.bgRotation ?? 0);
     setElements(s.elements ?? []);
     setRects(s.rects ?? []);
     setSelectedId(null);
@@ -957,9 +992,36 @@ export default function SkinMakerTool({
       setDrawing(true);
       setStartPos(p);
       setPreviewRect({ x: p.x, y: p.y, w: 0, h: 0 });
-    } else {
-      setSelectedId(null);
+      return;
     }
+    setSelectedId(null);
+    if (!bgImage) return;
+    // 배경 이미지 드래그로 위치(offset%) 이동 — 썸네일 메이커와 동일
+    e.preventDefault();
+    const rw = cw * previewScale;
+    const rh = ch * previewScale;
+    const sx = rw > 0 ? 100 / rw : 0;
+    const sy = rh > 0 ? 100 / rh : 0;
+    const x0 = e.clientX,
+      y0 = e.clientY,
+      ox = bgOffsetX,
+      oy = bgOffsetY;
+    const dragStartSnap = prevSnapRef.current;
+    suppressHistoryRef.current = true;
+    const onMove = (me: MouseEvent) => {
+      setBgOffsetX(Math.max(0, Math.min(100, ox - (me.clientX - x0) * sx)));
+      setBgOffsetY(Math.max(0, Math.min(100, oy - (me.clientY - y0) * sy)));
+    };
+    const onUp = () => {
+      window.removeEventListener('mousemove', onMove);
+      window.removeEventListener('mouseup', onUp);
+      suppressHistoryRef.current = false;
+      if (dragStartSnap !== null && dragStartSnap !== prevSnapRef.current) {
+        setHistory((h) => [...h.slice(-29), dragStartSnap]);
+      }
+    };
+    window.addEventListener('mousemove', onMove);
+    window.addEventListener('mouseup', onUp);
   };
   const onCanvasMove = (e: React.MouseEvent) => {
     if (sidebarTab !== 'link' || !drawing) return;
@@ -995,14 +1057,16 @@ export default function SkinMakerTool({
     setIsDownloadingSkin(true);
     try {
       await document.fonts.ready; // 커스텀/손글씨 폰트가 canvas에 반영되도록 대기
-      // FIX: export 확대(exportScale) 제거 → 캔버스를 1:1로 그린다.
-      // 네이버 스킨배경은 이미지를 화면 중앙(50%)에 원본 px 그대로 노출하므로,
-      // 확대해서 내보내면 가운데 966px 콘텐츠 영역과 위젯/타이틀 위치가 어긋난다.
-      // 선명도가 필요하면 [배경] 탭에서 캔버스 가로(cw)를 최대 3000까지 키워서 작업할 것.
+      // 고해상도 내보내기: 모든 좌표/폰트는 논리 px(cw×ch) 그대로 두고 ctx.scale로 픽셀만 확대한다.
+      // 균일 배율이라 요소 상대 위치는 1:1과 동일 → 네이버가 스킨을 w3000으로 확대 표시해도 배경·글씨가 선명.
+      const exportScale = Math.max(1, 3000 / cw);
       const canvas = document.createElement('canvas');
-      canvas.width = cw;
-      canvas.height = ch;
+      canvas.width = Math.round(cw * exportScale);
+      canvas.height = Math.round(ch * exportScale);
       const ctx = canvas.getContext('2d')!;
+      ctx.scale(exportScale, exportScale);
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = 'high';
       ctx.fillStyle = bg;
       ctx.fillRect(0, 0, cw, ch);
       if (bgImage) {
@@ -1010,35 +1074,24 @@ export default function SkinMakerTool({
           const img = new Image();
           img.crossOrigin = 'anonymous';
           img.onload = () => {
-            // object-fit: cover + bgPosition
-            const scale = Math.max(
-              cw / img.naturalWidth,
-              ch / img.naturalHeight
-            );
-            const dw = img.naturalWidth * scale;
-            const dh = img.naturalHeight * scale;
-            const parts = bgPosition.split(' ');
-            const hStr = parts[0] ?? 'center';
-            const vStr = parts[1] ?? 'center';
-            const hFrac =
-              hStr === 'left'
-                ? 0
-                : hStr === 'right'
-                  ? 1
-                  : hStr.endsWith('%')
-                    ? parseFloat(hStr) / 100
-                    : 0.5;
-            const vFrac =
-              vStr === 'top'
-                ? 0
-                : vStr === 'bottom'
-                  ? 1
-                  : vStr.endsWith('%')
-                    ? parseFloat(vStr) / 100
-                    : 0.5;
-            const dx = -(dw - cw) * hFrac;
-            const dy = -(dh - ch) * vFrac;
+            // 미리보기와 동일 모델: background-size(cover 또는 %) + background-position(offset%) + 중심 회전
+            let dw: number, dh: number;
+            if (bgScale === 100) {
+              const s = Math.max(cw / img.naturalWidth, ch / img.naturalHeight);
+              dw = img.naturalWidth * s;
+              dh = img.naturalHeight * s;
+            } else {
+              dw = cw * (bgScale / 100);
+              dh = dw * (img.naturalHeight / img.naturalWidth);
+            }
+            const dx = (cw - dw) * (bgOffsetX / 100);
+            const dy = (ch - dh) * (bgOffsetY / 100);
+            ctx.save();
+            ctx.translate(cw / 2, ch / 2);
+            ctx.rotate((bgRotation * Math.PI) / 180);
+            ctx.translate(-cw / 2, -ch / 2);
             ctx.drawImage(img, dx, dy, dw, dh);
+            ctx.restore();
             res();
           };
           img.onerror = () => res();
@@ -1327,54 +1380,30 @@ export default function SkinMakerTool({
                           className="w-full cursor-pointer accent-gray-700"
                         />
                       </div>
-                      <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
-                          위치
-                        </label>
-                        <div className="grid grid-cols-3 gap-1 w-fit">
-                          {(['top', 'center', 'bottom'] as const).map((v) =>
-                            (['left', 'center', 'right'] as const).map((h) => {
-                              const value = `${h} ${v}`;
-                              const isActive = bgPosition === value;
-                              const dotPos = {
-                                'top-left': 'items-start justify-start',
-                                'top-center': 'items-start justify-center',
-                                'top-right': 'items-start justify-end',
-                                'center-left': 'items-center justify-start',
-                                'center-center': 'items-center justify-center',
-                                'center-right': 'items-center justify-end',
-                                'bottom-left': 'items-end justify-start',
-                                'bottom-center': 'items-end justify-center',
-                                'bottom-right': 'items-end justify-end',
-                              }[`${v}-${h}`];
-                              const posLabel = `${v === 'top' ? '상단' : v === 'center' ? '중간' : '하단'} ${h === 'left' ? '왼쪽' : h === 'center' ? '가운데' : '오른쪽'}`;
-                              return (
-                                <button
-                                  key={`${v}-${h}`}
-                                  type="button"
-                                  title={posLabel}
-                                  aria-label={`배경 이미지 위치 ${posLabel}`}
-                                  aria-pressed={isActive}
-                                  onClick={() => setBgPosition(value)}
-                                  className={`w-9 h-9 rounded border flex p-1.5 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-500 focus-visible:ring-offset-1 ${
-                                    isActive
-                                      ? 'bg-[#111111] border-[#111111]'
-                                      : 'bg-white border-gray-200 hover:border-gray-400'
-                                  }`}
-                                >
-                                  <span
-                                    className={`flex w-full h-full ${dotPos}`}
-                                  >
-                                    <span
-                                      className={`w-1.5 h-1.5 rounded-full ${isActive ? 'bg-white' : 'bg-gray-400'}`}
-                                    />
-                                  </span>
-                                </button>
-                              );
-                            })
-                          )}
-                        </div>
+                      <div className="bg-gray-50 border border-gray-200 rounded-lg p-2.5">
+                        <p className="text-[11px] text-gray-500 leading-relaxed">
+                          미리보기에서 배경을 <b>드래그</b>해 위치를 맞추고, 우측 상단
+                          버튼으로 <b>확대·축소(+/-)</b>와 <b>90° 회전</b>을 조절하세요.
+                          <br />현재 확대 {bgScale}% · 회전 {bgRotation}°
+                        </p>
                       </div>
+                      {(bgScale !== 100 ||
+                        bgRotation !== 0 ||
+                        bgOffsetX !== 50 ||
+                        bgOffsetY !== 50) && (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setBgScale(100);
+                            setBgRotation(0);
+                            setBgOffsetX(50);
+                            setBgOffsetY(50);
+                          }}
+                          className="w-full text-xs text-gray-500 hover:text-gray-800 border border-gray-200 rounded-lg py-1.5 transition"
+                        >
+                          배경 위치·확대·회전 초기화
+                        </button>
+                      )}
                     </>
                   )}
                 </>
@@ -1983,6 +2012,7 @@ export default function SkinMakerTool({
               <div
                 ref={previewWrapperRef}
                 style={{
+                  position: 'relative',
                   width: '100%',
                   height: ch * previewScale,
                   overflow: 'hidden',
@@ -1997,11 +2027,14 @@ export default function SkinMakerTool({
                     width: cw,
                     height: ch,
                     backgroundColor: bg,
-                    backgroundImage: bgImage ? `url('${bgImage}')` : 'none',
-                    backgroundSize: 'cover',
-                    backgroundPosition: bgPosition,
+                    overflow: 'hidden',
                     flexShrink: 0,
-                    cursor: sidebarTab === 'link' ? 'crosshair' : 'default',
+                    cursor:
+                      sidebarTab === 'link'
+                        ? 'crosshair'
+                        : bgImage
+                          ? 'grab'
+                          : 'default',
                     transform: `scale(${previewScale})`,
                     transformOrigin: 'top left',
                   }}
@@ -2009,6 +2042,23 @@ export default function SkinMakerTool({
                   onMouseMove={onCanvasMove}
                   onMouseUp={onCanvasUp}
                 >
+                  {/* BG image — background-size(cover/%) + position(offset%) + 회전 (export와 동일 모델) */}
+                  {bgImage && (
+                    <div
+                      style={{
+                        position: 'absolute',
+                        inset: 0,
+                        backgroundImage: `url('${bgImage}')`,
+                        backgroundRepeat: 'no-repeat',
+                        backgroundSize:
+                          bgScale === 100 ? 'cover' : `${bgScale}%`,
+                        backgroundPosition: `${bgOffsetX}% ${bgOffsetY}%`,
+                        transform: `rotate(${bgRotation}deg)`,
+                        pointerEvents: 'none',
+                        zIndex: 0,
+                      }}
+                    />
+                  )}
                   {/* BG overlay */}
                   {bgImage && bgOverlay > 0 && (
                     <div
@@ -2284,6 +2334,49 @@ export default function SkinMakerTool({
                     />
                   )}
                 </div>
+                {bgImage && (
+                  <div
+                    style={{
+                      position: 'absolute',
+                      top: 8,
+                      right: 8,
+                      display: 'flex',
+                      flexDirection: 'column',
+                      gap: 6,
+                      zIndex: 60,
+                    }}
+                  >
+                    <button
+                      type="button"
+                      onClick={() => setBgScale((s) => Math.min(250, s + 10))}
+                      disabled={bgScale >= 250}
+                      title="배경 확대"
+                      aria-label={`배경 확대 (현재 ${bgScale}%)`}
+                      className="bg-black/50 hover:bg-black/70 disabled:opacity-40 text-white rounded-full w-9 h-9 flex items-center justify-center text-lg font-bold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                    >
+                      +
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setBgScale((s) => Math.max(100, s - 10))}
+                      disabled={bgScale <= 100}
+                      title="배경 축소"
+                      aria-label={`배경 축소 (현재 ${bgScale}%)`}
+                      className="bg-black/50 hover:bg-black/70 disabled:opacity-40 text-white rounded-full w-9 h-9 flex items-center justify-center text-lg font-bold transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                    >
+                      -
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setBgRotation((r) => (r + 90) % 360)}
+                      title="배경 90도 회전"
+                      aria-label={`배경 90도 회전 (현재 ${bgRotation}도)`}
+                      className="bg-black/50 hover:bg-black/70 text-white rounded-full w-9 h-9 flex items-center justify-center text-lg transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white"
+                    >
+                      &#8635;
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
 
