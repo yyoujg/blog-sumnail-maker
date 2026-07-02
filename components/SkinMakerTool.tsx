@@ -1163,7 +1163,7 @@ export default function SkinMakerTool({
         if (r.label) {
           // FIX: 라벨 위치/baseline/폰트를 미리보기와 동일하게 통일.
           // (기존: baseline 'middle' + 0.7 vs 미리보기 top+0.68 → 위치 불일치)
-          ctx.font = `15px ${labelFont}`;
+          ctx.font = `300 15px ${labelFont}`;
           ctx.fillStyle = r.labelColor || '#333333';
           ctx.textAlign = 'center';
           ctx.textBaseline = 'top';
@@ -2401,7 +2401,7 @@ export default function SkinMakerTool({
                             display: 'flex',
                             justifyContent: 'center',
                             fontSize: 15,
-                            fontWeight: 'normal',
+                            fontWeight: 300,
                             fontFamily: labelFont,
                             color: r.labelColor || '#333333',
                             pointerEvents: 'none',
