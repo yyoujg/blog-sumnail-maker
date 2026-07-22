@@ -1716,7 +1716,7 @@ export default function SkinMakerTool({
                     <input
                       value={blogId}
                       onChange={(e) => setBlogId(e.target.value.trim())}
-                      placeholder="예: andn8740"
+                      placeholder="예: myblogid"
                       className="w-full p-2 border border-gray-300 rounded-lg text-xs focus:ring-2 focus:ring-gray-500 outline-none"
                     />
                     <p className="text-[11px] text-gray-400 mt-1.5 leading-relaxed">
