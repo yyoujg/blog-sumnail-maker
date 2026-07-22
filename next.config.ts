@@ -1,6 +1,10 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  images: {
+    // 본문 사진이 4032px 원본이라 전송량이 큼. AVIF 우선으로 webp 대비 20~30% 절감
+    formats: ['image/avif', 'image/webp'],
+  },
   async headers() {
     return [
       {
