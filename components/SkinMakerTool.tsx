@@ -731,7 +731,17 @@ export default function SkinMakerTool({
             }) as LinkRect
         ),
       ];
-      return filled.map((r, i) => ({ ...r, x: colX(i), w: WIDGET_W }));
+      const baseY = prev.length ? Math.min(...prev.map((r) => r.y)) : 0;
+      const baseH = prev.length
+        ? Math.min(600, ch - baseY, Math.max(...prev.map((r) => r.h)))
+        : Math.min(600, ch - baseY, ch);
+      return filled.map((r, i) => ({
+        ...r,
+        x: colX(i),
+        w: WIDGET_W,
+        y: baseY,
+        h: baseH,
+      }));
     });
   };
 
@@ -1789,7 +1799,7 @@ export default function SkinMakerTool({
                       <div className="flex items-center gap-1">
                         <button
                           onClick={snapRectsToWidgetGrid}
-                          title="메뉴 5칸을 위젯 가이드에 정확히 맞춤 (배경 글자 = 클릭영역 일치)"
+                          title="메뉴 5칸을 위젯 가이드에 맞춤 (가로 위치·폭 + 세로 위치·높이 통일)"
                           className="flex items-center gap-1 text-xs font-semibold text-white bg-[#111111] hover:bg-[#222] rounded-lg px-2 py-1 transition focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-gray-500"
                         >
                           <Layout size={12} /> 5칸 그리드 맞춤
