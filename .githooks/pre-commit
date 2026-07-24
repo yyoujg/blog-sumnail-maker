@@ -1,0 +1,27 @@
+#!/bin/sh
+# 1MB 초과 파일 커밋 차단.
+# 이 레포는 폰트 릴리스 폴더와 미사용 원본 JPEG가 쌓여 clone이 1.2GB까지 커진 적이 있다.
+# 활성화: git config core.hooksPath .githooks
+
+LIMIT=1048576
+over=""
+
+while IFS= read -r file; do
+	[ -f "$file" ] || continue
+	size=$(wc -c < "$file" | tr -d ' ')
+	if [ "$size" -gt "$LIMIT" ]; then
+		over="$over$(printf '%8.1fMB  %s\n' "$(echo "$size" | awk '{print $1/1048576}')" "$file")
+"
+	fi
+done <<EOF
+$(git diff --cached --name-only --diff-filter=ACM)
+EOF
+
+if [ -n "$over" ]; then
+	echo "커밋 거부: 1MB를 초과하는 파일이 있습니다."
+	echo ""
+	printf '%s' "$over"
+	echo "이미지는 커밋 전에 압축하거나 리사이즈하세요."
+	echo "의도한 커밋이라면: git commit --no-verify"
+	exit 1
+fi
