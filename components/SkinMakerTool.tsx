@@ -484,22 +484,59 @@ function widgetNo(rects: LinkRect[], r: LinkRect): number {
   );
 }
 
-function buildHTML(rects: LinkRect[], imgSrc: string, blogId: string): string {
-  const src = imgSrc || '투명이미지주소를_입력해주세요';
-  return rects
-    .map((r, i) => {
-      const head = `<!-- 위젯 칸 ${widgetNo(rects, r)}번 -->`;
-      const w = Math.round(r.w);
-      const h = Math.round(r.h);
-      // 외부링크(새 창)는 url 직접 사용, 내부는 blogId+categoryNo 조립.
-      const href = r.newWindow ? r.url : catUrl(blogId, r.categoryNo || '');
-      // 이미지 = 버튼: 표시 크기를 영역 크기로 강제하고 좌표를 이미지 기준 상대좌표로 → 위치 독립.
-      if (r.newWindow) {
-        return `${head}\n<a href="${href}" target="_blank"><img src="${src}" width="${w}" height="${h}" /></a>`;
-      }
-      return `${head}\n<img src="${src}" width="${w}" height="${h}" usemap="#map_${i}" />\n<map name="map_${i}">\n <area shape="rect" coords="0,0,${w},${h}" href="${href}" target="_top" />\n</map>`;
-    })
-    .join('\n\n');
+const LINK_PLACEHOLDER = '여기에 이동할 링크 주소 붙여넣기';
+const imgPlaceholder = (label: string) => `여기에 [${label}] 이미지 주소 붙여넣기`;
+
+// 버튼위젯 href: 외부(새 창) URL 우선 → 내부 카테고리 조립 → placeholder
+function widgetHref(r: LinkRect, blogId: string): string {
+  if (r.newWindow) {
+    return r.url && r.url !== 'https://' && r.url !== 'https'
+      ? r.url
+      : LINK_PLACEHOLDER;
+  }
+  if (r.categoryNo) return catUrl(blogId, r.categoryNo);
+  return LINK_PLACEHOLDER;
+}
+
+// 투명위젯 코드 — 공용 투명 PNG(1x1) 고정. width/height로 rect 크기만큼 늘려 사용.
+// 투명이라 업로드/주소복사 단계 불필요.
+function transparentWidgetCode(r: LinkRect): string {
+  const w = Math.round(r.w);
+  const h = Math.round(r.h);
+  return `<img src="${DEFAULT_WIDGET_URL}" width="${w}" height="${h}" />`;
+}
+
+// 버튼위젯 코드 — 이미지맵. map name은 widget{n}으로 반드시 고유(1~5).
+// 동일 name을 재사용하면 브라우저가 첫 map만 인식해 2~5번 클릭이 죽는 버그가 있어
+// index로 분리한다. coords는 rect 실제 w/h에서 자동 계산 → "0,0,{w},{h}" 고정.
+function buttonWidgetCode(r: LinkRect, n: number, blogId: string): string {
+  const w = Math.round(r.w);
+  const h = Math.round(r.h);
+  const target = r.newWindow ? '_blank' : '_top';
+  return `<img src="${imgPlaceholder(`버튼위젯 ${n}`)}" usemap="#widget${n}" />
+<map name="widget${n}">
+<area shape="rect" coords="0,0,${w},${h}" href="${widgetHref(r, blogId)}" target="${target}" />
+</map>`;
+}
+
+// 캔버스 rect를 좌→우 순서로 정렬해 위젯 코드 목록(투명 N개 + 버튼 N개) 생성
+function buildWidgets(rects: LinkRect[], blogId: string) {
+  const sorted = [...rects].sort((a, b) => a.x - b.x);
+  return [
+    ...sorted.map((r, i) => ({
+      label: `투명위젯 ${i + 1}`,
+      code: transparentWidgetCode(r),
+    })),
+    ...sorted.map((r, i) => ({
+      label: `버튼위젯 ${i + 1}`,
+      code: buttonWidgetCode(r, i + 1, blogId),
+    })),
+  ];
+}
+
+// 전체 복사용: 각 코드 앞에 라벨 주석을 구분선으로 붙여 이어붙임
+function joinWidgets(widgets: { label: string; code: string }[]): string {
+  return widgets.map((w) => `<!-- ${w.label} -->\n${w.code}`).join('\n\n');
 }
 
 function triggerDownload(dataUrl: string, name: string) {
@@ -577,6 +614,10 @@ export default function SkinMakerTool({
   const previewWrapperRef = useRef<HTMLDivElement>(null);
   const [previewScale, setPreviewScale] = useState(1);
   const selectedEl = elements.find((e) => e.id === selectedId) || null;
+
+  // 위젯 직접등록용 코드 (투명 N개 + 버튼 N개, 좌→우 정렬)
+  const widgets = buildWidgets(rects, blogId);
+  const allCode = joinWidgets(widgets);
 
   // ── toast ──
   const [toast, setToast] = useState<string | null>(null);
@@ -2615,7 +2656,7 @@ export default function SkinMakerTool({
                     DONE!
                   </div>
                   <div style={{ color: '#94a3b8', fontSize: 13, marginTop: 4 }}>
-                    네이버 블로그 위젯 설정에 이 코드를 복사해 넣으세요.
+                    투명위젯·버튼위젯 코드를 위젯 직접등록에 하나씩 붙여넣으세요.
                   </div>
                 </div>
                 <button
@@ -2649,54 +2690,89 @@ export default function SkinMakerTool({
                       marginBottom: 12,
                     }}
                   >
-                    ⚠️ [링크] 탭에서 내 블로그 ID를 입력하세요. 지금은
-                    MY_BLOG_ID로 표시됩니다.
+                    ⚠️ [링크] 탭에서 내 블로그 ID를 입력하면 버튼위젯 링크가 자동
+                    조립됩니다. 지금은 MY_BLOG_ID로 표시됩니다.
                   </div>
                 )}
-                <pre
+                <button
+                  onClick={() =>
+                    showToast(
+                      copyText(allCode)
+                        ? '전체 코드가 복사되었습니다'
+                        : '복사 실패 - 직접 드래그해 복사하세요'
+                    )
+                  }
+                  style={btnStyle('#18181b', '#fff', true, 'none', 12, 13)}
+                >
+                  <Code size={14} /> 전체 코드 한 번에 복사
+                </button>
+                <p
                   style={{
-                    background: '#f8f8f8',
-                    border: '1px solid #e4e4e7',
-                    borderRadius: 12,
-                    padding: 16,
-                    fontSize: 11,
-                    fontFamily: 'monospace',
-                    overflowX: 'auto',
-                    maxHeight: 280,
+                    fontSize: 12,
+                    color: '#64748b',
                     lineHeight: 1.6,
-                    color: '#3f3f46',
+                    margin: '12px 0 0',
                   }}
                 >
-                  {buildHTML(rects, imgUrl || DEFAULT_WIDGET_URL, blogId)}
-                </pre>
-                <div style={{ display: 'flex', gap: 10, marginTop: 16 }}>
-                  <button
-                    onClick={() =>
-                      showToast(
-                        copyText(
-                          buildHTML(rects, imgUrl || DEFAULT_WIDGET_URL, blogId)
-                        )
-                          ? '복사되었습니다'
-                          : '복사 실패 - 직접 드래그해 복사하세요'
-                      )
-                    }
-                    style={btnStyle('#18181b', '#fff', false, 'none', 14, 14)}
-                  >
-                    전체 코드 복사하기
-                  </button>
-                  <button
-                    onClick={() => setShowCode(false)}
-                    style={btnStyle(
-                      '#f4f4f5',
-                      '#3f3f46',
-                      false,
-                      'none',
-                      14,
-                      12
-                    )}
-                  >
-                    닫기
-                  </button>
+                  네이버 블로그 [관리]-[꾸미기설정]-[디자인설정]-[레이아웃·위젯
+                  설정]-[위젯 직접등록]에서 위젯 이름을 정하고 이 코드를
+                  붙여넣으세요.
+                  <br />
+                  투명위젯은 업로드 없이 바로 사용 가능합니다. 버튼위젯 5개만
+                  비공개 게시글에 이미지 업로드 후 주소를 붙여넣으세요.
+                </p>
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: 16,
+                    marginTop: 16,
+                  }}
+                >
+                  {widgets.map((wg) => (
+                    <div key={wg.label}>
+                      <div
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                          alignItems: 'center',
+                          marginBottom: 6,
+                        }}
+                      >
+                        <span
+                          style={{
+                            fontSize: 12,
+                            fontWeight: 800,
+                            color: '#0f172a',
+                          }}
+                        >
+                          {wg.label}
+                        </span>
+                        <button
+                          onClick={() =>
+                            showToast(
+                              copyText(wg.code)
+                                ? `${wg.label} 복사됨`
+                                : '복사 실패 - 직접 드래그해 복사하세요'
+                            )
+                          }
+                          style={{
+                            background: '#f4f4f5',
+                            color: '#3f3f46',
+                            border: 'none',
+                            borderRadius: 8,
+                            padding: '5px 14px',
+                            fontSize: 12,
+                            fontWeight: 700,
+                            cursor: 'pointer',
+                          }}
+                        >
+                          복사
+                        </button>
+                      </div>
+                      <pre style={codePre}>{wg.code}</pre>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
@@ -2975,6 +3051,19 @@ const overlay: React.CSSProperties = {
   justifyContent: 'center',
   background: 'rgba(15,23,42,0.7)',
   padding: 16,
+};
+const codePre: React.CSSProperties = {
+  background: '#f8f8f8',
+  border: '1px solid #e4e4e7',
+  borderRadius: 10,
+  padding: '10px 12px',
+  fontSize: 11,
+  fontFamily: 'monospace',
+  overflowX: 'auto',
+  lineHeight: 1.6,
+  color: '#3f3f46',
+  margin: 0,
+  whiteSpace: 'pre',
 };
 const sectionLabel: React.CSSProperties = {
   display: 'flex',
