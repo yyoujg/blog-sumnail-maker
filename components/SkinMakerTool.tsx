@@ -20,6 +20,7 @@ import {
   ChevronUp,
   AlignHorizontalJustifyCenter,
   Undo2,
+  RotateCcw,
 } from 'lucide-react';
 import { FONTS } from '@/lib/constants';
 
@@ -1295,8 +1296,9 @@ export default function SkinMakerTool({
                     /* noop */
                   }
                 }}
-                className="flex-shrink-0 px-3 py-2 rounded-xl text-xs font-semibold text-gray-400 hover:text-gray-600 transition"
+                className="flex-shrink-0 flex items-center gap-1.5 rounded-xl border border-gray-200 hover:border-gray-300 px-3 py-2 text-xs font-semibold text-gray-400 hover:text-gray-600 transition"
               >
+                <RotateCcw className="w-3.5 h-3.5" />
                 초기화
               </button>
             )}
