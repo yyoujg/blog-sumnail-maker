@@ -62,7 +62,7 @@ export default function HomeSeoContent() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
       <div className="max-w-6xl mx-auto space-y-12">
-        <div className="max-w-4xl">
+        <div className="max-w-3xl">
           <h2 id="home-guide-heading" className="text-xl md:text-2xl font-bold text-gray-900 mb-6">
             썸네일 전략 실습 가이드
           </h2>
@@ -117,7 +117,7 @@ export default function HomeSeoContent() {
           </p>
         </div>
 
-        <div className="max-w-4xl">
+        <div className="max-w-3xl">
           <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-6">자주 묻는 질문 (FAQ)</h2>
           <div className="space-y-6">
             {FAQ_ITEMS.map((item) => (
@@ -129,7 +129,7 @@ export default function HomeSeoContent() {
           </div>
         </div>
 
-        <div className="max-w-4xl">
+        <div className="max-w-3xl">
           <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-4">
             썸네일이 조회수·클릭률에 미치는 영향
           </h2>

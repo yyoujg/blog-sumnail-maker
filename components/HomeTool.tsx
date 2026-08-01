@@ -327,7 +327,7 @@ export function HomeTool({ seoAfterTool }: { seoAfterTool?: React.ReactNode }) {
               </p>
             </div>
           </div>
-          <div className="space-y-4 text-sm text-gray-600 leading-relaxed max-w-4xl">
+          <div className="space-y-4 text-sm text-gray-600 leading-relaxed max-w-3xl">
             <p>
               BlogKit은 네이버 블로그 운영자를 위한 <strong className="font-semibold text-gray-800">콘텐츠·연구
               가이드</strong> 사이트입니다. 클릭률(CTR), 검색 유입, 제목 구조, 키워드 배치, 썸네일 문구 패턴을
