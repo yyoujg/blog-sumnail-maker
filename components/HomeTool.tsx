@@ -428,10 +428,10 @@ export function HomeTool({ seoAfterTool }: { seoAfterTool?: React.ReactNode }) {
           {/* 썸네일 메이커 */}
           <>
               {/* 도구 안내 헤더 */}
-              <div className="mb-6">
-                <p className="text-xs font-bold text-gray-400 uppercase tracking-widest">무료 도구</p>
-                <h2 className="text-xl font-bold text-gray-900">썸네일 만들기</h2>
-                <p className="text-sm text-gray-500">프리셋을 고르고 제목만 바꾸면 됩니다. 가입 없이 PNG로 저장.</p>
+              <div>
+                <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-2">무료 도구</p>
+                <h2 className="text-xl font-bold text-gray-900 mb-1">썸네일 만들기</h2>
+                <p className="text-sm text-gray-500 mb-6">프리셋을 고르고 제목만 바꾸면 됩니다. 가입 없이 PNG로 저장하세요.</p>
               </div>
 
               {/* 스타일 프리셋 선택 */}
