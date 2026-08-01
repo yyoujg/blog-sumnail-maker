@@ -207,7 +207,7 @@ export default function BlogListPage() {
     <div className="min-h-screen bg-[#f5f5f0] font-sans">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
       <SiteHeader />
-      <div className="max-w-2xl mx-auto px-4 md:px-8 py-8 md:py-12">
+      <div className="max-w-3xl mx-auto px-4 md:px-8 py-8 md:py-12">
 
         {/* 헤더 */}
         <div className="mb-8">

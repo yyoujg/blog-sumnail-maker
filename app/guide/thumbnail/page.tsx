@@ -32,7 +32,7 @@ export default function ThumbnailGuidePage() {
   return (
     <div className="min-h-screen bg-[#f5f5f0] text-gray-800 font-sans">
       <SiteHeader />
-      <div className="max-w-2xl mx-auto px-4 md:px-8 py-10">
+      <div className="max-w-3xl mx-auto px-4 md:px-8 py-10">
         <h1 className="text-3xl font-bold text-gray-900 mt-6 mb-3 leading-tight">
           블로그 썸네일 만들기<br />
           클릭률(CTR)과 조회수 올리는 3가지 비밀
