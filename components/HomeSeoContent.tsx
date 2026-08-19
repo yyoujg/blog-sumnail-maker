@@ -69,7 +69,7 @@ export default function HomeSeoContent() {
           <div className="space-y-8">
             <div>
               <h3 className="text-base font-bold text-gray-900 mb-2">STEP 1 — 글 주제와 검색 키워드 정하기</h3>
-              <p className="text-sm text-gray-600 leading-relaxed">
+              <p className="text-base text-gray-600 leading-relaxed">
                 썸네일 문구는 글 제목보다 짧아야 합니다. 맛집·카페·여행 등 니치에 맞는 핵심 키워드 1~2개만
                 골라 두세요. 예: &ldquo;성수동 카페&rdquo;, &ldquo;솔직 체험단 후기&rdquo;. 키워드가 정해지면
                 아래 도구에서 제목·서브타이틀 입력란에 바로 넣을 수 있습니다.
@@ -77,7 +77,7 @@ export default function HomeSeoContent() {
             </div>
             <div>
               <h3 className="text-base font-bold text-gray-900 mb-2">STEP 2 — 배경 사진 또는 색상 선택</h3>
-              <p className="text-sm text-gray-600 leading-relaxed">
+              <p className="text-base text-gray-600 leading-relaxed">
                 직접 촬영한 사진을 올리거나, 프리셋에 포함된 예시 배경을 골라 시작할 수 있습니다. 사진 위에
                 글자를 올릴 때는 오버레이(어두운 반투명 레이어)를 20~40% 정도 주면 모바일 목록에서도 글자가
                 잘 읽힙니다.
@@ -85,7 +85,7 @@ export default function HomeSeoContent() {
             </div>
             <div>
               <h3 className="text-base font-bold text-gray-900 mb-2">STEP 3 — 프레임·폰트·카테고리 맞추기</h3>
-              <p className="text-sm text-gray-600 leading-relaxed">
+              <p className="text-base text-gray-600 leading-relaxed">
                 아웃라인·감성·보더 등 스타일 프리셋을 고른 뒤, 카테고리 레이블(맛집·카페·체험단 등)을 한
                 개만 넣어 정보 밀도를 높이세요. 블로그 전체 톤에 맞는 폰트·색을 20개 글 이상 유지하면 목록
                 화면에서 통일감이 생깁니다.
@@ -93,14 +93,14 @@ export default function HomeSeoContent() {
             </div>
             <div>
               <h3 className="text-base font-bold text-gray-900 mb-2">STEP 4 — PNG 저장 후 네이버에 업로드</h3>
-              <p className="text-sm text-gray-600 leading-relaxed">
+              <p className="text-base text-gray-600 leading-relaxed">
                 텍스트가 들어간 썸네일은 PNG, 사진만 있는 경우는 JPG도 가능합니다. 고화질(2×) 옵션을 켜면
                 800px급으로 저장되어 흐릿함을 줄일 수 있습니다. 저장 후 네이버 블로그 글쓰기에서 대표
                 이미지로 등록하세요.
               </p>
             </div>
           </div>
-          <p className="mt-6 text-sm text-gray-600">
+          <p className="mt-6 text-base text-gray-600 leading-relaxed">
             더 자세한 설명은{' '}
             <Link href="/blog/how-to-make-blog-thumbnail" className="font-semibold text-gray-900 underline underline-offset-2">
               썸네일 완전 가이드
@@ -123,7 +123,7 @@ export default function HomeSeoContent() {
             {FAQ_ITEMS.map((item) => (
               <div key={item.question}>
                 <h3 className="text-base font-bold text-gray-900 mb-2">{item.question}</h3>
-                <p className="text-sm text-gray-600 leading-relaxed">{item.answer}</p>
+                <p className="text-base text-gray-600 leading-relaxed">{item.answer}</p>
               </div>
             ))}
           </div>
@@ -133,16 +133,16 @@ export default function HomeSeoContent() {
           <h2 className="text-xl md:text-2xl font-bold text-gray-900 mb-4">
             썸네일이 조회수·클릭률에 미치는 영향
           </h2>
-          <p className="text-sm text-gray-600 leading-relaxed mb-3">
+          <p className="text-base text-gray-600 leading-relaxed mb-3">
             네이버 블로그 검색·이웃 피드·추천 목록에서 사용자는 글 제목과 대표 이미지를 동시에 봅니다. 같은
             키워드라도 썸네일에 핵심이 한눈에 들어오면 클릭이 먼저 일어나고, 클릭이 없으면 본문이 아무리
             좋아도 노출 효과를 확인하기 어렵습니다.
           </p>
-          <p className="text-sm text-gray-600 leading-relaxed mb-3">
+          <p className="text-base text-gray-600 leading-relaxed mb-3">
             썸네일은 &ldquo;예쁜 그림&rdquo;이 아니라 글의 약속을 한 줄로 전달하는 장치에 가깝습니다. 지명·메뉴·
             상황·신뢰 키워드(솔직 후기, 가격, 웨이팅) 중 하나를 분명히 박아 두면, 단순 감상글과 구분됩니다.
           </p>
-          <p className="text-sm text-gray-600 leading-relaxed">
+          <p className="text-base text-gray-600 leading-relaxed">
             도구로 빠르게 통일된 썸네일을 만들고,{' '}
             <Link href="/blog" className="font-semibold text-gray-900 underline underline-offset-2">
               블로그 가이드

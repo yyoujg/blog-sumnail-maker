@@ -119,7 +119,7 @@ export default function SkinMakerPage() {
             <br />
             무료 스킨·투명 위젯 디자인 도구
           </h1>
-          <div className="space-y-3 text-sm text-gray-600 leading-relaxed max-w-3xl">
+          <div className="space-y-3 text-base text-gray-600 leading-relaxed max-w-3xl">
             <p>
               <strong className="font-semibold text-gray-800">스킨메이커</strong>는 네이버 블로그
               상단 스킨 배경, 타이틀 이미지, 그리고 투명 위젯 영역까지 한 화면에서 디자인하고 PNG로
@@ -175,12 +175,12 @@ export default function SkinMakerPage() {
             {FAQ_ITEMS.map((item) => (
               <div key={item.question}>
                 <h3 className="text-base font-bold text-gray-900 mb-2">{item.question}</h3>
-                <p className="text-sm text-gray-600 leading-relaxed">{item.answer}</p>
+                <p className="text-base text-gray-600 leading-relaxed">{item.answer}</p>
               </div>
             ))}
           </div>
 
-          <div className="mt-10 pt-8 border-t border-gray-100 text-sm text-gray-600 leading-relaxed max-w-3xl">
+          <div className="mt-10 pt-8 border-t border-gray-100 text-base text-gray-600 leading-relaxed max-w-3xl">
             <p className="mb-2">
               스킨 디자인 다음 단계로 추천하는 글
             </p>
