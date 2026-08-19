@@ -74,6 +74,14 @@ function outlineShadow(color: string, w: number) {
   return parts.join(', ');
 }
 
+// 밝은 글자색(노랑·흰색)에 흰 외곽선을 두르면 묻히므로 명도로 외곽선 색을 고른다
+function isLightColor(hex: string) {
+  const m = hex.match(/^#([0-9a-f]{6})$/i);
+  if (!m) return false;
+  const n = parseInt(m[1], 16);
+  return (0.2126 * ((n >> 16) & 255) + 0.7152 * ((n >> 8) & 255) + 0.0722 * (n & 255)) / 255 > 0.7;
+}
+
 // *\uB2E8\uC5B4*\uB294 \uAC15\uC870\uC0C9, \uC774\uBAA8\uC9C0\uB294 \uC678\uACFD\uC120 \uC81C\uC678 (\uCEEC\uB7EC \uC774\uBAA8\uC9C0\uC5D0 \uADF8\uB9BC\uC790\uAC00 \uBC88\uC9C0\uB294 \uAC83 \uBC29\uC9C0)
 function renderTitleLine(line: string, shadowCss: string | null, accentColor?: string) {
   return line.split(ACCENT_RE).flatMap((seg, i) => {
@@ -335,8 +343,11 @@ export default function ThumbnailPreview({
                     wordBreak: 'keep-all',
                     fontFamily: subtitleFontFamily,
                     color: subtitleColor,
-                    // ponytail: 손글씨 캡션 외곽선은 흰 2px 고정, 커스텀 요구가 생기면 필드로 승격
-                    textShadow: outlineShadow('#ffffff', 2),
+                    // ponytail: 캡션 외곽선은 명도 기반 흑/백 자동 선택, 커스텀 요구가 생기면 필드로 승격
+                    textShadow: outlineShadow(
+                      subtitleColor && isLightColor(subtitleColor) ? 'rgba(0,0,0,0.75)' : '#ffffff',
+                      2
+                    ),
                   }}
                 >
                   {subtitle}
