@@ -100,6 +100,8 @@ const STYLE_PRESETS: readonly StylePreset[] = [
     categoryOptions: ['카페 기록', '맛집 탐방', '방문 후기', '재방문 리스트'],
     textShadow: true,
     accentColor: '#ff8fb3',
+    subtitlePosition: 'above',
+    subtitleColor: '#5d4037',
   },
   {
     id: 'review',
@@ -320,7 +322,7 @@ const STYLE_PRESETS: readonly StylePreset[] = [
     titleHighlightColor: '#ffffff',
     subtitlePosition: 'above',
     subtitleFontFamily: `'Nanum Pen Script', cursive`,
-    subtitleColor: '#ffffff',
+    subtitleColor: '#e8590c',
   },
   {
     id: 'simple',
