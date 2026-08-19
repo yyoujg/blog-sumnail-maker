@@ -97,8 +97,8 @@ export default function ThumbnailGuidePage() {
           <h3 className="text-base font-bold text-gray-900 mb-3">이런 썸네일이 클릭률이 높습니다</h3>
           <div className="grid grid-cols-2 gap-3">
             {[
-              { bg: '/images/cafe.jpg', category: '맛집', title: '성수동 감성 카페 추천', overlay: 0.45 },
-              { bg: '/images/jungyeon-food-1390412.jpg', category: '체험단', title: '솔직 체험단 후기', overlay: 0.5 },
+              { bg: '/images/260208에디션엠/에디션엠-감귤케이크-딸기음료-메인.JPG', category: '카페', title: '분위기 좋은 감성 카페', overlay: 0.45 },
+              { bg: '/images/250118코르크베이크바/IMG_7578.JPG', category: '체험단', title: '솔직 체험단 후기', overlay: 0.5 },
             ].map((s, i) => (
               <div
                 key={i}
