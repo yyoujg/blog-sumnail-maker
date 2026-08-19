@@ -58,30 +58,30 @@ interface StylePreset {
 
 const STYLE_PRESETS: readonly StylePreset[] = [
   {
-    id: 'naver',
-    label: '아웃라인',
-    imageAlt: '네이버 블로그 맛집 썸네일 204x204 치킨·맥주 후기 스타일 예시',
-    emoji: '📝',
-    bgType: 'image' as BgType,
+    id: 'mukbang-red',
+    label: '푸드팝',
+    imageAlt: '네이버 블로그 먹방 썸네일 204x204 두꺼운 외곽선 뭉티기 예시',
+    emoji: '🍖',
+    bgType: 'image',
     bgColor: '#1a1a1a',
-    bgImage: '/images/251116애플하우스/IMG_6831.JPG',
+    bgImage: '/images/260402환이네뭉티기호매실본점/IMG_9191.JPG',
     textColor: '#ffffff',
-    fontFamily: `'JalnanGothic', sans-serif`,
-    frameType: 'band' as FrameType,
+    fontFamily: `'CookieRun', sans-serif`,
+    frameType: 'none',
     overlayOpacity: 0,
-    textAlign: 'left' as TextAlign,
-    textVAlign: 'bottom' as TextVAlign,
-    title: '*맥주* 맛집 🍺\n치킨 세트 후기',
-    subtitle: '겉바속촉 그 자체 !!',
+    textAlign: 'center',
+    textVAlign: 'bottom',
+    title: '대구 별미\n*뭉티기* 먹방',
+    subtitle: '입에서 살살 녹아요 ~~!!',
     category: '',
-    categoryOptions: ['맛집 후기', '술집 추천', '안주 맛집', '재방문 의사'],
+    categoryOptions: ['맛집 후기', '현지인 맛집', '먹방', '재방문 의사'],
     textShadow: true,
-    accentColor: '#ffd43b',
-    outlineColor: '#d62828',
-    outlineWidth: 3,
+    accentColor: '#ffe14d',
+    outlineColor: '#e63946',
+    outlineWidth: 4,
     subtitlePosition: 'above',
     subtitleFontFamily: `'Nanum Pen Script', cursive`,
-    subtitleColor: '#d62828',
+    subtitleColor: '#e63946',
   },
   {
     id: 'cafe',
@@ -178,32 +178,6 @@ const STYLE_PRESETS: readonly StylePreset[] = [
     subtitlePosition: 'above',
     subtitleFontFamily: `'Gamja Flower', cursive`,
     subtitleColor: '#ffffff',
-  },
-  {
-    id: 'mukbang-red',
-    label: '푸드팝',
-    imageAlt: '네이버 블로그 먹방 썸네일 204x204 두꺼운 외곽선 뭉티기 예시',
-    emoji: '🍖',
-    bgType: 'image',
-    bgColor: '#1a1a1a',
-    bgImage: '/images/260402환이네뭉티기호매실본점/IMG_9191.JPG',
-    textColor: '#ffffff',
-    fontFamily: `'CookieRun', sans-serif`,
-    frameType: 'none',
-    overlayOpacity: 0,
-    textAlign: 'center',
-    textVAlign: 'bottom',
-    title: '대구 별미\n*뭉티기* 먹방',
-    subtitle: '입에서 살살 녹아요 ~~!!',
-    category: '',
-    categoryOptions: ['맛집 후기', '현지인 맛집', '먹방', '재방문 의사'],
-    textShadow: true,
-    accentColor: '#ffe14d',
-    outlineColor: '#e63946',
-    outlineWidth: 4,
-    subtitlePosition: 'above',
-    subtitleFontFamily: `'Nanum Pen Script', cursive`,
-    subtitleColor: '#e63946',
   },
   {
     id: 'mukbang-fresh',
@@ -337,34 +311,36 @@ const STYLE_PRESETS: readonly StylePreset[] = [
 ];
 
 
+const DEFAULT_PRESET = STYLE_PRESETS[0];
+
 export function HomeTool({ seoAfterTool }: { seoAfterTool?: React.ReactNode }) {
-  const [title, setTitle] = useState('맥주 맛집 🍺\n치킨 세트 후기');
-  const [subtitle, setSubtitle] = useState('수제맥주랑 먹으니 완벽했습니다');
-  const [category, setCategory] = useState('');
+  const [title, setTitle] = useState(DEFAULT_PRESET.title);
+  const [subtitle, setSubtitle] = useState(DEFAULT_PRESET.subtitle);
+  const [category, setCategory] = useState(DEFAULT_PRESET.category);
 
-  const [bgType, setBgType] = useState<BgType>('image');
-  const [bgColor, setBgColor] = useState('#1a1a1a');
-  const [bgImage, setBgImage] = useState<string | null>('/images/251116애플하우스/IMG_6831.JPG');
+  const [bgType, setBgType] = useState<BgType>(DEFAULT_PRESET.bgType);
+  const [bgColor, setBgColor] = useState(DEFAULT_PRESET.bgColor);
+  const [bgImage, setBgImage] = useState<string | null>(DEFAULT_PRESET.bgImage || null);
 
-  const [textColor, setTextColor] = useState('#ffffff');
-  const [fontFamily, setFontFamily] = useState(`'Pretendard', sans-serif`);
-  const [textAlign, setTextAlign] = useState<TextAlign>('left');
-  const [textVAlign, setTextVAlign] = useState<TextVAlign>('bottom');
+  const [textColor, setTextColor] = useState(DEFAULT_PRESET.textColor);
+  const [fontFamily, setFontFamily] = useState(DEFAULT_PRESET.fontFamily);
+  const [textAlign, setTextAlign] = useState<TextAlign>(DEFAULT_PRESET.textAlign);
+  const [textVAlign, setTextVAlign] = useState<TextVAlign>(DEFAULT_PRESET.textVAlign);
   const [textOffsetX, setTextOffsetX] = useState(0);
   const [textOffsetY, setTextOffsetY] = useState(0);
 
-  const [overlayOpacity, setOverlayOpacity] = useState(0);
-  const [frameType, setFrameType] = useState<FrameType>('band');
+  const [overlayOpacity, setOverlayOpacity] = useState(DEFAULT_PRESET.overlayOpacity);
+  const [frameType, setFrameType] = useState<FrameType>(DEFAULT_PRESET.frameType);
   const [bandDarkness, setBandDarkness] = useState(100);
-  const [textShadow, setTextShadow] = useState(true);
+  const [textShadow, setTextShadow] = useState(DEFAULT_PRESET.textShadow);
   const [titleFontSize, setTitleFontSize] = useState(60);
-  const [accentColor, setAccentColor] = useState('#ffe14d');
-  const [outlineColor, setOutlineColor] = useState('#ffffff');
-  const [outlineWidth, setOutlineWidth] = useState(0);
-  const [titleHighlightColor, setTitleHighlightColor] = useState<string | undefined>(undefined);
-  const [subtitlePosition, setSubtitlePosition] = useState<SubtitlePosition>('below');
-  const [subtitleFontFamily, setSubtitleFontFamily] = useState<string | undefined>(undefined);
-  const [subtitleColor, setSubtitleColor] = useState<string | undefined>(undefined);
+  const [accentColor, setAccentColor] = useState(DEFAULT_PRESET.accentColor ?? '#ffe14d');
+  const [outlineColor, setOutlineColor] = useState(DEFAULT_PRESET.outlineColor ?? '#ffffff');
+  const [outlineWidth, setOutlineWidth] = useState(DEFAULT_PRESET.outlineWidth ?? 0);
+  const [titleHighlightColor, setTitleHighlightColor] = useState<string | undefined>(DEFAULT_PRESET.titleHighlightColor);
+  const [subtitlePosition, setSubtitlePosition] = useState<SubtitlePosition>(DEFAULT_PRESET.subtitlePosition ?? 'below');
+  const [subtitleFontFamily, setSubtitleFontFamily] = useState<string | undefined>(DEFAULT_PRESET.subtitleFontFamily);
+  const [subtitleColor, setSubtitleColor] = useState<string | undefined>(DEFAULT_PRESET.subtitleColor);
   const [bgOffsetX, setBgOffsetX] = useState(50);
   const [bgOffsetY, setBgOffsetY] = useState(50);
   const [bgRotation, setBgRotation] = useState(0);
@@ -373,7 +349,7 @@ export function HomeTool({ seoAfterTool }: { seoAfterTool?: React.ReactNode }) {
   const [downloadFormat, setDownloadFormat] = useState<'png' | 'jpg'>('png');
   const [downloadScale, setDownloadScale] = useState<1 | 2>(2);
   const [fileName, setFileName] = useState('blog_thumbnail');
-  const [activePresetId, setActivePresetId] = useState<string | null>('naver');
+  const [activePresetId, setActivePresetId] = useState<string | null>(DEFAULT_PRESET.id);
   const [isDownloadDone, setIsDownloadDone] = useState(false);
 
   const previewRef = useRef<HTMLDivElement>(null);
