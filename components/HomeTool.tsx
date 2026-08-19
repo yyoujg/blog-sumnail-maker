@@ -599,39 +599,6 @@ export function HomeTool({ seoAfterTool }: { seoAfterTool?: React.ReactNode }) {
         </div>
       </section>
 
-      {/* ── 가이드 글 목록 (콘텐츠 우선) ── */}
-      <section aria-labelledby="home-posts-heading" className="px-4 md:px-8 py-8 md:py-10 bg-white border-b border-gray-200">
-        <div className="max-w-6xl mx-auto">
-          <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">가이드 글</p>
-          <h2 id="home-posts-heading" className="text-xl font-bold text-gray-900 mb-6">
-            네이버 블로그 운영 실전 가이드
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-            {[...blogPosts]
-              .sort((a, b) => b.date.localeCompare(a.date))
-              .map((post) => (
-                <Link
-                  key={post.slug}
-                  href={`/blog/${post.slug}`}
-                  className="block p-4 bg-[#f5f5f0] rounded-xl border border-gray-200 hover:border-gray-300 hover:shadow-sm transition-all"
-                >
-                  <p className="text-xs text-gray-400 mb-1">{post.date}</p>
-                  <p className="text-sm font-bold text-gray-900 leading-snug mb-1">{post.title}</p>
-                  <p className="text-xs text-gray-500 line-clamp-2">{post.summary}</p>
-                </Link>
-              ))}
-          </div>
-          <div className="mt-6">
-            <Link
-              href="/blog"
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#111111] text-white text-sm font-semibold hover:bg-gray-800 transition-colors"
-            >
-              가이드 전체 보기
-            </Link>
-          </div>
-        </div>
-      </section>
-
       {/* ── 도구 탭 ── */}
       <section id="tool" className="px-4 md:px-8 py-8 md:py-10">
         <div className="max-w-6xl mx-auto">
@@ -772,6 +739,40 @@ export function HomeTool({ seoAfterTool }: { seoAfterTool?: React.ReactNode }) {
           </div>
         </section>
       )}
+
+      {/* ── 가이드 글 목록 ── */}
+      <section aria-labelledby="home-posts-heading" className="px-4 md:px-8 py-8 md:py-10 bg-white border-t border-gray-200">
+        <div className="max-w-6xl mx-auto">
+          <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-1">가이드 글</p>
+          <h2 id="home-posts-heading" className="text-xl font-bold text-gray-900 mb-6">
+            네이버 블로그 운영 실전 가이드
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            {[...blogPosts]
+              .sort((a, b) => b.date.localeCompare(a.date))
+              .slice(0, 9)
+              .map((post) => (
+                <Link
+                  key={post.slug}
+                  href={`/blog/${post.slug}`}
+                  className="block p-4 bg-[#f5f5f0] rounded-xl border border-gray-200 hover:border-gray-300 hover:shadow-sm transition-all"
+                >
+                  <p className="text-xs text-gray-400 mb-1">{post.date}</p>
+                  <p className="text-sm font-bold text-gray-900 leading-snug mb-1">{post.title}</p>
+                  <p className="text-xs text-gray-500 line-clamp-2">{post.summary}</p>
+                </Link>
+              ))}
+          </div>
+          <div className="mt-6">
+            <Link
+              href="/blog"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-[#111111] text-white text-sm font-semibold hover:bg-gray-800 transition-colors"
+            >
+              전체 가이드 {blogPosts.length}편 보기
+            </Link>
+          </div>
+        </div>
+      </section>
 
       {/* 인기 템플릿 */}
       <section id="popular-templates" className="px-4 md:px-8 py-8 md:py-10 border-t border-gray-200">
