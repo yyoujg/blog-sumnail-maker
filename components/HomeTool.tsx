@@ -125,7 +125,7 @@ const STYLE_PRESETS: readonly StylePreset[] = [
     accentColor: '#ffd43b',
     subtitlePosition: 'above',
     subtitleFontFamily: `'Gaegu', cursive`,
-    subtitleColor: '#ff8fb3',
+    subtitleColor: '#ffffff',
   },
   {
     id: 'finance',
