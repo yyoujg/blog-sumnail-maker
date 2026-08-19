@@ -3,7 +3,7 @@
 import React, { type RefObject, useRef, useState } from 'react';
 import Link from 'next/link';
 import { Download } from 'lucide-react';
-import type { TextAlign, TextVAlign, FrameType, BgType } from '@/lib/types';
+import type { TextAlign, TextVAlign, FrameType, BgType, SubtitlePosition } from '@/lib/types';
 
 interface ThumbnailPreviewProps {
   previewRef: RefObject<HTMLDivElement | null>;
@@ -33,6 +33,13 @@ interface ThumbnailPreviewProps {
   setFileName: (v: string) => void;
   textShadow?: boolean;
   titleFontSize?: number;
+  accentColor?: string;
+  outlineWidth?: number;
+  outlineColor?: string;
+  titleHighlightColor?: string;
+  subtitlePosition?: SubtitlePosition;
+  subtitleFontFamily?: string;
+  subtitleColor?: string;
   bgOffsetX: number;
   bgOffsetY: number;
   onBgOffsetChange: (x: number, y: number) => void;
@@ -52,42 +59,82 @@ function bandGradient(darkness: number) {
   return `linear-gradient(to top, rgba(0,0,0,${a0}) 0%, rgba(0,0,0,${a1}) 28%, rgba(0,0,0,${a2}) 45%, rgba(0,0,0,${a3}) 62%, rgba(0,0,0,0) 72%)`;
 }
 const EMOJI_RE = /([\u{1F000}-\u{1FFFF}][\uFE0F\u20E3]?|[\u{2300}-\u{27BF}][\uFE0F\u20E3]?)/gu;
+const ACCENT_RE = /\*([^*\n]+)\*/g;
 
-function renderWithOutline(line: string) {
-  const parts = line.split(EMOJI_RE);
-  return parts.map((seg, i) =>
-    seg === '' ? null : (
-      <span key={i} style={{ textShadow: i % 2 === 1 ? 'none' : OUTLINE }}>
-        {seg}
-      </span>
-    )
-  );
+// html2canvas 1.4.1\uC774 -webkit-text-stroke\uB97C \uC9C0\uC6D0\uD558\uC9C0 \uC54A\uC544 \uB2E4\uBC29\uD5A5 text-shadow\uB85C \uC678\uACFD\uC120\uC744 \uB9CC\uB4ED\uB2C8\uB2E4.
+function outlineShadow(color: string, w: number) {
+  const parts: string[] = [];
+  for (let r = 1; r <= w; r++) {
+    for (let a = 0; a < 16; a++) {
+      const t = (a / 16) * 2 * Math.PI;
+      parts.push(`${(r * Math.cos(t)).toFixed(2)}px ${(r * Math.sin(t)).toFixed(2)}px 0 ${color}`);
+    }
+  }
+  parts.push('0 3px 10px rgba(0,0,0,0.35)');
+  return parts.join(', ');
 }
 
-function FitWidthTitle({ lines, color, shadow, fontSize }: {
+// *\uB2E8\uC5B4*\uB294 \uAC15\uC870\uC0C9, \uC774\uBAA8\uC9C0\uB294 \uC678\uACFD\uC120 \uC81C\uC678 (\uCEEC\uB7EC \uC774\uBAA8\uC9C0\uC5D0 \uADF8\uB9BC\uC790\uAC00 \uBC88\uC9C0\uB294 \uAC83 \uBC29\uC9C0)
+function renderTitleLine(line: string, shadowCss: string | null, accentColor?: string) {
+  return line.split(ACCENT_RE).flatMap((seg, i) => {
+    const isAccent = i % 2 === 1;
+    return seg.split(EMOJI_RE).map((s, j) =>
+      s === '' ? null : (
+        <span
+          key={`${i}-${j}`}
+          style={{
+            color: isAccent && accentColor ? accentColor : undefined,
+            textShadow: j % 2 === 1 ? 'none' : shadowCss ?? undefined,
+          }}
+        >
+          {s}
+        </span>
+      )
+    );
+  });
+}
+
+function FitWidthTitle({ lines, color, shadowCss, fontSize, accentColor, highlightColor }: {
   lines: string[];
   fontFamily?: string;
   color: string;
-  shadow: boolean;
+  shadowCss: string | null;
   fontSize: number;
+  accentColor?: string;
+  highlightColor?: string;
 }) {
   return (
     <div style={{ width: '100%', overflow: 'hidden' }}>
-      {lines.map((line, i) => (
-        <div
-          key={i}
-          style={{
-            fontSize: `${fontSize}px`,
-            fontWeight: 900,
-            color,
-            lineHeight: 1.15,
-            whiteSpace: 'nowrap',
-            overflow: 'hidden',
-          }}
-        >
-          {shadow ? renderWithOutline(line) : line}
-        </div>
-      ))}
+      {lines.map((line, i) => {
+        const content = renderTitleLine(line, shadowCss, accentColor);
+        return (
+          <div
+            key={i}
+            style={{
+              fontSize: `${fontSize}px`,
+              fontWeight: 900,
+              color,
+              lineHeight: 1.15,
+              whiteSpace: 'nowrap',
+              overflow: 'hidden',
+            }}
+          >
+            {highlightColor ? (
+              <span
+                style={{
+                  backgroundColor: highlightColor,
+                  display: 'inline-block',
+                  padding: '0.04em 0.24em',
+                  borderRadius: '0.16em',
+                  marginTop: i === 0 ? 0 : '0.12em',
+                }}
+              >
+                {content}
+              </span>
+            ) : content}
+          </div>
+        );
+      })}
     </div>
   );
 }
@@ -120,6 +167,13 @@ export default function ThumbnailPreview({
   setFileName,
   textShadow = false,
   titleFontSize = 60,
+  accentColor,
+  outlineWidth = 0,
+  outlineColor = '#ffffff',
+  titleHighlightColor,
+  subtitlePosition = 'below',
+  subtitleFontFamily,
+  subtitleColor,
   bgOffsetX,
   bgOffsetY,
   onBgOffsetChange,
@@ -274,6 +328,20 @@ export default function ThumbnailPreview({
                 transform: `translate(${textOffsetX}%, ${textOffsetY}%)`,
               }}
             >
+              {subtitle && subtitlePosition === 'above' && (
+                <p
+                  className="text-xl sm:text-2xl font-bold break-keep"
+                  style={{
+                    wordBreak: 'keep-all',
+                    fontFamily: subtitleFontFamily,
+                    color: subtitleColor,
+                    // ponytail: 손글씨 캡션 외곽선은 흰 2px 고정, 커스텀 요구가 생기면 필드로 승격
+                    textShadow: outlineShadow('#ffffff', 2),
+                  }}
+                >
+                  {subtitle}
+                </p>
+              )}
               {category && (
                 <span
                   className="text-xs font-bold tracking-wider uppercase border rounded-full px-3 py-1 w-fit"
@@ -288,8 +356,14 @@ export default function ThumbnailPreview({
                     lines={title.split('\n')}
                     fontFamily={fontFamily}
                     color={textColor}
-                    shadow
+                    shadowCss={
+                      titleHighlightColor
+                        ? null
+                        : outlineWidth > 0 ? outlineShadow(outlineColor, outlineWidth) : OUTLINE
+                    }
                     fontSize={titleFontSize}
+                    accentColor={accentColor}
+                    highlightColor={titleHighlightColor}
                   />
                 ) : (
                   <h1
@@ -298,14 +372,14 @@ export default function ThumbnailPreview({
                   >
                     {title.split('\n').map((line, i) => (
                       <React.Fragment key={i}>
-                        {line}
+                        {renderTitleLine(line, null, accentColor)}
                         <br />
                       </React.Fragment>
                     ))}
                   </h1>
                 )
               )}
-              {subtitle && (
+              {subtitle && subtitlePosition === 'below' && (
                 <p
                   className="text-sm sm:text-base md:text-xl opacity-80 break-keep font-medium"
                   style={{

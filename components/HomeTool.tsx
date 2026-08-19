@@ -4,7 +4,7 @@ import { useState, useRef } from 'react';
 import Link from 'next/link';
 import Script from 'next/script';
 import { BookOpen, RotateCcw } from 'lucide-react';
-import type { TextAlign, TextVAlign, FrameType, BgType } from '@/lib/types';
+import type { TextAlign, TextVAlign, FrameType, BgType, SubtitlePosition } from '@/lib/types';
 import ControlPanel from '@/components/ControlPanel';
 import ThumbnailPreview from '@/components/ThumbnailPreview';
 import SiteHeader from '@/components/SiteHeader';
@@ -26,7 +26,37 @@ declare global {
   }
 }
 
-const STYLE_PRESETS = [
+interface StylePreset {
+  id: string;
+  label: string;
+  imageAlt: string;
+  emoji: string;
+  bgType: BgType;
+  bgColor: string;
+  bgImage: string;
+  textColor: string;
+  fontFamily: string;
+  frameType: FrameType;
+  overlayOpacity: number;
+  textAlign: TextAlign;
+  textVAlign: TextVAlign;
+  title: string;
+  subtitle: string;
+  category: string;
+  categoryOptions: readonly string[];
+  textShadow: boolean;
+  // 먹방 스타일 확장 (미지정 시 기존 렌더와 동일)
+  accentColor?: string;
+  outlineColor?: string;
+  outlineWidth?: number;
+  titleHighlightColor?: string;
+  subtitlePosition?: SubtitlePosition;
+  subtitleFontFamily?: string;
+  subtitleColor?: string;
+  titleFontSize?: number;
+}
+
+const STYLE_PRESETS: readonly StylePreset[] = [
   {
     id: 'naver',
     label: '아웃라인',
@@ -36,16 +66,19 @@ const STYLE_PRESETS = [
     bgColor: '#1a1a1a',
     bgImage: '/images/251116애플하우스/IMG_6831.JPG',
     textColor: '#ffffff',
-    fontFamily: `'Pretendard', sans-serif`,
+    fontFamily: `'SBAggro', sans-serif`,
     frameType: 'band' as FrameType,
     overlayOpacity: 0,
     textAlign: 'left' as TextAlign,
     textVAlign: 'bottom' as TextVAlign,
-    title: '맥주 맛집 🍺\n치킨 세트 후기',
+    title: '*맥주* 맛집 🍺\n치킨 세트 후기',
     subtitle: '수제맥주랑 먹으니 완벽했습니다',
     category: '',
     categoryOptions: ['맛집 후기', '술집 추천', '안주 맛집', '재방문 의사'],
     textShadow: true,
+    accentColor: '#ffe14d',
+    outlineColor: '#111111',
+    outlineWidth: 3,
   },
   {
     id: 'cafe',
@@ -56,16 +89,17 @@ const STYLE_PRESETS = [
     bgColor: '#1a1a1a',
     bgImage: '/images/260208에디션엠/에디션엠-감귤케이크-딸기음료-메인.JPG',
     textColor: '#ffffff',
-    fontFamily: `'Pretendard', sans-serif`,
-    frameType: 'band' as FrameType,
-    overlayOpacity: 30,
+    fontFamily: `'OwnglyphParkDaHyun', cursive`,
+    frameType: 'none' as FrameType,
+    overlayOpacity: 10,
     textAlign: 'left' as TextAlign,
     textVAlign: 'bottom' as TextVAlign,
-    title: '분위기 좋은\n감성 카페 기록',
+    title: '분위기 좋은\n*감성 카페* 기록',
     subtitle: '혼자 오기 딱 좋은 조용한 공간',
     category: '카페 기록',
     categoryOptions: ['카페 기록', '맛집 탐방', '방문 후기', '재방문 리스트'],
-    textShadow: false,
+    textShadow: true,
+    accentColor: '#ff8fb3',
   },
   {
     id: 'review',
@@ -76,16 +110,20 @@ const STYLE_PRESETS = [
     bgColor: '#1a1a1a',
     bgImage: '/images/250118코르크베이크바/IMG_7578.JPG',
     textColor: '#ffffff',
-    fontFamily: `'Pretendard', sans-serif`,
+    fontFamily: `'TMoneyRoundWind', sans-serif`,
     frameType: 'solid' as FrameType,
     overlayOpacity: 30,
     textAlign: 'center' as TextAlign,
     textVAlign: 'middle' as TextVAlign,
-    title: '솔직한 체험단\n디저트 후기',
+    title: '솔직한 체험단\n*디저트* 후기',
     subtitle: '직접 먹고 평가했습니다',
     category: '체험 후기',
     categoryOptions: ['체험 후기', '솔직 후기', '제품 리뷰', '사용 전/후'],
     textShadow: false,
+    accentColor: '#ffd43b',
+    subtitlePosition: 'above',
+    subtitleFontFamily: `'Gaegu', cursive`,
+    subtitleColor: '#ffd43b',
   },
   {
     id: 'finance',
@@ -96,16 +134,17 @@ const STYLE_PRESETS = [
     bgColor: '#0a2540',
     bgImage: '/images/251231지관서가/안동북카페-지관서가-1층내부-서가창가뷰.JPG',
     textColor: '#fdcb6e',
-    fontFamily: `'Pretendard', sans-serif`,
+    fontFamily: `'GmarketSans', sans-serif`,
     frameType: 'corners' as FrameType,
     overlayOpacity: 30,
     textAlign: 'left' as TextAlign,
     textVAlign: 'bottom' as TextVAlign,
-    title: '직장인\n재테크 실전기',
+    title: '직장인\n*재테크* 실전기',
     subtitle: '절약과 투자, 지금 시작하세요',
     category: '재테크',
     categoryOptions: ['재테크 기초', '절약 팁', '투자 후기', '부업 기록'],
     textShadow: false,
+    accentColor: '#ffffff',
   },
   {
     id: 'travel',
@@ -121,53 +160,211 @@ const STYLE_PRESETS = [
     overlayOpacity: 30,
     textAlign: 'right' as TextAlign,
     textVAlign: 'top' as TextVAlign,
-    title: '국내 이색 공간\n나들이 추천',
+    title: '국내 *이색 공간*\n나들이 추천',
     subtitle: '일상 탈출 코스로 딱입니다',
     category: '나들이',
     categoryOptions: ['나들이', '국내 여행', '이색 체험', '여행 준비'],
     textShadow: false,
+    accentColor: '#ffd43b',
   },
   {
-    id: 'hobby',
-    label: '팝',
-    imageAlt: '네이버 블로그 취미·독학 후기 썸네일 204x204 예시',
-    emoji: '🎸',
-    bgType: 'image' as BgType,
+    id: 'mukbang-red',
+    label: '푸드팝',
+    imageAlt: '네이버 블로그 먹방 썸네일 204x204 두꺼운 외곽선 뭉티기 예시',
+    emoji: '🍖',
+    bgType: 'image',
     bgColor: '#1a1a1a',
-    bgImage: '/images/260321시온뮤직 수원권선점/시온뮤직-수원권선점-복도기타벽.JPG',
+    bgImage: '/images/260402환이네뭉티기호매실본점/IMG_9191.JPG',
     textColor: '#ffffff',
+    fontFamily: `'CookieRun', sans-serif`,
+    frameType: 'none',
+    overlayOpacity: 0,
+    textAlign: 'center',
+    textVAlign: 'bottom',
+    title: '대구 별미\n*뭉티기* 먹방',
+    subtitle: '입에서 살살 녹아요 ~~!!',
+    category: '',
+    categoryOptions: ['맛집 후기', '현지인 맛집', '먹방', '재방문 의사'],
+    textShadow: true,
+    accentColor: '#ffe14d',
+    outlineColor: '#e63946',
+    outlineWidth: 4,
+    subtitlePosition: 'above',
+    subtitleFontFamily: `'Nanum Pen Script', cursive`,
+    subtitleColor: '#ffe14d',
+  },
+  {
+    id: 'mukbang-fresh',
+    label: '포차',
+    imageAlt: '네이버 블로그 포차 안주 먹방 썸네일 204x204 컬러 제목 예시',
+    emoji: '🍢',
+    bgType: 'image',
+    bgColor: '#1a1a1a',
+    bgImage: '/images/260315생마차/IMG_8526.JPG',
+    textColor: '#ff5050',
+    fontFamily: `'BMEuljiro', sans-serif`,
+    frameType: 'none',
+    overlayOpacity: 0,
+    textAlign: 'left',
+    textVAlign: 'bottom',
+    title: '퇴근하고 *생마차*\n안주 털기',
+    subtitle: '포차 감성 그 자체 ~~',
+    category: '',
+    categoryOptions: ['술집 추천', '안주 맛집', '먹방', '재방문 의사'],
+    textShadow: true,
+    accentColor: '#aee92e',
+    outlineColor: '#ffffff',
+    outlineWidth: 4,
+    subtitlePosition: 'above',
+    subtitleFontFamily: `'Nanum Pen Script', cursive`,
+    subtitleColor: '#2f6b2f',
+  },
+  {
+    id: 'mukbang-yellow',
+    label: '옐로',
+    imageAlt: '네이버 블로그 쌀국수 맛집 먹방 썸네일 204x204 옐로 톤 예시',
+    emoji: '🧀',
+    bgType: 'image',
+    bgColor: '#1a1a1a',
+    bgImage: '/images/260328루나아시아/IMG_8977.JPG',
+    textColor: '#ffd400',
+    fontFamily: `'Cafe24Surround', sans-serif`,
+    frameType: 'band',
+    overlayOpacity: 0,
+    textAlign: 'center',
+    textVAlign: 'bottom',
+    title: '루나아시아\n*쌀국수* 정복',
+    subtitle: '국물이 진국이에요 !!',
+    category: '',
+    categoryOptions: ['맛집 후기', '아시아 음식', '먹방', '점심 추천'],
+    textShadow: true,
+    accentColor: '#ffffff',
+    outlineColor: '#7b3f00',
+    outlineWidth: 4,
+    subtitlePosition: 'above',
+    subtitleFontFamily: `'Nanum Pen Script', cursive`,
+    subtitleColor: '#ffd400',
+  },
+  {
+    id: 'mukbang-pink',
+    label: '디저트',
+    imageAlt: '네이버 블로그 디저트 먹방 썸네일 204x204 핑크 톤 요거트 예시',
+    emoji: '🍦',
+    bgType: 'image',
+    bgColor: '#1a1a1a',
+    bgImage: '/images/260405요거트월드두바이폭탄반반/IMG_9425.JPG',
+    textColor: '#ff8fb3',
+    fontFamily: `'OneMobilePop', sans-serif`,
+    frameType: 'none',
+    overlayOpacity: 0,
+    textAlign: 'center',
+    textVAlign: 'bottom',
+    title: '*두바이* 요거트\n반반 먹방',
+    subtitle: '단짠단짠 미쳤다 ,,',
+    category: '',
+    categoryOptions: ['디저트 맛집', '카페 기록', '먹방', '신상 후기'],
+    textShadow: true,
+    accentColor: '#ffe14d',
+    outlineColor: '#ffffff',
+    outlineWidth: 4,
+    subtitlePosition: 'above',
+    subtitleFontFamily: `'Nanum Pen Script', cursive`,
+    subtitleColor: '#ff8fb3',
+  },
+  {
+    id: 'impact',
+    label: '임팩트',
+    imageAlt: '네이버 블로그 매운맛 먹방 썸네일 204x204 검정 외곽선 임팩트 예시',
+    emoji: '🔥',
+    bgType: 'image',
+    bgColor: '#1a1a1a',
+    bgImage: '/images/251116애플하우스/IMG_6822.JPG',
+    textColor: '#ffffff',
+    fontFamily: `'Black Han Sans', sans-serif`,
+    frameType: 'none',
+    overlayOpacity: 0,
+    textAlign: 'center',
+    textVAlign: 'bottom',
+    title: '스트레스 풀리는\n*매운맛* 모음',
+    subtitle: '오늘은 맵부심 부리는 날 !!',
+    category: '',
+    categoryOptions: ['맛집 후기', '분식 맛집', '매운맛 도전', '재방문 의사'],
+    textShadow: true,
+    accentColor: '#ff5050',
+    outlineColor: '#111111',
+    outlineWidth: 3,
+    subtitlePosition: 'above',
+    subtitleFontFamily: `'Nanum Pen Script', cursive`,
+    subtitleColor: '#ffe14d',
+  },
+  {
+    id: 'highlight',
+    label: '박스',
+    imageAlt: '네이버 블로그 커리 맛집 썸네일 204x204 하이라이트 박스 예시',
+    emoji: '🍛',
+    bgType: 'image',
+    bgColor: '#1a1a1a',
+    bgImage: '/images/260328루나아시아/IMG_8981.JPG',
+    textColor: '#e8590c',
     fontFamily: `'Jua', sans-serif`,
-    frameType: 'band' as FrameType,
-    overlayOpacity: 30,
-    textAlign: 'left' as TextAlign,
-    textVAlign: 'bottom' as TextVAlign,
-    title: '기타 독학\n6개월 솔직 후기',
-    subtitle: '입문자가 꼭 알아야 할 것들',
-    category: '취미',
-    categoryOptions: ['취미', '음악', '독학 후기', '입문 가이드'],
-    textShadow: false,
+    frameType: 'none',
+    overlayOpacity: 0,
+    textAlign: 'left',
+    textVAlign: 'bottom',
+    title: '동남아 *커리*\n맛집 리스트',
+    subtitle: '향신료 가득 이국 감성 >.<',
+    category: '',
+    categoryOptions: ['맛집 후기', '아시아 음식', '이국 감성', '재방문 의사'],
+    textShadow: true,
+    accentColor: '#2b8a3e',
+    titleHighlightColor: '#ffffff',
+    subtitlePosition: 'above',
+    subtitleFontFamily: `'Nanum Pen Script', cursive`,
+    subtitleColor: '#ffffff',
   },
   {
-    id: 'lifestyle',
-    label: '미니멀',
-    imageAlt: '네이버 블로그 고양이 카페·일상 썸네일 204x204 예시',
-    emoji: '🌿',
-    bgType: 'image' as BgType,
+    id: 'simple',
+    label: '심플',
+    imageAlt: '네이버 블로그 국밥 맛집 썸네일 204x204 해시태그 미니멀 예시',
+    emoji: '🍲',
+    bgType: 'image',
     bgColor: '#1a1a1a',
-    bgImage: '/images/260317야옹이네고양이카페/IMG_8552.JPG',
+    bgImage: '/images/260315생마차/IMG_8534.JPG',
     textColor: '#ffffff',
-    fontFamily: `'Pretendard', sans-serif`,
-    frameType: 'none' as FrameType,
-    overlayOpacity: 30,
-    textAlign: 'center' as TextAlign,
-    textVAlign: 'middle' as TextVAlign,
-    title: '고양이 카페\n일상 기록',
-    subtitle: '힐링이 필요할 때 찾는 단골 공간',
-    category: '일상',
-    categoryOptions: ['일상', '힐링', '동물 카페', '자기계발'],
+    fontFamily: `'Paperlogy', sans-serif`,
+    frameType: 'band',
+    overlayOpacity: 0,
+    textAlign: 'left',
+    textVAlign: 'bottom',
+    title: '서울 *국밥* 맛집 모음',
+    subtitle: '다시 생각나는 진한 국물',
+    category: '#서울맛집',
+    categoryOptions: ['#서울맛집', '#국밥', '#혼밥', '#맛집모음'],
     textShadow: false,
+    accentColor: '#ffd43b',
   },
-] as const;
+  {
+    id: 'infocard',
+    label: '카드',
+    imageAlt: '네이버 블로그 정보성 글 썸네일 204x204 텍스트 카드 예시',
+    emoji: '📌',
+    bgType: 'color',
+    bgColor: '#fff4e6',
+    bgImage: '',
+    textColor: '#343a40',
+    fontFamily: `'Do Hyeon', sans-serif`,
+    frameType: 'solid',
+    overlayOpacity: 0,
+    textAlign: 'center',
+    textVAlign: 'middle',
+    title: '한 장 정리\n*생활 꿀팁*',
+    subtitle: '저장해두고 보세요',
+    category: '꿀팁 노트',
+    categoryOptions: ['꿀팁 노트', '정보 정리', '체크리스트', '살림 팁'],
+    textShadow: false,
+    accentColor: '#e64980',
+  },
+];
 
 
 export function HomeTool({ seoAfterTool }: { seoAfterTool?: React.ReactNode }) {
@@ -191,6 +388,13 @@ export function HomeTool({ seoAfterTool }: { seoAfterTool?: React.ReactNode }) {
   const [bandDarkness, setBandDarkness] = useState(100);
   const [textShadow, setTextShadow] = useState(true);
   const [titleFontSize, setTitleFontSize] = useState(60);
+  const [accentColor, setAccentColor] = useState('#ffe14d');
+  const [outlineColor, setOutlineColor] = useState('#ffffff');
+  const [outlineWidth, setOutlineWidth] = useState(0);
+  const [titleHighlightColor, setTitleHighlightColor] = useState<string | undefined>(undefined);
+  const [subtitlePosition, setSubtitlePosition] = useState<SubtitlePosition>('below');
+  const [subtitleFontFamily, setSubtitleFontFamily] = useState<string | undefined>(undefined);
+  const [subtitleColor, setSubtitleColor] = useState<string | undefined>(undefined);
   const [bgOffsetX, setBgOffsetX] = useState(50);
   const [bgOffsetY, setBgOffsetY] = useState(50);
   const [bgRotation, setBgRotation] = useState(0);
@@ -205,13 +409,13 @@ export function HomeTool({ seoAfterTool }: { seoAfterTool?: React.ReactNode }) {
   const previewRef = useRef<HTMLDivElement>(null);
   const [isDownloading, setIsDownloading] = useState(false);
 
-  const applyPreset = (preset: typeof STYLE_PRESETS[number]) => {
+  const applyPreset = (preset: StylePreset) => {
     setTitle(preset.title);
     setSubtitle(preset.subtitle);
     setCategory(preset.category);
     setBgType(preset.bgType);
     setBgColor(preset.bgColor);
-    setBgImage(preset.bgImage);
+    setBgImage(preset.bgImage || null);
     setTextColor(preset.textColor);
     setFontFamily(preset.fontFamily);
     setFrameType(preset.frameType);
@@ -227,6 +431,13 @@ export function HomeTool({ seoAfterTool }: { seoAfterTool?: React.ReactNode }) {
     setBgRotation(0);
     setBgScale(100);
     setBandDarkness(100);
+    setAccentColor(preset.accentColor ?? '#ffe14d');
+    setOutlineColor(preset.outlineColor ?? '#ffffff');
+    setOutlineWidth(preset.outlineWidth ?? 0);
+    setTitleHighlightColor(preset.titleHighlightColor);
+    setSubtitlePosition(preset.subtitlePosition ?? 'below');
+    setSubtitleFontFamily(preset.subtitleFontFamily);
+    setSubtitleColor(preset.subtitleColor);
     setActivePresetId(preset.id);
   };
 
@@ -327,7 +538,7 @@ export function HomeTool({ seoAfterTool }: { seoAfterTool?: React.ReactNode }) {
               </p>
             </div>
           </div>
-          <div className="space-y-4 text-sm text-gray-600 leading-relaxed max-w-3xl">
+          <div className="space-y-4 text-base text-gray-600 leading-relaxed max-w-3xl">
             <p>
               BlogKit은 네이버 블로그 운영자를 위한 <strong className="font-semibold text-gray-800">콘텐츠·연구
               가이드</strong> 사이트입니다. 클릭률(CTR), 검색 유입, 제목 구조, 키워드 배치, 썸네일 문구 패턴을
@@ -469,7 +680,7 @@ export function HomeTool({ seoAfterTool }: { seoAfterTool?: React.ReactNode }) {
                   title={title} setTitle={setTitle}
                   subtitle={subtitle} setSubtitle={setSubtitle}
                   category={category} setCategory={setCategory}
-                  categoryOptions={activePreset?.categoryOptions as readonly string[] | undefined}
+                  categoryOptions={activePreset?.categoryOptions}
                   fontFamily={fontFamily} setFontFamily={setFontFamily}
                   textColor={textColor} setTextColor={setTextColor}
                   textAlign={textAlign} setTextAlign={setTextAlign}
@@ -484,7 +695,8 @@ export function HomeTool({ seoAfterTool }: { seoAfterTool?: React.ReactNode }) {
                   frameType={frameType} setFrameType={setFrameType}
                   bgScale={bgScale} setBgScale={setBgScale}
                   bandDarkness={bandDarkness} setBandDarkness={setBandDarkness}
-                  {...(textShadow ? { titleFontSize, setTitleFontSize } : {})}
+                  accentColor={accentColor} setAccentColor={setAccentColor}
+                  {...(textShadow ? { titleFontSize, setTitleFontSize, outlineWidth, setOutlineWidth, outlineColor, setOutlineColor } : {})}
                 />
                 <ThumbnailPreview
                   previewRef={previewRef}
@@ -495,6 +707,13 @@ export function HomeTool({ seoAfterTool }: { seoAfterTool?: React.ReactNode }) {
                   bandDarkness={bandDarkness}
                   textShadow={textShadow}
                   titleFontSize={titleFontSize}
+                  accentColor={accentColor}
+                  outlineWidth={outlineWidth}
+                  outlineColor={outlineColor}
+                  titleHighlightColor={titleHighlightColor}
+                  subtitlePosition={subtitlePosition}
+                  subtitleFontFamily={subtitleFontFamily}
+                  subtitleColor={subtitleColor}
                   bgOffsetX={bgOffsetX}
                   bgOffsetY={bgOffsetY}
                   onBgOffsetChange={(x, y) => { setBgOffsetX(x); setBgOffsetY(y); }}
@@ -570,8 +789,12 @@ export function HomeTool({ seoAfterTool }: { seoAfterTool?: React.ReactNode }) {
                 className="text-left group"
               >
                 <div className="aspect-video bg-gray-200 relative rounded-xl overflow-hidden mb-2 shadow-sm group-hover:shadow-md transition-shadow">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={preset.bgImage} alt={preset.imageAlt} className="w-full h-full object-cover" />
+                  {preset.bgType === 'color' ? (
+                    <div className="w-full h-full" style={{ backgroundColor: preset.bgColor }} aria-label={preset.imageAlt} />
+                  ) : (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={preset.bgImage} alt={preset.imageAlt} className="w-full h-full object-cover" />
+                  )}
                   <div className="absolute inset-0 bg-black/30 flex items-end p-2">
                     <span className="text-white text-xs font-bold drop-shadow">{preset.label}</span>
                   </div>

@@ -15,6 +15,8 @@ import { FONTS } from '@/lib/constants';
 
 const TEXT_COLORS = ['#ffffff', '#f5f5f0', '#111111', '#334155', '#fdcb6e', '#fd79a8', '#74b9ff', '#55efc4'];
 const BG_COLORS = ['#111827', '#1a1a2e', '#0a3d62', '#2d3436', '#6c5ce7', '#00b894', '#e17055', '#fdcb6e', '#ffffff', '#f8f8f8', '#dfe6e9', '#fab1a0'];
+const ACCENT_COLORS = ['#ffe14d', '#ffd400', '#aee92e', '#ffffff', '#ff5050', '#ff8fb3', '#74b9ff', '#111111'];
+const OUTLINE_COLORS = ['#ffffff', '#111111', '#e63946', '#7b3f00', '#2f6b2f', '#ff8fb3', '#0a3d62', '#ffd400'];
 
 interface ControlPanelProps {
   title: string;
@@ -49,6 +51,12 @@ interface ControlPanelProps {
   setFrameType: (v: FrameType) => void;
   titleFontSize?: number;
   setTitleFontSize?: (v: number) => void;
+  accentColor: string;
+  setAccentColor: (v: string) => void;
+  outlineWidth?: number;
+  setOutlineWidth?: (v: number) => void;
+  outlineColor?: string;
+  setOutlineColor?: (v: string) => void;
   bgScale?: number;
   setBgScale?: (v: number) => void;
   bandDarkness?: number;
@@ -138,6 +146,12 @@ export default function ControlPanel({
   setFrameType,
   titleFontSize,
   setTitleFontSize,
+  accentColor,
+  setAccentColor,
+  outlineWidth,
+  setOutlineWidth,
+  outlineColor = '#ffffff',
+  setOutlineColor,
   bgScale = 100,
   setBgScale,
   bandDarkness = 100,
@@ -248,6 +262,30 @@ export default function ControlPanel({
               <label className="block text-sm font-medium text-gray-700 mb-2">글자 색상</label>
               <ColorSwatches colors={TEXT_COLORS} selected={textColor} onSelect={setTextColor} />
             </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">강조 색상</label>
+              <ColorSwatches colors={ACCENT_COLORS} selected={accentColor} onSelect={setAccentColor} />
+              <p className="text-xs text-gray-400 mt-2">제목에서 *단어*처럼 감싸면 강조 색이 적용됩니다</p>
+            </div>
+            {outlineWidth !== undefined && setOutlineWidth && (
+              <div>
+                <label className="flex justify-between text-sm font-medium text-gray-700 mb-1">
+                  <span>외곽선 두께</span>
+                  <span className="tabular-nums text-gray-500">{outlineWidth === 0 ? '기본' : `${outlineWidth}px`}</span>
+                </label>
+                <input
+                  type="range" min="0" max="6" value={outlineWidth}
+                  onChange={(e) => setOutlineWidth(Number(e.target.value))}
+                  className="w-full h-1.5 bg-gray-200 rounded-lg appearance-none cursor-pointer accent-gray-800"
+                />
+                {outlineWidth > 0 && setOutlineColor && (
+                  <div className="mt-2">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">외곽선 색상</label>
+                    <ColorSwatches colors={OUTLINE_COLORS} selected={outlineColor} onSelect={setOutlineColor} />
+                  </div>
+                )}
+              </div>
+            )}
             {titleFontSize !== undefined && setTitleFontSize && (
               <div>
                 <label className="flex justify-between text-sm font-medium text-gray-700 mb-1">
