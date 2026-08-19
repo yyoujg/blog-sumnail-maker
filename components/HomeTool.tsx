@@ -4,9 +4,9 @@ import { useState, useRef } from 'react';
 import Link from 'next/link';
 import Script from 'next/script';
 import { BookOpen, RotateCcw } from 'lucide-react';
-import type { TextAlign, TextVAlign, FrameType, BgType, SubtitlePosition } from '@/lib/types';
+import type { TextAlign, TextVAlign, FrameType, BgType, SubtitlePosition, StylePreset } from '@/lib/types';
 import ControlPanel from '@/components/ControlPanel';
-import ThumbnailPreview from '@/components/ThumbnailPreview';
+import ThumbnailPreview, { PresetMiniPreview } from '@/components/ThumbnailPreview';
 import SiteHeader from '@/components/SiteHeader';
 import SiteFooter from '@/components/SiteFooter';
 import { HTML2CANVAS_SCRIPT_SRC } from '@/lib/constants';
@@ -24,36 +24,6 @@ declare global {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     html2canvas?: (el: HTMLElement, options?: Record<string, unknown>) => Promise<HTMLCanvasElement>;
   }
-}
-
-interface StylePreset {
-  id: string;
-  label: string;
-  imageAlt: string;
-  emoji: string;
-  bgType: BgType;
-  bgColor: string;
-  bgImage: string;
-  textColor: string;
-  fontFamily: string;
-  frameType: FrameType;
-  overlayOpacity: number;
-  textAlign: TextAlign;
-  textVAlign: TextVAlign;
-  title: string;
-  subtitle: string;
-  category: string;
-  categoryOptions: readonly string[];
-  textShadow: boolean;
-  // 먹방 스타일 확장 (미지정 시 기존 렌더와 동일)
-  accentColor?: string;
-  outlineColor?: string;
-  outlineWidth?: number;
-  titleHighlightColor?: string;
-  subtitlePosition?: SubtitlePosition;
-  subtitleFontFamily?: string;
-  subtitleColor?: string;
-  titleFontSize?: number;
 }
 
 const STYLE_PRESETS: readonly StylePreset[] = [
@@ -735,16 +705,11 @@ export function HomeTool({ seoAfterTool }: { seoAfterTool?: React.ReactNode }) {
                 }}
                 className="text-left group"
               >
-                <div className="aspect-video bg-gray-200 relative rounded-xl overflow-hidden mb-2 shadow-sm group-hover:shadow-md transition-shadow">
-                  {preset.bgType === 'color' ? (
-                    <div className="w-full h-full" style={{ backgroundColor: preset.bgColor }} aria-label={preset.imageAlt} />
-                  ) : (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img src={preset.bgImage} alt={preset.imageAlt} className="w-full h-full object-cover" />
-                  )}
-                  <div className="absolute inset-0 bg-black/30 flex items-end p-2">
-                    <span className="text-white text-xs font-bold drop-shadow">{preset.label}</span>
-                  </div>
+                <div className="relative rounded-xl overflow-hidden mb-2 shadow-sm group-hover:shadow-md transition-shadow bg-gray-200">
+                  <PresetMiniPreview preset={preset} />
+                  <span className="absolute top-2 left-2 px-2 py-0.5 rounded-md bg-black/60 text-white text-xs font-bold">
+                    {preset.label}
+                  </span>
                 </div>
                 <p className="text-sm font-semibold text-gray-700 group-hover:text-gray-900 transition-colors">
                   {preset.emoji} {preset.label}

@@ -3,7 +3,7 @@
 import React, { type RefObject, useRef, useState } from 'react';
 import Link from 'next/link';
 import { Download } from 'lucide-react';
-import type { TextAlign, TextVAlign, FrameType, BgType, SubtitlePosition } from '@/lib/types';
+import type { TextAlign, TextVAlign, FrameType, BgType, SubtitlePosition, StylePreset } from '@/lib/types';
 
 interface ThumbnailPreviewProps {
   previewRef: RefObject<HTMLDivElement | null>;
@@ -143,6 +143,110 @@ function FitWidthTitle({ lines, color, shadowCss, fontSize, accentColor, highlig
           </div>
         );
       })}
+    </div>
+  );
+}
+
+// 인기 템플릿 카드용 정적 미니 미리보기 — 실제 프리셋 스타일(폰트·외곽선·강조·캡션)을 축소 렌더.
+// 크기는 cqw(컨테이너 폭 비율)로 잡아 카드 폭이 달라져도 비율이 유지된다.
+// ponytail: 외곽선 px는 실물 값 그대로 사용 — 카드가 실물의 ~70% 폭이라 비율 오차가 작다
+export function PresetMiniPreview({ preset: p }: { preset: StylePreset }) {
+  const shadowCss = !p.textShadow || p.titleHighlightColor
+    ? null
+    : p.outlineWidth
+      ? outlineShadow(p.outlineColor ?? '#ffffff', p.outlineWidth)
+      : OUTLINE;
+  const justify = p.textVAlign === 'top' ? 'flex-start' : p.textVAlign === 'bottom' ? 'flex-end' : 'center';
+  const align = p.textAlign === 'center' ? 'center' : p.textAlign === 'right' ? 'flex-end' : 'flex-start';
+  return (
+    <div
+      role="img"
+      aria-label={p.imageAlt}
+      className="w-full aspect-square relative overflow-hidden"
+      style={{
+        backgroundColor: p.bgType === 'color' ? p.bgColor : '#ffffff',
+        fontFamily: p.fontFamily,
+        containerType: 'inline-size',
+      }}
+    >
+      {p.bgType === 'image' && p.bgImage && (
+        <div
+          className="absolute inset-0"
+          style={{ backgroundImage: `url('${p.bgImage}')`, backgroundSize: 'cover', backgroundPosition: '50% 50%' }}
+        />
+      )}
+      <div className="absolute inset-0" style={{ backgroundColor: `rgba(0,0,0,${p.overlayOpacity / 100})` }} />
+      {p.frameType === 'solid' && (
+        <div className="absolute" style={{ inset: '4cqw', border: `0.8cqw solid ${p.textColor}` }} />
+      )}
+      {p.frameType === 'double' && (
+        <div className="absolute border-double" style={{ inset: '4cqw', borderWidth: '1.2cqw', borderColor: p.textColor }} />
+      )}
+      {p.frameType === 'corners' && (
+        <div className="absolute" style={{ inset: '5cqw' }}>
+          {(['top-0 left-0 border-t-4 border-l-4', 'top-0 right-0 border-t-4 border-r-4', 'bottom-0 left-0 border-b-4 border-l-4', 'bottom-0 right-0 border-b-4 border-r-4'] as const).map((cls) => (
+            <div key={cls} className={`absolute w-[6cqw] h-[6cqw] ${cls}`} style={{ borderColor: p.textColor }} />
+          ))}
+        </div>
+      )}
+      {p.frameType === 'band' && (
+        <div className="absolute inset-0" style={{ background: bandGradient(100) }} />
+      )}
+      <div
+        className="absolute inset-0 flex flex-col"
+        style={{ justifyContent: justify, alignItems: align, padding: '4.4cqw', color: p.textColor, textAlign: p.textAlign }}
+      >
+        <div className="flex flex-col" style={{ gap: '1cqw', alignItems: align, maxWidth: '100%' }}>
+          {p.subtitle && p.subtitlePosition === 'above' && (
+            <p
+              style={{
+                fontSize: '4.8cqw',
+                fontWeight: 700,
+                fontFamily: p.subtitleFontFamily,
+                color: p.subtitleColor,
+                textShadow: outlineShadow(
+                  p.subtitleColor && isLightColor(p.subtitleColor) ? 'rgba(0,0,0,0.75)' : '#ffffff',
+                  2
+                ),
+              }}
+            >
+              {p.subtitle}
+            </p>
+          )}
+          {p.category && (
+            <span
+              className="rounded-full border w-fit font-bold uppercase"
+              style={{ fontSize: '2.8cqw', padding: '0.8cqw 2.4cqw', borderColor: p.textColor, opacity: 0.9, letterSpacing: '0.05em' }}
+            >
+              {p.category}
+            </span>
+          )}
+          {p.title.split('\n').map((line, i) => (
+            <div
+              key={i}
+              style={{
+                fontSize: p.textShadow ? '11cqw' : '9.5cqw',
+                fontWeight: p.textShadow ? 900 : 700,
+                lineHeight: 1.15,
+                whiteSpace: 'nowrap',
+                overflow: 'hidden',
+                maxWidth: '100%',
+              }}
+            >
+              {p.titleHighlightColor ? (
+                <span style={{ backgroundColor: p.titleHighlightColor, display: 'inline-block', padding: '0.04em 0.24em', borderRadius: '0.16em' }}>
+                  {renderTitleLine(line, null, p.accentColor)}
+                </span>
+              ) : (
+                renderTitleLine(line, shadowCss, p.accentColor)
+              )}
+            </div>
+          ))}
+          {p.subtitle && (p.subtitlePosition ?? 'below') === 'below' && (
+            <p style={{ fontSize: '4cqw', opacity: 0.8, fontWeight: 500 }}>{p.subtitle}</p>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
