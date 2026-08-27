@@ -492,12 +492,16 @@ const imgPlaceholder = (label: string) => `여기에 [${label}] 이미지 주소
 
 // 버튼위젯 href: 외부(새 창) URL 우선 → 내부 카테고리 조립 → placeholder
 function widgetHref(r: LinkRect, blogId: string): string {
+  // 붙여넣기 과정에서 앞뒤 공백이 섞이면 href=" https://..." 로 나가 네이버 위젯
+  // 검증에서 걸러진다. 입력 핸들러가 여러 곳이라 출력 시점에 한 번만 정리한다.
   if (r.newWindow) {
-    return r.url && r.url !== 'https://' && r.url !== 'https'
-      ? r.url
+    const url = (r.url || '').trim();
+    return url && url !== 'https://' && url !== 'https'
+      ? url
       : LINK_PLACEHOLDER;
   }
-  if (r.categoryNo) return catUrl(blogId, r.categoryNo);
+  const cat = (r.categoryNo || '').trim();
+  if (cat) return catUrl(blogId, cat);
   return LINK_PLACEHOLDER;
 }
 
@@ -512,11 +516,13 @@ function transparentWidgetCode(r: LinkRect): string {
 // 버튼위젯 코드 — 이미지맵. map name은 widget{n}으로 반드시 고유(1~5).
 // 동일 name을 재사용하면 브라우저가 첫 map만 인식해 2~5번 클릭이 죽는 버그가 있어
 // index로 분리한다. coords는 rect 실제 w/h에서 자동 계산 → "0,0,{w},{h}" 고정.
+// img에 width/height를 반드시 박는다. 없으면 업로드한 원본 크기(예: 773px)가 그대로
+// 렌더돼 위젯 칸을 넘치고 coords와도 어긋나 클릭 영역이 밀린다.
 function buttonWidgetCode(r: LinkRect, n: number, blogId: string): string {
   const w = Math.round(r.w);
   const h = Math.round(r.h);
   const target = r.newWindow ? '_blank' : '_top';
-  return `<img src="${imgPlaceholder(`버튼위젯 ${n}`)}" usemap="#widget${n}" />
+  return `<img src="${imgPlaceholder(`버튼위젯 ${n}`)}" width="${w}" height="${h}" usemap="#widget${n}" />
 <map name="widget${n}">
 <area shape="rect" coords="0,0,${w},${h}" href="${widgetHref(r, blogId)}" target="${target}" />
 </map>`;
