@@ -1149,9 +1149,11 @@ export default function SkinMakerTool({
     setIsDownloadingSkin(true);
     try {
       await document.fonts.ready; // 커스텀/손글씨 폰트가 canvas에 반영되도록 대기
-      // 고해상도 내보내기: 모든 좌표/폰트는 논리 px(cw×ch) 그대로 두고 ctx.scale로 픽셀만 확대한다.
-      // 균일 배율이라 요소 상대 위치는 1:1과 동일 → 네이버가 스킨을 w3000으로 확대 표시해도 배경·글씨가 선명.
-      const exportScale = Math.max(1, 3000 / cw);
+      // 네이버는 스킨배경을 원본 크기 그대로(가운데 정렬·가로 반복) 표시한다 — 실측 확인.
+      // 확대해 내보내면 배경에 그린 메뉴 칸이 함께 커지는데 실제 위젯 격자는 170px·간격 10px로
+      // 고정이라, cw=1920을 3000으로 확대하면 5칸 끝단이 400px 넘게 어긋난다. 항상 1:1로 낸다.
+      // 넓은 화면 대응은 배율이 아니라 [배경 크기 > 가로]를 3000까지 키워서 해결한다.
+      const exportScale = 1;
       const canvas = document.createElement('canvas');
       canvas.width = Math.round(cw * exportScale);
       canvas.height = Math.round(ch * exportScale);
