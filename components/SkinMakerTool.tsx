@@ -1144,6 +1144,16 @@ export default function SkinMakerTool({
     setPreviewRect(null);
   };
 
+  // 배경 가로가 바뀌면 링크 5칸이 옛 중심에 남아 배경 그림과 어긋난다.
+  // 폭 변화량의 절반만큼 같이 옮겨 가운데 정렬을 유지한다.
+  const setCwKeepingRectsCentered = (v: number) => {
+    if (v !== cw) {
+      const dx = Math.round((v - cw) / 2);
+      setRects((prev) => prev.map((r) => ({ ...r, x: r.x + dx })));
+    }
+    setCw(v);
+  };
+
   // ── download ──
   const downloadSkin = async () => {
     setIsDownloadingSkin(true);
@@ -1364,11 +1374,15 @@ export default function SkinMakerTool({
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       배경 크기
+                      <span className="ml-2 text-xs font-normal text-gray-400">
+                        가로 3000 권장 — 네이버는 원본 크기로 표시해서, 좁으면 넓은
+                        화면에서 좌우로 반복됩니다
+                      </span>
                     </label>
                     <div className="grid grid-cols-2 gap-3">
                       {(
                         [
-                          ['가로', cw, setCw, 600, 3000],
+                          ['가로', cw, setCwKeepingRectsCentered, 600, 3000],
                           ['세로', ch, setCh, 200, 600],
                         ] as [
                           string,
