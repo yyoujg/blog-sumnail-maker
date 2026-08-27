@@ -25,7 +25,9 @@ import {
 import { FONTS } from '@/lib/constants';
 
 // ── Constants ──────────────────────────────────
-const WIDGET_W = 186;
+// 네이버 위젯 등록 화면 고지: "위젯의 크기는 가로 170px, 세로 600px까지 지원합니다."
+// 이 값을 넘기면 등록은 되지만 렌더 시 "이미지 정보가 올바르지 않습니다"로 대체된다.
+const WIDGET_W = 170;
 const WIDGET_GAP = 10;
 // 공용 투명위젯 (170×600, 알파 0). 코드가 width/height를 강제하므로 크기 무관하게 재사용됨.
 // 사용자는 비공개글 업로드/주소복사 단계를 건너뛴다.
@@ -143,7 +145,7 @@ const BLOG_TEMPLATES: BlogTemplate[] = [
         id: 101,
         x: 515,
         y: 0,
-        w: 186,
+        w: WIDGET_W,
         h: 450,
         url: 'https://',
         label: '맛집 탐방',
@@ -154,7 +156,7 @@ const BLOG_TEMPLATES: BlogTemplate[] = [
         id: 102,
         x: 695,
         y: 0,
-        w: 186,
+        w: WIDGET_W,
         h: 450,
         url: 'https://',
         label: '카페 기록',
@@ -165,7 +167,7 @@ const BLOG_TEMPLATES: BlogTemplate[] = [
         id: 103,
         x: 875,
         y: 0,
-        w: 186,
+        w: WIDGET_W,
         h: 450,
         url: 'https://',
         label: '레시피',
@@ -176,7 +178,7 @@ const BLOG_TEMPLATES: BlogTemplate[] = [
         id: 104,
         x: 1055,
         y: 0,
-        w: 186,
+        w: WIDGET_W,
         h: 450,
         url: 'https://',
         label: '배달 후기',
@@ -187,7 +189,7 @@ const BLOG_TEMPLATES: BlogTemplate[] = [
         id: 105,
         x: 1235,
         y: 0,
-        w: 186,
+        w: WIDGET_W,
         h: 450,
         url: 'https://',
         label: '카페 투어',
@@ -234,7 +236,7 @@ const BLOG_TEMPLATES: BlogTemplate[] = [
         id: 101,
         x: 515,
         y: 0,
-        w: 186,
+        w: WIDGET_W,
         h: 450,
         url: 'https://',
         label: '체험단',
@@ -245,7 +247,7 @@ const BLOG_TEMPLATES: BlogTemplate[] = [
         id: 102,
         x: 695,
         y: 0,
-        w: 186,
+        w: WIDGET_W,
         h: 450,
         url: 'https://',
         label: '뷰티·스킨',
@@ -256,7 +258,7 @@ const BLOG_TEMPLATES: BlogTemplate[] = [
         id: 103,
         x: 875,
         y: 0,
-        w: 186,
+        w: WIDGET_W,
         h: 450,
         url: 'https://',
         label: '생활용품',
@@ -267,7 +269,7 @@ const BLOG_TEMPLATES: BlogTemplate[] = [
         id: 104,
         x: 1055,
         y: 0,
-        w: 186,
+        w: WIDGET_W,
         h: 450,
         url: 'https://',
         label: '식품 리뷰',
@@ -278,7 +280,7 @@ const BLOG_TEMPLATES: BlogTemplate[] = [
         id: 105,
         x: 1235,
         y: 0,
-        w: 186,
+        w: WIDGET_W,
         h: 450,
         url: 'https://',
         label: '서비스',
@@ -325,7 +327,7 @@ const BLOG_TEMPLATES: BlogTemplate[] = [
         id: 101,
         x: 515,
         y: 0,
-        w: 186,
+        w: WIDGET_W,
         h: 450,
         url: 'https://',
         label: '주식 투자',
@@ -336,7 +338,7 @@ const BLOG_TEMPLATES: BlogTemplate[] = [
         id: 102,
         x: 695,
         y: 0,
-        w: 186,
+        w: WIDGET_W,
         h: 450,
         url: 'https://',
         label: '부동산',
@@ -347,7 +349,7 @@ const BLOG_TEMPLATES: BlogTemplate[] = [
         id: 103,
         x: 875,
         y: 0,
-        w: 186,
+        w: WIDGET_W,
         h: 450,
         url: 'https://',
         label: '절약 팁',
@@ -358,7 +360,7 @@ const BLOG_TEMPLATES: BlogTemplate[] = [
         id: 104,
         x: 1055,
         y: 0,
-        w: 186,
+        w: WIDGET_W,
         h: 450,
         url: 'https://',
         label: '재테크 정보',
@@ -369,7 +371,7 @@ const BLOG_TEMPLATES: BlogTemplate[] = [
         id: 105,
         x: 1235,
         y: 0,
-        w: 186,
+        w: WIDGET_W,
         h: 450,
         url: 'https://',
         label: '수익 후기',
@@ -416,7 +418,7 @@ const BLOG_TEMPLATES: BlogTemplate[] = [
         id: 101,
         x: 515,
         y: 0,
-        w: 186,
+        w: WIDGET_W,
         h: 450,
         url: 'https://',
         label: '일상 기록',
@@ -427,7 +429,7 @@ const BLOG_TEMPLATES: BlogTemplate[] = [
         id: 102,
         x: 695,
         y: 0,
-        w: 186,
+        w: WIDGET_W,
         h: 450,
         url: 'https://',
         label: '카페·맛집',
@@ -438,7 +440,7 @@ const BLOG_TEMPLATES: BlogTemplate[] = [
         id: 103,
         x: 875,
         y: 0,
-        w: 186,
+        w: WIDGET_W,
         h: 450,
         url: 'https://',
         label: '여행',
@@ -449,7 +451,7 @@ const BLOG_TEMPLATES: BlogTemplate[] = [
         id: 104,
         x: 1055,
         y: 0,
-        w: 186,
+        w: WIDGET_W,
         h: 450,
         url: 'https://',
         label: '취미·체험',
@@ -460,7 +462,7 @@ const BLOG_TEMPLATES: BlogTemplate[] = [
         id: 105,
         x: 1235,
         y: 0,
-        w: 186,
+        w: WIDGET_W,
         h: 450,
         url: 'https://',
         label: '리뷰',
@@ -745,7 +747,7 @@ export default function SkinMakerTool({
     });
   };
 
-  // 링크 5칸을 화면의 위젯 가이드(가운데 정렬 5×186px)에 정확히 스냅.
+  // 링크 5칸을 화면의 위젯 가이드(가운데 정렬 5×170px)에 정확히 스냅.
   // 네이버는 투명위젯을 966px 콘텐츠 영역 가운데에 한 줄로 놓으므로,
   // 배경 라벨을 이 그리드에 맞추면 배경 글자 = 실제 클릭영역이 정확히 일치한다.
   const GRID_COUNT = 5;
@@ -891,7 +893,10 @@ export default function SkinMakerTool({
         setBgRotation(s.bgRotation ?? 0);
         setLabelFont(s.labelFont ?? DEFAULT_FONT);
         setElements(s.elements ?? []);
-        setRects(s.rects ?? []);
+        // 예전 저장분은 폭이 186으로 굳어 있어 상한(170)을 넘긴다. 복원 시 정규화.
+        setRects(
+          (s.rects ?? []).map((r: LinkRect) => ({ ...r, w: WIDGET_W }))
+        );
         setImgUrl(s.imgUrl || DEFAULT_WIDGET_URL);
         setBlogId(s.blogId ?? '');
         setActiveTemplateId(s.activeTemplateId ?? null);
@@ -1120,7 +1125,7 @@ export default function SkinMakerTool({
     const p = canvasPos(e);
     const dragW = Math.abs(p.x - startPos.x);
     const dragH = Math.abs(p.y - startPos.y);
-    // new.md: 위젯 가로 186px 고정, 세로 최대 600px.
+    // new.md: 위젯 가로 170px 고정, 세로 최대 600px.
     const rect = {
       id: Date.now(),
       x: Math.min(startPos.x, p.x),
@@ -1234,7 +1239,7 @@ export default function SkinMakerTool({
   };
 
   const downloadWidget = () => {
-    // 투명 위젯은 컬럼 1칸 = 가로 186px 고정 × 캔버스(대문) 높이. 투명이라 각 코드의 width/height로 손실 없이 스케일됨.
+    // 투명 위젯은 컬럼 1칸 = 가로 170px 고정 × 캔버스(대문) 높이. 투명이라 각 코드의 width/height로 손실 없이 스케일됨.
     const h = Math.min(600, ch); // 위젯 세로 최대 600
     const canvas = document.createElement('canvas');
     canvas.width = WIDGET_W;
@@ -1975,7 +1980,7 @@ export default function SkinMakerTool({
                                 </p>
                               </>
                             )}
-                            {/* 크기 — 위젯 가로 186px 고정, 세로 최대 600px */}
+                            {/* 크기 — 위젯 가로 170px 고정, 세로 최대 600px */}
                             <div className="grid grid-cols-2 gap-1.5 mb-2">
                               <div>
                                 <p className="text-[10px] text-gray-400 font-semibold mb-1">
@@ -1983,10 +1988,10 @@ export default function SkinMakerTool({
                                 </p>
                                 <input
                                   type="text"
-                                  value="186 (고정)"
+                                  value={`${WIDGET_W} (고정)`}
                                   readOnly
                                   tabIndex={-1}
-                                  aria-label="링크 영역 너비 (186px 고정)"
+                                  aria-label={`링크 영역 너비 (${WIDGET_W}px 고정)`}
                                   className="w-full p-1.5 border border-gray-200 rounded-lg text-xs bg-gray-50 text-gray-400 outline-none cursor-not-allowed"
                                 />
                               </div>
@@ -2219,7 +2224,7 @@ export default function SkinMakerTool({
                       }}
                     />
                   )}
-                  {/* 위젯 칸 가이드 — 한 줄 5칸(가로 186px·간격 10px) 가운데 정렬 */}
+                  {/* 위젯 칸 가이드 — 한 줄 5칸(가로 170px·간격 10px) 가운데 정렬 */}
                   <div
                     style={{
                       position: 'absolute',
