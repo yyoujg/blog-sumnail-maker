@@ -283,34 +283,37 @@ const STYLE_PRESETS: readonly StylePreset[] = [
 
 const DEFAULT_PRESET = STYLE_PRESETS[0];
 
-export function HomeTool({ seoAfterTool }: { seoAfterTool?: React.ReactNode }) {
-  const [title, setTitle] = useState(DEFAULT_PRESET.title);
-  const [subtitle, setSubtitle] = useState(DEFAULT_PRESET.subtitle);
-  const [category, setCategory] = useState(DEFAULT_PRESET.category);
+export type HomeToolInitial = { title?: string; subtitle?: string; category?: string; bgImage?: string; presetId?: string };
+// embedded/initial/onSave: 로컬 편집기(/local)가 글 폴더의 사진을 들고 열어 PNG를 글 폴더에 저장할 때 쓴다. 기본 동작은 그대로.
+export function HomeTool({ seoAfterTool, embedded = false, initial, onSave }: { seoAfterTool?: React.ReactNode; embedded?: boolean; initial?: HomeToolInitial; onSave?: (dataUrl: string) => Promise<void> | void }) {
+  const base = STYLE_PRESETS.find((p) => p.id === initial?.presetId) ?? DEFAULT_PRESET;
+  const [title, setTitle] = useState(initial?.title ?? base.title);
+  const [subtitle, setSubtitle] = useState(initial?.subtitle ?? base.subtitle);
+  const [category, setCategory] = useState(initial?.category ?? base.category);
 
-  const [bgType, setBgType] = useState<BgType>(DEFAULT_PRESET.bgType);
-  const [bgColor, setBgColor] = useState(DEFAULT_PRESET.bgColor);
-  const [bgImage, setBgImage] = useState<string | null>(DEFAULT_PRESET.bgImage || null);
+  const [bgType, setBgType] = useState<BgType>(initial?.bgImage ? 'image' : base.bgType);
+  const [bgColor, setBgColor] = useState(base.bgColor);
+  const [bgImage, setBgImage] = useState<string | null>(initial?.bgImage ?? base.bgImage ?? null);
 
-  const [textColor, setTextColor] = useState(DEFAULT_PRESET.textColor);
-  const [fontFamily, setFontFamily] = useState(DEFAULT_PRESET.fontFamily);
-  const [textAlign, setTextAlign] = useState<TextAlign>(DEFAULT_PRESET.textAlign);
-  const [textVAlign, setTextVAlign] = useState<TextVAlign>(DEFAULT_PRESET.textVAlign);
+  const [textColor, setTextColor] = useState(base.textColor);
+  const [fontFamily, setFontFamily] = useState(base.fontFamily);
+  const [textAlign, setTextAlign] = useState<TextAlign>(base.textAlign);
+  const [textVAlign, setTextVAlign] = useState<TextVAlign>(base.textVAlign);
   const [textOffsetX, setTextOffsetX] = useState(0);
   const [textOffsetY, setTextOffsetY] = useState(0);
 
-  const [overlayOpacity, setOverlayOpacity] = useState(DEFAULT_PRESET.overlayOpacity);
-  const [frameType, setFrameType] = useState<FrameType>(DEFAULT_PRESET.frameType);
+  const [overlayOpacity, setOverlayOpacity] = useState(base.overlayOpacity);
+  const [frameType, setFrameType] = useState<FrameType>(base.frameType);
   const [bandDarkness, setBandDarkness] = useState(100);
-  const [textShadow, setTextShadow] = useState(DEFAULT_PRESET.textShadow);
+  const [textShadow, setTextShadow] = useState(base.textShadow);
   const [titleFontSize, setTitleFontSize] = useState(60);
-  const [accentColor, setAccentColor] = useState(DEFAULT_PRESET.accentColor ?? '#ffe14d');
-  const [outlineColor, setOutlineColor] = useState(DEFAULT_PRESET.outlineColor ?? '#ffffff');
-  const [outlineWidth, setOutlineWidth] = useState(DEFAULT_PRESET.outlineWidth ?? 0);
-  const [titleHighlightColor, setTitleHighlightColor] = useState<string | undefined>(DEFAULT_PRESET.titleHighlightColor);
-  const [subtitlePosition, setSubtitlePosition] = useState<SubtitlePosition>(DEFAULT_PRESET.subtitlePosition ?? 'below');
-  const [subtitleFontFamily, setSubtitleFontFamily] = useState<string | undefined>(DEFAULT_PRESET.subtitleFontFamily);
-  const [subtitleColor, setSubtitleColor] = useState<string | undefined>(DEFAULT_PRESET.subtitleColor);
+  const [accentColor, setAccentColor] = useState(base.accentColor ?? '#ffe14d');
+  const [outlineColor, setOutlineColor] = useState(base.outlineColor ?? '#ffffff');
+  const [outlineWidth, setOutlineWidth] = useState(base.outlineWidth ?? 0);
+  const [titleHighlightColor, setTitleHighlightColor] = useState<string | undefined>(base.titleHighlightColor);
+  const [subtitlePosition, setSubtitlePosition] = useState<SubtitlePosition>(base.subtitlePosition ?? 'below');
+  const [subtitleFontFamily, setSubtitleFontFamily] = useState<string | undefined>(base.subtitleFontFamily);
+  const [subtitleColor, setSubtitleColor] = useState<string | undefined>(base.subtitleColor);
   const [bgOffsetX, setBgOffsetX] = useState(50);
   const [bgOffsetY, setBgOffsetY] = useState(50);
   const [bgRotation, setBgRotation] = useState(0);
@@ -319,7 +322,7 @@ export function HomeTool({ seoAfterTool }: { seoAfterTool?: React.ReactNode }) {
   const [downloadFormat, setDownloadFormat] = useState<'png' | 'jpg'>('png');
   const [downloadScale, setDownloadScale] = useState<1 | 2>(2);
   const [fileName, setFileName] = useState('blog_thumbnail');
-  const [activePresetId, setActivePresetId] = useState<string | null>(DEFAULT_PRESET.id);
+  const [activePresetId, setActivePresetId] = useState<string | null>(base.id);
   const [isDownloadDone, setIsDownloadDone] = useState(false);
 
   const previewRef = useRef<HTMLDivElement>(null);
@@ -411,10 +414,14 @@ export function HomeTool({ seoAfterTool }: { seoAfterTool?: React.ReactNode }) {
       const mimeType = downloadFormat === 'jpg' ? 'image/jpeg' : 'image/png';
       const quality = downloadFormat === 'jpg' ? 0.95 : undefined;
       const dataUrl = canvas.toDataURL(mimeType, quality);
-      const link = document.createElement('a');
-      link.download = `${fileName || 'blog_thumbnail'}.${downloadFormat}`;
-      link.href = dataUrl;
-      link.click();
+      if (onSave) {
+        await onSave(dataUrl);
+      } else {
+        const link = document.createElement('a');
+        link.download = `${fileName || 'blog_thumbnail'}.${downloadFormat}`;
+        link.href = dataUrl;
+        link.click();
+      }
       setIsDownloadDone(true);
     } catch (error) {
       console.error('다운로드 중 오류 발생:', error);
@@ -431,11 +438,12 @@ export function HomeTool({ seoAfterTool }: { seoAfterTool?: React.ReactNode }) {
   );
 
   return (
-    <div className="min-h-screen bg-[#f5f5f0] text-gray-800 font-sans flex flex-col">
+    <div className={embedded ? 'text-gray-800 font-sans' : 'min-h-screen bg-[#f5f5f0] text-gray-800 font-sans flex flex-col'}>
 
       {/* ── 헤더 ── */}
-      <SiteHeader />
+      {!embedded && <SiteHeader />}
 
+      {!embedded && (<>
       {/* 사이트 목적 — 도구 + 정보성 콘텐츠 */}
       <section
         aria-labelledby="site-intro-heading"
@@ -514,6 +522,7 @@ export function HomeTool({ seoAfterTool }: { seoAfterTool?: React.ReactNode }) {
           </div>
         </div>
       </section>
+      </>)}
 
       {/* ── 도구 탭 ── */}
       <section id="tool" className="px-4 md:px-8 py-8 md:py-10">
@@ -615,6 +624,7 @@ export function HomeTool({ seoAfterTool }: { seoAfterTool?: React.ReactNode }) {
         </div>
       </section>
 
+      {!embedded && (<>
       {seoAfterTool}
 
       {/* 다운로드 완료 후 다음 단계 */}
@@ -719,11 +729,12 @@ export function HomeTool({ seoAfterTool }: { seoAfterTool?: React.ReactNode }) {
           </div>
         </div>
       </section>
+      </>)}
 
       {/* html2canvas: 썸네일 다운로드 기능이 있는 이 페이지에서만 로드 */}
       <Script src={HTML2CANVAS_SCRIPT_SRC} strategy="afterInteractive" />
 
-      <SiteFooter />
+      {!embedded && <SiteFooter />}
     </div>
   );
 }
