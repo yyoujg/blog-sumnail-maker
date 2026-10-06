@@ -9,7 +9,7 @@ export function GET() {
     { loc: `${SITE_URL}/blog`, lastmod: blogPosts[0].date, changefreq: 'weekly', priority: '0.9' },
     ...blogPosts.map((post) => ({
       loc: `${SITE_URL}/blog/${post.slug}`,
-      lastmod: post.date,
+      lastmod: post.updatedAt ?? post.date,
       changefreq: 'monthly',
       priority: '0.8',
     })),

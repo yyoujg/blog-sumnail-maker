@@ -156,7 +156,7 @@ export default async function BlogPostPage({ params }: PageProps) {
     headline: post.title,
     description: post.summary,
     datePublished: post.date,
-    dateModified: post.date,
+    dateModified: post.updatedAt ?? post.date,
     author: { '@type': 'Organization', name: 'BlogKit', url: SITE_URL },
     publisher: { '@type': 'Organization', name: 'BlogKit', url: SITE_URL },
     url: `${SITE_URL}/blog/${post.slug}`,
