@@ -3,7 +3,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { NextRequest, NextResponse } from 'next/server';
-import { ROOT, guard, fail, safeResolve, blogDir, exists, readJson, writeJson, run, toRel } from '@/lib/local/server';
+import { ROOT, guard, fail, postResolve, blogDir, exists, readJson, writeJson, run, toRel } from '@/lib/local/server';
 
 export const dynamic = 'force-dynamic';
 
@@ -13,7 +13,7 @@ const HTML_HEADERS = { 'Content-Type': 'text/html; charset=utf-8', 'Content-Secu
 const OPT = ['sub', 'cat', 'filter', 'preset', 'accent', 'font', 'pos', 'crop'] as const;
 
 function paths(postRel: string) {
-  const postAbs = safeResolve(postRel);
+  const postAbs = postResolve(postRel);
   const dir = blogDir(postAbs);
   const slug = path.basename(postAbs);
   if (!exists(path.join(dir, 'media'))) throw new Error('블로그/media 폴더가 없어요 (npm run prep 먼저)');
@@ -36,6 +36,8 @@ function guessArgs(md: string, postRel: string): Partial<ThumbArgs> | null {
 const argv = (p: ReturnType<typeof paths>, a: ThumbArgs) => {
   const out = [path.join(ROOT, 'src', 'thumb.js'), p.slug, '--bg', a.bg, '--main', a.main, '--out', p.out];
   for (const k of OPT) if (a[k]) out.push(`--${k}`, a[k]);
+  // thumb.js의 val()은 indexOf로 플래그를 찾는다 -> 값이 --로 시작하면 다른 플래그 자리를 가로챈다.
+  if (out.slice(2).some((v, i) => i % 2 === 1 && v.startsWith('-'))) throw new Error('값은 -로 시작할 수 없어요');
   return out;
 };
 

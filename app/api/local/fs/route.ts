@@ -26,6 +26,8 @@ export async function GET(req: NextRequest) {
     const abs = safeResolve(rel);
     const type = MIME[path.extname(abs).toLowerCase()];
     if (!type || !fs.existsSync(abs)) return new NextResponse('Not found', { status: 404 });
-    return new NextResponse(fs.readFileSync(abs), { headers: { 'Content-Type': type, 'Cache-Control': 'no-store' } });
+    // html(debug/ 스크랩 등)은 링크로 직접 열어도 스크립트가 못 돌게. allow-same-origin은 금융 미리보기 iframe의 contentDocument 접근용.
+    const csp: Record<string, string> = type.startsWith('text/html') ? { 'Content-Security-Policy': 'sandbox allow-same-origin' } : {};
+    return new NextResponse(fs.readFileSync(abs), { headers: { 'Content-Type': type, 'Cache-Control': 'no-store', ...csp } });
   } catch (e) { return fail(e); }
 }
