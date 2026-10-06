@@ -18,6 +18,7 @@ const uploadBg = (file: string): ShotAction[] => [
   { type: 'click', selector: '#tool button:has-text("배경")' },
   { type: 'upload', selector: '#tool input[type="file"]', file: `scripts/shot-assets/${file}` },
 ];
+const OVERLAY_SLIDER = '#tool div:has(> label:has-text("어두운 필터")) input[type="range"]';
 const TEXT_TAB: ShotAction = { type: 'click', selector: '#tool button:has-text("텍스트")' };
 const SKIN_PREVIEW = 'div.bg-white:has(> h3:has-text("미리보기"))';
 
@@ -57,6 +58,33 @@ export const shotSpecs: ShotSpec[] = [
     selector: '[data-testid="thumb-preview"]',
     viewport: DESKTOP,
   },
+  {
+    // high-ctr-thumbnail "패턴 1 숫자 + 리스트"의 본문 예시 문구
+    id: 'thumb-pattern-number',
+    path: '/',
+    actions: [
+      { type: 'click', selector: '#tool button:has-text("골드")' },
+      ...uploadBg('bg-nodeul-sunset.jpg'),
+      TEXT_TAB,
+      { type: 'fill', selector: '[placeholder="예: 맛집 탐방, IT 리뷰"]', value: '수익화' },
+      { type: 'fill', selector: '[placeholder="포스팅 제목을 입력하세요"]', value: '블로그 수익화\n방법 5가지' },
+      { type: 'fill', selector: 'input[placeholder="보충 설명을 입력하세요"]', value: '' },
+    ],
+    selector: '[data-testid="thumb-preview"]',
+    viewport: DESKTOP,
+  },
+  ...(['0', '50'] as const).map((v): ShotSpec => ({
+    // 같은 밝은 배경에서 어두운 필터 값만 바꾼 비교 컷
+    id: `thumb-overlay-${v}`,
+    path: '/',
+    actions: [
+      { type: 'click', selector: '#tool button:has-text("골드")' },
+      ...uploadBg('bg-yeouido-hangang-day.jpg'),
+      { type: 'fill', selector: OVERLAY_SLIDER, value: v },
+    ],
+    selector: '[data-testid="thumb-preview"]',
+    viewport: DESKTOP,
+  })),
   {
     id: 'skin-editor',
     path: '/skin-maker',
