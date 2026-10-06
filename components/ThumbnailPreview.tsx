@@ -344,6 +344,7 @@ export default function ThumbnailPreview({
         <div
           className={`w-full aspect-square relative overflow-hidden z-0 ${textShadow ? 'p-0' : 'p-8 sm:p-12'}`}
           ref={previewRef}
+          data-testid="thumb-preview"
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
           onMouseUp={handleDragEnd}
