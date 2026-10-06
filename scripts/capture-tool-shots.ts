@@ -15,7 +15,8 @@ try {
     for (const a of spec.actions) {
       const el = page.locator(a.selector).first();
       if (a.type === 'click') await el.click();
-      else await el.fill(a.value);
+      else if (a.type === 'fill') await el.fill(a.value);
+      else await el.setInputFiles(a.file);
     }
     const target = page.locator(spec.selector).first();
     await target.scrollIntoViewIfNeeded();
@@ -28,6 +29,7 @@ try {
         if (pos === 'fixed') el.style.visibility = 'hidden';
       });
       document.querySelector<HTMLElement>('nextjs-portal')?.style.setProperty('display', 'none');
+      (document.activeElement as HTMLElement | null)?.blur();
       await document.fonts.ready;
       await Promise.all(
         Array.from(document.images).map((img) => img.decode().catch(() => undefined)),
