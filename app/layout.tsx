@@ -130,8 +130,6 @@ export default function RootLayout({
     <html lang="ko">
       <head>
         <link rel="stylesheet" href={FONT_LINK_HREF} />
-        <link rel="preload" as="image" href="/images/260208에디션엠/에디션엠-감귤케이크-딸기음료-메인.JPG" />
-        <link rel="preload" as="image" href="/images/260208에디션엠/에디션엠-혜화역카페-내부좌석공간.JPG" />
         {/* 애드센스 전역 스크립트 */}
         <script async src={ADSENSE_SCRIPT_SRC} crossOrigin="anonymous"></script>
       </head>
