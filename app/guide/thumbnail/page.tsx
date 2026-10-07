@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
 import SiteHeader from '@/components/SiteHeader';
 import SiteFooter from '@/components/SiteFooter';
-import AdBanner from '@/components/AdBanner';
 
 const GUIDE_PAGE_TITLE =
   '블로그 썸네일 만들기: 클릭률(CTR)과 조회수 올리는 3가지 비밀 - BlogKit';
@@ -45,8 +45,35 @@ export default function ThumbnailGuidePage() {
           썸네일 하나로 <strong className="text-gray-700 font-semibold">조회수</strong>가 바뀝니다. 핵심만 정리했습니다.
         </p>
 
-        {/* 광고 상단 1개 */}
-        <AdBanner position="guide-thumbnail-top" type="adsense" />
+        <section className="mt-8 bg-white rounded-xl border border-gray-100 p-5">
+          <h2 className="text-base font-bold text-gray-900 mb-3">이 글에서 기준으로 삼은 실제 도구 화면</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <figure>
+              <Image
+                src="/images/screenshots/tool-thumb-default.png"
+                alt="BlogKit 썸네일 메이커 기본 화면"
+                width={800}
+                height={800}
+                className="w-full rounded-lg border border-gray-100"
+              />
+              <figcaption className="mt-2 text-xs text-gray-500 leading-relaxed">
+                기본 1:1 캔버스에서 직접 찍은 사진과 제목 문구를 조합한 예시입니다.
+              </figcaption>
+            </figure>
+            <figure>
+              <Image
+                src="/images/screenshots/tool-thumb-custom-text.png"
+                alt="BlogKit 썸네일 메이커 제목 커스터마이징 화면"
+                width={800}
+                height={800}
+                className="w-full rounded-lg border border-gray-100"
+              />
+              <figcaption className="mt-2 text-xs text-gray-500 leading-relaxed">
+                모바일 목록에서 읽히는지 확인하기 위해 제목을 두 줄 안에 맞춘 예시입니다.
+              </figcaption>
+            </figure>
+          </div>
+        </section>
 
         {/* 본문 1 - 왜 썸네일이 중요한가 */}
         <section className="mt-10">
@@ -62,16 +89,6 @@ export default function ThumbnailGuidePage() {
             글을 잘 써놓고 썸네일에서 클릭을 잃습니다.
           </p>
         </section>
-
-        {/* CTA 1 - 툴 유도 (본문 초반) */}
-        <div className="mt-8 mb-10 bg-white rounded-xl border border-[#e5e7eb] p-5">
-          <p className="text-sm text-gray-600 mb-1">
-            이 글에서 설명하는 썸네일은 아래에서 바로 만들 수 있습니다
-          </p>
-          <Link href="/" className="text-sm font-semibold text-gray-900 underline underline-offset-2">
-            조회수 잘 나오는 썸네일 만들기 →
-          </Link>
-        </div>
 
         {/* 본문 2 - 잘 되는 썸네일 특징 + 예시 */}
         <section className="mt-10">
@@ -97,53 +114,38 @@ export default function ThumbnailGuidePage() {
           <h3 className="text-base font-bold text-gray-900 mb-3">이런 썸네일이 클릭률이 높습니다</h3>
           <div className="grid grid-cols-2 gap-3">
             {[
-              { bg: '/images/260208에디션엠/에디션엠-감귤케이크-딸기음료-메인.JPG', category: '카페', title: '분위기 좋은 감성 카페', overlay: 0.45 },
-              { bg: '/images/250118코르크베이크바/IMG_7578.JPG', category: '체험단', title: '솔직 체험단 후기', overlay: 0.5 },
+              { src: '/images/screenshots/tool-thumb-preset.png', alt: '골드 프리셋으로 만든 BlogKit 썸네일 예시' },
+              { src: '/images/screenshots/tool-thumb-pattern-number.png', alt: '숫자 패턴을 강조한 BlogKit 썸네일 예시' },
             ].map((s, i) => (
-              <div
+              <figure
                 key={i}
-                className="aspect-square rounded-xl overflow-hidden relative flex flex-col items-center justify-center p-4 text-center"
-                style={{ backgroundImage: `url('${s.bg}')`, backgroundSize: 'cover', backgroundPosition: 'center' }}
+                className="bg-white rounded-xl border border-gray-100 p-2"
               >
-                <div className="absolute inset-0" style={{ background: `rgba(0,0,0,${s.overlay})` }} />
-                <div className="relative z-10 flex flex-col items-center gap-1.5">
-                  <span className="text-[10px] font-bold px-2 py-0.5 rounded-full border border-white/80 text-white/90">{s.category}</span>
-                  <p className="font-bold text-xs leading-snug text-white">{s.title}</p>
-                </div>
-              </div>
+                <Image
+                  src={s.src}
+                  alt={s.alt}
+                  width={800}
+                  height={800}
+                  className="w-full rounded-lg"
+                />
+              </figure>
             ))}
           </div>
-          <p className="text-xs text-gray-400 mt-2 text-center">위 썸네일은 이 사이트에서 1분 안에 만들 수 있습니다.</p>
+          <p className="text-xs text-gray-400 mt-2 text-center">실제 도구 캡처를 기준으로 한 예시입니다.</p>
         </section>
 
-        {/* CTA 2 - 행동 유도 (본문 중간) */}
-        <div className="mt-8 mb-10 bg-white rounded-xl border border-[#e5e7eb] p-5">
-          <p className="text-sm text-gray-700 font-medium mb-1">
-            결국 중요한 건 &ldquo;클릭되는 썸네일&rdquo;입니다
-          </p>
-          <p className="text-sm text-gray-500 mb-2">
-            <strong className="text-gray-800 font-semibold">조회수</strong>는 여기서 시작됩니다
-          </p>
-          <Link href="/" className="text-sm font-semibold text-gray-900 underline underline-offset-2">
-            클릭되는 썸네일 직접 만들어보기 →
+        <section className="mt-8 bg-white rounded-xl border border-gray-100 p-5">
+          <h2 className="text-xl font-bold text-gray-900 mb-3">완성 전 점검 순서</h2>
+          <ol className="space-y-2 text-sm text-gray-600 leading-relaxed">
+            <li>1. 제목을 15자 안팎으로 줄이고, 가장 중요한 단어를 첫 줄에 둡니다.</li>
+            <li>2. 25% 크기로 줄여 본 뒤 모바일 목록에서도 글자가 읽히는지 확인합니다.</li>
+            <li>3. 비슷한 주제의 글 3개는 같은 프리셋을 써서 목록 화면의 통일감을 유지합니다.</li>
+            <li>4. 본문 제목과 썸네일 문구가 서로 다른 약속을 하지 않는지 마지막에 확인합니다.</li>
+          </ol>
+          <Link href="/" className="inline-flex mt-4 text-sm font-semibold text-gray-900 underline underline-offset-2">
+            썸네일 도구 열기
           </Link>
-        </div>
-
-        {/* CTA 3 - 재전환 (상품 아래) */}
-        <div className="mt-8 mb-10 bg-white rounded-xl border border-[#e5e7eb] p-5">
-          <p className="text-sm text-gray-700 font-medium mb-1">
-            장비보다 중요한 건 썸네일입니다
-          </p>
-          <p className="text-sm text-gray-500 mb-3">지금 바로 적용해보세요</p>
-          <div className="flex flex-wrap gap-3">
-            <Link href="/" className="inline-block px-4 py-2 bg-[#111111] text-white text-sm font-semibold rounded-lg hover:bg-gray-800 transition">
-              썸네일 만들기 →
-            </Link>
-            <Link href="/#popular-templates" className="inline-block px-4 py-2 bg-white border border-gray-300 text-gray-800 text-sm font-semibold rounded-lg hover:border-gray-500 transition">
-              인기 템플릿 보기 →
-            </Link>
-          </div>
-        </div>
+        </section>
 
         {/* 관련 글 */}
         <section className="mt-10">

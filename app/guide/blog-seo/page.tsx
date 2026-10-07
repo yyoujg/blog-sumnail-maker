@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import SiteHeader from '@/components/SiteHeader';
 import SiteFooter from '@/components/SiteFooter';
-import AdBanner from '@/components/AdBanner';
 
 export const metadata: Metadata = {
   title: '블로그 조회수 올리는법 - 네이버 블로그 SEO 완전 가이드',
@@ -41,8 +40,14 @@ export default function BlogSeoGuidePage() {
           조회수가 안 나오는 데는 이유가 있습니다. 해결법도 단순합니다.
         </p>
 
-        {/* 광고 상단 1개 */}
-        <AdBanner position="guide-blog-seo-top" type="adsense" />
+        <section className="mt-8 bg-white rounded-xl border border-gray-100 p-5">
+          <h2 className="text-base font-bold text-gray-900 mb-2">검토 기준</h2>
+          <p className="text-sm text-gray-600 leading-relaxed">
+            이 가이드는 검색어, 제목, 글 구조, 썸네일의 네 가지를 함께 점검합니다. 단순히 조회수를 약속하기보다
+            실제 블로그 관리자 화면과 Search Console에서 확인할 수 있는 지표를 기준으로 글을 고치는 순서를
+            정리했습니다.
+          </p>
+        </section>
 
         {/* 본문 1 - 조회수 안 나오는 이유 */}
         <section className="mt-10">
@@ -66,16 +71,6 @@ export default function BlogSeoGuidePage() {
           </div>
         </section>
 
-        {/* CTA 1 - 툴 유도 (본문 초반) */}
-        <div className="mt-8 mb-10 bg-white rounded-xl border border-[#e5e7eb] p-5">
-          <p className="text-sm text-gray-600 mb-1">
-            이 글에서 설명하는 썸네일은 아래에서 바로 만들 수 있습니다
-          </p>
-          <Link href="/" className="text-sm font-semibold text-gray-900 underline underline-offset-2">
-            조회수 잘 나오는 썸네일 만들기 →
-          </Link>
-        </div>
-
         {/* 본문 2 - 해결법 3가지 + 수익 구조 */}
         <section className="mt-10">
           <h2 className="text-xl font-bold text-gray-900 mb-4">해결법: 딱 3가지</h2>
@@ -87,7 +82,7 @@ export default function BlogSeoGuidePage() {
               </div>
               <p className="text-xs text-gray-500 leading-relaxed">
                 사람들이 네이버에서 실제로 검색하는 단어를 제목에 포함시켜야 합니다.
-                "오늘의 카페" → "성수동 카페 추천 주차 가능한 곳". 검색 의도에 맞게 제목을 쓰는 것이 핵심입니다.
+                &ldquo;오늘의 카페&rdquo;보다 &ldquo;성수동 카페 추천 주차 가능한 곳&rdquo;처럼 검색 의도에 맞게 제목을 쓰는 것이 핵심입니다.
               </p>
             </div>
             <div className="bg-white rounded-xl p-5 border border-gray-100">
@@ -115,18 +110,19 @@ export default function BlogSeoGuidePage() {
         </section>
 
         <section className="mt-8">
-          <h2 className="text-xl font-bold text-gray-900 mb-3">수익이 나는 구조</h2>
+          <h2 className="text-xl font-bold text-gray-900 mb-3">수정 후 확인할 지표</h2>
           <p className="text-gray-600 text-sm leading-relaxed mb-4">
-            조회수가 쌓이면 수익으로 연결됩니다. 대표적으로 3가지입니다.
+            제목과 구조를 바꾼 뒤에는 감으로 판단하지 말고 실제 지표를 확인해야 합니다. 하루 단위보다
+            7일 단위로 묶어 보면 변화가 더 분명합니다.
           </p>
           <div className="flex flex-col gap-2">
             {[
-              { emoji: '💰', title: '애드센스 / 애드포스트', desc: '방문자가 많아질수록 광고 수익이 늘어납니다. 방문자가 꾸준히 늘면 점차 의미 있는 수익으로 이어집니다.' },
-              { emoji: '🛒', title: '쿠팡 파트너스', desc: '리뷰 글에 쿠팡 링크를 넣으면 구매 시 수수료가 발생합니다. 블로그 주제와 맞는 제품을 소개하세요.' },
-              { emoji: '🎁', title: '체험단', desc: '방문자가 일정 수준 이상이면 체험단 제품을 받을 수 있습니다. 조회수가 올라가면 제안이 들어옵니다.' },
+              { label: '노출', title: 'Search Console 노출수', desc: '제목에 실제 검색어가 들어가면 먼저 노출수가 움직입니다. 클릭보다 노출 변화가 먼저 나타나는 경우가 많습니다.' },
+              { label: '클릭', title: 'CTR과 클릭수', desc: '노출은 있는데 클릭이 낮으면 제목과 썸네일 문구를 함께 점검합니다. 같은 글이라도 약속이 선명하면 클릭률이 달라집니다.' },
+              { label: '체류', title: '본문 이탈 지점', desc: '첫 문단에서 결론을 못 찾거나 소제목이 흐리면 바로 이탈합니다. 요약, 목차, 사례 순서로 읽는 흐름을 정리합니다.' },
             ].map((item) => (
               <div key={item.title} className="flex gap-3 bg-white rounded-xl p-4 border border-gray-100">
-                <span className="text-lg flex-shrink-0">{item.emoji}</span>
+                <span className="text-xs font-mono text-gray-400 flex-shrink-0 mt-0.5">{item.label}</span>
                 <div>
                   <p className="font-semibold text-gray-900 text-sm mb-1">{item.title}</p>
                   <p className="text-xs text-gray-500 leading-relaxed">{item.desc}</p>
@@ -136,34 +132,18 @@ export default function BlogSeoGuidePage() {
           </div>
         </section>
 
-        {/* CTA 2 - 행동 유도 (쿠팡/체험단 설명 이후) */}
-        <div className="mt-8 mb-10 bg-white rounded-xl border border-[#e5e7eb] p-5">
-          <p className="text-sm text-gray-700 font-medium mb-1">
-            결국 중요한 건 &ldquo;클릭되는 썸네일&rdquo;입니다
-          </p>
-          <p className="text-sm text-gray-500 mb-2">
-            조회수는 여기서 시작됩니다
-          </p>
-          <Link href="/" className="text-sm font-semibold text-gray-900 underline underline-offset-2">
-            클릭되는 썸네일 직접 만들어보기 →
+        <section className="mt-8 bg-white rounded-xl border border-gray-100 p-5">
+          <h2 className="text-xl font-bold text-gray-900 mb-3">바로 고칠 수 있는 순서</h2>
+          <ol className="space-y-2 text-sm text-gray-600 leading-relaxed">
+            <li>1. 글 제목 앞 15자 안에 검색어를 넣습니다.</li>
+            <li>2. 첫 문단 세 문장 안에 결론과 대상 독자를 함께 씁니다.</li>
+            <li>3. 소제목은 감상문처럼 쓰지 말고, 독자가 확인하려는 질문으로 바꿉니다.</li>
+            <li>4. 대표 이미지에는 제목과 같은 약속을 짧게 반복합니다.</li>
+          </ol>
+          <Link href="/blog/blog-keyword-strategy-complete" className="inline-flex mt-4 text-sm font-semibold text-gray-900 underline underline-offset-2">
+            키워드 전략 글 이어서 보기
           </Link>
-        </div>
-
-        {/* CTA 3 - 재전환 (상품 아래) */}
-        <div className="mt-8 mb-10 bg-white rounded-xl border border-[#e5e7eb] p-5">
-          <p className="text-sm text-gray-700 font-medium mb-1">
-            장비보다 중요한 건 썸네일입니다
-          </p>
-          <p className="text-sm text-gray-500 mb-3">지금 바로 적용해보세요</p>
-          <div className="flex flex-wrap gap-3">
-            <Link href="/" className="inline-block px-4 py-2 bg-[#111111] text-white text-sm font-semibold rounded-lg hover:bg-gray-800 transition">
-              썸네일 만들기 →
-            </Link>
-            <Link href="/#popular-templates" className="inline-block px-4 py-2 bg-white border border-gray-300 text-gray-800 text-sm font-semibold rounded-lg hover:border-gray-500 transition">
-              인기 템플릿 보기 →
-            </Link>
-          </div>
-        </div>
+        </section>
 
         {/* 관련 글 */}
         <section className="mt-10">

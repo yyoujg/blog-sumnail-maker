@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { ADSENSE_CLIENT, ADSENSE_AD_SLOT } from '@/lib/constants';
 
+const ADS_ENABLED = process.env.NEXT_PUBLIC_ENABLE_ADS === 'true';
 const TRACKING_CODE = 'AF2506117';
 
 function coupangUrl(subId: string, width: number, height: number) {
@@ -28,7 +29,7 @@ export default function AdBanner({ position, type }: AdBannerProps) {
 
   useEffect(() => {
     const ins = adsenseRef.current;
-    if (type !== 'adsense' || !ADSENSE_AD_SLOT || !ins) return;
+    if (!ADS_ENABLED || type !== 'adsense' || !ADSENSE_AD_SLOT || !ins) return;
     if (ins.offsetWidth === 0) return;
     try {
       (window.adsbygoogle = window.adsbygoogle || []).push({});
@@ -49,6 +50,10 @@ export default function AdBanner({ position, type }: AdBannerProps) {
 
   const filledClass =
     'w-full flex flex-col items-center justify-center py-4 my-4 bg-gray-50 rounded-xl border border-gray-200 overflow-hidden';
+
+  if (!ADS_ENABLED) {
+    return null;
+  }
 
   if (type === 'coupang') {
     const subId = encodeURIComponent(position);
