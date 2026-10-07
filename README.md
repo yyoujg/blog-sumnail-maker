@@ -23,17 +23,18 @@
 ### 스킨메이커 (`components/SkinMakerTool.tsx` — `/skin-maker`)
 - 1920×450 캔버스(가로/세로 직접 조절 가능), 배경 단색·이미지·오버레이·확대·회전
 - 텍스트/이미지 요소를 캔버스에 자유 배치, 드래그 이동, 가로/세로 가운데 정렬
-- **클릭형 링크 영역**: 캔버스에 드래그해서 사각형(width 186px 고정)을 그리면 네이버 위젯용 `<img usemap>` 이미지맵 코드를 자동 생성
+- **클릭형 링크 영역**: 캔버스에 드래그해서 사각형(width 170px 고정)을 그리면 네이버 위젯용 `<img usemap>` 이미지맵 코드를 자동 생성
   - 내 블로그 ID만 입력하면 `/api/naver-categories`를 통해 카테고리 목록을 불러와 내부링크를 자동 조립(blogId + categoryNo), 외부링크는 URL 직접 입력
-  - **그리드 스냅**: 링크 5칸을 `WIDGET_W`(186px) × `WIDGET_GAP`(10px) 기준으로 캔버스 가운데에 정확히 재배치 — 배경에 그린 라벨 위치와 실제 클릭 영역을 일치시키기 위한 기능
+  - **그리드 스냅**: 링크 5칸을 `WIDGET_W`(170px) × `WIDGET_GAP`(10px) 기준으로 캔버스 가운데에 정확히 재배치 — 배경에 그린 라벨 위치와 실제 클릭 영역을 일치시키기 위한 기능
   - 투명위젯 5개 + 버튼위젯 5개 코드를 개별/일괄로 복사·내보내기
 - 4개 블로그 템플릿(맛집 리뷰·체험단·재테크·라이프스타일)
 - `Ctrl/Cmd+Z` undo(최근 30단계), `localStorage` 자동저장/복원
-- 내보내기: 스킨 PNG(캔버스 `<canvas>` 기반), 투명 위젯 PNG(186×최대 600px)
+- 내보내기: 스킨 PNG(캔버스 `<canvas>` 기반), 투명 위젯 PNG(170×최대 600px, 네이버 위젯 등록 화면 고지 기준)
 
 ### 가이드 블로그 (`app/blog`, `data/blogPosts.ts`)
-- `data/blogPosts.ts` 배열(현재 25개 글) 단일 소스에서 `generateStaticParams`로 정적 페이지 생성
+- `data/blogPosts.ts` 배열(현재 24개 글) 단일 소스에서 `generateStaticParams`로 정적 페이지 생성
 - 글마다 목차, 관련글, Article/BreadcrumbList 구조화 데이터
+- 선택 필드 `updatedAt`이 있으면 sitemap `lastmod`와 JSON-LD `dateModified`에 반영(`app/sitemap.xml/route.ts`)
 - `/guide/blog-seo`, `/guide/thumbnail` 등 별도 가이드 페이지, `/skin-maker`에는 FAQPage 스키마
 
 ## 기술적으로 신경 쓴 부분
@@ -56,8 +57,10 @@
 - Tailwind CSS 4 (`@tailwindcss/postcss`)
 - lucide-react 0.577.0 (아이콘)
 - ESLint 9 (`eslint-config-next`)
+- Remotion 4 (`remotion`, `@remotion/player`, `@remotion/transitions`) - 로컬 편집기(`/local`) 미리보기 전용
+- Playwright (dev) - `npm run capture:shots` 스크린샷 캡처용
 
-의존성은 위 6개가 전부다 — 캔버스/이미지 처리는 라이브러리 없이 `html2canvas`(CDN 스크립트 태그)와 브라우저 `<canvas>` API로 직접 구현.
+공개 도구의 캔버스/이미지 처리는 라이브러리 없이 `html2canvas`(CDN 스크립트 태그)와 브라우저 `<canvas>` API로 직접 구현.
 
 ## 로컬 실행
 
@@ -80,6 +83,29 @@ npm run lint
 npm run typecheck
 ```
 
+도구 스크린샷 캡처(`npm run dev` 실행 중, `scripts/shot-specs.ts` 기준으로 `public/images/screenshots/`에 저장):
+
+```bash
+npm run capture:shots
+```
+
+## 로컬 편집기 (`/local`, 개발자 전용)
+
+별도 저장소 `naver-blog-auto`의 글 폴더(`posts/`, `발행완료/`)와 clip-pipeline 산출물을 브라우저에서 편집/미리보기하는 화면이다. 공개 서비스 기능이 아니다.
+
+- `.env.local`에 `BLOG_AUTO_ROOT`(naver-blog-auto 경로)가 있을 때만 동작. 없으면 `/local/*` 페이지와 `/api/local/*` 라우트가 모두 404(배포본 기본 상태)
+- API 보호(`lib/local/server.ts`의 `guard`): localhost 호스트만 허용, 쓰기 요청은 동일 출처 + `application/json`만 허용, 파일 경로는 `BLOG_AUTO_ROOT` 밖으로 못 나가도록 검증
+- 화면: `/local`(대시보드), `/local/[...post]`(글별 썸네일/카드/씬 편집), `/local/finance`
+- Remotion 컴포넌트는 naver-blog-auto 원본을 복사해 쓴다. 원본이 바뀌면 다시 동기화:
+
+```bash
+npm run sync:clip
+```
+
+```bash
+npm run dev:local   # http://localhost:3100
+```
+
 ## 프로젝트 구조
 
 ```
@@ -87,6 +113,8 @@ app/                 Next.js App Router
   page.tsx           홈(썸네일 메이커)
   layout.tsx          루트 레이아웃(AdSense, GA, 구조화 데이터)
   api/naver-categories/  네이버 블로그 카테고리 조회 프록시
+  api/local/          로컬 편집기 API(BLOG_AUTO_ROOT 없으면 404)
+  local/              로컬 편집기 화면
   blog/               가이드 글 목록 및 [slug] 상세
   skin-maker/         스킨메이커 라우트
   guide/               별도 가이드 페이지(blog-seo, thumbnail)
@@ -97,9 +125,12 @@ components/
   SkinMakerTool.tsx   스킨/위젯 에디터
   ControlPanel.tsx / ThumbnailPreview.tsx  썸네일 메이커 하위 컴포넌트
   AdBanner.tsx SiteHeader.tsx SiteFooter.tsx HomeSeoContent.tsx
-data/blogPosts.ts     블로그 글 데이터(단일 소스, 25편)
+  local/              로컬 편집기 컴포넌트, remotion/(sync:clip 복사본)
+data/blogPosts.ts     블로그 글 데이터(단일 소스, 24편)
 lib/constants.ts       사이트 URL, AdSense/GA ID, 폰트 목록 등 상수
 lib/types.ts           공용 타입
+lib/local/             로컬 편집기 서버 공통(guard, 경로 검증)
+scripts/               sync-clip.sh, capture-tool-shots.ts, shot-specs.ts
 public/                정적 자산(폰트, 이미지, 위젯 PNG)
 next.config.ts          이미지 포맷/캐시, 리다이렉트
 vercel.json             Vercel 배포 설정(framework: nextjs)
@@ -115,6 +146,7 @@ ads.txt                 AdSense 인증
   slug: "my-post",          // URL: /blog/my-post
   title: "...",
   date: "2026-06-18",       // YYYY-MM-DD
+  updatedAt: "2026-10-06",  // 선택. 내용 수정 시 sitemap lastmod에 반영
   summary: "...",
   sections: [
     { heading: "...", content: "...", imageUrl: "...", imageCaption: "..." },
