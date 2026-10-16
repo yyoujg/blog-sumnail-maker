@@ -32,6 +32,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       type: 'article',
       url: `https://www.blogsumnail.com/blog/${post.slug}`,
       publishedTime: post.date,
+      modifiedTime: post.updatedAt ?? post.date,
     },
     twitter: {
       card: 'summary_large_image' as const,
@@ -145,9 +146,9 @@ export default async function BlogPostPage({ params }: PageProps) {
   const nextPost = postIndex < blogPosts.length - 1 ? blogPosts[postIndex + 1] : null;
   const midAdAfterIndex = post.sections.length >= 4 ? Math.floor(post.sections.length / 2) - 1 : -1;
 
-  const CORE_RELATED = ['naver-blog-thumbnail-size', 'high-ctr-thumbnail', 'how-to-make-blog-thumbnail'];
-  const coreRelated = blogPosts.filter((p) => p.slug !== slug && CORE_RELATED.includes(p.slug));
-  const extraRelated = blogPosts.filter((p) => p.slug !== slug && !CORE_RELATED.includes(p.slug));
+  const relatedSlugs = post.relatedSlugs ?? ['naver-blog-thumbnail-size', 'high-ctr-thumbnail', 'how-to-make-blog-thumbnail'];
+  const coreRelated = relatedSlugs.flatMap((relatedSlug) => blogPosts.filter((p) => p.slug === relatedSlug && p.slug !== slug));
+  const extraRelated = blogPosts.filter((p) => p.slug !== slug && !relatedSlugs.includes(p.slug));
   const relatedPosts = [...coreRelated, ...extraRelated].slice(0, 3);
 
   const articleSchema = {
@@ -191,7 +192,12 @@ export default async function BlogPostPage({ params }: PageProps) {
         <article>
           {/* 헤더 */}
           <header className="mb-10">
-            <p className="text-xs text-gray-400 mb-3 tracking-wide">{formatDate(post.date)}</p>
+            <p className="text-xs text-gray-500 mb-3">
+              발행 <time dateTime={post.date}>{formatDate(post.date)}</time>
+              {post.updatedAt && post.updatedAt !== post.date && (
+                <> / 수정 <time dateTime={post.updatedAt}>{formatDate(post.updatedAt)}</time></>
+              )}
+            </p>
             <h1 className="text-2xl md:text-[1.75rem] font-bold text-gray-900 leading-snug mb-6">
               {post.title}
             </h1>
@@ -242,6 +248,31 @@ export default async function BlogPostPage({ params }: PageProps) {
                   <div className="px-6 py-5">
                     <SectionImage section={section} />
                     {renderContent(section.content)}
+                    {section.table && (
+                      <div className="mt-5 overflow-x-auto">
+                        <table className="w-full text-sm text-left border-collapse">
+                          <caption className="text-left text-xs text-gray-500 mb-3 leading-relaxed">
+                            {section.table.caption}
+                          </caption>
+                          <thead>
+                            <tr>
+                              {section.table.headers.map((heading) => (
+                                <th key={heading} scope="col" className="border-b border-gray-300 px-3 py-2 font-semibold text-gray-900 align-top">{heading}</th>
+                              ))}
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {section.table.rows.map((row, rowIndex) => (
+                              <tr key={rowIndex}>
+                                {row.map((cell, cellIndex) => (
+                                  <td key={cellIndex} className="border-b border-gray-100 px-3 py-3 text-gray-700 align-top break-words">{cell}</td>
+                                ))}
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    )}
                   </div>
                 </section>
 
@@ -251,6 +282,19 @@ export default async function BlogPostPage({ params }: PageProps) {
               </div>
             ))}
           </div>
+          {post.sources && post.sources.length > 0 && (
+            <section aria-labelledby="article-sources" className="mt-8 border-t border-gray-200 pt-6">
+              <h2 id="article-sources" className="text-base font-semibold text-gray-900 mb-3">출처 및 확인 자료</h2>
+              <ul className="space-y-3 text-sm">
+                {post.sources.map((source) => (
+                  <li key={source.url}>
+                    <a href={source.url} target="_blank" rel="noopener noreferrer" className="text-blue-700 underline underline-offset-2 break-words">{source.label}</a>
+                    <span className="block mt-1 text-xs text-gray-500">확인 <time dateTime={source.checkedAt}>{formatDate(source.checkedAt)}</time></span>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
         </article>
 
         <AdBanner type="adsense" position="blog-post-bottom" />

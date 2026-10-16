@@ -4,9 +4,13 @@ import { SITE_URL } from '@/lib/constants';
 export const dynamic = 'force-static';
 
 export function GET() {
+  const latestPostDate = blogPosts.reduce((latest, post) => {
+    const modified = post.updatedAt ?? post.date;
+    return modified > latest ? modified : latest;
+  }, blogPosts[0].date);
   const urls = [
-    { loc: `${SITE_URL}/`, lastmod: '2026-04-19', changefreq: 'weekly', priority: '1.0' },
-    { loc: `${SITE_URL}/blog`, lastmod: blogPosts[0].date, changefreq: 'weekly', priority: '0.9' },
+    { loc: `${SITE_URL}/`, lastmod: '2026-10-16', changefreq: 'weekly', priority: '1.0' },
+    { loc: `${SITE_URL}/blog`, lastmod: latestPostDate, changefreq: 'weekly', priority: '0.9' },
     ...blogPosts.map((post) => ({
       loc: `${SITE_URL}/blog/${post.slug}`,
       lastmod: post.updatedAt ?? post.date,
@@ -14,8 +18,8 @@ export function GET() {
       priority: '0.8',
     })),
     { loc: `${SITE_URL}/skin-maker`, lastmod: '2026-05-27', changefreq: 'monthly', priority: '0.8' },
-    { loc: `${SITE_URL}/guide/thumbnail`, lastmod: '2026-04-19', changefreq: 'monthly', priority: '0.7' },
-    { loc: `${SITE_URL}/guide/blog-seo`, lastmod: '2026-04-19', changefreq: 'monthly', priority: '0.7' },
+    { loc: `${SITE_URL}/guide/thumbnail`, lastmod: '2026-10-07', changefreq: 'monthly', priority: '0.7' },
+    { loc: `${SITE_URL}/guide/blog-seo`, lastmod: '2026-10-07', changefreq: 'monthly', priority: '0.7' },
     { loc: `${SITE_URL}/about`, lastmod: '2026-04-19', changefreq: 'monthly', priority: '0.6' },
     { loc: `${SITE_URL}/contact`, lastmod: '2026-04-19', changefreq: 'monthly', priority: '0.6' },
     { loc: `${SITE_URL}/privacy`, lastmod: '2026-04-19', changefreq: 'monthly', priority: '0.5' },

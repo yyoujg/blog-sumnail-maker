@@ -102,7 +102,7 @@ function renderTitleLine(line: string, shadowCss: string | null, accentColor?: s
   });
 }
 
-function FitWidthTitle({ lines, color, shadowCss, fontSize, accentColor, highlightColor }: {
+function FitWidthTitle({ lines, fontFamily, color, shadowCss, fontSize, accentColor, highlightColor }: {
   lines: string[];
   fontFamily?: string;
   color: string;
@@ -120,7 +120,8 @@ function FitWidthTitle({ lines, color, shadowCss, fontSize, accentColor, highlig
             key={i}
             style={{
               fontSize: `${fontSize}px`,
-              fontWeight: 900,
+              // Synthetic bold distorts Black Han Sans in canvas exports.
+              fontWeight: fontFamily?.includes('Black Han Sans') ? 400 : 900,
               color,
               lineHeight: 1.15,
               whiteSpace: 'nowrap',
@@ -226,7 +227,7 @@ export function PresetMiniPreview({ preset: p }: { preset: StylePreset }) {
               key={i}
               style={{
                 fontSize: p.textShadow ? '11cqw' : '9.5cqw',
-                fontWeight: p.textShadow ? 900 : 700,
+                fontWeight: p.fontFamily.includes('Black Han Sans') ? 400 : p.textShadow ? 900 : 700,
                 lineHeight: 1.15,
                 whiteSpace: 'nowrap',
                 overflow: 'hidden',
@@ -336,7 +337,7 @@ export default function ThumbnailPreview({
             미리보기 (1:1 비율)
           </h3>
           <p className="text-xs text-gray-400 mt-1 leading-snug">
-            네이버 모바일 최적화 (204x204 완벽 지원)
+            정방형 이미지 / 저장 크기는 미리보기 크기와 배율에 따라 달라집니다
           </p>
         </div>
 
@@ -555,10 +556,6 @@ export default function ThumbnailPreview({
         )}
         </div>
 
-        {/* 결과 이미지 아래 심리 자극 문구 */}
-        <p className="mt-3 text-xs text-center text-green-700 font-semibold bg-green-50 rounded-xl px-4 py-2 w-full max-w-[500px]">
-          이 썸네일 그대로 블로그에 쓰면 클릭률 올라갑니다
-        </p>
       </div>
 
       {/* Download options */}

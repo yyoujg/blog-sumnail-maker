@@ -387,8 +387,21 @@ export function HomeTool({ seoAfterTool, embedded = false, initial, onSave }: { 
     }
     const element = previewRef.current;
     if (!element) return;
+    const exportProperties = ['width', 'height', 'aspect-ratio', 'box-shadow'];
+    const originalStyles = exportProperties.map((property) => ({
+      property,
+      value: element.style.getPropertyValue(property),
+      priority: element.style.getPropertyPriority(property),
+    }));
+    const restorePreviewStyles = () => {
+      for (const { property, value, priority } of originalStyles) {
+        if (value) element.style.setProperty(property, value, priority);
+        else element.style.removeProperty(property);
+      }
+    };
 
     setIsDownloading(true);
+    setIsDownloadDone(false);
     try {
       await document.fonts.ready;
       const rect = element.getBoundingClientRect();
@@ -407,10 +420,7 @@ export function HomeTool({ seoAfterTool, embedded = false, initial, onSave }: { 
         windowWidth: document.documentElement.scrollWidth,
         windowHeight: document.documentElement.scrollHeight,
       });
-      element.style.removeProperty('width');
-      element.style.removeProperty('height');
-      element.style.removeProperty('aspect-ratio');
-      element.style.removeProperty('box-shadow');
+      restorePreviewStyles();
       const mimeType = downloadFormat === 'jpg' ? 'image/jpeg' : 'image/png';
       const quality = downloadFormat === 'jpg' ? 0.95 : undefined;
       const dataUrl = canvas.toDataURL(mimeType, quality);
@@ -428,6 +438,7 @@ export function HomeTool({ seoAfterTool, embedded = false, initial, onSave }: { 
       const message = error instanceof Error ? error.message : '알 수 없는 오류';
       alert(`이미지 다운로드에 실패했습니다. (${message})`);
     } finally {
+      restorePreviewStyles();
       setIsDownloading(false);
     }
   };
