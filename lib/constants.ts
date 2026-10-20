@@ -11,7 +11,7 @@ export const ADSENSE_SCRIPT_SRC = `https://pagead2.googlesyndication.com/pagead/
 export const ADSENSE_AD_SLOT = '9150939859';
 
 export const FONT_LINK_HREF =
-  'https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Do+Hyeon&family=Jua&family=Nanum+Pen+Script&family=Gaegu&family=Gamja+Flower&display=swap';
+  'https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Do+Hyeon&family=Jua&family=Nanum+Pen+Script&family=Gaegu&family=Gamja+Flower&family=Playfair+Display:ital,wght@1,500&family=Dancing+Script:wght@400;500&family=Montserrat:wght@500;600;700&family=Nanum+Myeongjo&display=swap';
 
 export const HTML2CANVAS_SCRIPT_SRC =
   'https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';
@@ -33,6 +33,11 @@ export const FONTS = [
   { name: '단감아삭', value: `'CWDangamAsac', sans-serif` },
   { name: '을지로', value: `'BMEuljiro', sans-serif` },
   { name: '페이퍼로지', value: `'Paperlogy', sans-serif` },
+  { name: '마루 부리', value: `'MaruBuri', serif` },
+  { name: '영문 명조', value: `'Playfair Display', serif` },
+  { name: '영문 보도니', value: `'Bodoni 72', 'Times New Roman', Times, serif` },
+  { name: '영문 연결 필기체', value: `'Dancing Script', cursive` },
+  { name: '기본 영문 고딕', value: 'Arial, sans-serif' },
   { name: '손글씨 펜', value: `'Nanum Pen Script', cursive` },
   { name: '손글씨 박다현', value: `'OwnglyphParkDaHyun', cursive` },
   { name: '손글씨 개구', value: `'Gaegu', cursive` },

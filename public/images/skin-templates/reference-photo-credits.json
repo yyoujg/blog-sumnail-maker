@@ -1,0 +1,44 @@
+{
+  "license": "https://unsplash.com/license",
+  "notes": "무료 스킨 디자인 예시의 사진 요소. 원본 사진 판매·사진 라이브러리 재배포 용도가 아님. 인물·상표·별도 저작물 권리는 Unsplash 라이선스에 포함되지 않음.",
+  "photos": [
+    {
+      "file": "ref-photo-cafe.jpg",
+      "author": "HANVIN CHEONG",
+      "source": "https://unsplash.com/photos/a-restaurant-with-a-large-window-and-a-view-of-the-street-VRo8MYpvQYo",
+      "edit": "오른쪽 잡지 표지와 하단 전시물을 제외하고 창가·테이블 부분만 잘라 사용",
+      "location": "대한민국 대전"
+    },
+    {
+      "file": "ref-photo-toast.jpg",
+      "author": "COPPERTIST WU",
+      "source": "https://unsplash.com/photos/a-plate-of-french-toast-next-to-a-cup-of-coffee-u_N31l6S1Ys"
+    },
+    {
+      "file": "ref-photo-bedroom.jpg / ref-side-living-window.jpg",
+      "author": "Clay Banks",
+      "source": "https://unsplash.com/photos/a-bedroom-with-a-bed-and-two-windows-We6SIUbVD6c",
+      "edit": "회화 액자와 장식 램프를 제외하고 왼쪽 창가·침구만 잘라 사용. 창가 상세 이미지는 이 편집본의 왼쪽 55%를 추가로 잘라 사용",
+      "location": "미국 뉴욕주 제퍼슨빌"
+    },
+    {
+      "file": "ref-photo-beauty-1.jpg / ref-photo-beauty-2.jpg",
+      "author": "Shamblen Studios",
+      "source": "https://unsplash.com/photos/pink-and-brown-makeup-brush-set-xwM61TPMlYk",
+      "edit": "두 번째 이미지는 같은 사진의 파우더 제품 부분 확대"
+    },
+    {
+      "file": "ref-photo-travel-1.jpg / ref-photo-travel-detail.jpg",
+      "author": "Bundo Kim",
+      "source": "https://unsplash.com/photos/aerial-view-of-a-dock-OXTnNcZXeqU",
+      "edit": "같은 원본의 해안 전체와 가까운 방파제 부분을 각각 잘라 사용",
+      "location": "대한민국 강릉 옥계면 도직리"
+    },
+    {
+      "file": "ref-photo-travel-2.jpg",
+      "author": "Luo Jin Hong",
+      "source": "https://unsplash.com/photos/a-narrow-street-in-traditional-south-korea-1zC9UAMO20o",
+      "location": "대한민국 서울 북촌한옥마을"
+    }
+  ]
+}

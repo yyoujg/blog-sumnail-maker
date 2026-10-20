@@ -23,6 +23,8 @@ import {
   RotateCcw,
 } from 'lucide-react';
 import { FONTS } from '@/lib/constants';
+import { REFERENCE_SKIN_TEMPLATES } from './skinReferenceTemplates';
+import { buildWidgets, categoryUrl as catUrl, parseCategoryUrl } from '@/lib/skinWidgets';
 
 // ── Constants ──────────────────────────────────
 // 네이버 위젯 등록 화면 고지: "위젯의 크기는 가로 170px, 세로 600px까지 지원합니다."
@@ -34,9 +36,6 @@ const WIDGET_GAP = 10;
 const DEFAULT_WIDGET_URL =
   'https://www.blogsumnail.com/transparent-170x600.png';
 
-// 내부 카테고리 이동 URL 조립 (blogId + categoryNo)
-const catUrl = (blogId: string, categoryNo: string) =>
-  `https://blog.naver.com/PostList.naver?blogId=${blogId || 'MY_BLOG_ID'}&categoryNo=${categoryNo || '0'}`;
 const LABEL_Y_RATIO = 0.7; // 라벨 세로 위치 — 미리보기·export 공용 (불일치 방지)
 
 // 템플릿의 bgPosition('center 40%' 등)을 배경 offset(%)로 변환
@@ -45,6 +44,28 @@ function posToOffset(pos?: string): { x: number; y: number } {
   const fx = h === 'left' ? 0 : h === 'right' ? 100 : h.endsWith('%') ? parseFloat(h) : 50;
   const fy = v === 'top' ? 0 : v === 'bottom' ? 100 : v.endsWith('%') ? parseFloat(v) : 50;
   return { x: fx, y: fy };
+}
+
+// object-fit:cover와 동일한 소스 크롭 영역 계산 (canvas drawImage용 — 비율 다른 이미지가 늘어나지 않게 중앙 크롭)
+function coverSrcRect(natW: number, natH: number, targetW: number, targetH: number) {
+  const srcRatio = natW / natH;
+  const dstRatio = targetW / targetH;
+  let sw = natW;
+  let sh = natH;
+  if (srcRatio > dstRatio) {
+    sw = natH * dstRatio;
+  } else {
+    sh = natW / dstRatio;
+  }
+  return { sx: (natW - sw) / 2, sy: (natH - sh) / 2, sw, sh };
+}
+
+// CSS line-height: 1의 기준선과 캔버스 출력 기준선을 맞춘다.
+function textBaseline(ctx: CanvasRenderingContext2D, y: number, fontSize: number, text: string) {
+  const metrics = ctx.measureText(text);
+  const ascent = metrics.fontBoundingBoxAscent ?? fontSize * 0.8;
+  const descent = metrics.fontBoundingBoxDescent ?? fontSize * 0.2;
+  return y + (fontSize - ascent - descent) / 2 + ascent;
 }
 
 interface TextElement {
@@ -57,6 +78,11 @@ interface TextElement {
   color: string;
   fontWeight: string;
   fontFamily?: string;
+  fontStyle?: 'normal' | 'italic';
+  letterSpacing?: number;
+  align?: 'left' | 'center';
+  strokeColor?: string; // 글씨 테두리색
+  strokeWidth?: number;
 }
 
 const DEFAULT_FONT = `'Pretendard', sans-serif`;
@@ -69,6 +95,11 @@ interface ImageElement {
   y: number;
   w: number;
   h: number;
+  radius?: number; // 모서리 둥글기(px) — w===h && radius===w/2 이면 원형
+  borderColor?: string; // 사진 테두리색
+  borderWidth?: number;
+  rotation?: number;
+  clipShape?: 'house';
 }
 
 type CanvasElement = TextElement | ImageElement;
@@ -82,17 +113,30 @@ interface LinkRect {
   url: string; // newWindow(외부링크)일 때만 직접 사용
   label?: string;
   labelColor?: string;
+  labelFontSize?: number;
+  labelFontWeight?: number;
+  labelPadX?: number;
+  labelPadY?: number;
+  labelBg?: string; // 라벨 뒤 pill 배경색 (undefined = pill 없이 텍스트만)
+  labelBorderColor?: string; // pill 테두리색
+  labelY?: number; // 라벨 세로 위치 강제 지정(px) — 없으면 h*LABEL_Y_RATIO 기본값
+  labelPillW?: number; // pill 너비 강제 지정(px) — 없으면 텍스트 너비 기준 자동
   bgColor?: string; // undefined = 투명
   borderColor?: string; // undefined = 기본 (#52525b), '' = 테두리 없음
   newWindow?: boolean; // true = 새 창(<a target=_blank>), 그 외 = 현재 창(이미지맵)
   categoryNo?: string; // 내부 카테고리 번호 (newWindow=false일 때 blogId와 조립)
+  categoryUrl?: string; // 블로그 카테고리에서 복사한 전체 주소
 }
 
-interface BlogTemplate {
+export interface BlogTemplate {
   id: string;
   label: string;
   emoji: string;
   desc: string;
+  previewImage?: string;
+  labelFont?: string;
+  fontSource?: { name: string; url: string };
+  fontNote?: string;
   bg: string;
   bgImage?: string;
   bgOverlay?: number;
@@ -106,370 +150,292 @@ interface BlogTemplate {
 }
 
 // ── Blog Templates ──────────────────────────────
+// 원형 아바타/아이콘/배경 블록은 인라인 SVG로 채운다(실사진은 사각 crop만 지원해
+// 원 모양·단색 블록이 안 나옴).
+const svgUri = (svg: string) => `data:image/svg+xml;utf8,${encodeURIComponent(svg)}`;
+const circleImg = (d: number, color: string) =>
+  svgUri(
+    `<svg xmlns="http://www.w3.org/2000/svg" width="${d}" height="${d}"><circle cx="${d / 2}" cy="${d / 2}" r="${d / 2}" fill="${color}"/></svg>`
+  );
+const solidRect = (w: number, h: number, color: string) =>
+  svgUri(
+    `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}"><rect width="${w}" height="${h}" fill="${color}"/></svg>`
+  );
+const COLS = [515, 695, 875, 1055, 1235]; // 위젯 5칸 표준 x좌표 (WIDGET_W=170, gap=10)
+const COLS4 = [605, 785, 965, 1145]; // 4칸일 때 캔버스 중앙(960) 기준 정렬
+
+// 캡션은 rect.label(0.7 고정 위치)이 아니라 별도 텍스트 요소로 배치 —
+// 히어로 사진+썸네일 줄 구도는 캡션이 더 아래에 와야 함.
+const captionRow = (
+  startId: number,
+  xs: number[],
+  labels: string[],
+  y: number,
+  color: string,
+  offset = 50
+) =>
+  xs.map((x, i) => ({
+    id: startId + i,
+    type: 'text' as const,
+    text: labels[i],
+    x: x + offset,
+    y,
+    fontSize: 13,
+    color,
+    fontWeight: 'normal' as const,
+  }));
+
+const homepageMenus = (labels: string[], color: string): LinkRect[] =>
+  labels.map((label, i) => ({
+    id: 101 + i, x: 1055 + i * (WIDGET_W + WIDGET_GAP), y: 300,
+    w: WIDGET_W, h: 150, url: '', label, labelColor: color,
+    labelBg: '#ffffff', labelBorderColor: color, labelPillW: 148,
+    borderColor: '',
+  }));
+
 const BLOG_TEMPLATES: BlogTemplate[] = [
+  ...REFERENCE_SKIN_TEMPLATES,
   {
-    id: 'food',
-    label: '맛집 리뷰',
-    emoji: '🍜',
-    desc: '맛집·카페·레시피',
-    bg: '#1a1a1a',
-    bgImage: '/images/260208에디션엠/에디션엠-감귤케이크-딸기음료-메인.JPG',
-    bgOverlay: 30,
+    id: 'cozy-note', label: '일상 손그림', emoji: '',
+    desc: '새로 만든 포근한 기록 배경 · 3000×900',
+    labelFont: "'OwnglyphParkDaHyun', cursive",
+    fontSource: { name: '온글잎 박다현체', url: 'https://noonnu.cc/font_page/1541' },
+    bg: '#fcf7f2', bgImage: '/images/skin-templates/daily-stationery-bg.jpg',
+    cw: 3000, ch: 900,
+    elements: [
+      { id: 10, type: 'image', src: '/images/skin-templates/daily-diary-sticker.png', x: 1080, y: 85, w: 160, h: 160 },
+      { id: 11, type: 'image', src: '/images/skin-templates/daily-camera-sticker.png', x: 1760, y: 85, w: 160, h: 160 },
+      { id: 1, type: 'text', text: '소소한 하루의 기록', x: 1500, align: 'center', y: 105, fontSize: 72, color: '#594b40', fontWeight: 'normal', fontFamily: "'OwnglyphParkDaHyun', cursive" },
+      { id: 2, type: 'text', text: '일상 속 좋아하는 순간을 모아요', x: 1500, align: 'center', y: 190, fontSize: 22, color: '#8b7c6c', fontWeight: 'normal' },
+    ],
+    rects: homepageMenus(['오늘의 일기', '좋아하는 것', '취미 기록', '나들이', '사진첩'], '#8b7862'),
+  },
+  {
+    id: 'garden-note', label: '원예·재배', emoji: '',
+    desc: '새로 만든 초록빛 정원 배경 · 3000×900',
+    labelFont: "'Cafe24Surround', sans-serif",
+    fontSource: { name: '카페24 써라운드', url: 'https://noonnu.cc/font_page/669' },
+    bg: '#fafbea', bgImage: '/images/skin-templates/garden-stationery-bg.jpg',
+    cw: 3000, ch: 900,
+    elements: [
+      { id: 10, type: 'image', src: '/images/skin-templates/garden-pot-sticker.png', x: 1080, y: 85, w: 160, h: 160 },
+      { id: 11, type: 'image', src: '/images/skin-templates/garden-seedling-sticker.png', x: 1760, y: 85, w: 160, h: 160 },
+      { id: 1, type: 'text', text: '초록이 자라는 시간', x: 1500, align: 'center', y: 115, fontSize: 50, color: '#425d40', fontWeight: 'normal', fontFamily: "'Cafe24Surround', sans-serif" },
+      { id: 2, type: 'text', text: '작은 정원에서 천천히 배우는 하루', x: 1500, align: 'center', y: 190, fontSize: 22, color: '#748267', fontWeight: 'normal' },
+    ],
+    rects: homepageMenus(['식물 일기', '초보 가드닝', '나의 정원', '계절의 꽃', '재배 노트'], '#71815d'),
+  },
+  {
+    // 참고 template-3: 사진 배너(필기체 타이틀) + 사진 4장 + 연락처
+    id: 'cozy-home',
+    label: '코지홈',
+    emoji: '🐾',
+    desc: '포근한 일상 기록',
+    bg: '#ffffff',
+    cw: 1920,
+    ch: 450,
+    elements: [
+      { id: 5, type: 'image', src: '/images/skin-templates/hero-cozy-home.jpg', x: 0, y: 0, w: 1920, h: 280 },
+      { id: 1, type: 'text', text: '일상 기록 블로그', x: 1190, y: 108, fontSize: 17, color: '#ffffff', fontWeight: 'normal' },
+      { id: 2, type: 'text', text: 'My Daily Life', x: 1140, y: 135, fontSize: 46, color: '#ffffff', fontWeight: 'bold', fontFamily: `'Dancing Script', cursive` },
+      { id: 10, type: 'image', src: '/images/skin-templates/cozy-thumb-daily.jpg', x: 430, y: 305, w: 110, h: 110, radius: 10 },
+      { id: 11, type: 'image', src: '/images/skin-templates/cozy-thumb-thoughts.jpg', x: 605, y: 305, w: 110, h: 110, radius: 10 },
+      { id: 12, type: 'image', src: '/images/skin-templates/cozy-thumb-reading.jpg', x: 780, y: 305, w: 110, h: 110, radius: 10 },
+      { id: 13, type: 'image', src: '/images/skin-templates/cozy-thumb-travel.jpg', x: 955, y: 305, w: 110, h: 110, radius: 10 },
+      ...captionRow(20, [430, 605, 780, 955], ['일상 기록', '생각 기록', '독서 기록', '여행 기록'], 415, '#555555', 23),
+      { id: 30, type: 'text', text: '💬 @reallygreatsite', x: 1150, y: 310, fontSize: 13, color: '#666666', fontWeight: 'normal' },
+      { id: 31, type: 'text', text: '📞 +123-456-7890', x: 1150, y: 339, fontSize: 13, color: '#666666', fontWeight: 'normal' },
+      { id: 32, type: 'text', text: '✉️ hello@reallygreatsite.com', x: 1150, y: 368, fontSize: 13, color: '#666666', fontWeight: 'normal' },
+    ],
+    rects: [400, 575, 750, 925].map((x, i) => ({
+      id: 101 + i,
+      x,
+      y: 0,
+      w: WIDGET_W,
+      h: 450,
+      url: 'https://',
+      borderColor: '',
+    })),
+  },
+  {
+    // 참고 template-7: 아이보리/세이지 투톤 + 원형 아바타 + 흰색 pill 5개
+    id: 'daily-log',
+    label: '데일리로그',
+    emoji: '📔',
+    desc: '심플한 데일리 블로그',
+    bg: '#b8c4ba',
+    cw: 1920,
+    ch: 450,
+    elements: [
+      { id: 4, type: 'image', src: solidRect(1920, 225, '#faf7f2'), x: 0, y: 0, w: 1920, h: 225 },
+      { id: 1, type: 'text', text: 'DAILY BLOG', x: 863, y: 48, fontSize: 28, color: '#1a1a1a', fontWeight: 'bold', fontFamily: `'Montserrat', sans-serif` },
+      { id: 2, type: 'text', text: '일상의 소소한 조각들로 채워가는 하루', x: 834, y: 88, fontSize: 16, color: '#555555', fontWeight: 'normal' },
+      { id: 10, type: 'image', src: '/images/skin-templates/daily-log-circle-3.jpg', x: 860, y: 126, w: 200, h: 200, radius: 100 },
+    ],
+    rects: COLS.map((x, i) => ({
+      id: 101 + i,
+      x,
+      y: 0,
+      w: WIDGET_W,
+      h: 450,
+      url: 'https://',
+      label: ['오늘의 일기', '취미로운 생활', '나의 공간 이야기', '정보게시판', '포토갤러리'][i],
+      labelColor: '#4a4a4a',
+      labelBg: '#ffffff',
+      labelY: 393,
+      borderColor: '',
+    })),
+  },
+  {
+    // 참고 template-1: 사진 없이 세리프 이탤릭 타이틀 + 사진 4장 (연락처 없음)
+    id: 'my-daily-life',
+    label: '감성인테리어',
+    emoji: '🕯️',
+    desc: '감성 인테리어·소품',
+    bg: '#f6f4f1',
+    bgImage: '/images/skin-templates/my-daily-life-bg.jpg',
+    bgOverlay: 0,
     bgPosition: 'center center',
     cw: 1920,
     ch: 450,
     elements: [
-      {
-        id: 1,
-        type: 'text',
-        text: '오늘의 맛집 & 베이커리 기록',
-        x: 630,
-        y: 135,
-        fontSize: 44,
-        color: '#ffffff',
-        fontWeight: 'bold',
-      },
-      {
-        id: 2,
-        type: 'text',
-        text: '매일 새로운 맛집을 찾아 솔직하게 기록합니다 🍽️',
-        x: 680,
-        y: 210,
-        fontSize: 18,
-        color: '#ffffff',
-        fontWeight: 'normal',
-      },
+      { id: 2, type: 'text', text: '나의 일상 기록 블로그', x: 600, y: 80, fontSize: 14, color: '#6d6159', fontWeight: 'normal' },
+      { id: 1, type: 'text', text: 'My Daily Life', x: 600, y: 104, fontSize: 46, color: '#3b2f2f', fontWeight: 'bold', fontFamily: `'Playfair Display', serif` },
+      { id: 10, type: 'image', src: '/images/skin-templates/life-thumb-daily.jpg', x: 635, y: 300, w: 110, h: 110, radius: 10, borderColor: '#fff8ef', borderWidth: 4 },
+      { id: 11, type: 'image', src: '/images/skin-templates/life-thumb-thoughts.jpg', x: 815, y: 300, w: 110, h: 110, radius: 10, borderColor: '#fff8ef', borderWidth: 4 },
+      { id: 12, type: 'image', src: '/images/skin-templates/life-thumb-reading.jpg', x: 995, y: 300, w: 110, h: 110, radius: 10, borderColor: '#fff8ef', borderWidth: 4 },
+      { id: 13, type: 'image', src: '/images/skin-templates/life-thumb-travel.jpg', x: 1175, y: 300, w: 110, h: 110, radius: 10, borderColor: '#fff8ef', borderWidth: 4 },
+      ...captionRow(20, [635, 815, 995, 1175], ['일상 기록', '생각 기록', '독서 기록', '여행 기록'], 420, '#4a413c', 23),
     ],
-    rects: [
-      {
-        id: 101,
-        x: 515,
-        y: 0,
-        w: WIDGET_W,
-        h: 450,
-        url: 'https://',
-        label: '맛집 탐방',
-        labelColor: '#ffffff',
-        borderColor: '',
-      },
-      {
-        id: 102,
-        x: 695,
-        y: 0,
-        w: WIDGET_W,
-        h: 450,
-        url: 'https://',
-        label: '카페 기록',
-        labelColor: '#ffffff',
-        borderColor: '',
-      },
-      {
-        id: 103,
-        x: 875,
-        y: 0,
-        w: WIDGET_W,
-        h: 450,
-        url: 'https://',
-        label: '레시피',
-        labelColor: '#ffffff',
-        borderColor: '',
-      },
-      {
-        id: 104,
-        x: 1055,
-        y: 0,
-        w: WIDGET_W,
-        h: 450,
-        url: 'https://',
-        label: '배달 후기',
-        labelColor: '#ffffff',
-        borderColor: '',
-      },
-      {
-        id: 105,
-        x: 1235,
-        y: 0,
-        w: WIDGET_W,
-        h: 450,
-        url: 'https://',
-        label: '카페 투어',
-        labelColor: '#ffffff',
-        borderColor: '',
-      },
-    ],
+    rects: [605, 785, 965, 1145].map((x, i) => ({
+      id: 101 + i,
+      x,
+      y: 0,
+      w: WIDGET_W,
+      h: 450,
+      url: 'https://',
+      borderColor: '',
+    })),
   },
   {
-    id: 'review',
-    label: '체험단',
-    emoji: '🎁',
-    desc: '제품 리뷰·체험단',
-    bg: '#1a1a1a',
-    bgImage: '/images/260208에디션엠/에디션엠-혜화역카페-내부좌석공간.JPG',
-    bgOverlay: 30,
-    bgPosition: 'center 40%',
+    // 참고 template-6: 상단 타이틀 + 사진 4장 + ABOUT/PHOTO/BLOG (3개만, 원본 그대로)
+    id: 'minimal-life',
+    label: '미니멀',
+    emoji: '🤍',
+    desc: '화이트 미니멀',
+    bg: '#f2ede3',
     cw: 1920,
     ch: 450,
     elements: [
-      {
-        id: 1,
-        type: 'text',
-        text: '식당 & 맛집 체험단 후기',
-        x: 650,
-        y: 135,
-        fontSize: 44,
-        color: '#ffffff',
-        fontWeight: 'bold',
-      },
-      {
-        id: 2,
-        type: 'text',
-        text: '직접 먹어보고 솔직하게 기록합니다 ✔️',
-        x: 760,
-        y: 210,
-        fontSize: 18,
-        color: '#ffffff',
-        fontWeight: 'normal',
-      },
+      { id: 1, type: 'text', text: 'Minimal Life', x: 849, y: 48, fontSize: 32, color: '#222222', fontWeight: 'bold', fontFamily: `'Montserrat', sans-serif` },
+      { id: 2, type: 'text', text: '단순한 삶의 방식을 찾아서 살아가는 이야기', x: 843, y: 95, fontSize: 13, color: '#777777', fontWeight: 'normal' },
+      { id: 10, type: 'image', src: '/images/skin-templates/minimal-wide-1.jpg', x: 0, y: 140, w: 765, h: 149 },
+      { id: 11, type: 'image', src: '/images/skin-templates/minimal-narrow-1.jpg', x: 780, y: 140, w: 110, h: 149 },
+      { id: 12, type: 'image', src: '/images/skin-templates/minimal-narrow-2.jpg', x: 905, y: 140, w: 110, h: 149 },
+      { id: 13, type: 'image', src: '/images/skin-templates/minimal-narrow-3.jpg', x: 1030, y: 140, w: 110, h: 149 },
+      { id: 14, type: 'image', src: '/images/skin-templates/minimal-wide-5.jpg', x: 1155, y: 140, w: 765, h: 149 },
+      { id: 20, type: 'text', text: 'ABOUT', x: 800, y: 310, fontSize: 15, color: '#444444', fontWeight: 'normal', fontFamily: `'Montserrat', sans-serif` },
+      { id: 21, type: 'text', text: 'PHOTO', x: 928, y: 310, fontSize: 15, color: '#444444', fontWeight: 'normal', fontFamily: `'Montserrat', sans-serif` },
+      { id: 22, type: 'text', text: 'BLOG', x: 1058, y: 310, fontSize: 15, color: '#444444', fontWeight: 'normal', fontFamily: `'Montserrat', sans-serif` },
     ],
-    rects: [
-      {
-        id: 101,
-        x: 515,
-        y: 0,
-        w: WIDGET_W,
-        h: 450,
-        url: 'https://',
-        label: '체험단',
-        labelColor: '#ffffff',
-        borderColor: '',
-      },
-      {
-        id: 102,
-        x: 695,
-        y: 0,
-        w: WIDGET_W,
-        h: 450,
-        url: 'https://',
-        label: '뷰티·스킨',
-        labelColor: '#ffffff',
-        borderColor: '',
-      },
-      {
-        id: 103,
-        x: 875,
-        y: 0,
-        w: WIDGET_W,
-        h: 450,
-        url: 'https://',
-        label: '생활용품',
-        labelColor: '#ffffff',
-        borderColor: '',
-      },
-      {
-        id: 104,
-        x: 1055,
-        y: 0,
-        w: WIDGET_W,
-        h: 450,
-        url: 'https://',
-        label: '식품 리뷰',
-        labelColor: '#ffffff',
-        borderColor: '',
-      },
-      {
-        id: 105,
-        x: 1235,
-        y: 0,
-        w: WIDGET_W,
-        h: 450,
-        url: 'https://',
-        label: '서비스',
-        labelColor: '#ffffff',
-        borderColor: '',
-      },
-    ],
+    rects: [750, 875, 1000].map((x, i) => ({
+      id: 101 + i,
+      x,
+      y: 0,
+      w: WIDGET_W,
+      h: 450,
+      url: 'https://',
+      borderColor: '',
+    })),
   },
   {
-    id: 'finance',
-    label: '재테크',
-    emoji: '📈',
-    desc: '주식·부동산·절약',
-    bg: '#0a2540',
-    bgImage: '/images/251231지관서가/안동북카페-지관서가-커피케이크-메뉴.JPG',
-    bgOverlay: 30,
-    bgPosition: 'center 35%',
+    // 참고 template-5: 상단 nav + 원형 프로필 + 세로 갤러리 5칸(영문+국문 2줄)
+    id: 'fashion-beauty',
+    label: '패션뷰티',
+    emoji: '💄',
+    desc: '패션·뷰티 블로그',
+    bg: '#f4f4f4',
     cw: 1920,
     ch: 450,
     elements: [
-      {
-        id: 1,
-        type: 'text',
-        text: '재테크 & 자기계발 기록',
-        x: 660,
-        y: 135,
-        fontSize: 44,
-        color: '#ffffff',
-        fontWeight: 'bold',
-      },
-      {
-        id: 2,
-        type: 'text',
-        text: '몸과 돈, 함께 투자하고 기록합니다 📊',
-        x: 760,
-        y: 210,
-        fontSize: 16,
-        color: '#94a3b8',
-        fontWeight: 'normal',
-      },
+      { id: 8, type: 'text', text: '←', x: 520, y: 22, fontSize: 22, color: '#222222', fontWeight: 'normal' },
+      { id: 9, type: 'text', text: '≡', x: 1380, y: 22, fontSize: 22, color: '#222222', fontWeight: 'normal' },
+      { id: 7, type: 'image', src: circleImg(95, '#d8d8d8'), x: 912, y: 58, w: 95, h: 95 },
+      { id: 1, type: 'text', text: 'Olivia Wilson', x: 876, y: 165, fontSize: 22, color: '#222222', fontWeight: 'bold', fontFamily: `'Montserrat', sans-serif` },
+      { id: 2, type: 'text', text: '올리비아의 패션&뷰티 블로그입니다.', x: 852, y: 198, fontSize: 14, color: '#555555', fontWeight: 'normal' },
+      { id: 11, type: 'image', src: '/images/skin-templates/fashion-card-1.jpg', x: COLS[0] + 30, y: 242, w: 110, h: 110, radius: 55 },
+      { id: 12, type: 'image', src: '/images/skin-templates/fashion-card-2.jpg', x: COLS[1] + 30, y: 242, w: 110, h: 110, radius: 55 },
+      { id: 13, type: 'image', src: '/images/skin-templates/fashion-card-3.jpg', x: COLS[2] + 30, y: 242, w: 110, h: 110, radius: 55 },
+      { id: 14, type: 'image', src: '/images/skin-templates/fashion-card-4.jpg', x: COLS[3] + 30, y: 242, w: 110, h: 110, radius: 55 },
+      { id: 15, type: 'image', src: '/images/skin-templates/fashion-card-5.jpg', x: COLS[4] + 30, y: 242, w: 110, h: 110, radius: 55 },
+      ...COLS.map((x, i) => ({
+        id: 40 + i,
+        type: 'text' as const,
+        text: ['Daily Look', 'Makeup', 'Product Picks', 'Fashion Trends', 'Lifestyle'][i],
+        x: x + 30,
+        y: 372,
+        fontSize: 12,
+        color: '#111111',
+        fontWeight: 'bold' as const,
+        fontFamily: `'Montserrat', sans-serif`,
+      })),
+      ...COLS.map((x, i) => ({
+        id: 50 + i,
+        type: 'text' as const,
+        text: ['데일리룩', '메이크업', '제품추천', '패션 트렌드', '라이프스타일'][i],
+        x: x + 30,
+        y: 389,
+        fontSize: 10,
+        color: '#888888',
+        fontWeight: 'normal' as const,
+      })),
     ],
-    rects: [
-      {
-        id: 101,
-        x: 515,
-        y: 0,
-        w: WIDGET_W,
-        h: 450,
-        url: 'https://',
-        label: '주식 투자',
-        labelColor: '#e2e8f0',
-        borderColor: '',
-      },
-      {
-        id: 102,
-        x: 695,
-        y: 0,
-        w: WIDGET_W,
-        h: 450,
-        url: 'https://',
-        label: '부동산',
-        labelColor: '#e2e8f0',
-        borderColor: '',
-      },
-      {
-        id: 103,
-        x: 875,
-        y: 0,
-        w: WIDGET_W,
-        h: 450,
-        url: 'https://',
-        label: '절약 팁',
-        labelColor: '#e2e8f0',
-        borderColor: '',
-      },
-      {
-        id: 104,
-        x: 1055,
-        y: 0,
-        w: WIDGET_W,
-        h: 450,
-        url: 'https://',
-        label: '재테크 정보',
-        labelColor: '#e2e8f0',
-        borderColor: '',
-      },
-      {
-        id: 105,
-        x: 1235,
-        y: 0,
-        w: WIDGET_W,
-        h: 450,
-        url: 'https://',
-        label: '수익 후기',
-        labelColor: '#e2e8f0',
-        borderColor: '',
-      },
-    ],
+    rects: COLS.map((x, i) => ({
+      id: 101 + i,
+      x,
+      y: 0,
+      w: WIDGET_W,
+      h: 450,
+      url: 'https://',
+      borderColor: '',
+    })),
   },
   {
-    id: 'lifestyle',
-    label: '라이프스타일',
-    emoji: '🌿',
-    desc: '일상·여행·취미',
-    bg: '#1a1a1a',
-    bgImage: '/images/260317야옹이네고양이카페/IMG_8552.JPG',
-    bgOverlay: 30,
-    bgPosition: 'center 35%',
+    // 참고 template-4: Jua 폰트 파스텔 옐로우 + 사진 4장 + 테두리만 있는 pill 버튼
+    id: 'baby-diary',
+    label: '육아일기',
+    emoji: '🍼',
+    desc: '육아·아기 기록',
+    bg: '#fff9e6',
     cw: 1920,
     ch: 450,
     elements: [
-      {
-        id: 1,
-        type: 'text',
-        text: '나의 일상 & 취미 기록',
-        x: 670,
-        y: 135,
-        fontSize: 44,
-        color: '#ffffff',
-        fontWeight: 'bold',
-      },
-      {
-        id: 2,
-        type: 'text',
-        text: '소소하지만 특별한 하루하루를 기록합니다 ☀️',
-        x: 720,
-        y: 210,
-        fontSize: 18,
-        color: '#ffffff',
-        fontWeight: 'normal',
-      },
+      { id: 1, type: 'text', text: '아기와 함께 하는 일상 기록', x: 870, y: 45, fontSize: 16, color: '#a8b3e8', fontWeight: 'normal', fontFamily: `'Jua', sans-serif` },
+      { id: 2, type: 'text', text: '육아 블로그', x: 843, y: 72, fontSize: 50, color: '#b3bcf5', fontWeight: 'bold', fontFamily: `'Jua', sans-serif`, strokeColor: '#ffffff', strokeWidth: 4 },
+      { id: 60, type: 'text', text: '✨', x: 620, y: 30, fontSize: 26, color: '#f5e1b8', fontWeight: 'normal' },
+      { id: 61, type: 'text', text: '🌈', x: 620, y: 118, fontSize: 22, color: '#f2c744', fontWeight: 'normal' },
+      { id: 62, type: 'text', text: '⭐', x: 1260, y: 30, fontSize: 30, color: '#f5e1b8', fontWeight: 'normal' },
+      { id: 63, type: 'text', text: '💕', x: 1260, y: 118, fontSize: 22, color: '#f6cdd1', fontWeight: 'normal' },
+      { id: 10, type: 'image', src: '/images/skin-templates/baby-card-1.jpg', x: COLS4[0] + 10, y: 170, w: 150, h: 161 },
+      { id: 11, type: 'image', src: '/images/skin-templates/baby-card-2.jpg', x: COLS4[1] + 10, y: 170, w: 150, h: 161 },
+      { id: 12, type: 'image', src: '/images/skin-templates/baby-card-3.jpg', x: COLS4[2] + 10, y: 170, w: 150, h: 161 },
+      { id: 13, type: 'image', src: '/images/skin-templates/baby-card-4.jpg', x: COLS4[3] + 10, y: 170, w: 150, h: 161 },
     ],
-    rects: [
-      {
-        id: 101,
-        x: 515,
-        y: 0,
-        w: WIDGET_W,
-        h: 450,
-        url: 'https://',
-        label: '일상 기록',
-        labelColor: '#ffffff',
-        borderColor: '',
-      },
-      {
-        id: 102,
-        x: 695,
-        y: 0,
-        w: WIDGET_W,
-        h: 450,
-        url: 'https://',
-        label: '카페·맛집',
-        labelColor: '#ffffff',
-        borderColor: '',
-      },
-      {
-        id: 103,
-        x: 875,
-        y: 0,
-        w: WIDGET_W,
-        h: 450,
-        url: 'https://',
-        label: '여행',
-        labelColor: '#ffffff',
-        borderColor: '',
-      },
-      {
-        id: 104,
-        x: 1055,
-        y: 0,
-        w: WIDGET_W,
-        h: 450,
-        url: 'https://',
-        label: '취미·체험',
-        labelColor: '#ffffff',
-        borderColor: '',
-      },
-      {
-        id: 105,
-        x: 1235,
-        y: 0,
-        w: WIDGET_W,
-        h: 450,
-        url: 'https://',
-        label: '리뷰',
-        labelColor: '#ffffff',
-        borderColor: '',
-      },
-    ],
+    rects: COLS4.map((x, i) => ({
+      id: 101 + i,
+      x,
+      y: 0,
+      w: WIDGET_W,
+      h: 450,
+      url: 'https://',
+      label: ['일상', '이유식', '육아용품', '여행'][i],
+      labelColor: '#5c4008',
+      labelBg: '#f2b705',
+      labelBorderColor: '#c99304',
+      labelPillW: 96,
+      labelY: 355,
+      borderColor: '',
+    })),
   },
 ];
 
@@ -485,62 +451,6 @@ function widgetNo(rects: LinkRect[], r: LinkRect): number {
   return (
     [...rects].sort((a, b) => a.x - b.x).findIndex((x) => x.id === r.id) + 1
   );
-}
-
-const LINK_PLACEHOLDER = '여기에 이동할 링크 주소 붙여넣기';
-const imgPlaceholder = (label: string) => `여기에 [${label}] 이미지 주소 붙여넣기`;
-
-// 버튼위젯 href: 외부(새 창) URL 우선 → 내부 카테고리 조립 → placeholder
-function widgetHref(r: LinkRect, blogId: string): string {
-  // 붙여넣기 과정에서 앞뒤 공백이 섞이면 href=" https://..." 로 나가 네이버 위젯
-  // 검증에서 걸러진다. 입력 핸들러가 여러 곳이라 출력 시점에 한 번만 정리한다.
-  if (r.newWindow) {
-    const url = (r.url || '').trim();
-    return url && url !== 'https://' && url !== 'https'
-      ? url
-      : LINK_PLACEHOLDER;
-  }
-  const cat = (r.categoryNo || '').trim();
-  if (cat) return catUrl(blogId, cat);
-  return LINK_PLACEHOLDER;
-}
-
-// 투명위젯 코드 — 공용 투명 PNG(1x1) 고정. width/height로 rect 크기만큼 늘려 사용.
-// 투명이라 업로드/주소복사 단계 불필요.
-function transparentWidgetCode(r: LinkRect): string {
-  const w = Math.round(r.w);
-  const h = Math.round(r.h);
-  return `<img src="${DEFAULT_WIDGET_URL}" width="${w}" height="${h}" />`;
-}
-
-// 버튼위젯 코드 — 이미지맵. map name은 widget{n}으로 반드시 고유(1~5).
-// 동일 name을 재사용하면 브라우저가 첫 map만 인식해 2~5번 클릭이 죽는 버그가 있어
-// index로 분리한다. coords는 rect 실제 w/h에서 자동 계산 → "0,0,{w},{h}" 고정.
-// img에 width/height를 반드시 박는다. 없으면 업로드한 원본 크기(예: 773px)가 그대로
-// 렌더돼 위젯 칸을 넘치고 coords와도 어긋나 클릭 영역이 밀린다.
-function buttonWidgetCode(r: LinkRect, n: number, blogId: string): string {
-  const w = Math.round(r.w);
-  const h = Math.round(r.h);
-  const target = r.newWindow ? '_blank' : '_top';
-  return `<img src="${imgPlaceholder(`버튼위젯 ${n}`)}" width="${w}" height="${h}" usemap="#widget${n}" />
-<map name="widget${n}">
-<area shape="rect" coords="0,0,${w},${h}" href="${widgetHref(r, blogId)}" target="${target}" />
-</map>`;
-}
-
-// 캔버스 rect를 좌→우 순서로 정렬해 위젯 코드 목록(투명 N개 + 버튼 N개) 생성
-function buildWidgets(rects: LinkRect[], blogId: string) {
-  const sorted = [...rects].sort((a, b) => a.x - b.x);
-  return [
-    ...sorted.map((r, i) => ({
-      label: `투명위젯 ${i + 1}`,
-      code: transparentWidgetCode(r),
-    })),
-    ...sorted.map((r, i) => ({
-      label: `버튼위젯 ${i + 1}`,
-      code: buttonWidgetCode(r, i + 1, blogId),
-    })),
-  ];
 }
 
 // 전체 복사용: 각 코드 앞에 라벨 주석을 구분선으로 붙여 이어붙임
@@ -574,6 +484,9 @@ function copyText(text: string): boolean {
 }
 
 const STORAGE_KEY = 'blogkit_skin_state';
+// 템플릿 좌표를 갈아엎을 때마다 올린다 — 버전이 다르면 저장된 자동저장분을 버리고
+// BLOG_TEMPLATES 기본값으로 되돌린다(안 그러면 예전 버그로 뭉개진 좌표가 새로고침마다 복원됨).
+const STORAGE_VERSION = 4;
 
 // ── Component ───────────────────────────────────
 export default function SkinMakerTool({
@@ -581,8 +494,8 @@ export default function SkinMakerTool({
 }: {
   embedded?: boolean;
 }) {
-  const [cw, setCw] = useState(1920);
-  const [ch, setCh] = useState(450);
+  const [cw, setCw] = useState(3000);
+  const [ch, setCh] = useState(900);
   const [bg, setBg] = useState('#f5f1ee');
   const [bgImage, setBgImage] = useState<string | null>(null);
   const [bgOverlay, setBgOverlay] = useState(0);
@@ -598,6 +511,8 @@ export default function SkinMakerTool({
   );
   const [showCode, setShowCode] = useState(false);
   const [showGuide, setShowGuide] = useState(false);
+  const [showGuides, setShowGuides] = useState(true);
+  const [previewMode, setPreviewMode] = useState<'screen' | 'full'>('screen');
   const [imgUrl, setImgUrl] = useState(DEFAULT_WIDGET_URL);
   const [blogId, setBlogId] = useState('');
   const [cats, setCats] = useState<{ no: string; name: string; postCnt: number }[]>([]);
@@ -626,6 +541,8 @@ export default function SkinMakerTool({
 
   // 위젯 직접등록용 코드 (투명 N개 + 버튼 N개, 좌→우 정렬)
   const widgets = buildWidgets(rects, blogId);
+  const safeWidth = Math.min(2200, cw);
+  const previewWidth = previewMode === 'full' ? cw : Math.min(1920, cw);
   const allCode = joinWidgets(widgets);
 
   // ── toast ──
@@ -689,6 +606,10 @@ export default function SkinMakerTool({
   const centerEl = (id: number) => {
     const el = elements.find((e) => e.id === id);
     if (!el) return;
+    if (el.type === 'text' && el.align === 'center') {
+      updateEl(id, { x: cw / 2 });
+      return;
+    }
     let w = el.type === 'image' ? el.w : 0;
     if (el.type === 'text') {
       const node = canvasRef.current?.querySelector(
@@ -795,6 +716,28 @@ export default function SkinMakerTool({
     });
   };
 
+  const applyReferenceLayout = () => {
+    const width = cw < 966 ? 1920 : cw;
+    if (width !== cw) setCwKeepingRectsCentered(width);
+    if (ch < 450) setCh(450);
+    const startX = Math.round((width - (5 * WIDGET_W + 4 * WIDGET_GAP)) / 2);
+    setRects((prev) => {
+      const sorted = [...prev].sort((a, b) => a.x - b.x);
+      return Array.from({ length: 5 }, (_, i) => ({
+        ...sorted[i],
+        id: sorted[i]?.id ?? Date.now() + i,
+        x: startX + i * (WIDGET_W + WIDGET_GAP), y: 300,
+        w: WIDGET_W, h: 150,
+        url: sorted[i]?.url ?? '',
+        label: sorted[i]?.label || ['일상', '취미', '리뷰', '여행', '사진'][i],
+        labelColor: sorted[i]?.labelColor ?? '#594b40',
+        borderColor: sorted[i]?.borderColor ?? '',
+        labelY: 405,
+      }));
+    });
+    showToast('공백 300px + 메뉴 150px, 5열 배치를 적용했습니다');
+  };
+
   const addText = () => {
     const id = Date.now();
     setElements((prev) => [
@@ -854,37 +797,24 @@ export default function SkinMakerTool({
     }
     setBgScale(tpl.bgScale ?? 100);
     setBgRotation(tpl.bgRotation ?? 0);
-    setLabelFont(DEFAULT_FONT);
+    setLabelFont(tpl.labelFont ?? DEFAULT_FONT);
     setElements(tpl.elements);
     setRects(tpl.rects);
     setSelectedId(null);
     setActiveTemplateId(tpl.id);
-    centerTextOnLoadRef.current = true; // 렌더 후 타이틀/서브타이틀 가로 가운데 정렬
   };
 
-  // 템플릿 로드 직후 텍스트 요소를 안전영역(=캔버스) 가운데로 정렬
-  // FIX: 웹폰트 로드 완료 후 폭을 측정해야 정확한 가운데 정렬이 됨(폰트 로드 전 측정하면 타이틀만 어긋남).
-  const centerTextOnLoadRef = useRef(false);
+  // 마운트: 브라우저 저장공간 동기화 후 기본 템플릿 또는 저장된 작업 복원
   useEffect(() => {
-    if (!centerTextOnLoadRef.current) return;
-    centerTextOnLoadRef.current = false;
-    document.fonts.ready.then(() => {
-      requestAnimationFrame(() => {
-        elements.forEach((el) => {
-          if (el.type === 'text') centerEl(el.id);
-        });
-      });
-    });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [elements]);
-
-  // 마운트: 저장된 작업 복원, 없으면 기본 템플릿
-  useEffect(() => {
+    let cancelled = false;
+    queueMicrotask(() => {
+    if (cancelled) return;
     let restored = false;
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (raw) {
         const s = JSON.parse(raw);
+        if (s.version !== STORAGE_VERSION) throw new Error('stale storage version');
         setCw(s.cw);
         setCh(s.ch);
         setBg(s.bg);
@@ -913,7 +843,8 @@ export default function SkinMakerTool({
     }
     if (!restored) loadTemplate(BLOG_TEMPLATES[0]);
     hydratedRef.current = true;
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    });
+    return () => { cancelled = true; };
   }, []);
 
   // 디자인 상태 스냅샷 (undo + 자동저장 공용)
@@ -949,6 +880,7 @@ export default function SkinMakerTool({
     prevSnapRef.current = designSnap;
     // 자동저장
     const payload = {
+      version: STORAGE_VERSION,
       cw,
       ch,
       bg,
@@ -1001,7 +933,7 @@ export default function SkinMakerTool({
     setHistory((h) => h.slice(0, -1));
   };
   const undoRef = useRef(undo);
-  undoRef.current = undo;
+  useEffect(() => { undoRef.current = undo; });
 
   // Ctrl/Cmd+Z 되돌리기 (입력 필드 포커스 시 제외)
   useEffect(() => {
@@ -1029,11 +961,11 @@ export default function SkinMakerTool({
     if (!wrapper) return;
     const observer = new ResizeObserver((entries) => {
       const w = entries[0].contentRect.width;
-      setPreviewScale(Math.min(1, w / cw));
+      setPreviewScale(Math.min(1, w / previewWidth));
     });
     observer.observe(wrapper);
     return () => observer.disconnect();
-  }, [cw]);
+  }, [previewWidth]);
 
   // ── drag to move element ──
   const startDrag = (e: React.MouseEvent, id: number) => {
@@ -1150,6 +1082,7 @@ export default function SkinMakerTool({
     if (v !== cw) {
       const dx = Math.round((v - cw) / 2);
       setRects((prev) => prev.map((r) => ({ ...r, x: r.x + dx })));
+      setElements((prev) => prev.map((el) => ({ ...el, x: el.x + dx })));
     }
     setCw(v);
   };
@@ -1158,7 +1091,12 @@ export default function SkinMakerTool({
   const downloadSkin = async () => {
     setIsDownloadingSkin(true);
     try {
-      await document.fonts.ready; // 커스텀/손글씨 폰트가 canvas에 반영되도록 대기
+      await Promise.all([
+        ...rects.filter((r) => r.label).map((r) => document.fonts.load(`${r.labelFontWeight ?? 300} ${r.labelFontSize ?? 15}px ${labelFont}`)),
+        ...elements.filter((el): el is TextElement => el.type === 'text')
+          .map((el) => document.fonts.load(`${el.fontStyle || 'normal'} ${el.fontWeight} ${el.fontSize}px ${el.fontFamily || DEFAULT_FONT}`)),
+      ]);
+      await document.fonts.ready; // 화면과 PNG가 같은 실제 웹폰트를 쓰도록 로딩 완료 후 저장
       // 네이버는 스킨배경을 원본 크기 그대로(가운데 정렬·가로 반복) 표시한다 — 실측 확인.
       // 확대해 내보내면 배경에 그린 메뉴 칸이 함께 커지는데 실제 위젯 격자는 170px·간격 10px로
       // 고정이라, cw=1920을 3000으로 확대하면 5칸 끝단이 400px 넘게 어긋난다. 항상 1:1로 낸다.
@@ -1174,7 +1112,7 @@ export default function SkinMakerTool({
       ctx.fillStyle = bg;
       ctx.fillRect(0, 0, cw, ch);
       if (bgImage) {
-        await new Promise<void>((res) => {
+        await new Promise<void>((res, reject) => {
           const img = new Image();
           img.crossOrigin = 'anonymous';
           img.onload = () => {
@@ -1198,7 +1136,7 @@ export default function SkinMakerTool({
             ctx.restore();
             res();
           };
-          img.onerror = () => res();
+          img.onerror = () => reject(new Error('배경 이미지 불러오기 실패'));
           img.src = bgImage;
         });
         if (bgOverlay > 0) {
@@ -1208,20 +1146,73 @@ export default function SkinMakerTool({
       }
       for (const el of elements) {
         if (el.type === 'image') {
-          await new Promise<void>((res) => {
+          await new Promise<void>((res, reject) => {
             const img = new Image();
             img.onload = () => {
-              ctx.drawImage(img, el.x, el.y, el.w, el.h);
+              const border = el.borderColor ? Math.min(el.borderWidth ?? 3, el.w / 2 - .5, el.h / 2 - .5) : 0;
+              const innerW = el.w - border * 2;
+              const innerH = el.h - border * 2;
+              const { sx, sy, sw, sh } = coverSrcRect(img.naturalWidth, img.naturalHeight, innerW, innerH);
+              ctx.save();
+              if (el.rotation) {
+                ctx.translate(el.x + el.w / 2, el.y + el.h / 2);
+                ctx.rotate(el.rotation * Math.PI / 180);
+                ctx.translate(-el.x - el.w / 2, -el.y - el.h / 2);
+              }
+              if (el.clipShape === 'house') {
+                ctx.beginPath();
+                ctx.moveTo(el.x, el.y + el.h * .22);
+                ctx.lineTo(el.x + el.w / 2, el.y);
+                ctx.lineTo(el.x + el.w, el.y + el.h * .22);
+                ctx.lineTo(el.x + el.w, el.y + el.h);
+                ctx.lineTo(el.x, el.y + el.h);
+                ctx.closePath();
+                ctx.clip();
+              }
+              if (el.radius) {
+                ctx.save();
+                ctx.beginPath();
+                ctx.roundRect(el.x, el.y, el.w, el.h, el.radius);
+                ctx.clip();
+                ctx.drawImage(img, sx, sy, sw, sh, el.x + border, el.y + border, innerW, innerH);
+                ctx.restore();
+              } else {
+                ctx.drawImage(img, sx, sy, sw, sh, el.x + border, el.y + border, innerW, innerH);
+              }
+              if (el.borderColor) {
+                ctx.save();
+                if (el.radius) {
+                  ctx.beginPath();
+                  ctx.roundRect(el.x + border / 2, el.y + border / 2, el.w - border, el.h - border, Math.max(0, el.radius - border / 2));
+                } else {
+                  ctx.beginPath();
+                  ctx.rect(el.x + border / 2, el.y + border / 2, el.w - border, el.h - border);
+                }
+                ctx.strokeStyle = el.borderColor;
+                ctx.lineWidth = border;
+                ctx.stroke();
+                ctx.restore();
+              }
+              ctx.restore();
               res();
             };
+            img.onerror = () => reject(new Error('사진 불러오기 실패'));
             img.src = el.src;
           });
         } else {
-          ctx.font = `${el.fontWeight} ${el.fontSize}px ${el.fontFamily || DEFAULT_FONT}`;
+          ctx.font = `${el.fontStyle || 'normal'} ${el.fontWeight} ${el.fontSize}px ${el.fontFamily || DEFAULT_FONT}`;
+          ctx.letterSpacing = `${el.letterSpacing ?? 0}px`;
+          ctx.textAlign = el.align === 'center' ? 'center' : 'left';
+          ctx.textBaseline = 'alphabetic';
+          const baseline = textBaseline(ctx, el.y, el.fontSize, el.text);
+          if (el.strokeColor) {
+            ctx.strokeStyle = el.strokeColor;
+            ctx.lineWidth = el.strokeWidth ?? 2;
+            ctx.lineJoin = 'round';
+            ctx.strokeText(el.text, el.align === 'center' ? el.x : el.x + 8, baseline);
+          }
           ctx.fillStyle = el.color;
-          ctx.textAlign = 'left';
-          ctx.textBaseline = 'top';
-          ctx.fillText(el.text, el.x + 8, el.y);
+          ctx.fillText(el.text, el.align === 'center' ? el.x : el.x + 8, baseline);
         }
       }
       // Draw rect background, border, label
@@ -1238,19 +1229,41 @@ export default function SkinMakerTool({
         if (r.label) {
           // FIX: 라벨 위치/baseline/폰트를 미리보기와 동일하게 통일.
           // (기존: baseline 'middle' + 0.7 vs 미리보기 top+0.68 → 위치 불일치)
-          ctx.font = `300 15px ${labelFont}`;
+          const labelSize = r.labelFontSize ?? 15;
+          ctx.letterSpacing = '0px';
+          ctx.font = `${r.labelFontWeight ?? 300} ${labelSize}px ${labelFont}`;
+          const labelX = r.x + r.w / 2;
+          const labelY = r.labelY ?? r.y + Math.round(r.h * LABEL_Y_RATIO);
+          if (r.labelBg || r.labelBorderColor) {
+            const padX = r.labelPadX ?? 14;
+            const padY = r.labelPadY ?? 7;
+            const textW = ctx.measureText(r.label).width;
+            const pillW = r.labelPillW ?? textW + padX * 2;
+            const pillH = labelSize + padY * 2;
+            const pillX = labelX - pillW / 2;
+            const pillY = labelY - padY;
+            ctx.beginPath();
+            ctx.roundRect(pillX, pillY, pillW, pillH, pillH / 2);
+            if (r.labelBg) {
+              ctx.fillStyle = r.labelBg;
+              ctx.fill();
+            }
+            if (r.labelBorderColor) {
+              ctx.strokeStyle = r.labelBorderColor;
+              ctx.lineWidth = 1.5;
+              ctx.stroke();
+            }
+          }
           ctx.fillStyle = r.labelColor || '#333333';
           ctx.textAlign = 'center';
-          ctx.textBaseline = 'top';
-          ctx.fillText(
-            r.label,
-            r.x + r.w / 2,
-            r.y + Math.round(r.h * LABEL_Y_RATIO)
-          );
+          ctx.textBaseline = 'alphabetic';
+          ctx.fillText(r.label, labelX, textBaseline(ctx, labelY, labelSize, r.label));
         }
       }
       triggerDownload(canvas.toDataURL('image/png'), '블로그_스킨.png');
       showToast('스킨 이미지 저장됨');
+    } catch {
+      showToast('사진이나 글꼴을 불러오지 못했습니다. 로딩 후 다시 저장해 주세요.');
     } finally {
       setIsDownloadingSkin(false);
     }
@@ -1288,8 +1301,24 @@ export default function SkinMakerTool({
           <p className="text-xs font-bold text-gray-400 uppercase tracking-widest mb-3">
             스타일 선택
           </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
+            {BLOG_TEMPLATES.filter((tpl) => tpl.previewImage).map((tpl) => (
+              <button key={tpl.id} onClick={() => { loadTemplate(tpl); setSidebarTab('design'); }}
+                aria-label={`${tpl.label} 배경 선택`}
+                aria-pressed={activeTemplateId === tpl.id}
+                className={`overflow-hidden text-left rounded-xl border transition ${activeTemplateId === tpl.id ? 'border-gray-900 ring-1 ring-gray-900' : 'border-gray-200 hover:border-gray-400'}`}>
+                <img src={tpl.previewImage} alt={tpl.desc} className="w-full aspect-[10/3] object-cover" />
+                <span className="block bg-white px-4 py-3 text-sm font-semibold">{tpl.label}<span className="ml-2 text-xs font-normal text-gray-500">새 배경 · 3000×900</span></span>
+              </button>
+            ))}
+          </div>
+          {BLOG_TEMPLATES.find((tpl) => tpl.id === activeTemplateId)?.fontSource && (
+            <p className="mb-3 text-xs text-gray-500">선택한 배경의 눈누 글꼴: <a className="underline underline-offset-2" target="_blank" rel="noopener noreferrer" href={BLOG_TEMPLATES.find((tpl) => tpl.id === activeTemplateId)!.fontSource!.url}>{BLOG_TEMPLATES.find((tpl) => tpl.id === activeTemplateId)!.fontSource!.name}</a></p>
+          )}
+          {BLOG_TEMPLATES.find((tpl) => tpl.id === activeTemplateId)?.fontNote && <p className="mb-3 text-xs text-gray-500">{BLOG_TEMPLATES.find((tpl) => tpl.id === activeTemplateId)!.fontNote}</p>}
+          {REFERENCE_SKIN_TEMPLATES.some((tpl) => tpl.id === activeTemplateId) && <p className="mb-3 text-xs text-gray-500">참고 디자인의 구성·색감을 새로 적용한 예시입니다. <a className="underline underline-offset-2" href="/images/skin-templates/reference-photo-credits.json" target="_blank" rel="noopener noreferrer">사진 출처·이용 조건</a></p>}
           <div className="flex items-center gap-2 overflow-x-auto pb-1 scrollbar-hide">
-            {BLOG_TEMPLATES.map((tpl) => (
+            {BLOG_TEMPLATES.filter((tpl) => !tpl.previewImage).map((tpl) => (
               <button
                 key={tpl.id}
                 onClick={() => {
@@ -1383,7 +1412,7 @@ export default function SkinMakerTool({
                       {(
                         [
                           ['가로', cw, setCwKeepingRectsCentered, 600, 3000],
-                          ['세로', ch, setCh, 200, 600],
+                          ['세로', ch, setCh, 200, 1200],
                         ] as [
                           string,
                           number,
@@ -1420,6 +1449,12 @@ export default function SkinMakerTool({
                       ))}
                     </div>
                   </div>
+                  <div className="flex flex-wrap gap-1.5">
+                    {[{ w: 1920, h: 450 }, { w: 2750, h: 750 }, { w: 3000, h: 900 }].map(({ w, h }) => (
+                      <button key={w} onClick={() => { setCwKeepingRectsCentered(w); setCh(h); }} className="rounded-lg border border-gray-200 px-2 py-1.5 text-xs hover:bg-gray-50">{w}×{h}</button>
+                    ))}
+                  </div>
+                  <p className="text-xs text-gray-500 leading-relaxed">중앙 {safeWidth}px 안에 중요한 내용을, 양옆은 잘려도 되는 배경만 배치하세요. 메뉴는 중앙 170px 5열에 맞춥니다.</p>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-2">
                       배경 색상
@@ -1785,8 +1820,8 @@ export default function SkinMakerTool({
                       💡 카테고리 버튼에 링크 연결하기
                     </p>
                     <p className="text-xs text-green-700 leading-relaxed">
-                      캔버스에서 드래그해 클릭 영역을 그리고, 내 블로그 ID와
-                      카테고리 번호만 입력하면 링크가 자동 완성됩니다.
+                      블로그 카테고리에서 우클릭 → 링크 주소 복사 후 메뉴에 붙여넣으세요.
+                      또는 내 블로그 ID와 카테고리 번호를 입력해 연결할 수 있습니다.
                     </p>
                   </div>
                   <div>
@@ -1815,32 +1850,22 @@ export default function SkinMakerTool({
                       </p>
                     )}
                   </div>
-                  <div>
-                    <div className="bg-blue-50 border border-blue-200 rounded-xl p-2.5 mb-2">
-                      <p className="text-xs font-bold text-blue-800 mb-0.5">
-                        ✅ 투명 위젯 자동 적용됨
-                      </p>
-                      <p className="text-[11px] text-blue-700 leading-relaxed">
-                        공용 투명 이미지가 자동 삽입되어, 비공개글 업로드·주소
-                        복사 단계가 필요 없습니다.
-                      </p>
-                    </div>
-                    <details>
-                      <summary className="text-xs text-gray-400 cursor-pointer select-none">
-                        고급: 투명 위젯 주소 직접 지정
-                      </summary>
-                      <input
-                        value={imgUrl}
-                        onChange={(e) => setImgUrl(e.target.value)}
-                        placeholder="https://postfiles.pstatic.net/..."
-                        className="w-full mt-2 p-2 border border-gray-300 rounded-lg text-xs focus:ring-2 focus:ring-gray-500 outline-none"
-                      />
-                      <p className="text-[11px] text-gray-400 mt-1.5 leading-relaxed">
-                        * 비우면 공용 이미지가 자동 사용됩니다. 직접 만든 투명
-                        PNG를 쓰려면 절대 URL(https) 입력.
-                      </p>
-                    </details>
+                  <div className="rounded-xl bg-blue-50 border border-blue-200 p-3 text-xs text-blue-800 leading-relaxed">
+                    이미지 업로드 없이 표 기반 공백 위젯과 메뉴 위젯 코드를 만듭니다. 메뉴 그림은 스킨 이미지에 포함됩니다.
                   </div>
+                  <button type="button" onClick={applyReferenceLayout} className="w-full rounded-lg border border-blue-200 bg-blue-50 px-3 py-2 text-xs font-semibold text-blue-800 hover:bg-blue-100">글 예시 적용: 공백 300 + 메뉴 150 · 5열</button>
+                  <div className="grid grid-cols-2 gap-2">
+                    {[{ label: '공백 높이', value: rects[0]?.y ?? 300, isY: true }, { label: '메뉴 높이', value: rects[0]?.h ?? 150, isY: false }].map(({ label, value, isY }) => (
+                      <label key={label} className="text-xs text-gray-600">{label} (px)
+                        <input type="number" aria-label={label} min={isY ? 0 : 5} max={600} value={Math.round(value)} disabled={!rects.length}
+                          onChange={(e) => {
+                            const v = Math.max(isY ? 0 : 5, Math.min(600, Number(e.target.value)));
+                            setRects((prev) => prev.map((r) => ({ ...r, ...(isY ? { y: v, labelY: r.labelY == null ? undefined : r.labelY + v - r.y } : { h: v }) })));
+                          }} className="mt-1 w-full p-2 rounded-lg border border-gray-300" />
+                      </label>
+                    ))}
+                  </div>
+                  <p className="text-[11px] text-gray-500">참고 글 방식: 공백 300px + 메뉴 150px. 위젯 하나는 170×600px 이하이며 스킨 높이와 별개입니다.</p>
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
                       위젯 글씨 폰트
@@ -1860,6 +1885,13 @@ export default function SkinMakerTool({
                     <p className="text-[11px] text-gray-400 mt-1.5">
                       모든 위젯 칸 라벨에 함께 적용됩니다.
                     </p>
+                    <label className="mt-3 block text-xs text-gray-600">메뉴 글씨 크기 ({rects[0]?.labelFontSize ?? 15}px)
+                      <input type="range" aria-label="메뉴 글씨 크기" min={14} max={30} step={1} value={rects[0]?.labelFontSize ?? 15} disabled={!rects.length}
+                        onChange={(e) => {
+                          const size = Math.max(14, Math.min(30, Number(e.target.value) || 14));
+                          setRects((prev) => prev.map((r) => ({ ...r, labelFontSize: size })));
+                        }} className="mt-1 w-full rounded-lg border border-gray-300 p-2 text-sm" />
+                    </label>
                   </div>
                   <div>
                     <div className="flex items-center justify-between mb-2 gap-1">
@@ -1952,6 +1984,18 @@ export default function SkinMakerTool({
                               />
                             ) : (
                               <>
+                                <input
+                                  value={r.categoryUrl ?? ''}
+                                  aria-label={`위젯 ${widgetNo(rects, r)} 카테고리 주소`}
+                                  onChange={(e) => {
+                                    const value = e.target.value;
+                                    const parsed = parseCategoryUrl(value);
+                                    setRects((prev) => prev.map((x) => x.id === r.id ? { ...x, categoryUrl: value, ...(parsed ? { categoryNo: parsed.categoryNo } : {}) } : x));
+                                  }}
+                                  placeholder="복사한 카테고리 주소 붙여넣기"
+                                  className="w-full p-2 border border-gray-300 rounded-lg text-xs outline-none focus:ring-2 focus:ring-gray-500 mb-1"
+                                />
+                                {r.categoryUrl?.trim() && !parseCategoryUrl(r.categoryUrl) && <p className="text-[10px] text-red-600 mb-1">카테고리 번호가 포함된 네이버 블로그 주소인지 확인해 주세요.</p>}
                                 {cats.length > 0 ? (
                                   <select
                                     value={r.categoryNo ?? ''}
@@ -1959,7 +2003,7 @@ export default function SkinMakerTool({
                                       setRects((prev) =>
                                         prev.map((x) =>
                                           x.id === r.id
-                                            ? { ...x, categoryNo: e.target.value }
+                                            ? { ...x, categoryNo: e.target.value, categoryUrl: '' }
                                             : x
                                         )
                                       )
@@ -1977,12 +2021,20 @@ export default function SkinMakerTool({
                                   <input
                                     value={r.categoryNo ?? ''}
                                     inputMode="numeric"
+                                    onPaste={(e) => {
+                                      const value = e.clipboardData.getData('text').trim();
+                                      if (!/^https?:\/\//i.test(value)) return;
+                                      e.preventDefault();
+                                      const parsed = parseCategoryUrl(value);
+                                      setRects((prev) => prev.map((x) => x.id === r.id ? { ...x, categoryUrl: value, ...(parsed ? { categoryNo: parsed.categoryNo } : {}) } : x));
+                                    }}
                                     onChange={(e) =>
                                       setRects((prev) =>
                                         prev.map((x) =>
                                           x.id === r.id
                                             ? {
                                                 ...x,
+                                                categoryUrl: '',
                                                 categoryNo:
                                                   e.target.value.replace(
                                                     /[^0-9]/g,
@@ -1998,7 +2050,7 @@ export default function SkinMakerTool({
                                   />
                                 )}
                                 <p className="text-[10px] text-gray-400 mb-2 break-all leading-relaxed">
-                                  → {catUrl(blogId, r.categoryNo || '')}
+                                  → {r.categoryUrl?.trim() ? (() => { const parsed = parseCategoryUrl(r.categoryUrl); return parsed ? catUrl(parsed.blogId, parsed.categoryNo) : '올바른 카테고리 주소가 필요합니다'; })() : catUrl(blogId, r.categoryNo || '')}
                                 </p>
                               </>
                             )}
@@ -2177,30 +2229,41 @@ export default function SkinMakerTool({
             {/* 캔버스 카드 */}
             <div className="w-full bg-white p-4 rounded-2xl shadow-sm border border-gray-200 mb-4">
               <h3 className="text-left font-semibold text-gray-800 mb-3 px-1 text-sm">
-                미리보기 ({cw}×{ch})
+                미리보기
+                <label className="ml-3 inline-flex items-center gap-1 text-xs font-normal text-gray-500"><input type="checkbox" checked={showGuides} onChange={(e) => setShowGuides(e.target.checked)} />가이드 표시</label>
                 {sidebarTab === 'link' && (
                   <span className="ml-2 text-xs font-normal text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full">
                     드래그로 링크 영역 그리기
                   </span>
                 )}
               </h3>
+              <div className="flex flex-wrap items-center gap-2 mb-3 px-1">
+                <button onClick={() => setPreviewMode('screen')} aria-pressed={previewMode === 'screen'} className={`text-xs rounded-lg px-3 py-2 border ${previewMode === 'screen' ? 'bg-gray-900 text-white border-gray-900' : 'border-gray-200'}`}>블로그 화면 (1920px)</button>
+                <button onClick={() => setPreviewMode('full')} aria-pressed={previewMode === 'full'} className={`text-xs rounded-lg px-3 py-2 border ${previewMode === 'full' ? 'bg-gray-900 text-white border-gray-900' : 'border-gray-200'}`}>전체 배경</button>
+                <span className="text-xs text-gray-500">저장 {cw}×{ch}px · 표시 폭 {previewWidth}px</span>
+              </div>
               <div
                 ref={previewWrapperRef}
+                role="group"
+                aria-label="스킨 미리보기"
                 style={{
                   position: 'relative',
                   width: '100%',
-                  height: ch * previewScale,
+                  aspectRatio: `${previewWidth} / ${ch}`,
                   overflow: 'hidden',
                   borderRadius: 12,
-                  border: '1px solid #f1f5f9',
+                  boxShadow: 'inset 0 0 0 1px #f1f5f9',
                 }}
               >
                 <div
                   ref={canvasRef}
+                  role="group"
+                  aria-label="스킨 편집 캔버스"
                   style={{
                     position: 'relative',
                     width: cw,
                     height: ch,
+                    left: ((previewWidth - cw) / 2) * previewScale,
                     backgroundColor: bg,
                     overflow: 'hidden',
                     flexShrink: 0,
@@ -2251,7 +2314,7 @@ export default function SkinMakerTool({
                     style={{
                       position: 'absolute',
                       inset: 0,
-                      display: 'flex',
+                      display: showGuides ? 'flex' : 'none',
                       justifyContent: 'center',
                       gap: WIDGET_GAP,
                       pointerEvents: 'none',
@@ -2272,14 +2335,14 @@ export default function SkinMakerTool({
                     ))}
                   </div>
                   {/* 안전 영역 가이드 (가운데 ~966px) */}
-                  {cw >= 966 && (
+                  {showGuides && cw >= 966 && (
                     <div
                       style={{
                         position: 'absolute',
                         top: 0,
                         bottom: 0,
-                        left: (cw - 966) / 2,
-                        width: 966,
+                        left: (cw - safeWidth) / 2,
+                        width: safeWidth,
                         borderLeft: '2px dashed #2563eb',
                         borderRight: '2px dashed #2563eb',
                         pointerEvents: 'none',
@@ -2302,13 +2365,13 @@ export default function SkinMakerTool({
                           whiteSpace: 'nowrap',
                         }}
                       >
-                        안전 영역 ~966px
+                        중앙 안전 영역 {safeWidth}px · 위젯 5열은 안쪽 점선
                       </span>
                     </div>
                   )}
 
                   {/* Empty state */}
-                  {elements.length === 0 && sidebarTab !== 'link' && (
+                  {elements.length === 0 && !bgImage && sidebarTab !== 'link' && (
                     <div
                       style={{
                         position: 'absolute',
@@ -2372,6 +2435,7 @@ export default function SkinMakerTool({
                         position: 'absolute',
                         left: el.x,
                         top: el.y,
+                        transform: el.type === 'text' && el.align === 'center' ? 'translateX(-50%)' : el.type === 'image' && el.rotation ? `rotate(${el.rotation}deg)` : undefined,
                         zIndex: selectedId === el.id ? 50 : 10,
                         cursor: sidebarTab !== 'link' ? 'move' : 'default',
                         outline:
@@ -2392,20 +2456,39 @@ export default function SkinMakerTool({
                           src={el.src}
                           width={el.w}
                           height={el.h}
-                          style={{ display: 'block', pointerEvents: 'none' }}
+                          style={{
+                            display: 'block',
+                            pointerEvents: 'none',
+                            width: el.w,
+                            height: el.h,
+                            objectFit: 'cover',
+                            borderRadius: el.radius ?? 0,
+                            clipPath: el.clipShape === 'house' ? 'polygon(0 22%, 50% 0, 100% 22%, 100% 100%, 0 100%)' : undefined,
+                            boxSizing: 'border-box',
+                            border: el.borderColor
+                              ? `${el.borderWidth ?? 3}px solid ${el.borderColor}`
+                              : 'none',
+                          }}
                           alt=""
                         />
                       ) : (
                         <div
                           style={{
                             fontSize: el.fontSize,
+                            lineHeight: 1,
                             color: el.color,
                             fontWeight: el.fontWeight,
+                            fontStyle: el.fontStyle || 'normal',
+                            letterSpacing: el.letterSpacing ?? 0,
                             fontFamily: el.fontFamily || DEFAULT_FONT,
                             whiteSpace: 'nowrap',
                             padding: '0 8px',
                             outline: 'none',
                             borderRadius: 4,
+                            WebkitTextStroke: el.strokeColor
+                              ? `${el.strokeWidth ?? 2}px ${el.strokeColor}`
+                              : undefined,
+                            paintOrder: el.strokeColor ? 'stroke fill' : undefined,
                             background:
                               selectedId === el.id && sidebarTab === 'design'
                                 ? 'rgba(250,204,21,0.25)'
@@ -2451,13 +2534,14 @@ export default function SkinMakerTool({
                           r.borderColor === ''
                             ? 'none'
                             : `2px solid ${r.borderColor ?? '#52525b'}`,
-                        background: r.bgColor ?? 'rgba(0,0,0,0.04)',
+                        background: r.bgColor ?? 'transparent',
                         zIndex: 40,
                         overflow: 'hidden',
                       }}
                     >
                       <span
                         style={{
+                          display: showGuides ? 'block' : 'none',
                           position: 'absolute',
                           top: 0,
                           left: 0,
@@ -2477,18 +2561,40 @@ export default function SkinMakerTool({
                             position: 'absolute',
                             left: 0,
                             right: 0,
-                            top: Math.round(r.h * LABEL_Y_RATIO),
+                            top:
+                              (r.labelY != null ? r.labelY - r.y : Math.round(r.h * LABEL_Y_RATIO)) -
+                              (r.labelBg || r.labelBorderColor ? (r.labelPadY ?? 7) : 0),
                             display: 'flex',
                             justifyContent: 'center',
-                            fontSize: 15,
-                            fontWeight: 300,
-                            fontFamily: labelFont,
-                            color: r.labelColor || '#333333',
                             pointerEvents: 'none',
                             userSelect: 'none',
                           }}
                         >
-                          {r.label}
+                          <span
+                            style={{
+                              fontSize: r.labelFontSize ?? 15,
+                              lineHeight: `${r.labelFontSize ?? 15}px`,
+                              fontWeight: r.labelFontWeight ?? 300,
+                              fontFamily: labelFont,
+                              color: r.labelColor || '#333333',
+                              whiteSpace: 'nowrap',
+                              textAlign: 'center',
+                              boxSizing: 'border-box',
+                              width: r.labelPillW,
+                              background: r.labelBg || 'transparent',
+                              border: r.labelBorderColor
+                                ? `1.5px solid ${r.labelBorderColor}`
+                                : 'none',
+                              borderRadius:
+                                r.labelBg || r.labelBorderColor ? 999 : 0,
+                              padding:
+                                r.labelBg || r.labelBorderColor
+                                  ? `${r.labelPadY ?? 7}px ${r.labelPadX ?? 14}px`
+                                  : 0,
+                            }}
+                          >
+                            {r.label}
+                          </span>
                         </span>
                       )}
                     </div>
@@ -2554,6 +2660,7 @@ export default function SkinMakerTool({
                   </div>
                 )}
               </div>
+              <p className="mt-2 px-1 text-[11px] text-gray-500 leading-relaxed">{previewMode === 'screen' ? '1920px 화면에서 배경을 원본 크기로 중앙 정렬했을 때의 예시입니다. 양옆은 잘리고, 저장 파일은 전체 크기를 유지합니다.' : '저장되는 전체 배경을 같은 비율로 축소한 보기입니다. 실제 블로그는 화면 폭에 따라 양옆이 잘립니다.'}</p>
             </div>
 
             {/* 액션 버튼 */}
@@ -2652,6 +2759,9 @@ export default function SkinMakerTool({
         {showCode && (
           <div style={overlay}>
             <div
+              role="dialog"
+              aria-modal="true"
+              aria-label="네이버 블로그 위젯 코드"
               style={{
                 background: '#fff',
                 borderRadius: 24,
@@ -2682,10 +2792,10 @@ export default function SkinMakerTool({
                       fontStyle: 'italic',
                     }}
                   >
-                    DONE!
+                    {widgets.length ? '위젯 코드 준비 완료' : '메뉴를 먼저 만들어 주세요'}
                   </div>
                   <div style={{ color: '#94a3b8', fontSize: 13, marginTop: 4 }}>
-                    투명위젯·버튼위젯 코드를 위젯 직접등록에 하나씩 붙여넣으세요.
+                    공백 위젯은 윗줄, 메뉴 위젯은 바로 아랫줄에 순서대로 등록하세요.
                   </div>
                 </div>
                 <button
@@ -2706,7 +2816,8 @@ export default function SkinMakerTool({
                 </button>
               </div>
               <div style={{ padding: 24, overflowY: 'auto' }}>
-                {!blogId && (
+                {widgets.length === 0 && <p className="mb-3 rounded-lg bg-blue-50 p-3 text-sm text-blue-800">아직 메뉴가 없습니다. [링크] 탭의 [글 예시 적용]으로 메뉴 5칸을 먼저 만들어 주세요.</p>}
+                {!blogId && rects.some((r) => !r.newWindow && !parseCategoryUrl(r.categoryUrl ?? '')) && (
                   <div
                     style={{
                       background: '#fef3c7',
@@ -2719,11 +2830,12 @@ export default function SkinMakerTool({
                       marginBottom: 12,
                     }}
                   >
-                    ⚠️ [링크] 탭에서 내 블로그 ID를 입력하면 버튼위젯 링크가 자동
-                    조립됩니다. 지금은 MY_BLOG_ID로 표시됩니다.
+                    전체 주소를 붙이지 않은 메뉴는 [링크] 탭에서 블로그 ID와 카테고리 번호를 입력하세요.
+                    코드에 ‘여기에 이동할 링크 주소 붙여넣기’가 남아 있다면 등록 전에 실제 주소로 바꿔 주세요.
                   </div>
                 )}
                 <button
+                  disabled={widgets.length === 0}
                   onClick={() =>
                     showToast(
                       copyText(allCode)
@@ -2733,7 +2845,7 @@ export default function SkinMakerTool({
                   }
                   style={btnStyle('#18181b', '#fff', true, 'none', 12, 13)}
                 >
-                  <Code size={14} /> 전체 코드 한 번에 복사
+                  <Code size={14} /> 전체 코드 보관용 복사
                 </button>
                 <p
                   style={{
@@ -2747,8 +2859,7 @@ export default function SkinMakerTool({
                   설정]-[위젯 직접등록]에서 위젯 이름을 정하고 이 코드를
                   붙여넣으세요.
                   <br />
-                  투명위젯은 업로드 없이 바로 사용 가능합니다. 버튼위젯 5개만
-                  비공개 게시글에 이미지 업로드 후 주소를 붙여넣으세요.
+                  별도 이미지 업로드는 필요 없습니다. 공백 위젯을 왼쪽부터 윗줄에, 메뉴 위젯을 같은 순서로 바로 아랫줄에 놓으세요. 아래의 개별 복사 버튼으로 한 위젯씩 등록합니다. 전체 코드를 한 위젯에 모두 붙여넣지 마세요. 블로그에 따라 시작 위치를 조절해야 할 수 있습니다.
                 </p>
                 <div
                   style={{
@@ -2873,41 +2984,41 @@ export default function SkinMakerTool({
                 },
                 {
                   n: 2,
-                  title: '스킨 이미지 & 투명 위젯 저장',
+                  title: '스킨 이미지 저장',
                   steps: [
                     '[이미지 다운로드]로 스킨 이미지를 저장합니다.',
-                    '아래 [투명 위젯 다운로드]로 투명 위젯 PNG도 받습니다.',
+                    '제목과 메뉴가 잘리지 않는지 중앙 배치를 확인합니다. 가이드는 저장 이미지에 포함되지 않습니다.',
                   ],
                 },
                 {
                   n: 3,
-                  title: '스킨배경 등록 & 위젯 이미지 주소 따기',
+                  title: '스킨배경 등록',
                   steps: [
                     '블로그 [관리 > 꾸미기 설정 > 세부 디자인 설정 > (리모컨) 스킨배경 > 직접등록]에 스킨 이미지를 올립니다. (와이드 대문은 타이틀이 아니라 스킨배경에 등록)',
-                    '투명 위젯 PNG를 비공개 글로 올린 뒤, 우클릭 → 이미지 주소 복사.',
+                    '배경을 중앙 정렬하고, 넓은 화면에서도 양옆이 자연스러운지 확인합니다. 위젯용 이미지 업로드는 필요 없습니다.',
                   ],
                 },
                 {
                   n: 4,
                   title: '위젯 코드 생성 & 등록하기',
                   steps: [
-                    '[링크] 탭에 투명 이미지 주소를 넣고 [코드 생성].',
-                    '[레이아웃·위젯 설정 > + 위젯 직접 등록]에서 위젯명(투명1~5)과 칸별 코드를 나눠 등록.',
-                    '코드는 각 메뉴(영역) 크기에 맞춰 생성되어, 위젯을 메뉴 그림 위에 올리면 위치에 상관없이 클릭 영역이 맞습니다.',
+                    '[링크] 탭에서 [글 예시 적용]을 누르면 공백 300px·메뉴 150px의 5열 배치가 됩니다. 각 메뉴에 블로그 카테고리에서 복사한 전체 주소를 붙여넣은 뒤 [코드 생성]을 누릅니다.',
+                    '[레이아웃·위젯 설정 > + 위젯 직접 등록]에서 공백 위젯 5개와 메뉴 위젯 5개의 코드를 각각 등록합니다. 메뉴가 5개일 때 총 10개입니다.',
+                    '공백 위젯 5개는 윗줄에, 메뉴 위젯 5개는 바로 아랫줄에 좌우 순서를 맞춰 배치합니다. 참고 글 예시는 공백 300px, 메뉴 150px입니다.',
                   ],
                 },
                 {
                   n: 5,
-                  title: '레이아웃 정리하기 ⭐',
+                  title: '레이아웃 정리하기',
                   steps: [
-                    '1단 레이아웃 선택(전체정렬 중앙·글 영역 넓게), 투명 위젯을 타이틀 바로 아래 가로 1줄로 배치.',
+                    '상단 스킨이 넓게 보이는 레이아웃을 고르고 전체 정렬을 중앙으로 맞춥니다. 실제 메뉴와 클릭 영역이 어긋나면 [공백 높이]를 조절합니다.',
                     "[메뉴 사용 설정]에서 '타이틀' 체크를 해제하거나, [세부 디자인 설정]에서 '블로그 제목 표시'를 끕니다.",
                     '불필요한 위젯은 숨기기.',
                   ],
                 },
                 {
                   n: 6,
-                  title: '모바일은 따로 설정하기 📱',
+                  title: '모바일은 따로 설정하기',
                   steps: [
                     'PC 홈형 스킨(스킨배경+위젯)은 모바일 앱/웹에 적용되지 않습니다.',
                     '블로그 앱 [홈 편집]에서 커버 이미지·커버 스타일을 별도로 선택.',
@@ -2983,8 +3094,8 @@ export default function SkinMakerTool({
                 </div>
                 {[
                   '위젯이 안 보임 → 레이아웃·위젯 설정에서 위젯 체크와 위치를 다시 확인.',
-                  '"이미지 정보가 올바르지 않습니다" → 투명 이미지의 절대 URL을 다시 정확히 복사.',
-                  '이미지가 안 뜸 → http가 아닌 https 주소를 사용 (혼합 콘텐츠 차단).',
+                  '위젯 등록이 안 됨 → 각 위젯은 가로 170px·높이 600px 이하인지 확인.',
+                  '링크가 안 열림 → 카테고리 번호와 블로그 ID 또는 전체 링크 주소를 확인.',
                   '글씨가 삐뚤거나 어긋남 → 캔버스 가로를 3000으로 키워 다시 [이미지 다운로드]. (확대 export가 아닌 1:1 원본으로 나옴)',
                 ].map((s, i) => (
                   <p
@@ -3019,7 +3130,7 @@ export default function SkinMakerTool({
                   }}
                   style={btnStyle('#f1f5f9', '#374151', false, 'none', 12, 13)}
                 >
-                  <Download size={13} /> 투명 위젯 다운로드
+                  <Download size={13} /> 투명 PNG (선택)
                 </button>
                 <button
                   onClick={() => {
