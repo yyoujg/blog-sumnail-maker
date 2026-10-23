@@ -337,7 +337,7 @@ export default function ThumbnailPreview({
             미리보기 (1:1 비율)
           </h3>
           <p className="text-xs text-gray-400 mt-1 leading-snug">
-            정방형 이미지 / 저장 크기는 미리보기 크기와 배율에 따라 달라집니다
+            정방형 이미지 / 저장 크기 {500 * downloadScale} x {500 * downloadScale}px
           </p>
         </div>
 

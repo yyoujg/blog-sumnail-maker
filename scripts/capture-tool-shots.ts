@@ -16,6 +16,9 @@ async function measureDownloads(browser: Browser) {
       for (const scale of ['1× 표준', '2× 고화질']) {
         const page = await browser.newPage({ viewport, deviceScaleFactor: 1 });
         await page.goto(BASE_URL + '/', { waitUntil: 'networkidle' });
+        if (name === 'mobile' && format === 'JPG') {
+          await page.locator('#tool textarea').fill(scale.startsWith('1') ? '' : 'Long title '.repeat(100));
+        }
         await page.locator(`#tool button:has-text("${format}")`).first().click();
         await page.locator(`#tool button:has-text("${scale}")`).click();
         const preview = await page.locator('[data-testid="thumb-preview"]').boundingBox();
@@ -43,8 +46,8 @@ async function measureDownloads(browser: Browser) {
           return { width: img.naturalWidth, height: img.naturalHeight, colors: colors.size };
         }, `data:${mime};base64,${file.toString('base64')}`);
         const multiplier = scale.startsWith('1') ? 1 : 2;
-        assert.equal(size.width, Math.round(preview.width) * multiplier);
-        assert.equal(size.height, Math.round(preview.height) * multiplier);
+        assert.equal(size.width, 500 * multiplier);
+        assert.equal(size.height, 500 * multiplier);
         assert(size.colors > 8, 'Export appears blank');
         console.log(
           `${name} ${viewport.width}px  ${format} ${scale}  preview ${Math.round(preview.width)}x${Math.round(preview.height)}  ` +

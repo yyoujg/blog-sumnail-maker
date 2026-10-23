@@ -407,12 +407,19 @@ export function HomeTool({ seoAfterTool, embedded = false, initial, onSave }: { 
       const rect = element.getBoundingClientRect();
       const w = Math.round(rect.width);
       const h = Math.round(rect.height);
+      const exportSize = 500 * downloadScale;
       element.style.setProperty('width', `${w}px`);
       element.style.setProperty('height', `${h}px`);
       element.style.setProperty('aspect-ratio', 'auto');
       element.style.setProperty('box-shadow', 'none');
-      const canvas = await window.html2canvas(element, {
-        scale: downloadScale,
+      const canvas = document.createElement('canvas');
+      canvas.width = exportSize;
+      canvas.height = exportSize;
+      await window.html2canvas(element, {
+        canvas,
+        scale: exportSize / w,
+        width: w,
+        height: w,
         useCORS: true,
         backgroundColor: bgType === 'color' ? bgColor : '#ffffff',
         scrollX: -window.scrollX,
