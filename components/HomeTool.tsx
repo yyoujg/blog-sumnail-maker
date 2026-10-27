@@ -320,7 +320,7 @@ export function HomeTool({ seoAfterTool, embedded = false, initial, onSave }: { 
   const [bgScale, setBgScale] = useState(100);
 
   const [downloadFormat, setDownloadFormat] = useState<'png' | 'jpg'>('png');
-  const [downloadScale, setDownloadScale] = useState<1 | 2>(2);
+  const [downloadScale, setDownloadScale] = useState<1 | 2 | 'original'>(2);
   const [fileName, setFileName] = useState('blog_thumbnail');
   const [activePresetId, setActivePresetId] = useState<string | null>(base.id);
   const [isDownloadDone, setIsDownloadDone] = useState(false);
@@ -404,10 +404,20 @@ export function HomeTool({ seoAfterTool, embedded = false, initial, onSave }: { 
     setIsDownloadDone(false);
     try {
       await document.fonts.ready;
+      const image = bgType === 'image' && bgImage ? new Image() : null;
+      if (image) {
+        image.crossOrigin = 'anonymous';
+        image.src = bgImage!;
+        await image.decode();
+      }
       const rect = element.getBoundingClientRect();
       const w = Math.round(rect.width);
       const h = Math.round(rect.height);
-      const exportSize = 500 * downloadScale;
+      const exportSize = downloadScale === 'original'
+        ? image ? Math.max(1, Math.round(bgScale === 100
+          ? Math.min(image.naturalWidth, image.naturalHeight)
+          : image.naturalWidth * 100 / bgScale)) : 1000
+        : 500 * downloadScale;
       element.style.setProperty('width', `${w}px`);
       element.style.setProperty('height', `${h}px`);
       element.style.setProperty('aspect-ratio', 'auto');
@@ -415,6 +425,7 @@ export function HomeTool({ seoAfterTool, embedded = false, initial, onSave }: { 
       const canvas = document.createElement('canvas');
       canvas.width = exportSize;
       canvas.height = exportSize;
+      if (downloadScale === 'original') canvas.getContext('2d')!.imageSmoothingEnabled = false;
       await window.html2canvas(element, {
         canvas,
         scale: exportSize / w,
@@ -426,26 +437,26 @@ export function HomeTool({ seoAfterTool, embedded = false, initial, onSave }: { 
         scrollY: -window.scrollY,
         windowWidth: document.documentElement.scrollWidth,
         windowHeight: document.documentElement.scrollHeight,
-        onclone: async (clonedDocument: Document, preview: HTMLElement) => {
+        onclone: (clonedDocument: Document, preview: HTMLElement) => {
           const photo = preview.querySelector<HTMLElement>('[data-thumbnail-photo]');
-          if (!photo || !bgImage) return;
+          if (!photo || !image) return;
           // html2canvas rasterizes CSS backgrounds before applying the export scale.
-          const image = new Image();
-          image.crossOrigin = 'anonymous';
-          image.src = bgImage;
-          await image.decode();
           const background = clonedDocument.createElement('canvas');
           background.width = background.height = exportSize;
           background.style.width = background.style.height = '100%';
           background.style.display = 'block';
           const context = background.getContext('2d')!;
-          const ratio = bgScale === 100
+          const ratio = downloadScale === 'original' ? 1 : bgScale === 100
             ? exportSize / Math.min(image.naturalWidth, image.naturalHeight)
             : exportSize * bgScale / 100 / image.naturalWidth;
           const x = (exportSize - image.naturalWidth * ratio) * bgOffsetX / 100;
           const y = (exportSize - image.naturalHeight * ratio) * bgOffsetY / 100;
           const pattern = context.createPattern(image, 'repeat')!;
-          pattern.setTransform(new DOMMatrix().translate(x, y).scale(ratio));
+          // Align native pixels to avoid resampling at fractional crop positions.
+          pattern.setTransform(new DOMMatrix().translate(
+            downloadScale === 'original' ? Math.round(x) : x,
+            downloadScale === 'original' ? Math.round(y) : y,
+          ).scale(ratio));
           context.fillStyle = pattern;
           context.fillRect(0, 0, exportSize, exportSize);
           photo.style.backgroundImage = 'none';
@@ -456,6 +467,7 @@ export function HomeTool({ seoAfterTool, embedded = false, initial, onSave }: { 
       const mimeType = downloadFormat === 'jpg' ? 'image/jpeg' : 'image/png';
       const quality = downloadFormat === 'jpg' ? 0.95 : undefined;
       const dataUrl = canvas.toDataURL(mimeType, quality);
+      if (dataUrl === 'data:,') throw new Error('이미지가 너무 큽니다. 고화질 옵션으로 다시 저장해주세요.');
       if (onSave) {
         await onSave(dataUrl);
       } else {

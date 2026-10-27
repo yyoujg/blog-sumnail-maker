@@ -27,8 +27,8 @@ interface ThumbnailPreviewProps {
   isDownloadDone: boolean;
   downloadFormat: 'png' | 'jpg';
   onFormatChange: (f: 'png' | 'jpg') => void;
-  downloadScale: 1 | 2;
-  onScaleChange: (s: 1 | 2) => void;
+  downloadScale: 1 | 2 | 'original';
+  onScaleChange: (s: 1 | 2 | 'original') => void;
   fileName: string;
   setFileName: (v: string) => void;
   textShadow?: boolean;
@@ -337,7 +337,11 @@ export default function ThumbnailPreview({
             미리보기 (1:1 비율)
           </h3>
           <p className="text-xs text-gray-400 mt-1 leading-snug">
-            정방형 이미지 / 저장 크기 {500 * downloadScale} x {500 * downloadScale}px
+            {downloadScale === 'original'
+              ? bgType === 'image' && bgImage
+                ? '원본 해상도 / 정사각형 자르기와 배경 확대를 적용한 크기로 저장'
+                : '원본 사진 없음 / 저장 크기 1000 x 1000px'
+              : `정방형 이미지 / 저장 크기 ${500 * downloadScale} x ${500 * downloadScale}px`}
           </p>
         </div>
 
@@ -561,7 +565,7 @@ export default function ThumbnailPreview({
 
       {/* Download options */}
       <div className="w-full max-w-[500px] bg-white rounded-2xl border border-gray-200 p-4 mb-4 space-y-3">
-        <div className="flex items-center justify-between gap-4">
+        <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
             <p className="text-xs font-semibold text-gray-500 mb-1.5">파일 형식</p>
             <div className="flex gap-2">
@@ -586,6 +590,7 @@ export default function ThumbnailPreview({
               {([
                 { value: 1 as const, label: '1× 표준' },
                 { value: 2 as const, label: '2× 고화질' },
+                { value: 'original' as const, label: '원본 해상도' },
               ]).map((s) => (
                 <button
                   key={s.value}
@@ -638,7 +643,7 @@ export default function ThumbnailPreview({
         ) : (
           <>
             <Download className="w-6 h-6" />
-            {downloadFormat.toUpperCase()} 다운로드 {downloadScale === 2 ? '(고화질)' : ''}
+            {downloadFormat.toUpperCase()} 다운로드 {downloadScale === 'original' ? '(원본 해상도)' : downloadScale === 2 ? '(고화질)' : ''}
           </>
         )}
       </button>

@@ -1,4 +1,4 @@
-// npm run capture:shots -- [BASE_URL] [--measure-download | --verify-photo | --export-examples | --verify-content]
+// npm run capture:shots -- [BASE_URL] [--measure-download | --verify-photo | --verify-original | --export-examples | --verify-content]
 import assert from 'node:assert/strict';
 import { copyFileSync, readFileSync } from 'node:fs';
 import { chromium, type Browser } from 'playwright';
@@ -79,7 +79,7 @@ async function measureDownloads(browser: Browser) {
   await page.close();
 }
 
-async function verifyPhoto(browser: Browser) {
+async function verifyPhoto(browser: Browser, originalSize = false) {
   for (const width of [390, 1200]) {
     for (const zoomed of [false, true]) {
       const page = await browser.newPage({ viewport: { width, height: 900 } });
@@ -92,16 +92,17 @@ async function verifyPhoto(browser: Browser) {
           input.dispatchEvent(new Event('input', { bubbles: true }));
         }
       });
-      const source = await page.evaluate(() => {
+      const source = await page.evaluate((originalSize) => {
         const canvas = document.createElement('canvas');
-        canvas.width = canvas.height = 1000;
+        canvas.width = originalSize ? 3072 : 1000;
+        canvas.height = originalSize ? 2048 : 1000;
         const ctx = canvas.getContext('2d')!;
-        for (let x = 0; x < 1000; x += 2) {
+        for (let x = 0; x < canvas.width; x += 2) {
           ctx.fillStyle = x % 4 === 0 ? '#000' : '#fff';
-          ctx.fillRect(x, 0, 2, 1000);
+          ctx.fillRect(x, 0, 2, canvas.height);
         }
         return canvas.toDataURL().split(',')[1];
-      });
+      }, originalSize);
       await page.getByRole('button', { name: '\uBC30\uACBD', exact: true }).click();
       await page.locator('#tool input[type="file"]').setInputFiles({
         name: 'detail.png', mimeType: 'image/png', buffer: Buffer.from(source, 'base64'),
@@ -113,6 +114,8 @@ async function verifyPhoto(browser: Browser) {
         await page.getByRole('button', { name: 'JPG', exact: true }).click();
       }
       const format = zoomed ? 'JPG' : 'PNG';
+      if (originalSize) await page.getByRole('button', { name: '\uC6D0\uBCF8 \uD574\uC0C1\uB3C4', exact: true }).click();
+      assert(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth), 'Export options overflow');
       const before = await page.locator('[data-thumbnail-photo]').getAttribute('style');
       const [download] = await Promise.all([
         page.waitForEvent('download'),
@@ -120,30 +123,36 @@ async function verifyPhoto(browser: Browser) {
       ]);
       const filePath = await download.path();
       assert(filePath);
-      const error = await page.evaluate(async ({ data, source, zoomed }) => {
+      const result = await page.evaluate(async ({ data, source, zoomed, originalSize }) => {
         const image = new Image();
         image.src = `data:image/${zoomed ? 'jpeg' : 'png'};base64,${data}`;
         await image.decode();
         const canvas = document.createElement('canvas');
-        canvas.width = canvas.height = 1000;
+        const size = originalSize ? zoomed ? 1229 : 2048 : 1000;
+        canvas.width = canvas.height = size;
         const ctx = canvas.getContext('2d')!;
         ctx.drawImage(image, 0, 0);
         const pixels = ctx.getImageData(100, 100, 100, 100).data;
         const original = new Image();
         original.src = `data:image/png;base64,${source}`;
         await original.decode();
-        ctx.clearRect(0, 0, 1000, 1000);
-        ctx.translate(500, 500);
+        ctx.clearRect(0, 0, size, size);
+        ctx.translate(size / 2, size / 2);
         ctx.rotate(zoomed ? Math.PI / 2 : 0);
-        const size = zoomed ? 2500 : 1000;
-        ctx.drawImage(original, -size / 2, -size / 2, size, size);
+        const drawWidth = originalSize ? original.naturalWidth : zoomed ? size * 2.5 : size * original.naturalWidth / original.naturalHeight;
+        const drawHeight = drawWidth * original.naturalHeight / original.naturalWidth;
+        const x = originalSize ? Math.round((size - drawWidth) / 2) - size / 2 : -drawWidth / 2;
+        const y = originalSize ? Math.round((size - drawHeight) / 2) - size / 2 : -drawHeight / 2;
+        ctx.drawImage(original, x, y, drawWidth, drawHeight);
         const expected = ctx.getImageData(100, 100, 100, 100).data;
         let error = 0;
         for (let i = 0; i < pixels.length; i += 4) error += Math.abs(pixels[i] - expected[i]);
-        return error / (pixels.length / 4);
-      }, { data: readFileSync(filePath).toString('base64'), source, zoomed });
-      console.log(`photo ${width}px ${format} zoom=${zoomed}: mean pixel error ${error.toFixed(2)} / 255`);
-      assert(error < 5, 'Photo detail was lost before export');
+        return { error: error / (pixels.length / 4), width: image.naturalWidth, height: image.naturalHeight, size };
+      }, { data: readFileSync(filePath).toString('base64'), source, zoomed, originalSize });
+      console.log(`photo ${width}px ${format} zoom=${zoomed} original=${originalSize}: ${result.width}px, mean pixel error ${result.error.toFixed(2)} / 255`);
+      assert.equal(result.width, result.size);
+      assert.equal(result.height, result.size);
+      assert(result.error < 5, 'Photo detail was lost before export');
       assert.equal(await page.locator('[data-thumbnail-photo]').getAttribute('style'), before);
       await page.close();
     }
@@ -180,6 +189,7 @@ const browser = await chromium.launch();
 try {
   if (args.includes('--measure-download')) await measureDownloads(browser);
   else if (args.includes('--verify-photo')) await verifyPhoto(browser);
+  else if (args.includes('--verify-original')) await verifyPhoto(browser, true);
   else if (args.includes('--verify-content')) await verifyContent(browser);
   else for (const spec of shotSpecs.filter((spec) => !args.includes('--export-examples') || ['thumb-custom-text', 'thumb-overlay-0', 'thumb-overlay-50'].includes(spec.id))) {
     // 새 context = 빈 localStorage. SkinMaker가 이전 편집 상태를 복원하지 않고 기본 템플릿으로 뜬다.
