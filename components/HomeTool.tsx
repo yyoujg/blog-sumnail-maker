@@ -426,6 +426,31 @@ export function HomeTool({ seoAfterTool, embedded = false, initial, onSave }: { 
         scrollY: -window.scrollY,
         windowWidth: document.documentElement.scrollWidth,
         windowHeight: document.documentElement.scrollHeight,
+        onclone: async (clonedDocument: Document, preview: HTMLElement) => {
+          const photo = preview.querySelector<HTMLElement>('[data-thumbnail-photo]');
+          if (!photo || !bgImage) return;
+          // html2canvas rasterizes CSS backgrounds before applying the export scale.
+          const image = new Image();
+          image.crossOrigin = 'anonymous';
+          image.src = bgImage;
+          await image.decode();
+          const background = clonedDocument.createElement('canvas');
+          background.width = background.height = exportSize;
+          background.style.width = background.style.height = '100%';
+          background.style.display = 'block';
+          const context = background.getContext('2d')!;
+          const ratio = bgScale === 100
+            ? exportSize / Math.min(image.naturalWidth, image.naturalHeight)
+            : exportSize * bgScale / 100 / image.naturalWidth;
+          const x = (exportSize - image.naturalWidth * ratio) * bgOffsetX / 100;
+          const y = (exportSize - image.naturalHeight * ratio) * bgOffsetY / 100;
+          const pattern = context.createPattern(image, 'repeat')!;
+          pattern.setTransform(new DOMMatrix().translate(x, y).scale(ratio));
+          context.fillStyle = pattern;
+          context.fillRect(0, 0, exportSize, exportSize);
+          photo.style.backgroundImage = 'none';
+          photo.appendChild(background);
+        },
       });
       restorePreviewStyles();
       const mimeType = downloadFormat === 'jpg' ? 'image/jpeg' : 'image/png';

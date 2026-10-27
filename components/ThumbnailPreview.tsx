@@ -366,6 +366,7 @@ export default function ThumbnailPreview({
         >
           {bgType === 'image' && bgImage && (
             <div
+              data-thumbnail-photo
               className="absolute inset-0"
               style={{
                 backgroundImage: `url('${bgImage}')`,

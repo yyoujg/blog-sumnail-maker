@@ -1,4 +1,4 @@
-// npm run capture:shots -- [BASE_URL] [--measure-download | --export-examples | --verify-content]
+// npm run capture:shots -- [BASE_URL] [--measure-download | --verify-photo | --export-examples | --verify-content]
 import assert from 'node:assert/strict';
 import { copyFileSync, readFileSync } from 'node:fs';
 import { chromium, type Browser } from 'playwright';
@@ -79,6 +79,77 @@ async function measureDownloads(browser: Browser) {
   await page.close();
 }
 
+async function verifyPhoto(browser: Browser) {
+  for (const width of [390, 1200]) {
+    for (const zoomed of [false, true]) {
+      const page = await browser.newPage({ viewport: { width, height: 900 } });
+      await page.goto(BASE_URL + '/', { waitUntil: 'networkidle' });
+      await page.locator('#tool textarea').fill('');
+      await page.locator('#tool input[type="text"]').evaluateAll((inputs) => {
+        const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value')!.set!;
+        for (const input of inputs.slice(0, 2)) {
+          setter.call(input, '');
+          input.dispatchEvent(new Event('input', { bubbles: true }));
+        }
+      });
+      const source = await page.evaluate(() => {
+        const canvas = document.createElement('canvas');
+        canvas.width = canvas.height = 1000;
+        const ctx = canvas.getContext('2d')!;
+        for (let x = 0; x < 1000; x += 2) {
+          ctx.fillStyle = x % 4 === 0 ? '#000' : '#fff';
+          ctx.fillRect(x, 0, 2, 1000);
+        }
+        return canvas.toDataURL().split(',')[1];
+      });
+      await page.getByRole('button', { name: '\uBC30\uACBD', exact: true }).click();
+      await page.locator('#tool input[type="file"]').setInputFiles({
+        name: 'detail.png', mimeType: 'image/png', buffer: Buffer.from(source, 'base64'),
+      });
+      await page.waitForFunction(() => document.querySelector('[data-testid="thumb-preview"] > div')?.getAttribute('style')?.includes('data:image/png'));
+      if (zoomed) {
+        await page.getByRole('button', { name: /90/ }).click();
+        for (let i = 0; i < 15; i++) await page.getByRole('button', { name: /^\uBC30\uACBD \uD655\uB300/ }).click();
+        await page.getByRole('button', { name: 'JPG', exact: true }).click();
+      }
+      const format = zoomed ? 'JPG' : 'PNG';
+      const before = await page.locator('[data-thumbnail-photo]').getAttribute('style');
+      const [download] = await Promise.all([
+        page.waitForEvent('download'),
+        page.getByRole('button', { name: `${format} \uC378\uB124\uC77C \uB2E4\uC6B4\uB85C\uB4DC`, exact: true }).click(),
+      ]);
+      const filePath = await download.path();
+      assert(filePath);
+      const error = await page.evaluate(async ({ data, source, zoomed }) => {
+        const image = new Image();
+        image.src = `data:image/${zoomed ? 'jpeg' : 'png'};base64,${data}`;
+        await image.decode();
+        const canvas = document.createElement('canvas');
+        canvas.width = canvas.height = 1000;
+        const ctx = canvas.getContext('2d')!;
+        ctx.drawImage(image, 0, 0);
+        const pixels = ctx.getImageData(100, 100, 100, 100).data;
+        const original = new Image();
+        original.src = `data:image/png;base64,${source}`;
+        await original.decode();
+        ctx.clearRect(0, 0, 1000, 1000);
+        ctx.translate(500, 500);
+        ctx.rotate(zoomed ? Math.PI / 2 : 0);
+        const size = zoomed ? 2500 : 1000;
+        ctx.drawImage(original, -size / 2, -size / 2, size, size);
+        const expected = ctx.getImageData(100, 100, 100, 100).data;
+        let error = 0;
+        for (let i = 0; i < pixels.length; i += 4) error += Math.abs(pixels[i] - expected[i]);
+        return error / (pixels.length / 4);
+      }, { data: readFileSync(filePath).toString('base64'), source, zoomed });
+      console.log(`photo ${width}px ${format} zoom=${zoomed}: mean pixel error ${error.toFixed(2)} / 255`);
+      assert(error < 5, 'Photo detail was lost before export');
+      assert.equal(await page.locator('[data-thumbnail-photo]').getAttribute('style'), before);
+      await page.close();
+    }
+  }
+}
+
 async function verifyContent(browser: Browser) {
   for (const viewport of [{ width: 1200, height: 900 }, { width: 390, height: 844 }]) {
     const page = await browser.newPage({ viewport });
@@ -108,6 +179,7 @@ async function verifyContent(browser: Browser) {
 const browser = await chromium.launch();
 try {
   if (args.includes('--measure-download')) await measureDownloads(browser);
+  else if (args.includes('--verify-photo')) await verifyPhoto(browser);
   else if (args.includes('--verify-content')) await verifyContent(browser);
   else for (const spec of shotSpecs.filter((spec) => !args.includes('--export-examples') || ['thumb-custom-text', 'thumb-overlay-0', 'thumb-overlay-50'].includes(spec.id))) {
     // 새 context = 빈 localStorage. SkinMaker가 이전 편집 상태를 복원하지 않고 기본 템플릿으로 뜬다.
